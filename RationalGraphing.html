@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Rational Functions</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            /* Palette */
+            --bg-color: #FAFAF9; /* Stone-50 */
+            --card-bg: #FFFFFF;
+            --text-primary: #1C1917; /* Stone-900 */
+            --text-secondary: #57534E; /* Stone-600 */
+            --accent: #BE123C; /* Rose-700 */
+            --accent-light: #FFE4E6;
+            --primary-teal: #0F766E; /* Teal-700 */
+            --border-color: #E7E5E4; /* Stone-200 */
+            
+            --graph-grid: #E5E7EB;
+            --graph-axis: #374151;
+            --graph-curve: #0F766E;
+            --graph-asymptote: #DC2626;  /* Red dashed for VA */
+            --graph-asymptote-h: #2563EB; /* Blue dashed for HA */
+
+            /* Spacing */
+            --container-max-width: 1000px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        main {
+            width: 100%;
+            max-width: var(--container-max-width);
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 800px) {
+            main { grid-template-columns: 1fr; }
+        }
+
+        /* Instructions Panel */
+        .instruction-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+
+        .instruction-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .math-box {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+            min-height: 4rem; /* prevent jump */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: var(--text-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-teal);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: var(--text-secondary);
+        }
+
+        /* Graph Area */
+        .graph-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border: 1px solid white;
+            aspect-ratio: 1;
+            position: relative;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            border-radius: 8px;
+            /* Prevent selecting text in SVG */
+            user-select: none;
+        }
+
+        .grid-line { stroke: var(--graph-grid); stroke-width: 0.5; }
+        .axis { stroke: var(--graph-axis); stroke-width: 1.5; }
+        .curve { fill: none; stroke: var(--graph-curve); stroke-width: 4px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+        .asymptote { stroke: var(--graph-asymptote); stroke-width: 1.5; stroke-dasharray: 4,4; }
+        .asymptote-h { stroke: var(--graph-asymptote-h); stroke-width: 1.5; stroke-dasharray: 4,4; }
+        .point { fill: var(--text-primary); }
+        .hole { fill: var(--bg-color); stroke: var(--text-primary); stroke-width: 1.5; }
+        
+        .axis-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.6px; /* Small because of viewBox scaling */
+            fill: var(--text-secondary);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        
+        .tick-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.5px;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Graphing Rational Functions</h1>
+        <div class="subtitle">Step-by-Step Visualization</div>
+    </header>
+
+    <main>
+        <!-- Left Panel: Instructions -->
+        <div class="instruction-panel">
+            <span class="step-badge" id="stepLabel">The Function</span>
+            <div class="instruction-text" id="instruction">
+                We will graph the following rational function:
+            </div>
+            
+            <div class="math-box" id="mathDisplay">
+                \[ f(x) = \frac{x^2-3x-4}{x^2-1} \]
+            </div>
+
+            <div class="controls">
+                <button onclick="prevStep()" id="prevBtn" disabled>Back</button>
+                <button onclick="nextStep()" id="nextBtn">Start Graphing &rarr;</button>
+            </div>
+        </div>
+
+        <!-- Right Panel: Graph -->
+        <div class="graph-panel">
+            <svg viewBox="-11 -11 22 22" id="graphSvg">
+                <defs>
+                    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,6 L6,3 z" fill="#374151" />
+                    </marker>
+                </defs>
+                <!-- Content injected via JS -->
+            </svg>
+        </div>
+    </main>
+
+    <script>
+        const svg = document.getElementById('graphSvg');
+        
+        const steps = [
+            {
+                label: "The Function",
+                text: "We start with the standard form. Notice the degrees of the numerator and denominator are equal.",
+                math: "f(x) = \\frac{x^2-3x-4}{x^2-1}",
+                draw: [] 
+            },
+            {
+                label: "Step 1: Factor",
+                text: "Factor both the numerator and denominator completely.",
+                math: "f(x) = \\frac{(x-4)(x+1)}{(x-1)(x+1)}",
+                draw: []
+            },
+            {
+                label: "Step 2: Holes",
+                text: "Identify common factors. \\((x+1)\\) cancels out, creating a HOLE at \\(x=-1\\).",
+                math: "\\begin{aligned} \\text{Hole at } x &= -1 \\\\ \\implies f(x) &\\approx \\frac{x-4}{x-1} \\end{aligned}",
+                draw: ['hole']
+            },
+            {
+                label: "Step 3: Vertical Asymptotes",
+                text: "Set the remaining denominator to zero: \\(x-1=0\\). This is our Vertical Asymptote.",
+                math: "\\text{VA: } x = 1",
+                draw: ['hole', 'va']
+            },
+            {
+                label: "Step 4: Horizontal Asymptote",
+                text: "Compare degrees. Since degrees are equal (2=2), ratio of leading coefficients is \\(1/1 = 1\\).",
+                math: "\\text{HA: } y = 1",
+                draw: ['hole', 'va', 'ha']
+            },
+            {
+                label: "Step 5: Intercepts",
+                text: "Find x-intercept (numerator=0) and y-intercept (set x=0).",
+                math: "\\text{x-int: } (4, 0) \\quad \\text{y-int: } f(0)=4",
+                draw: ['hole', 'va', 'ha', 'points']
+            },
+            {
+                label: "Step 6: Graph",
+                text: "Draw smooth curves through the points, approaching the asymptotes.",
+                math: "\\text{Graphing } f(x) = \\frac{x-4}{x-1}",
+                draw: ['hole', 'va', 'ha', 'points', 'curve']
+            }
+        ];
+
+        let currentStep = 0;
+
+        function initGrid() {
+            // Draw Axises and Grid
+            let html = '';
+            
+            // Grid lines (faint)
+            for(let i=-10; i<=10; i++) {
+                if(i===0) continue;
+                html += `<line x1="${i}" y1="-10" x2="${i}" y2="10" class="grid-line" stroke-opacity="0.9" vector-effect="non-scaling-stroke" />`;
+                html += `<line x1="-10" y1="${i}" x2="10" y2="${i}" class="grid-line" stroke-opacity="0.9" vector-effect="non-scaling-stroke" />`;
+            }
+
+            // Axes with Arrows
+            // X Axis
+            html += `<line x1="-10.5" y1="0" x2="10.5" y2="0" class="axis" marker-end="url(#arrow)" vector-effect="non-scaling-stroke" />`;
+            // Y Axis (svg coords are flipped for text, but lines are raw. We will handle flip in the content group)
+            html += `<line x1="0" y1="10.5" x2="0" y2="-10.5" class="axis" marker-end="url(#arrow)" vector-effect="non-scaling-stroke" />`;
+
+            // Axis Labels
+            html += `<text x="10.8" y="0.2" class="axis-label">x</text>`;
+            html += `<text x="0.4" y="10.8" class="axis-label">y</text>`;
+
+            // Ticks (Numeric)
+            // We need to be careful with coordinate systems. 
+            // In standard SVG: Y goes DOWN. 10 is at the bottom. -10 is at the top.
+            // But we want to graph in Cartesian where Y goes UP.
+            // Typically we flip the group containing the graph. 
+            // However, text will look upside down if we flip the whole group.
+            // Strategy: Draw Grid and Text normally (adapting Y values), then Draw Graph in a flipped group.
+            
+            // SVG Y = - Cartesian Y.
+            // Tick 5 -> SVG Y = -5.
+            const ticks = [-10, -5, 5, 10];
+            ticks.forEach(t => {
+                // X ticks
+                html += `<line x1="${t}" y1="-0.2" x2="${t}" y2="0.2" stroke="var(--text-secondary)" stroke-width="0.05" />`;
+                html += `<text x="${t}" y="0.8" class="tick-label">${t}</text>`;
+
+                // Y ticks (Carteisan 't' becomes SVG '-t')
+                html += `<line x1="-0.2" y1="${-t}" x2="0.2" y2="${-t}" stroke="var(--text-secondary)" stroke-width="0.05" />`;
+                html += `<text x="0.8" y="${-t+0.15}" class="tick-label" text-anchor="start">${t}</text>`;
+            });
+
+            return html;
+        }
+
+        function getRationalPathPoints(xMin, xMax, step) {
+            let d = "";
+            let first = true;
+            for (let x = xMin; x <= xMax; x += step) {
+                // Avoid the asymptote at x=1 slightly to prevent infinity issues if we hit it exactly
+                if (Math.abs(x - 1) < 0.01) continue;
+
+                // f(x) = (x-4)/(x-1)
+                let y = (x - 4) / (x - 1);
+
+                // Cap Y values to avoid drawing lines to infinity or way off screen
+                if (y > 10) y = 10.1;
+                if (y < -10) y = -10.1;
+
+                if (first) {
+                    d += `M ${x} ${y}`;
+                    first = false;
+                } else {
+                    d += ` L ${x} ${y}`;
+                }
+            }
+            return d;
+        }
+
+        function updateGraph(drawList) {
+            // Static grid first (labels and axes)
+            let staticContent = initGrid();
+            
+            // Dynamic content (Graph curves, points) - Needs Cartesian Flip
+            let dynamicContent = `<g transform="scale(1, -1)">`;
+
+            if (drawList.includes('va')) { // x = 1
+                dynamicContent += `<line x1="1" y1="-10" x2="1" y2="10" class="asymptote" vector-effect="non-scaling-stroke" />`; 
+            }
+            if (drawList.includes('ha')) { // y = 1
+                dynamicContent += `<line x1="-10" y1="1" x2="10" y2="1" class="asymptote-h" vector-effect="non-scaling-stroke" />`;
+            }
+            if (drawList.includes('curve')) {
+                // Generate high-resolution paths
+                // Left Branch: x from -11 to 0.95
+                const leftPath = getRationalPathPoints(-11, 0.9, 0.1);
+                // Right Branch: x from 1.05 to 11
+                const rightPath = getRationalPathPoints(1.1, 11, 0.1);
+
+                dynamicContent += `<path d="${leftPath}" class="curve" fill="none" />`;
+                dynamicContent += `<path d="${rightPath}" class="curve" fill="none" />`;
+            }
+            if (drawList.includes('points')) {
+                dynamicContent += `<circle cx="4" cy="0" r="0.25" class="point" />`; // x-int
+                dynamicContent += `<circle cx="0" cy="4" r="0.25" class="point" />`; // y-int
+            }
+            if (drawList.includes('hole')) {
+                dynamicContent += `<circle cx="-1" cy="2.5" r="0.25" class="hole" fill="transparent" vector-effect="non-scaling-stroke" />`;
+            }
+            
+            dynamicContent += `</g>`;
+
+            // Combine
+            const defs = `
+                <defs>
+                    <!-- Marker with viewBox to allow scaling. 
+                         Units are userSpaceOnUse (coordinate system units). 
+                         0.6 units is small enough relative to the 20x20 viewbox. -->
+                    <marker id="arrow" viewBox="0 0 10 10" markerWidth="0.6" markerHeight="0.6" refX="10" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+                        <path d="M0,0 L0,10 L10,5 z" fill="#374151" />
+                    </marker>
+                </defs>
+            `;
+            
+            svg.innerHTML = defs + staticContent + dynamicContent;
+        }
+
+        function render() {
+            const s = steps[currentStep];
+            
+            // Update Text
+            document.getElementById('stepLabel').textContent = s.label;
+            document.getElementById('instruction').textContent = s.text;
+            
+            const mathEl = document.getElementById('mathDisplay');
+            
+            // Render Math Box
+            if (window.katex) {
+                katex.render(s.math, mathEl, {
+                    displayMode: true,
+                    throwOnError: false
+                });
+
+                // Render Instructions Math
+                renderMathInElement(document.getElementById('instruction'), {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "\\(", right: "\\)", display: false},
+                        {left: "\\[", right: "\\]", display: true}
+                    ],
+                    throwOnError: false
+                });
+            }
+
+            // Update Graph
+            updateGraph(s.draw);
+
+            // Buttons
+            document.getElementById('prevBtn').disabled = currentStep === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStep === steps.length - 1) {
+                nextBtn.innerHTML = "Restart &#8634;";
+            } else {
+                nextBtn.innerHTML = "Next Step &rarr;";
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+            } else {
+                currentStep = 0;
+            }
+            render();
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                render();
+            }
+        }
+
+        // Init
+        // Wait for fonts/scripts
+        document.addEventListener("DOMContentLoaded", () => {
+             render();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaghetti Sine Graph Activity</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=satoshi@400,500,700&display=swap">
+
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        window.MathJax = { tex: { inlineMath: [['\\(', '\\)']] } };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES — CHALKBOARD THEME
+           Dark slate with chalk-white text and green accent
+           =========================================== */
+        :root {
+            --bg: #1a2332;
+            --bg-light: #1e2a3c;
+            --text: #f1f5f9;
+            --text-dim: #94a3b8;
+            --text-muted: #64748b;
+            --chalk: #e2e8f0;
+
+            /* Accent palette */
+            --green: #4ade80;
+            --green-dim: rgba(74, 222, 128, 0.2);
+            --green-glow: rgba(74, 222, 128, 0.35);
+            --yellow: #fbbf24;
+            --yellow-dim: rgba(251, 191, 36, 0.2);
+            --coral: #fb7185;
+            --coral-dim: rgba(251, 113, 133, 0.2);
+
+            /* Typography */
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'Satoshi', sans-serif;
+
+            /* Spacing */
+            --slide-padding: clamp(2rem, 5vw, 4rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration: 0.7s;
+
+            /* Spaghetti color */
+            --pasta: #f3e5ab;
+            --pasta-border: #d4c58d;
+        }
+
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===========================================
+           CHALKBOARD GRID BACKGROUND
+           Subtle ruled lines like a real chalkboard
+           =========================================== */
+        .chalk-grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Subtle corner glow for warmth */
+        .chalk-grid::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 85%, rgba(74, 222, 128, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 15%, rgba(251, 191, 36, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--green), var(--yellow));
+            z-index: 100;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* ===========================================
+           NAVIGATION DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .nav-dot:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.3);
+        }
+
+        .nav-dot.active {
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green-glow);
+            transform: scale(1.2);
+        }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        .keyboard-hint.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .key {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.04);
+            min-width: 28px;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           =========================================== */
+        .slide {
+            min-height: 100vh;
+            padding: var(--slide-padding);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .slide-inner {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ===========================================
+           REVEAL ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration) var(--ease-out-expo),
+                        transform var(--duration) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .slide.visible .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .slide.visible .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .slide.visible .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .slide.visible .reveal:nth-child(5) { transition-delay: 0.5s; }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        .pill {
+            display: inline-block;
+            padding: 6px 18px;
+            border: 1px solid var(--green-dim);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--green);
+            background: rgba(74, 222, 128, 0.06);
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            color: var(--chalk);
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            font-weight: 600;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            color: var(--chalk);
+        }
+
+        .accent-text {
+            color: var(--green);
+        }
+
+        .yellow-text {
+            color: var(--yellow);
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            color: var(--text-dim);
+            max-width: 550px;
+            line-height: 1.6;
+        }
+
+        /* ===========================================
+           LAYOUT: SPLIT
+           =========================================== */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(24px, 4vw, 60px);
+            align-items: center;
+        }
+
+        .split-text {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .split-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===========================================
+           CARDS — chalk-style cards
+           =========================================== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+
+        .chalk-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 24px 20px;
+            text-align: center;
+            transition: transform 0.3s var(--ease-spring), border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .chalk-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(74, 222, 128, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .chalk-card .icon {
+            font-size: 2.4em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .chalk-card .label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .chalk-card .sub {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* ===========================================
+           LIST STYLES
+           =========================================== */
+        .step-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .step-list li {
+            font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+            line-height: 1.6;
+            color: var(--text-dim);
+            padding-left: 28px;
+            position: relative;
+        }
+
+        .step-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        .step-list li strong {
+            color: var(--text);
+        }
+
+        .sub-list {
+            list-style: none;
+            margin-top: 8px;
+            padding-left: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .sub-list li {
+            padding-left: 20px;
+            font-size: 0.95em;
+        }
+
+        .sub-list li::before {
+            width: 6px;
+            height: 6px;
+            background: var(--yellow);
+            top: 9px;
+        }
+
+        /* ===========================================
+           UNIT CIRCLE SVG
+           =========================================== */
+        .uc-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .uc-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .uc-svg .circle-main {
+            fill: none;
+            stroke: var(--chalk);
+            stroke-width: 2;
+            opacity: 0.35;
+        }
+
+        .uc-svg .axis-line {
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1.5;
+        }
+
+        .uc-svg .radial-line {
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 1;
+        }
+
+        .uc-svg .tick-mark {
+            stroke: rgba(255, 255, 255, 0.18);
+            stroke-width: 1.5;
+        }
+
+        .uc-label {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            font-size: 0.65em;
+            color: var(--text-dim);
+            background: rgba(26, 35, 50, 0.88);
+            padding: 1px 5px;
+            border-radius: 4px;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        /* ===========================================
+           CLOCK FACE — full-size with hour numbers
+           Same dimensions as unit circle for comparison
+           =========================================== */
+        .clock-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .clock-face-svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .clock-face-svg .face-ring {
+            fill: rgba(255, 255, 255, 0.02);
+            stroke: var(--yellow);
+            stroke-width: 2;
+            opacity: 0.5;
+        }
+
+        .clock-face-svg .hour-tick {
+            stroke: rgba(255, 255, 255, 0.25);
+            stroke-width: 2;
+        }
+
+        .clock-face-svg .hour-num {
+            fill: var(--yellow);
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        .clock-face-svg .hand-hour {
+            stroke: var(--text-dim);
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .clock-face-svg .hand-minute {
+            stroke: var(--text-dim);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        .clock-face-svg .center-dot {
+            fill: var(--text-dim);
+        }
+
+        /* Side-by-side diagrams for clock + unit circle */
+        .diagrams-row {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .diagram-label {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .diagram-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* ===========================================
+           X-AXIS / NUMBER LINE
+           =========================================== */
+        .theta-axis {
+            position: relative;
+            width: 100%;
+            height: 80px;
+        }
+
+        .theta-axis .axis-line {
+            position: absolute;
+            top: 22px;
+            left: 0; right: 0;
+            height: 2px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 1px;
+        }
+
+        .theta-axis .tick {
+            position: absolute;
+            top: 16px;
+            width: 1.5px;
+            height: 14px;
+            background: rgba(255,255,255,0.2);
+            transform: translateX(-50%);
+        }
+
+        .theta-axis .lbl {
+            position: absolute;
+            top: 38px;
+            transform: translateX(-50%);
+            font-size: 0.68em;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        /* ===========================================
+           TALL AXIS (for spaghetti placement slide)
+           =========================================== */
+        .theta-axis.tall {
+            height: 200px;
+        }
+
+        .theta-axis.tall .axis-line { top: 90px; }
+        .theta-axis.tall .tick { top: 84px; }
+        .theta-axis.tall .lbl { top: 106px; font-size: 0.75em; }
+
+        .pasta-stick {
+            position: absolute;
+            top: 90px;
+            width: 6px;
+            background: var(--pasta);
+            border: 1px solid var(--pasta-border);
+            border-radius: 3px;
+            transform: translateX(-50%);
+            transition: height 0.6s var(--ease-out-expo);
+        }
+
+        .pasta-stick.up {
+            transform: translateX(-50%) translateY(-100%);
+        }
+
+        /* ===========================================
+           PASTA WAVE SVG
+           =========================================== */
+        .pasta-wave-svg {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .pasta-wave-svg .pasta-bar {
+            stroke: var(--pasta);
+            stroke-width: 6;
+            stroke-linecap: round;
+        }
+
+        .pasta-wave-svg .wave-curve {
+            fill: none;
+            stroke: var(--green);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            transition: stroke-dashoffset 2s ease;
+        }
+
+        .slide.visible .pasta-wave-svg .wave-curve {
+            stroke-dashoffset: 0;
+        }
+
+        .pasta-wave-svg .axis-ref {
+            stroke: rgba(255,255,255,0.08);
+            stroke-width: 1;
+        }
+
+        /* ===========================================
+           ANIMATED CIRCLE-TO-WAVE (title slide)
+           =========================================== */
+        .hero-anim svg {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .hero-anim .circle-ring {
+            fill: none;
+            stroke: rgba(255,255,255,0.15);
+            stroke-width: 1.5;
+        }
+
+        .hero-anim .spin-hand {
+            stroke: var(--green);
+            stroke-width: 2;
+            transform-origin: 80px 80px;
+            animation: spin 5s linear infinite;
+        }
+
+        .hero-anim .spin-dot {
+            fill: var(--green);
+            transform-origin: 80px 80px;
+            animation: spin 5s linear infinite;
+        }
+
+        .hero-anim .connector {
+            stroke: rgba(255,255,255,0.06);
+            stroke-width: 1;
+            stroke-dasharray: 4;
+        }
+
+        .hero-anim .wave-draw {
+            fill: none;
+            stroke: url(#heroGrad);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-dasharray: 700;
+            stroke-dashoffset: 700;
+        }
+
+        .slide.visible .hero-anim .wave-draw {
+            animation: drawLine 2.5s 0.8s ease forwards;
+        }
+
+        .hero-anim .wave-axis {
+            stroke: rgba(255,255,255,0.05);
+            stroke-width: 1;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* ===========================================
+           REFLECTION SLIDE
+           =========================================== */
+        .big-equation {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .reflection-questions {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 600px;
+        }
+
+        .reflection-questions li {
+            font-size: clamp(1rem, 1.4vw, 1.15rem);
+            color: var(--text-dim);
+            padding: 16px 24px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 10px;
+            line-height: 1.5;
+        }
+
+        .reflection-questions li strong {
+            color: var(--text);
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                transition: opacity 0.3s ease;
+                transform: none;
+            }
+            .hero-anim .spin-hand,
+            .hero-anim .spin-dot { animation: none; }
+            .hero-anim .wave-draw { stroke-dashoffset: 0; }
+            .pasta-wave-svg .wave-curve { stroke-dashoffset: 0; }
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .nav-dots, .keyboard-hint { display: none; }
+            .split {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+            .slide { padding: 24px 20px; }
+            .card-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .chalk-card { padding: 16px 10px; }
+            .chalk-card .icon { font-size: 1.8em; }
+            .diagrams-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .uc-container, .clock-container {
+                max-width: 220px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Chalkboard grid background -->
+    <div class="chalk-grid"></div>
+
+    <!-- Progress bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Navigation dots -->
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint" id="keyHint">
+        <span class="key">&larr;</span>
+        <span class="key">&rarr;</span>
+        <span>or</span>
+        <span class="key">Space</span>
+        <span>to navigate</span>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 1: TITLE
+         ========================================== -->
+    <section class="slide" id="slide-0">
+        <div class="slide-inner" style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+            <div class="pill reveal">Hands-On Activity</div>
+            <h1 class="reveal">Spaghetti <span class="accent-text">Sine</span><br>Graph</h1>
+            <p class="subtitle reveal" style="text-align: center; margin: 0 auto 40px;">
+                Building \(y = \sin(\theta)\) from the Unit Circle
+            </p>
+            <div class="hero-anim reveal">
+                <svg viewBox="0 0 650 160">
+                    <defs>
+                        <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#4ade80" />
+                            <stop offset="50%" stop-color="#fbbf24" />
+                            <stop offset="100%" stop-color="#4ade80" />
+                        </linearGradient>
+                    </defs>
+
+                    <!-- Mini unit circle -->
+                    <circle class="circle-ring" cx="80" cy="80" r="55" />
+                    <line class="spin-hand" x1="80" y1="80" x2="80" y2="25" />
+                    <circle class="spin-dot" cx="80" cy="25" r="4" />
+
+                    <!-- Connector -->
+                    <line class="connector" x1="140" y1="80" x2="175" y2="80" />
+
+                    <!-- Wave axis -->
+                    <line class="wave-axis" x1="175" y1="80" x2="630" y2="80" />
+
+                    <!-- True sine wave: steep at zero crossings, flat at peaks/troughs -->
+                    <path class="wave-draw"
+                          d="M 175 80
+                             C 213 46, 250 15, 288 15
+                             C 325 15, 363 46, 400 80
+                             C 438 114, 475 145, 513 145
+                             C 550 145, 588 114, 625 80" />
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 2: MATERIALS
+         ========================================== -->
+    <section class="slide" id="slide-1">
+        <div class="slide-inner">
+            <h2 class="reveal">Required <span class="accent-text">Materials</span></h2>
+            <div class="card-grid reveal" style="max-width: 700px;">
+                <div class="chalk-card">
+                    <span class="icon">&#x1F4C4;</span>
+                    <div class="label">Paper</div>
+                    <div class="sub">2 sheets, taped</div>
+                </div>
+                <div class="chalk-card">
+                    <span class="icon">&#x1F35D;</span>
+                    <div class="label">Spaghetti</div>
+                    <div class="sub">Uncooked, stiff</div>
+                </div>
+                <div class="chalk-card">
+                    <span class="icon">&#x1F9F5;</span>
+                    <div class="label">String</div>
+                    <div class="sub">~12 inches</div>
+                </div>
+                <div class="chalk-card">
+                    <span class="icon">&#x1F58A;&#xFE0F;</span>
+                    <div class="label">Marker</div>
+                    <div class="sub">Any color</div>
+                </div>
+                <div class="chalk-card">
+                    <span class="icon">&#x1F4CF;</span>
+                    <div class="label">Ruler</div>
+                    <div class="sub">For straight lines</div>
+                </div>
+                <div class="chalk-card">
+                    <span class="icon">&#x1F963;</span>
+                    <div class="label">Bowl</div>
+                    <div class="sub">For tracing circle</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 3: PREPARE UNIT CIRCLE
+         Clock face (same size) + unit circle side by side
+         ========================================== -->
+    <section class="slide" id="slide-2">
+        <div class="slide-inner">
+            <h2 class="reveal"><span class="accent-text">1.</span> Prepare Your <span class="accent-text">Unit Circle</span></h2>
+            <div class="split">
+                <div class="split-text reveal">
+                    <ul class="step-list">
+                        <li>Trace a bowl and draw your axes through the center.</li>
+                        <li>Label the origin \((0,0)\) and rightmost point \((1,0)\).</li>
+                        <li><strong>Estimate angles</strong> using clock positions:
+                            <ul class="sub-list">
+                                <li>\(0 \approx 3\) o'clock</li>
+                                <li>\(\frac{\pi}{6} \approx 2\) o'clock</li>
+                                <li>\(\frac{\pi}{3} \approx 1\) o'clock</li>
+                                <li>\(\frac{\pi}{2} \approx 12\) o'clock</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="split-visual reveal">
+                    <div class="diagrams-row">
+                        <!-- CLOCK FACE — same size as unit circle, with hour numbers -->
+                        <div class="diagram-col">
+                            <div class="clock-container">
+                                <svg class="clock-face-svg" viewBox="0 0 300 300">
+                                    <!-- Clock circle -->
+                                    <circle class="face-ring" cx="150" cy="150" r="115" />
+
+                                    <!-- Hour tick marks (short lines at each hour) -->
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(30 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(60 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(90 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(120 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(150 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(180 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(210 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(240 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(270 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(300 150 150)" />
+                                    <line class="hour-tick" x1="150" y1="39" x2="150" y2="51" transform="rotate(330 150 150)" />
+
+                                    <!-- Hour numbers (placed at r=90 from center) -->
+                                    <!-- 12 o'clock: 0° from top -->
+                                    <text class="hour-num" x="150" y="68">12</text>
+                                    <!-- 1 o'clock: 30° clockwise from top -->
+                                    <text class="hour-num" x="195" y="80">1</text>
+                                    <!-- 2 o'clock: 60° -->
+                                    <text class="hour-num" x="228" y="110">2</text>
+                                    <!-- 3 o'clock: 90° -->
+                                    <text class="hour-num" x="240" y="150">3</text>
+                                    <!-- 4 o'clock: 120° -->
+                                    <text class="hour-num" x="228" y="192">4</text>
+                                    <!-- 5 o'clock: 150° -->
+                                    <text class="hour-num" x="195" y="222">5</text>
+                                    <!-- 6 o'clock: 180° -->
+                                    <text class="hour-num" x="150" y="237">6</text>
+                                    <!-- 7 o'clock: 210° -->
+                                    <text class="hour-num" x="105" y="222">7</text>
+                                    <!-- 8 o'clock: 240° -->
+                                    <text class="hour-num" x="72" y="192">8</text>
+                                    <!-- 9 o'clock: 270° -->
+                                    <text class="hour-num" x="60" y="150">9</text>
+                                    <!-- 10 o'clock: 300° -->
+                                    <text class="hour-num" x="72" y="110">10</text>
+                                    <!-- 11 o'clock: 330° -->
+                                    <text class="hour-num" x="105" y="80">11</text>
+
+                                    <!-- Clock hands (pointing to ~10:10 for nice visual) -->
+                                    <line class="hand-hour" x1="150" y1="150" x2="150" y2="80" />
+                                    <line class="hand-minute" x1="150" y1="150" x2="205" y2="150" />
+                                    <circle class="center-dot" cx="150" cy="150" r="4" />
+                                </svg>
+                            </div>
+                            <div class="diagram-label" style="color: var(--yellow);">Clock Reference</div>
+                        </div>
+
+                        <!-- UNIT CIRCLE — same size -->
+                        <div class="diagram-col">
+                            <div class="uc-container">
+                                <svg class="uc-svg" viewBox="0 0 300 300">
+                                    <!-- Radial lines -->
+                                    <line class="radial-line" x1="150" y1="150" x2="250" y2="92.3" />
+                                    <line class="radial-line" x1="150" y1="150" x2="231.6" y2="68.4" />
+                                    <line class="radial-line" x1="150" y1="150" x2="207.7" y2="50" />
+                                    <line class="radial-line" x1="150" y1="150" x2="92.3" y2="50" />
+                                    <line class="radial-line" x1="150" y1="150" x2="68.4" y2="68.4" />
+                                    <line class="radial-line" x1="150" y1="150" x2="50" y2="92.3" />
+                                    <line class="radial-line" x1="150" y1="150" x2="50" y2="207.7" />
+                                    <line class="radial-line" x1="150" y1="150" x2="68.4" y2="231.6" />
+                                    <line class="radial-line" x1="150" y1="150" x2="92.3" y2="250" />
+                                    <line class="radial-line" x1="150" y1="150" x2="207.7" y2="250" />
+                                    <line class="radial-line" x1="150" y1="150" x2="231.6" y2="231.6" />
+                                    <line class="radial-line" x1="150" y1="150" x2="250" y2="207.7" />
+
+                                    <!-- Axes -->
+                                    <line class="axis-line" x1="15" y1="150" x2="285" y2="150" />
+                                    <line class="axis-line" x1="150" y1="15" x2="150" y2="285" />
+
+                                    <!-- Main circle -->
+                                    <circle class="circle-main" cx="150" cy="150" r="115" />
+
+                                    <!-- Tick marks -->
+                                    <line class="tick-mark" x1="265" y1="150" x2="275" y2="150" />
+                                    <line class="tick-mark" x1="250" y1="92.3" x2="258.7" y2="87.3" />
+                                    <line class="tick-mark" x1="231.6" y1="68.4" x2="238.7" y2="61.3" />
+                                    <line class="tick-mark" x1="207.7" y1="50" x2="212.7" y2="41.3" />
+                                    <line class="tick-mark" x1="150" y1="35" x2="150" y2="25" />
+                                    <line class="tick-mark" x1="92.3" y1="50" x2="87.3" y2="41.3" />
+                                    <line class="tick-mark" x1="68.4" y1="68.4" x2="61.3" y2="61.3" />
+                                    <line class="tick-mark" x1="50" y1="92.3" x2="41.3" y2="87.3" />
+                                    <line class="tick-mark" x1="35" y1="150" x2="25" y2="150" />
+                                    <line class="tick-mark" x1="50" y1="207.7" x2="41.3" y2="212.7" />
+                                    <line class="tick-mark" x1="68.4" y1="231.6" x2="61.3" y2="238.7" />
+                                    <line class="tick-mark" x1="92.3" y1="250" x2="87.3" y2="258.7" />
+                                    <line class="tick-mark" x1="150" y1="265" x2="150" y2="275" />
+                                    <line class="tick-mark" x1="207.7" y1="250" x2="212.7" y2="258.7" />
+                                    <line class="tick-mark" x1="231.6" y1="231.6" x2="238.7" y2="238.7" />
+                                    <line class="tick-mark" x1="250" y1="207.7" x2="258.7" y2="212.7" />
+                                </svg>
+                                <!-- Radian labels -->
+                                <span class="uc-label" style="left:93%; top:50%;">\(0\)</span>
+                                <span class="uc-label" style="left:93%; top:55%;">\(2\pi\)</span>
+                                <span class="uc-label" style="left:87%; top:28%;">\(\frac{\pi}{6}\)</span>
+                                <span class="uc-label" style="left:80%; top:19%;">\(\frac{\pi}{4}\)</span>
+                                <span class="uc-label" style="left:71%; top:13%;">\(\frac{\pi}{3}\)</span>
+                                <span class="uc-label" style="left:50%; top:5%;">\(\frac{\pi}{2}\)</span>
+                                <span class="uc-label" style="left:29%; top:13%;">\(\frac{2\pi}{3}\)</span>
+                                <span class="uc-label" style="left:20%; top:19%;">\(\frac{3\pi}{4}\)</span>
+                                <span class="uc-label" style="left:13%; top:28%;">\(\frac{5\pi}{6}\)</span>
+                                <span class="uc-label" style="left:6%; top:50%;">\(\pi\)</span>
+                                <span class="uc-label" style="left:13%; top:72%;">\(\frac{7\pi}{6}\)</span>
+                                <span class="uc-label" style="left:20%; top:80%;">\(\frac{5\pi}{4}\)</span>
+                                <span class="uc-label" style="left:29%; top:87%;">\(\frac{4\pi}{3}\)</span>
+                                <span class="uc-label" style="left:50%; top:94%;">\(\frac{3\pi}{2}\)</span>
+                                <span class="uc-label" style="left:71%; top:87%;">\(\frac{5\pi}{3}\)</span>
+                                <span class="uc-label" style="left:80%; top:80%;">\(\frac{7\pi}{4}\)</span>
+                                <span class="uc-label" style="left:87%; top:72%;">\(\frac{11\pi}{6}\)</span>
+                            </div>
+                            <div class="diagram-label" style="color: var(--green);">Unit Circle</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 4: STRING & GRAPH PAPER
+         ========================================== -->
+    <section class="slide" id="slide-3">
+        <div class="slide-inner">
+            <h2 class="reveal"><span class="accent-text">2.</span> The String & <span class="accent-text">Graph Paper</span></h2>
+            <div class="split">
+                <div class="split-text reveal">
+                    <ul class="step-list">
+                        <li><strong>The String:</strong> Wrap string around the circle. Mark it at each angle (\(0\) to \(2\pi\)). This becomes your x-axis.</li>
+                        <li><strong>The Paper:</strong> Tape sheets long-ways. Draw a horizontal axis labeled \(\theta\) and a vertical axis for \(y = \sin(\theta)\).</li>
+                        <li>Transfer string marks to the horizontal axis to get evenly-spaced angle positions.</li>
+                    </ul>
+                </div>
+                <div class="split-visual reveal">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%;">
+                        <!-- Unit circle with string highlight -->
+                        <div class="uc-container" style="max-width: 200px;">
+                            <svg class="uc-svg" viewBox="0 0 300 300">
+                                <line class="axis-line" x1="15" y1="150" x2="285" y2="150" />
+                                <line class="axis-line" x1="150" y1="15" x2="150" y2="285" />
+                                <circle class="circle-main" cx="150" cy="150" r="115" />
+
+                                <!-- String wrapping (dashed yellow arc) -->
+                                <path d="M 265 150 A 115 115 0 1 0 264 152"
+                                      fill="none" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="5,5" opacity="0.6" />
+                            </svg>
+                        </div>
+
+                        <!-- Arrow down -->
+                        <div style="font-size: 1.5rem; color: var(--text-muted);">&#x2193; unrolls to &#x2193;</div>
+
+                        <!-- Resulting axis -->
+                        <div class="theta-axis" style="width: 90%; max-width: 400px;">
+                            <div class="axis-line"></div>
+                            <span class="tick" style="left: 0%;"></span>
+                            <span class="tick" style="left: 8.333%;"></span>
+                            <span class="tick" style="left: 12.5%;"></span>
+                            <span class="tick" style="left: 16.667%;"></span>
+                            <span class="tick" style="left: 25%;"></span>
+                            <span class="tick" style="left: 33.333%;"></span>
+                            <span class="tick" style="left: 37.5%;"></span>
+                            <span class="tick" style="left: 41.667%;"></span>
+                            <span class="tick" style="left: 50%;"></span>
+                            <span class="tick" style="left: 58.333%;"></span>
+                            <span class="tick" style="left: 62.5%;"></span>
+                            <span class="tick" style="left: 66.667%;"></span>
+                            <span class="tick" style="left: 75%;"></span>
+                            <span class="tick" style="left: 83.333%;"></span>
+                            <span class="tick" style="left: 87.5%;"></span>
+                            <span class="tick" style="left: 91.667%;"></span>
+                            <span class="tick" style="left: 100%;"></span>
+
+                            <span class="lbl" style="left: 0%; transform: translateX(0);">\(0\)</span>
+                            <span class="lbl" style="left: 25%;">\(\frac{\pi}{2}\)</span>
+                            <span class="lbl" style="left: 50%;">\(\pi\)</span>
+                            <span class="lbl" style="left: 75%;">\(\frac{3\pi}{2}\)</span>
+                            <span class="lbl" style="left: 100%; transform: translateX(-100%);">\(2\pi\)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 5: MEASURING WITH SPAGHETTI
+         ========================================== -->
+    <section class="slide" id="slide-4">
+        <div class="slide-inner">
+            <h2 class="reveal"><span class="accent-text">3.</span> Measuring with <span class="accent-text">Spaghetti</span></h2>
+            <div class="split">
+                <div class="split-text reveal">
+                    <ul class="step-list">
+                        <li>Hold spaghetti vertically from the x-axis to the point on the circle.</li>
+                        <li><strong>Break it</strong> at that exact height &mdash; this is the \(\sin(\theta)\) value.</li>
+                        <li>Transfer the piece to your graph paper at the matching \(\theta\) mark.</li>
+                        <li>Repeat for every labeled angle from \(0\) to \(2\pi\).</li>
+                    </ul>
+                </div>
+                <div class="split-visual reveal">
+                    <div class="theta-axis tall" style="width: 90%; max-width: 500px;">
+                        <div class="axis-line"></div>
+
+                        <span class="tick" style="left: 0%;"></span>
+                        <span class="tick" style="left: 8.333%;"></span>
+                        <span class="tick" style="left: 12.5%;"></span>
+                        <span class="tick" style="left: 16.667%;"></span>
+                        <span class="tick" style="left: 25%;"></span>
+                        <span class="tick" style="left: 33.333%;"></span>
+                        <span class="tick" style="left: 37.5%;"></span>
+                        <span class="tick" style="left: 41.667%;"></span>
+                        <span class="tick" style="left: 50%;"></span>
+                        <span class="tick" style="left: 58.333%;"></span>
+                        <span class="tick" style="left: 62.5%;"></span>
+                        <span class="tick" style="left: 66.667%;"></span>
+                        <span class="tick" style="left: 75%;"></span>
+                        <span class="tick" style="left: 83.333%;"></span>
+                        <span class="tick" style="left: 87.5%;"></span>
+                        <span class="tick" style="left: 91.667%;"></span>
+                        <span class="tick" style="left: 100%;"></span>
+
+                        <span class="lbl" style="left: 0%; transform: translateX(0);">\(0\)</span>
+                        <span class="lbl" style="left: 8.333%;">\(\frac{\pi}{6}\)</span>
+                        <span class="lbl" style="left: 12.5%;">\(\frac{\pi}{4}\)</span>
+                        <span class="lbl" style="left: 16.667%;">\(\frac{\pi}{3}\)</span>
+                        <span class="lbl" style="left: 25%;">\(\frac{\pi}{2}\)</span>
+                        <span class="lbl" style="left: 33.333%;">\(\frac{2\pi}{3}\)</span>
+                        <span class="lbl" style="left: 37.5%;">\(\frac{3\pi}{4}\)</span>
+                        <span class="lbl" style="left: 41.667%;">\(\frac{5\pi}{6}\)</span>
+                        <span class="lbl" style="left: 50%;">\(\pi\)</span>
+                        <span class="lbl" style="left: 58.333%;">\(\frac{7\pi}{6}\)</span>
+                        <span class="lbl" style="left: 62.5%;">\(\frac{5\pi}{4}\)</span>
+                        <span class="lbl" style="left: 66.667%;">\(\frac{4\pi}{3}\)</span>
+                        <span class="lbl" style="left: 75%;">\(\frac{3\pi}{2}\)</span>
+                        <span class="lbl" style="left: 83.333%;">\(\frac{5\pi}{3}\)</span>
+                        <span class="lbl" style="left: 87.5%;">\(\frac{7\pi}{4}\)</span>
+                        <span class="lbl" style="left: 91.667%;">\(\frac{11\pi}{6}\)</span>
+                        <span class="lbl" style="left: 100%; transform: translateX(-100%);">\(2\pi\)</span>
+
+                        <!-- Spaghetti sticks -->
+                        <div class="pasta-stick up" style="left: 8.333%; height: 30px;"></div>
+                        <div class="pasta-stick up" style="left: 12.5%; height: 42px;"></div>
+                        <div class="pasta-stick up" style="left: 16.667%; height: 52px;"></div>
+                        <div class="pasta-stick up" style="left: 25%; height: 60px;"></div>
+                        <div class="pasta-stick up" style="left: 33.333%; height: 52px;"></div>
+                        <div class="pasta-stick up" style="left: 37.5%; height: 42px;"></div>
+                        <div class="pasta-stick up" style="left: 41.667%; height: 30px;"></div>
+                        <div class="pasta-stick" style="left: 58.333%; height: 30px;"></div>
+                        <div class="pasta-stick" style="left: 62.5%; height: 42px;"></div>
+                        <div class="pasta-stick" style="left: 66.667%; height: 52px;"></div>
+                        <div class="pasta-stick" style="left: 75%; height: 60px;"></div>
+                        <div class="pasta-stick" style="left: 83.333%; height: 52px;"></div>
+                        <div class="pasta-stick" style="left: 87.5%; height: 42px;"></div>
+                        <div class="pasta-stick" style="left: 91.667%; height: 30px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 6: BUILDING THE WAVE
+         ========================================== -->
+    <section class="slide" id="slide-5">
+        <div class="slide-inner">
+            <h2 class="reveal"><span class="accent-text">4.</span> Building the <span class="accent-text">Wave</span></h2>
+            <div class="split">
+                <div class="split-text reveal">
+                    <ul class="step-list">
+                        <li>Positive sine values: pasta goes <strong style="color: var(--green);">UP</strong> from the axis.</li>
+                        <li>Negative sine values: pasta goes <strong style="color: var(--coral);">DOWN</strong> below the axis.</li>
+                        <li>Connect the tips of the pasta with a <strong>smooth curve</strong>.</li>
+                        <li>You've turned circle heights into a sine wave!</li>
+                    </ul>
+                </div>
+                <div class="split-visual reveal">
+                    <svg class="pasta-wave-svg" viewBox="0 0 400 200">
+                        <!-- Axis -->
+                        <line class="axis-ref" x1="10" y1="100" x2="390" y2="100" />
+
+                        <!-- Spaghetti bars -->
+                        <line class="pasta-bar" x1="10"  y1="100" x2="10"  y2="100" />
+                        <line class="pasta-bar" x1="52"  y1="100" x2="52"  y2="62" />
+                        <line class="pasta-bar" x1="95"  y1="100" x2="95"  y2="30" />
+                        <line class="pasta-bar" x1="138" y1="100" x2="138" y2="62" />
+                        <line class="pasta-bar" x1="200" y1="100" x2="200" y2="100" />
+                        <line class="pasta-bar" x1="262" y1="100" x2="262" y2="138" />
+                        <line class="pasta-bar" x1="305" y1="100" x2="305" y2="170" />
+                        <line class="pasta-bar" x1="348" y1="100" x2="348" y2="138" />
+                        <line class="pasta-bar" x1="390" y1="100" x2="390" y2="100" />
+
+                        <!-- True sine curve: control points derived from sin'(θ) = cos(θ)
+                             so tangents are steep at zero crossings, flat at peaks/troughs -->
+                        <path class="wave-curve"
+                              d="M 10 100
+                                 C 42 59, 73 22, 105 22
+                                 C 137 22, 168 59, 200 100
+                                 C 232 141, 263 178, 295 178
+                                 C 327 178, 358 141, 390 100" />
+
+                        <!-- Key points on the sine curve -->
+                        <circle cx="10" cy="100" r="4" fill="var(--text-dim)" />
+                        <circle cx="105" cy="22" r="4" fill="var(--green)" />
+                        <circle cx="200" cy="100" r="4" fill="var(--text-dim)" />
+                        <circle cx="295" cy="178" r="4" fill="var(--coral)" />
+                        <circle cx="390" cy="100" r="4" fill="var(--text-dim)" />
+
+                        <!-- Labels -->
+                        <text x="10" y="195" fill="var(--text-dim)" font-size="11" text-anchor="middle">0</text>
+                        <text x="95" y="195" fill="var(--text-dim)" font-size="11" text-anchor="middle">&pi;/2</text>
+                        <text x="200" y="195" fill="var(--text-dim)" font-size="11" text-anchor="middle">&pi;</text>
+                        <text x="305" y="195" fill="var(--text-dim)" font-size="11" text-anchor="middle">3&pi;/2</text>
+                        <text x="390" y="195" fill="var(--text-dim)" font-size="11" text-anchor="middle">2&pi;</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 7: REFLECTION
+         ========================================== -->
+    <section class="slide" id="slide-6">
+        <div class="slide-inner" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+            <h2 class="reveal">Final <span class="accent-text">Reflection</span></h2>
+
+            <div class="big-equation reveal">
+                <span style="color: rgba(255,255,255,0.12);">&#x26AA;</span>
+                <span style="color: var(--text-muted); margin: 0 12px;">=</span>
+                <span style="color: var(--green);">&#x223F;</span>
+            </div>
+
+            <ul class="reflection-questions reveal">
+                <li>Where is \(\sin(\theta)\) at its <strong style="color: var(--green);">maximum</strong>?</li>
+                <li>Where does \(\sin(\theta)\) equal <strong>zero</strong>?</li>
+                <li>Where is it at its <strong style="color: var(--coral);">minimum</strong>?</li>
+                <li><strong>Key Idea:</strong> Moving around a circle creates repeating vertical motion &mdash; a <strong style="color: var(--green);">wave</strong>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===========================================
+         JAVASCRIPT: SLIDE CONTROLLER
+         =========================================== -->
+    <script>
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentIndex = 0;
+                this.touchStartY = 0;
+
+                this.progressBar = document.getElementById('progressBar');
+                this.navDotsContainer = document.getElementById('navDots');
+                this.keyHint = document.getElementById('keyHint');
+
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.setupObserver();
+                this.bindEvents();
+                this.goToSlide(0, false);
+
+                setTimeout(() => {
+                    if (this.keyHint) this.keyHint.classList.add('hidden');
+                }, 8000);
+            }
+
+            createNavDots() {
+                this.slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot';
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    this.navDotsContainer.appendChild(dot);
+                });
+                this.dots = this.navDotsContainer.querySelectorAll('.nav-dot');
+            }
+
+            setupObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        } else {
+                            entry.target.classList.remove('visible');
+                        }
+                    });
+                }, { threshold: 0.4 });
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            bindEvents() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+                        e.preventDefault();
+                        this.next();
+                    }
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.prev();
+                    }
+                    if (e.key === 'Home') { e.preventDefault(); this.goToSlide(0); }
+                    if (e.key === 'End') { e.preventDefault(); this.goToSlide(this.slides.length - 1); }
+
+                    if (this.keyHint) this.keyHint.classList.add('hidden');
+                });
+
+                let cooldown = false;
+                document.addEventListener('wheel', (e) => {
+                    if (cooldown) return;
+                    cooldown = true;
+                    setTimeout(() => cooldown = false, 800);
+
+                    if (e.deltaY > 30) this.next();
+                    else if (e.deltaY < -30) this.prev();
+                }, { passive: true });
+
+                document.addEventListener('touchstart', (e) => {
+                    this.touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    const diff = this.touchStartY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.next();
+                        else this.prev();
+                    }
+                }, { passive: true });
+            }
+
+            next() {
+                if (this.currentIndex < this.slides.length - 1) {
+                    this.goToSlide(this.currentIndex + 1);
+                }
+            }
+
+            prev() {
+                if (this.currentIndex > 0) {
+                    this.goToSlide(this.currentIndex - 1);
+                }
+            }
+
+            goToSlide(index, smooth = true) {
+                if (index < 0 || index >= this.slides.length) return;
+                this.currentIndex = index;
+
+                this.slides[index].scrollIntoView({
+                    behavior: smooth ? 'smooth' : 'auto'
+                });
+
+                this.updateProgress();
+                this.updateDots();
+            }
+
+            updateProgress() {
+                const pct = (this.currentIndex / (this.slides.length - 1)) * 100;
+                this.progressBar.style.width = pct + '%';
+            }
+
+            updateDots() {
+                this.dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === this.currentIndex);
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+        });
+    </script>
+</body>
+</html>

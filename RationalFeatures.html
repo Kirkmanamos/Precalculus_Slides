@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Function Features</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <style>
+        :root {
+            /* Palette */
+            --bg-color: #FAFAF9; /* Stone-50 */
+            --card-bg: #FFFFFF;
+            --text-primary: #1C1917; /* Stone-900 */
+            --text-secondary: #57534E; /* Stone-600 */
+            --accent: #059669; /* Emerald-600 */
+            --accent-light: #D1FAE5;
+            --primary-teal: #0F766E; /* Teal-700 */
+            --border-color: #E7E5E4; /* Stone-200 */
+            
+            --tab-active: #059669;
+            --tab-inactive: #A8A29E;
+
+            /* Spacing */
+            --container-max-width: 900px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        main {
+            width: 100%;
+            max-width: var(--container-max-width);
+            position: relative;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--tab-inactive);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            color: var(--tab-active);
+            border-bottom-color: var(--tab-active);
+        }
+
+        /* Card Content */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            padding: 3rem;
+            border: 1px solid white;
+            min-height: 400px;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .feature-section.active {
+            display: block;
+        }
+
+        .intro-math {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        .info-panel h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-light);
+            display: inline-block;
+            padding-bottom: 0.25rem;
+        }
+        
+        .info-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .info-panel li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+        
+        .info-panel li::before {
+            content: "•";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .demo-panel {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .interactive-btn {
+            background-color: var(--text-primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .interactive-btn:hover {
+            background-color: var(--accent);
+        }
+        
+        .interactive-btn.active {
+            background-color: var(--accent);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Rational Function Features</h1>
+        <div class="subtitle">Exploring Asymptotes, Holes, and Intercepts</div>
+    </header>
+
+    <main>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="tab-holes-va">Holes & Vertical Asymptotes</button>
+            <button class="tab-btn" data-tab="tab-ha-oa">Horizontal & Oblique Asymptotes</button>
+            <button class="tab-btn" data-tab="tab-intercepts">Intercepts</button>
+        </div>
+
+        <div class="card">
+            
+            <!-- TAB 1: HOLES & VA -->
+            <div id="tab-holes-va" class="feature-section active">
+                <div class="intro-math" id="math-holes">
+                    \[ f(x) = \frac{x^2-4}{x^2+x-6} \]
+                </div>
+                
+                <div class="two-col">
+                    <div class="info-panel">
+                        <h3>Concepts</h3>
+                        <ul>
+                            <li><strong>Holes (Removable Discontinuities)</strong>: Occur at x-values that make BOTH the numerator and denominator zero (common factors).</li>
+                            <li><strong>Vertical Asymptotes</strong>: Occur at x-values that make ONLY the denominator zero (after simplifying).</li>
+                        </ul>
+                    </div>
+                    <div class="demo-panel">
+                        <p style="margin-bottom: 1rem;">Click to factor the expression:</p>
+                        <div id="factor-display" style="min-height: 80px; display: flex; align-items: center; justify-content: center;">
+                            \[ \text{Expression Unfactored} \]
+                        </div>
+                        <button class="interactive-btn" onclick="toggleFactor()">Factor / Simplify</button>
+                        <div id="factor-result" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0; transition: opacity 0.5s;">
+                            <span class="highlight">Common Factor:</span> (x-2) &rarr; Hole at x=2<br>
+                            <span class="highlight">Remaining Denominator:</span> (x+3) &rarr; VA at x=-3
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: HA & OA -->
+            <div id="tab-ha-oa" class="feature-section">
+                <div class="intro-math" id="math-degrees"></div>
+                
+                <div class="two-col">
+                    <div class="info-panel">
+                        <h3>Rules</h3>
+                        <ul>
+                            <li><strong>Degree P < Degree Q</strong>: HA at \( y = 0 \) (x-axis).</li>
+                            <li><strong>Degree P = Degree Q</strong>: HA at \( y = \frac{\text{Lead Coeff P}}{\text{Lead Coeff Q}} \).</li>
+                            <li><strong>Degree P > Degree Q</strong>: No HA.</li>
+                            <li><strong>Degree P = Degree Q + 1</strong>: Oblique (Slant) Asymptote. Find by Long Division.</li>
+                        </ul>
+                    </div>
+                    <div class="demo-panel">
+                        <p>Select an example:</p>
+                        <select id="ha-select" onchange="updateHA()" style="padding: 0.5rem; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 1rem; font-family: inherit;">
+                            <option value="same">Equal Degree (HA)</option>
+                            <option value="bottom">Bottom Heavy (HA=0)</option>
+                            <option value="oblique">Top Heavy +1 (Oblique)</option>
+                        </select>
+                        <div id="ha-math-display" style="margin: 1rem 0;">
+                            \[ f(x) = \frac{3x^2-7x}{x^2-x-6} \]
+                        </div>
+                        <div id="ha-result" style="color: var(--accent); font-weight: 600;">
+                            Degrees are equal (2 = 2) &rarr; HA: y = 3/1 = 3
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: INTERCEPTS -->
+            <div id="tab-intercepts" class="feature-section">
+                <div class="intro-math">
+                    \[ f(x) = \frac{x^2-x-2}{x+3} \]
+                </div>
+
+                <div class="two-col">
+                    <div class="info-panel">
+                        <h3>Finding Intercepts</h3>
+                        <ul>
+                            <li><strong>y-intercept</strong>: Find \( f(0) \). (Plug in 0 for x).</li>
+                            <li><strong>x-intercepts</strong>: Find zeros of the Numerator (where \( P(x) = 0 \)) after simplifying.</li>
+                        </ul>
+                    </div>
+                    <div class="demo-panel">
+                        <button id="btn-y-int" class="interactive-btn" onclick="toggleYInt()">Find y-intercept</button>
+                        <button id="btn-x-int" class="interactive-btn" onclick="toggleXInt()">Find x-intercepts</button>
+                        
+                        <div id="int-result-area" style="margin-top: 1.5rem; text-align: left; padding-left: 1rem; border-left: 3px solid var(--accent); opacity: 0; transition: opacity 0.5s;">
+                            <div id="y-int-res" style="margin-bottom: 0.5rem; display: none;"></div>
+                            <div id="x-int-res" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Init KaTeX
+        document.addEventListener("DOMContentLoaded", () => {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            });
+            
+            // Initial render for dynamic parts
+            renderFactorStep(0);
+            katex.render("\\text{Comparing Degrees of } \\frac{P(x)}{Q(x)}", document.getElementById('math-degrees'), {displayMode: true});
+        });
+
+        // Tabs Logic
+        const tabs = document.querySelectorAll('.tab-btn');
+        const sections = document.querySelectorAll('.feature-section');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Deactivate all
+                tabs.forEach(t => t.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                
+                // Activate clicked
+                tab.classList.add('active');
+                const targetId = tab.getAttribute('data-tab');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // Tab 1: Factoring
+        let factorState = 0; // 0: unfactored, 1: factored
+        function toggleFactor() {
+            factorState = 1 - factorState;
+            renderFactorStep(factorState);
+        }
+
+        function renderFactorStep(state) {
+            const display = document.getElementById('factor-display');
+            const resultInfo = document.getElementById('factor-result');
+            
+            if (state === 0) {
+                katex.render("f(x) = \\frac{x^2-4}{x^2+x-6}", display, {displayMode: true});
+                resultInfo.style.opacity = '0';
+            } else {
+                katex.render("f(x) = \\frac{(x-2)(x+2)}{(x-2)(x+3)}", display, {displayMode: true});
+                resultInfo.style.opacity = '1';
+            }
+        }
+
+        // Tab 2: HA/OA Examples
+        function updateHA() {
+            const val = document.getElementById('ha-select').value;
+            const disp = document.getElementById('ha-math-display');
+            const res = document.getElementById('ha-result');
+            
+            let mathStr = "";
+            let resStr = "";
+
+            if (val === 'same') {
+                mathStr = "f(x) = \\frac{3x^2-7x}{x^2-x-6}";
+                resStr = "Degrees are equal (2 = 2) &rarr; HA: y = 3/1 = 3";
+            } else if (val === 'bottom') {
+                mathStr = "f(x) = \\frac{x+5}{x^2-9}";
+                resStr = "Degree Top < Degree Bottom (1 < 2) &rarr; HA: y = 0";
+            } else if (val === 'oblique') {
+                mathStr = "f(x) = \\frac{x^2-x-14}{x+4}";
+                resStr = "Degree Top = Degree Bottom + 1 (2 = 1 + 1) &rarr; Oblique Asymptote (Use Long Division)";
+            }
+
+            katex.render(mathStr, disp, {displayMode: true});
+            res.innerHTML = resStr;
+        }
+
+        // Tab 3: Intercepts
+        // Tab 3: Intercepts
+        // State for toggles
+        let yIntVisible = false;
+        let xIntVisible = false;
+
+        function toggleYInt() {
+            yIntVisible = !yIntVisible;
+            const resArea = document.getElementById('int-result-area');
+            const el = document.getElementById('y-int-res');
+            const btn = document.getElementById('btn-y-int');
+            
+            // Toggle Button Visual
+            if (yIntVisible) btn.classList.add('active');
+            else btn.classList.remove('active');
+            
+            // Content
+            if (yIntVisible) {
+                el.innerHTML = "<strong>y-int (set x=0):</strong> \\( f(0) = \\frac{0-0-2}{0+3} = -2/3 \\). Point: (0, -2/3)";
+                renderMathInElement(el, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
+            }
+
+            updateInterceptsVisibility();
+        }
+
+        function toggleXInt() {
+            xIntVisible = !xIntVisible;
+            const resArea = document.getElementById('int-result-area');
+            const el = document.getElementById('x-int-res');
+            const btn = document.getElementById('btn-x-int');
+             
+            // Toggle Button Visual
+            if (xIntVisible) btn.classList.add('active');
+            else btn.classList.remove('active');
+
+            // Content
+            if (xIntVisible) {
+                el.innerHTML = "<strong>x-int (set num=0):</strong> \\( x^2-x-2 = (x-2)(x+1) = 0 \\). Points: (2, 0) and (-1, 0)";
+                renderMathInElement(el, {delimiters: [{left: "\\(", right: "\\)", display: false}]});
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
+            }
+
+            updateInterceptsVisibility();
+        }
+
+        function updateInterceptsVisibility() {
+            const resArea = document.getElementById('int-result-area');
+            if (yIntVisible || xIntVisible) {
+                resArea.style.opacity = '1';
+            } else {
+                resArea.style.opacity = '0';
+            }
+        }
+
+    </script>
+</body>
+</html>

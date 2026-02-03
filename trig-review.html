@@ -1,0 +1,3753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trigonometric Functions - Quiz Review</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=supreme@400,500,700&f[]=erode@400,500&display=swap">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Chalkboard style: Dark slate, green accents
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #1a2332;
+            --bg-secondary: #243044;
+            --bg-tertiary: #2d3a4f;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #4ade80;
+            --accent-secondary: #22d3ee;
+            --accent-warning: #fbbf24;
+            --accent-pink: #f472b6;
+            --accent-purple: #a78bfa;
+            --accent-soft: rgba(74, 222, 128, 0.1);
+            --accent-glow: rgba(74, 222, 128, 0.3);
+
+            /* Quadrant colors */
+            --q1-color: #4ade80;
+            --q2-color: #22d3ee;
+            --q3-color: #f472b6;
+            --q4-color: #fbbf24;
+
+            /* Typography */
+            --font-display: 'Supreme', sans-serif;
+            --font-body: 'Erode', serif;
+            --font-mono: 'SF Mono', 'Monaco', 'Consolas', monospace;
+
+            /* Spacing */
+            --slide-padding: clamp(2rem, 5vw, 4rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration-fast: 0.4s;
+            --duration-normal: 0.6s;
+            --duration-slow: 0.9s;
+        }
+
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Subtle grid pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           =========================================== */
+        .slide {
+            min-height: 100vh;
+            padding: var(--slide-padding);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: clamp(1rem, 1.5vw, 1.25rem);
+            color: var(--text-secondary);
+        }
+
+        .label {
+            font-family: var(--font-display);
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        /* ===========================================
+           ANIMATIONS - Reveal on scroll
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Stagger children */
+        .slide.visible .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .slide.visible .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .slide.visible .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .slide.visible .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .slide.visible .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .slide.visible .reveal:nth-child(6) { transition-delay: 0.6s; }
+        .slide.visible .reveal:nth-child(7) { transition-delay: 0.7s; }
+        .slide.visible .reveal:nth-child(8) { transition-delay: 0.8s; }
+
+        /* Scale in */
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-back);
+        }
+
+        .slide.visible .reveal-scale {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Line draw */
+        .line-draw {
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform var(--duration-fast) var(--ease-out-expo);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .slide.visible .line-draw {
+            transform: scaleX(1);
+        }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            text-align: center;
+        }
+
+        .title-slide .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        .title-slide.visible .glow {
+            opacity: 1;
+        }
+
+        .title-slide h1 {
+            margin-bottom: 1rem;
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        /* ===========================================
+           LEARNING TARGETS
+           =========================================== */
+        .targets-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .targets-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1.1rem;
+        }
+
+        .targets-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            color: var(--accent);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            margin-top: 0.1em;
+        }
+
+        /* ===========================================
+           STRATEGY GUIDE (Table)
+           =========================================== */
+        .strategy-table {
+            width: 100%;
+            margin-top: 2rem;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .strategy-table tr {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .strategy-table tr:nth-child(1) { opacity: 1; transform: translateX(0); transition-delay: 0.2s; }
+        .slide.visible .strategy-table tr:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.35s; }
+        .slide.visible .strategy-table tr:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.5s; }
+        .slide.visible .strategy-table tr:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.65s; }
+
+        .strategy-table td {
+            padding: 1.25rem 1rem;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--bg-primary);
+        }
+
+        .strategy-table tr:first-child td:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .strategy-table tr:first-child td:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .strategy-table tr:last-child td:first-child {
+            border-radius: 0 0 0 12px;
+        }
+
+        .strategy-table tr:last-child td:last-child {
+            border-radius: 0 0 12px 0;
+        }
+
+        .strategy-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .strategy-table .when {
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+        }
+
+        .strategy-table .arrow {
+            color: var(--accent);
+            font-size: 1.25rem;
+            text-align: center;
+        }
+
+        .strategy-table .action {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ===========================================
+           CYCLE HEADERS
+           =========================================== */
+        .cycle-slide {
+            text-align: center;
+        }
+
+        .cycle-number {
+            font-family: var(--font-display);
+            font-size: 8rem;
+            font-weight: 700;
+            color: var(--bg-tertiary);
+            line-height: 1;
+            margin-bottom: -1rem;
+        }
+
+        .cycle-slide h2 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+        }
+
+        .cycle-slide .subtitle {
+            color: var(--accent);
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        /* ===========================================
+           PROBLEM SETS
+           =========================================== */
+        .problem-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .problem-item {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .problem-item .letter {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .problem-item .math {
+            color: var(--text-primary);
+        }
+
+        .instruction {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--accent-soft);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        /* ===========================================
+           QUICK CHECK
+           =========================================== */
+        .quick-check {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .quick-check .prompt {
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .quick-check .options {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--accent);
+            margin: 2rem 0;
+            letter-spacing: 0.5em;
+        }
+
+        .star-note {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(251, 191, 36, 0.1);
+            border-radius: 100px;
+            color: var(--accent-warning);
+            font-size: 1rem;
+        }
+
+        /* ===========================================
+           ANSWER REVEALS
+           =========================================== */
+        .answer-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .answer-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+        }
+
+        /* Click-to-reveal answer items */
+        .answer-grid.click-reveal .answer-item {
+            cursor: pointer;
+        }
+
+        .answer-grid.click-reveal .answer-item .answer,
+        .answer-grid.click-reveal .answer-item .note {
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-out-expo);
+        }
+
+        .answer-grid.click-reveal .answer-item.revealed .answer,
+        .answer-grid.click-reveal .answer-item.revealed .note {
+            opacity: 1;
+        }
+
+        .answer-grid.click-reveal .answer-item .answer-placeholder {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            transition: opacity 0.3s ease;
+        }
+
+        .answer-grid.click-reveal .answer-item.revealed .answer-placeholder {
+            display: none;
+        }
+
+        /* Auto-reveal for non-click-reveal grids */
+        .answer-grid:not(.click-reveal) .answer-item:nth-child(1) { opacity: 1; transform: translateX(0); transition-delay: 0.2s; }
+        .answer-grid:not(.click-reveal) .answer-item:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.35s; }
+        .answer-grid:not(.click-reveal) .answer-item:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.5s; }
+        .answer-grid:not(.click-reveal) .answer-item:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.65s; }
+
+        /* Click-reveal items slide in on scroll, but answers stay hidden */
+        .slide.visible .answer-grid.click-reveal .answer-item:nth-child(1) { opacity: 1; transform: translateX(0); transition-delay: 0.2s; }
+        .slide.visible .answer-grid.click-reveal .answer-item:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.35s; }
+        .slide.visible .answer-grid.click-reveal .answer-item:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.5s; }
+        .slide.visible .answer-grid.click-reveal .answer-item:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.65s; }
+        .slide.visible .answer-grid.click-reveal .answer-item:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.8s; }
+
+        .answer-item .problem-num {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 100px;
+        }
+
+        .answer-item .answer {
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .answer-item .note {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-left: auto;
+        }
+
+        /* ===========================================
+           UNIT CIRCLE DIAGRAM
+           =========================================== */
+        .unit-circle-container {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .unit-circle-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .unit-circle-svg {
+            flex-shrink: 0;
+        }
+
+        .unit-circle-svg circle,
+        .unit-circle-svg line,
+        .unit-circle-svg path {
+            vector-effect: non-scaling-stroke;
+        }
+
+        .unit-circle-svg .axis {
+            stroke: var(--text-muted);
+            stroke-width: 1;
+        }
+
+        .unit-circle-svg .circle-main {
+            fill: none;
+            stroke: var(--text-secondary);
+            stroke-width: 2;
+        }
+
+        .unit-circle-svg .angle-arc {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            transition: stroke-dashoffset 1s var(--ease-out-expo);
+        }
+
+        .unit-circle-svg .ref-arc {
+            fill: none;
+            stroke: var(--accent-warning);
+            stroke-width: 2;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo) 0.5s;
+        }
+
+        .unit-circle-svg .terminal-side {
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-dasharray: 200;
+            stroke-dashoffset: 200;
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .unit-circle-svg .ref-line {
+            stroke: var(--accent-warning);
+            stroke-width: 2;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo) 0.3s;
+        }
+
+        .unit-circle-svg .point {
+            fill: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease 0.4s;
+        }
+
+        .unit-circle-svg .coord-label {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            fill: var(--text-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease 0.6s;
+        }
+
+        .unit-circle-svg .quadrant-label {
+            font-family: var(--font-display);
+            font-size: 14px;
+            fill: var(--text-muted);
+        }
+
+        .unit-circle-svg.animate .angle-arc {
+            stroke-dashoffset: 0;
+        }
+
+        .unit-circle-svg.animate .ref-arc {
+            stroke-dashoffset: 0;
+        }
+
+        .unit-circle-svg.animate .terminal-side {
+            stroke-dashoffset: 0;
+        }
+
+        .unit-circle-svg.animate .ref-line {
+            stroke-dashoffset: 0;
+        }
+
+        .unit-circle-svg.animate .point {
+            opacity: 1;
+        }
+
+        .unit-circle-svg.animate .coord-label {
+            opacity: 1;
+        }
+
+        /* Solution cards */
+        .solutions-panel {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .solutions-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .solution-card {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .solution-card.active {
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+        }
+
+        .solution-card .problem-label {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-card .angle-info {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-card .ref-angle {
+            font-size: 0.8rem;
+            color: var(--accent-warning);
+        }
+
+        .solution-card .answer-value {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-top: 0.5rem;
+        }
+
+        /* ===========================================
+           COORDINATE PLANE (for terminal side)
+           =========================================== */
+        .coord-plane-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .coord-plane-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .coord-plane-svg {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .coord-plane-svg .axis {
+            stroke: var(--text-muted);
+            stroke-width: 1;
+        }
+
+        .coord-plane-svg .grid-line {
+            stroke: rgba(255,255,255,0.08);
+            stroke-width: 1;
+        }
+
+        /* Point marker - starts hidden */
+        .coord-plane-svg .point-marker {
+            fill: var(--accent);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Point label - starts hidden */
+        .coord-plane-svg .point-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            fill: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Triangle sides - animated with dash offset */
+        .coord-plane-svg .triangle-side {
+            stroke-width: 4;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            fill: none;
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .side-x { stroke: var(--accent-secondary); }
+        .coord-plane-svg .side-y { stroke: var(--accent-pink); }
+        .coord-plane-svg .side-r { stroke: var(--accent); }
+
+        /* Labels for triangle sides - start hidden */
+        .coord-plane-svg .label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .coord-plane-svg .label-x { fill: var(--accent-secondary); }
+        .coord-plane-svg .label-y { fill: var(--accent-pink); }
+        .coord-plane-svg .label-r { fill: var(--accent); }
+
+        /* Reference angle arc - starts hidden */
+        .coord-plane-svg .ref-angle-arc {
+            stroke: var(--accent-warning);
+            stroke-dasharray: 150;
+            stroke-dashoffset: 150;
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+        }
+
+        /* Reference angle label - starts hidden */
+        .coord-plane-svg .ref-angle-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            fill: var(--accent-warning);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Right angle marker - starts hidden */
+        .coord-plane-svg .right-angle {
+            stroke: var(--text-secondary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* ===== CLICK-TO-ADVANCE STEPS ===== */
+
+        /* Step 0: Show point and label */
+        .coord-plane-svg.step-0 .point-marker { opacity: 1; }
+        .coord-plane-svg.step-0 .point-label { opacity: 1; }
+
+        /* Step 1: Draw x-side (horizontal) */
+        .coord-plane-svg.step-1 .point-marker { opacity: 1; }
+        .coord-plane-svg.step-1 .point-label { opacity: 1; }
+        .coord-plane-svg.step-1 .side-x { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-x { opacity: 1; }
+
+        /* Step 2: Draw y-side (vertical) + right angle marker */
+        .coord-plane-svg.step-2 .point-marker { opacity: 1; }
+        .coord-plane-svg.step-2 .point-label { opacity: 1; }
+        .coord-plane-svg.step-2 .side-x { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .side-y { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-x { opacity: 1; }
+        .coord-plane-svg.step-2 .label-y { opacity: 1; }
+        .coord-plane-svg.step-2 .right-angle { opacity: 1; }
+
+        /* Step 3: Draw r (hypotenuse/terminal side) + reference angle arc */
+        .coord-plane-svg.step-3 .point-marker { opacity: 1; }
+        .coord-plane-svg.step-3 .point-label { opacity: 1; }
+        .coord-plane-svg.step-3 .side-x { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .side-y { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .side-r { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-x { opacity: 1; }
+        .coord-plane-svg.step-3 .label-y { opacity: 1; }
+        .coord-plane-svg.step-3 .label-r { opacity: 1; }
+        .coord-plane-svg.step-3 .right-angle { opacity: 1; }
+        .coord-plane-svg.step-3 .ref-angle-arc { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .ref-angle-label { opacity: 1; }
+
+        /* ===========================================
+           ARC LENGTH SVG ANIMATIONS
+           =========================================== */
+        .coord-plane-svg .circle-outline {
+            opacity: 0.3;
+        }
+
+        .coord-plane-svg .arc-radius {
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .angle-arc-path {
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .arc-length-highlight {
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .arc-point {
+            transition: opacity 0.3s ease;
+        }
+
+        .coord-plane-svg .arc-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Arc length step 0: Show first radius and endpoints */
+        .coord-plane-svg.step-0 .radius-start { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-0 .label-r-start { opacity: 1; }
+        .coord-plane-svg.step-0 .arc-point { opacity: 1; }
+
+        /* Arc length step 1: Show angle arc and second radius */
+        .coord-plane-svg.step-1 .radius-start { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .radius-end { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .angle-arc-path { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-r-start { opacity: 1; }
+        .coord-plane-svg.step-1 .label-theta { opacity: 1; }
+        .coord-plane-svg.step-1 .arc-point { opacity: 1; }
+
+        /* Arc length step 2: Highlight arc length */
+        .coord-plane-svg.step-2 .radius-start { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .radius-end { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .angle-arc-path { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .arc-length-highlight { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-r-start { opacity: 1; }
+        .coord-plane-svg.step-2 .label-theta { opacity: 1; }
+        .coord-plane-svg.step-2 .label-s { opacity: 1; }
+        .coord-plane-svg.step-2 .arc-point { opacity: 1; }
+
+        /* Arc length step 3: Keep everything visible */
+        .coord-plane-svg.step-3 .radius-start { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .radius-end { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .angle-arc-path { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .arc-length-highlight { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-r-start { opacity: 1; }
+        .coord-plane-svg.step-3 .label-theta { opacity: 1; }
+        .coord-plane-svg.step-3 .label-s { opacity: 1; }
+        .coord-plane-svg.step-3 .arc-point { opacity: 1; }
+
+        /* ===========================================
+           WORD PROBLEM SVG ANIMATIONS
+           =========================================== */
+        .coord-plane-svg .ground-line {
+            opacity: 0.5;
+        }
+
+        .coord-plane-svg .building-rect {
+            transition: opacity 0.5s ease;
+        }
+
+        .coord-plane-svg .building-height {
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .person-marker {
+            transition: opacity 0.4s ease;
+        }
+
+        .coord-plane-svg .distance-line {
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .sight-line {
+            transition: stroke-dashoffset 0.8s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .distance-arc {
+            transition: stroke-dashoffset 0.6s var(--ease-out-expo);
+        }
+
+        .coord-plane-svg .wp-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Word problem step 0: Show building, people, 50m distance */
+        .coord-plane-svg.step-0 .building-rect { opacity: 1; }
+        .coord-plane-svg.step-0 .building-height { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-0 .label-h { opacity: 1; }
+        .coord-plane-svg.step-0 .person-marker { opacity: 1; }
+        .coord-plane-svg.step-0 .label-a { opacity: 1; }
+        .coord-plane-svg.step-0 .label-b { opacity: 1; }
+        .coord-plane-svg.step-0 .dist-ab { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-0 .label-50m { opacity: 1; }
+
+        /* Word problem step 1: Person A's sight line and distance x */
+        .coord-plane-svg.step-1 .building-rect { opacity: 1; }
+        .coord-plane-svg.step-1 .building-height { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-h { opacity: 1; }
+        .coord-plane-svg.step-1 .person-marker { opacity: 1; }
+        .coord-plane-svg.step-1 .label-a { opacity: 1; }
+        .coord-plane-svg.step-1 .label-b { opacity: 1; }
+        .coord-plane-svg.step-1 .dist-ab { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-50m { opacity: 1; }
+        .coord-plane-svg.step-1 .dist-bldg-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-x { opacity: 1; }
+        .coord-plane-svg.step-1 .sight-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-1 .label-60 { opacity: 1; }
+
+        /* Word problem step 2: Person B's sight line */
+        .coord-plane-svg.step-2 .building-rect { opacity: 1; }
+        .coord-plane-svg.step-2 .building-height { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-h { opacity: 1; }
+        .coord-plane-svg.step-2 .person-marker { opacity: 1; }
+        .coord-plane-svg.step-2 .label-a { opacity: 1; }
+        .coord-plane-svg.step-2 .label-b { opacity: 1; }
+        .coord-plane-svg.step-2 .dist-ab { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-50m { opacity: 1; }
+        .coord-plane-svg.step-2 .dist-bldg-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-x { opacity: 1; }
+        .coord-plane-svg.step-2 .sight-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-60 { opacity: 1; }
+        .coord-plane-svg.step-2 .sight-b { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-30 { opacity: 1; }
+        .coord-plane-svg.step-2 .distance-arc { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-2 .label-x50 { opacity: 1; }
+
+        /* Word problem step 3: Keep everything visible */
+        .coord-plane-svg.step-3 .building-rect { opacity: 1; }
+        .coord-plane-svg.step-3 .building-height { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-h { opacity: 1; }
+        .coord-plane-svg.step-3 .person-marker { opacity: 1; }
+        .coord-plane-svg.step-3 .label-a { opacity: 1; }
+        .coord-plane-svg.step-3 .label-b { opacity: 1; }
+        .coord-plane-svg.step-3 .dist-ab { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-50m { opacity: 1; }
+        .coord-plane-svg.step-3 .dist-bldg-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-x { opacity: 1; }
+        .coord-plane-svg.step-3 .sight-a { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-60 { opacity: 1; }
+        .coord-plane-svg.step-3 .sight-b { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-30 { opacity: 1; }
+        .coord-plane-svg.step-3 .distance-arc { stroke-dashoffset: 0; }
+        .coord-plane-svg.step-3 .label-x50 { opacity: 1; }
+
+        /* Click-to-advance steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step-box {
+            background: var(--bg-secondary);
+            padding: 1.25rem 1.5rem;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+        }
+
+        /* Step boxes only show when given .active class (click-controlled) */
+        #terminal-slide .step-box.active,
+        #check-setup-slide .step-box.active,
+        #arc-length-slide .step-box.active,
+        #word-problem-slide .step-box.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .step-box .step-header {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .step-box .step-content {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .step-box .formula {
+            color: var(--text-primary);
+        }
+
+        .step-box .result {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           TRIG VALUES GRID
+           =========================================== */
+        .trig-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .trig-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .trig-value {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all var(--duration-fast) var(--ease-out-expo);
+        }
+
+        .slide.visible .trig-value:nth-child(1) { opacity: 1; transform: scale(1); transition-delay: 1.6s; }
+        .slide.visible .trig-value:nth-child(2) { opacity: 1; transform: scale(1); transition-delay: 1.7s; }
+        .slide.visible .trig-value:nth-child(3) { opacity: 1; transform: scale(1); transition-delay: 1.8s; }
+        .slide.visible .trig-value:nth-child(4) { opacity: 1; transform: scale(1); transition-delay: 1.9s; }
+        .slide.visible .trig-value:nth-child(5) { opacity: 1; transform: scale(1); transition-delay: 2s; }
+        .slide.visible .trig-value:nth-child(6) { opacity: 1; transform: scale(1); transition-delay: 2.1s; }
+
+        .trig-value .func {
+            color: var(--text-secondary);
+        }
+
+        .trig-value .equals {
+            color: var(--text-muted);
+        }
+
+        .trig-value .val {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===========================================
+           SUMMARY / WRAP-UP
+           =========================================== */
+        .summary-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .summary-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .summary-list li:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+        .slide.visible .summary-list li:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
+        .slide.visible .summary-list li:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+
+        .summary-list .check {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .summary-list .num {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent);
+            min-width: 2rem;
+        }
+
+        .summary-list .title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .summary-list .desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .cta-box {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: var(--accent-soft);
+            border-radius: 12px;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            text-align: center;
+        }
+
+        .cta-box p {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        /* ===========================================
+           CHECKLIST
+           =========================================== */
+        .checklist {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 1rem;
+            opacity: 0;
+            transform: translateX(-15px);
+            transition: all var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .checklist li:nth-child(1) { opacity: 1; transform: translateX(0); transition-delay: 0.15s; }
+        .slide.visible .checklist li:nth-child(2) { opacity: 1; transform: translateX(0); transition-delay: 0.25s; }
+        .slide.visible .checklist li:nth-child(3) { opacity: 1; transform: translateX(0); transition-delay: 0.35s; }
+        .slide.visible .checklist li:nth-child(4) { opacity: 1; transform: translateX(0); transition-delay: 0.45s; }
+        .slide.visible .checklist li:nth-child(5) { opacity: 1; transform: translateX(0); transition-delay: 0.55s; }
+        .slide.visible .checklist li:nth-child(6) { opacity: 1; transform: translateX(0); transition-delay: 0.65s; }
+        .slide.visible .checklist li:nth-child(7) { opacity: 1; transform: translateX(0); transition-delay: 0.75s; }
+        .slide.visible .checklist li:nth-child(8) { opacity: 1; transform: translateX(0); transition-delay: 0.85s; }
+
+        .checklist .box {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .checklist .task {
+            flex: 1;
+            color: var(--text-primary);
+        }
+
+        .checklist .time {
+            color: var(--accent);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .checklist .offline-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-warning);
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===========================================
+           QUADRANT DIAGRAM (for Problem Set B)
+           =========================================== */
+        .quadrant-diagram {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .quadrant-diagram {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .quadrant-svg {
+            flex-shrink: 0;
+        }
+
+        .quadrant-svg .quadrant {
+            opacity: 0.1;
+            transition: opacity 0.5s ease;
+        }
+
+        .quadrant-svg .quadrant.highlight {
+            opacity: 0.4;
+        }
+
+        .quadrant-svg .q1 { fill: var(--q1-color); }
+        .quadrant-svg .q2 { fill: var(--q2-color); }
+        .quadrant-svg .q3 { fill: var(--q3-color); }
+        .quadrant-svg .q4 { fill: var(--q4-color); }
+
+        .quadrant-svg .axis {
+            stroke: var(--text-secondary);
+            stroke-width: 2;
+        }
+
+        .quadrant-svg .axis-label {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            fill: var(--text-secondary);
+        }
+
+        .quadrant-svg .quadrant-label {
+            font-family: var(--font-display);
+            font-size: 16px;
+            font-weight: 600;
+            fill: var(--text-muted);
+        }
+
+        .quadrant-svg .sign-label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            fill: var(--text-muted);
+        }
+
+        .problem-list-b {
+            flex: 1;
+        }
+
+        .problem-list-b .problem-b-item {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--text-muted);
+            transition: border-color 0.3s ease;
+        }
+
+        .problem-list-b .problem-b-item[data-quadrant="2"] { border-left-color: var(--q2-color); }
+        .problem-list-b .problem-b-item[data-quadrant="1"] { border-left-color: var(--q1-color); }
+
+        .problem-list-b .problem-num {
+            font-family: var(--font-display);
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .problem-list-b .given {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .problem-list-b .task-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* ===========================================
+           INTERACTIVE QUICK CHECK
+           =========================================== */
+        .trouble-grid {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .trouble-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            border: 2px solid var(--bg-tertiary);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trouble-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .trouble-btn.starred {
+            border-color: var(--accent-warning);
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-warning);
+        }
+
+        .trouble-btn.starred::after {
+            content: '⭐';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 0.75rem;
+            animation: starPop 0.4s var(--ease-out-back);
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .trouble-count {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            min-height: 1.5em;
+            transition: color 0.3s ease;
+        }
+
+        .trouble-count.has-items {
+            color: var(--accent-warning);
+        }
+
+        /* ===========================================
+           INTERACTIVE CHECKLIST
+           =========================================== */
+        .checklist li {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checklist li:hover {
+            background: rgba(255,255,255,0.02);
+            border-radius: 8px;
+        }
+
+        .checklist .box {
+            position: relative;
+            transition: all 0.3s var(--ease-out-expo);
+        }
+
+        .checklist li.checked .box {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .checklist li.checked .box::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--bg-primary);
+            font-size: 14px;
+            font-weight: 700;
+            animation: checkPop 0.3s var(--ease-out-back);
+        }
+
+        @keyframes checkPop {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .checklist li.checked .task {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .checklist-progress {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .checklist-progress .progress-track {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .checklist-progress .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.5s var(--ease-out-expo);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .checklist-progress .progress-text {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        /* ===========================================
+           SLIDE COUNTER & HELP OVERLAY
+           =========================================== */
+        .slide-counter {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            z-index: 100;
+            transition: opacity 0.3s ease;
+        }
+
+        .slide-counter .current {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .help-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 28, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .help-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .help-panel {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 480px;
+            width: 90%;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .help-panel h3 {
+            font-family: var(--font-display);
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .help-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .help-row:last-child {
+            border-bottom: none;
+        }
+
+        .help-row kbd {
+            display: inline-block;
+            min-width: 2rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            text-align: center;
+            color: var(--text-primary);
+        }
+
+        .help-row span {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .help-close {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* ===========================================
+           CLICK HINT (generic)
+           =========================================== */
+        .click-hint-bar {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .slide.visible .click-hint-bar {
+            opacity: 1;
+            transition-delay: 0.8s;
+        }
+
+        /* ===========================================
+           NAVIGATION
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+            z-index: 1000;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .nav-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot:hover {
+            background: var(--text-muted);
+            transform: scale(1.2);
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .keyboard-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .keyboard-hint kbd {
+            padding: 0.25rem 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            font-family: var(--font-mono);
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .nav-dots,
+            .keyboard-hint,
+            .slide-counter {
+                display: none;
+            }
+
+            .slide {
+                padding: 1.5rem;
+            }
+
+            .cycle-number {
+                font-size: 5rem;
+            }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal,
+            .reveal-scale,
+            .step-box,
+            .answer-item,
+            .trig-value,
+            .summary-list li,
+            .checklist li,
+            .strategy-table tr {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .line-draw {
+                transform: scaleX(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Navigation dots -->
+    <nav class="nav-dots" aria-label="Slide navigation"></nav>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint">
+        <span><kbd>←</kbd> <kbd>→</kbd> Navigate</span>
+        <span><kbd>Space</kbd> Next</span>
+        <span><kbd>?</kbd> Help</span>
+    </div>
+
+    <!-- Slide counter -->
+    <div class="slide-counter">
+        <span class="current" id="slideCurrentNum">1</span> / <span id="slideTotalNum">16</span>
+    </div>
+
+    <!-- Help overlay -->
+    <div class="help-overlay" id="helpOverlay">
+        <div class="help-panel">
+            <h3>Keyboard Shortcuts</h3>
+            <div class="help-row"><kbd>→</kbd> <span>Next slide</span></div>
+            <div class="help-row"><kbd>←</kbd> <span>Previous slide</span></div>
+            <div class="help-row"><kbd>Space</kbd> <span>Next slide (or advance step)</span></div>
+            <div class="help-row"><kbd>↑</kbd> / <kbd>↓</kbd> <span>Navigate slides</span></div>
+            <div class="help-row"><kbd>?</kbd> <span>Toggle this help panel</span></div>
+            <p class="help-close">Press <kbd>?</kbd> or <kbd>Esc</kbd> to close</p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SLIDE 1: TITLE
+         ========================================== -->
+    <section class="slide title-slide">
+        <div class="glow"></div>
+        <div class="slide-inner">
+            <p class="label reveal">Quiz Review</p>
+            <h1 class="reveal">Trigonometric Functions</h1>
+            <p class="subtitle reveal">Sections 4.1–4.5</p>
+            <div class="line-draw" style="margin: 2rem auto;"></div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 2: LEARNING TARGETS
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Goals for Today</p>
+            <h2 class="reveal">Learning Targets</h2>
+            <ul class="targets-list">
+                <li class="reveal">
+                    <span class="check-icon">✓</span>
+                    <span>Identify which trig function to use based on given information</span>
+                </li>
+                <li class="reveal">
+                    <span class="check-icon">✓</span>
+                    <span>Use reference angles and quadrant analysis to evaluate trig functions</span>
+                </li>
+                <li class="reveal">
+                    <span class="check-icon">✓</span>
+                    <span>Apply the terminal side method to find all six trig values</span>
+                </li>
+                <li class="reveal">
+                    <span class="check-icon">✓</span>
+                    <span>Recognize when a problem requires the unit circle vs. calculator</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 3: QUIZ STRATEGY GUIDE
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Reference</p>
+            <h2 class="reveal">The Quiz Strategy Guide</h2>
+            <table class="strategy-table">
+                <tr>
+                    <td class="when">"Find sin 225°" (special angle)</td>
+                    <td class="arrow">→</td>
+                    <td class="action">Draw reference angle → Use unit circle</td>
+                </tr>
+                <tr>
+                    <td class="when">"Find tan θ, given sin θ & QII"</td>
+                    <td class="arrow">→</td>
+                    <td class="action">Sketch in quadrant → Pythagorean identity</td>
+                </tr>
+                <tr>
+                    <td class="when">"Terminal side through (-3, 4)"</td>
+                    <td class="arrow">→</td>
+                    <td class="action">Find r → Use x/r, y/r definitions</td>
+                </tr>
+                <tr>
+                    <td class="when">"Evaluate csc 137°"</td>
+                    <td class="arrow">→</td>
+                    <td class="action">Check calculator mode → Reciprocal after</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 4: CYCLE 1 HEADER
+         ========================================== -->
+    <section class="slide cycle-slide">
+        <div class="slide-inner">
+            <p class="cycle-number reveal-scale">1</p>
+            <h2 class="reveal">Unit Circle Mastery</h2>
+            <p class="subtitle reveal">WITHOUT a calculator, find exact values</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 5: PROBLEM SET A
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 1</p>
+            <h2 class="reveal">Problem Set A</h2>
+            <p class="reveal">Find the exact value:</p>
+
+            <div class="problem-card reveal">
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <span class="letter">a)</span>
+                        <span class="math">sin 30°</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">b)</span>
+                        <span class="math">cos 240°</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">c)</span>
+                        <span class="math">tan 5π/4</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">d)</span>
+                        <span class="math">sin 11π/6</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">e)</span>
+                        <span class="math">cot 3π</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">f)</span>
+                        <span class="math">sec(-π/3)</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction reveal">Write your reference angle for each answer.</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 6: UNIT CIRCLE SOLUTIONS (NEW)
+         ========================================== -->
+    <section class="slide" id="unit-circle-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 1 Solutions</p>
+            <h2 class="reveal">Unit Circle & Reference Angles</h2>
+
+            <div class="unit-circle-container">
+                <!-- Interactive Unit Circle -->
+                <svg class="unit-circle-svg" id="unitCircle" width="320" height="320" viewBox="-160 -160 320 320">
+                    <!-- Axes -->
+                    <line class="axis" x1="-150" y1="0" x2="150" y2="0" />
+                    <line class="axis" x1="0" y1="-150" x2="0" y2="150" />
+
+                    <!-- Unit circle -->
+                    <circle class="circle-main" cx="0" cy="0" r="120" />
+
+                    <!-- Quadrant labels -->
+                    <text class="quadrant-label" x="60" y="-60">I</text>
+                    <text class="quadrant-label" x="-70" y="-60">II</text>
+                    <text class="quadrant-label" x="-70" y="70">III</text>
+                    <text class="quadrant-label" x="60" y="70">IV</text>
+
+                    <!-- Dynamic elements (updated by JS) -->
+                    <path class="angle-arc" id="angleArc" d="" />
+                    <path class="ref-arc" id="refArc" d="" />
+                    <line class="terminal-side" id="terminalSide" x1="0" y1="0" x2="120" y2="0" />
+                    <line class="ref-line" id="refLine" x1="0" y1="0" x2="0" y2="0" />
+                    <circle class="point" id="pointMarker" cx="120" cy="0" r="6" />
+                    <text class="coord-label" id="coordLabel" x="130" y="-10"></text>
+                </svg>
+
+                <!-- Solution Cards -->
+                <div class="solutions-panel">
+                    <div class="solution-card" data-problem="a" data-angle="30" data-ref="30" data-quadrant="1">
+                        <div class="problem-label">a) sin 30°</div>
+                        <div class="angle-info">Quadrant I</div>
+                        <div class="ref-angle">Ref: 30°</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">1/2</span></div>
+                    </div>
+                    <div class="solution-card" data-problem="b" data-angle="240" data-ref="60" data-quadrant="3">
+                        <div class="problem-label">b) cos 240°</div>
+                        <div class="angle-info">Quadrant III (cos −)</div>
+                        <div class="ref-angle">Ref: 60°</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">−1/2</span></div>
+                    </div>
+                    <div class="solution-card" data-problem="c" data-angle="225" data-ref="45" data-quadrant="3">
+                        <div class="problem-label">c) tan 5π/4 (225°)</div>
+                        <div class="angle-info">Quadrant III (tan +)</div>
+                        <div class="ref-angle">Ref: 45°</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">1</span></div>
+                    </div>
+                    <div class="solution-card" data-problem="d" data-angle="330" data-ref="30" data-quadrant="4">
+                        <div class="problem-label">d) sin 11π/6 (330°)</div>
+                        <div class="angle-info">Quadrant IV (sin −)</div>
+                        <div class="ref-angle">Ref: 30°</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">−1/2</span></div>
+                    </div>
+                    <div class="solution-card" data-problem="e" data-angle="540" data-ref="0" data-quadrant="0">
+                        <div class="problem-label">e) cot 3π (540°)</div>
+                        <div class="angle-info">On negative x-axis</div>
+                        <div class="ref-angle">Ref: 0° (π)</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">undefined</span></div>
+                    </div>
+                    <div class="solution-card" data-problem="f" data-angle="-60" data-ref="60" data-quadrant="4">
+                        <div class="problem-label">f) sec(−π/3) (−60°)</div>
+                        <div class="angle-info">Quadrant IV (cos +)</div>
+                        <div class="ref-angle">Ref: 60°</div>
+                        <div class="answer-value">= <span style="color: var(--accent);">2</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction reveal" style="margin-top: 1.5rem;">Click any problem to see the angle on the unit circle!</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 7: QUICK CHECK
+         ========================================== -->
+    <section class="slide" id="quick-check-slide">
+        <div class="slide-inner quick-check">
+            <h2 class="reveal">Quick Check</h2>
+            <p class="prompt reveal">Which problem did you skip or guess on?</p>
+            <p class="reveal" style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 0.5rem;">Click to mark your trouble spots:</p>
+
+            <div class="trouble-grid reveal">
+                <button class="trouble-btn" data-problem="a">a</button>
+                <button class="trouble-btn" data-problem="b">b</button>
+                <button class="trouble-btn" data-problem="c">c</button>
+                <button class="trouble-btn" data-problem="d">d</button>
+                <button class="trouble-btn" data-problem="e">e</button>
+                <button class="trouble-btn" data-problem="f">f</button>
+            </div>
+
+            <p class="trouble-count reveal" id="troubleCount"></p>
+
+            <div class="star-note reveal">
+                <span>⭐</span>
+                <span>These are the problems to review before the quiz!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 8: CYCLE 2 HEADER
+         ========================================== -->
+    <section class="slide cycle-slide">
+        <div class="slide-inner">
+            <p class="cycle-number reveal-scale">2</p>
+            <h2 class="reveal">Quadrant Analysis</h2>
+            <p class="subtitle reveal">Eliminate impossibilities → Find the overlap</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 9: PROBLEM SET B (UPDATED)
+         ========================================== -->
+    <section class="slide" id="quadrant-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 2</p>
+            <h2 class="reveal">Problem Set B: Find the Quadrant</h2>
+
+            <div class="quadrant-diagram">
+                <!-- Quadrant Diagram -->
+                <svg class="quadrant-svg" id="quadrantDiagram" width="280" height="280" viewBox="-140 -140 280 280">
+                    <!-- Quadrant fills -->
+                    <rect class="quadrant q1" x="0" y="-140" width="140" height="140" />
+                    <rect class="quadrant q2" x="-140" y="-140" width="140" height="140" />
+                    <rect class="quadrant q3" x="-140" y="0" width="140" height="140" />
+                    <rect class="quadrant q4" x="0" y="0" width="140" height="140" />
+
+                    <!-- Axes -->
+                    <line class="axis" x1="-130" y1="0" x2="130" y2="0" />
+                    <line class="axis" x1="0" y1="-130" x2="0" y2="130" />
+
+                    <!-- Axis labels -->
+                    <text class="axis-label" x="120" y="15">+x</text>
+                    <text class="axis-label" x="-130" y="15">−x</text>
+                    <text class="axis-label" x="8" y="-120">+y</text>
+                    <text class="axis-label" x="8" y="130">−y</text>
+
+                    <!-- Quadrant labels -->
+                    <text class="quadrant-label" x="55" y="-55" style="fill: var(--q1-color);">I</text>
+                    <text class="quadrant-label" x="-70" y="-55" style="fill: var(--q2-color);">II</text>
+                    <text class="quadrant-label" x="-70" y="70" style="fill: var(--q3-color);">III</text>
+                    <text class="quadrant-label" x="55" y="70" style="fill: var(--q4-color);">IV</text>
+
+                    <!-- Sign info -->
+                    <text class="sign-label" x="40" y="-35">sin+, cos+</text>
+                    <text class="sign-label" x="40" y="-20">tan+</text>
+                    <text class="sign-label" x="-95" y="-35">sin+, cos−</text>
+                    <text class="sign-label" x="-95" y="-20">tan−</text>
+                    <text class="sign-label" x="-95" y="50">sin−, cos−</text>
+                    <text class="sign-label" x="-95" y="65">tan+</text>
+                    <text class="sign-label" x="40" y="50">sin−, cos+</text>
+                    <text class="sign-label" x="40" y="65">tan−</text>
+                </svg>
+
+                <!-- Problems -->
+                <div class="problem-list-b">
+                    <div class="problem-b-item" data-quadrant="2">
+                        <div class="problem-num">Problem 1</div>
+                        <div class="given">sin θ > 0  and  tan θ < 0</div>
+                        <div class="task-label">→ Find the quadrant</div>
+                    </div>
+                    <div class="problem-b-item" data-quadrant="2">
+                        <div class="problem-num">Problem 2</div>
+                        <div class="given">cos θ < 0  and  sin θ > 0</div>
+                        <div class="task-label">→ Find the quadrant</div>
+                    </div>
+                    <div class="problem-b-item" data-quadrant="1">
+                        <div class="problem-num">Problem 3</div>
+                        <div class="given">sec θ = 4  and  0 ≤ θ ≤ π/2</div>
+                        <div class="task-label">→ Find the quadrant</div>
+                    </div>
+                    <div class="problem-b-item" data-quadrant="2">
+                        <div class="problem-num">Problem 4</div>
+                        <div class="given">sin θ = 3/5  and  cos θ = −4/5</div>
+                        <div class="task-label">→ Find sin, cos, tan, and the quadrant</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction reveal">Use the quadrant diagram to eliminate impossibilities, then find the overlap!</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 10: CHECK YOUR ANSWERS (QUADRANT)
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 2</p>
+            <h2 class="reveal">Check Your Answers</h2>
+
+            <div class="answer-grid click-reveal" id="answerGridB">
+                <div class="answer-item" data-answer="1">
+                    <span class="problem-num">Problem 1:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">QII</span>
+                    <span class="note">sin+ and tan− only overlap in QII</span>
+                </div>
+                <div class="answer-item" data-answer="2">
+                    <span class="problem-num">Problem 2:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">QII</span>
+                    <span class="note">cos− and sin+ only overlap in QII</span>
+                </div>
+                <div class="answer-item" data-answer="3">
+                    <span class="problem-num">Problem 3:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">QI</span>
+                    <span class="note">Already restricted by 0 ≤ θ ≤ π/2</span>
+                </div>
+                <div class="answer-item" data-answer="4">
+                    <span class="problem-num">Problem 4:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">QII</span>
+                    <span class="note">sin+ and cos− → QII, tan = −3/4</span>
+                </div>
+            </div>
+            <p class="click-hint-bar">Click each problem to reveal its answer</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 11: CYCLE 3 HEADER
+         ========================================== -->
+    <section class="slide cycle-slide">
+        <div class="slide-inner">
+            <p class="cycle-number reveal-scale">3</p>
+            <h2 class="reveal">Terminal Side Setup</h2>
+            <p class="subtitle reveal">When terminal side passes through a point (x, y)</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 12: WORKED EXAMPLE (UPDATED with animated diagram)
+         ========================================== -->
+    <section class="slide" id="terminal-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Worked Example</p>
+            <h2 class="reveal">Terminal Side through (-3, 4)</h2>
+
+            <div class="coord-plane-container">
+                <!-- Animated Coordinate Plane - Scale: 22px per unit -->
+                <svg class="coord-plane-svg" id="coordPlane" width="320" height="320" viewBox="-160 -160 320 320">
+                    <!-- Grid lines (every unit, scale = 22px per unit) -->
+                    <g class="grid">
+                        <!-- Vertical grid lines: x = -6 to 6 -->
+                        <line class="grid-line" x1="-132" y1="-132" x2="-132" y2="132" />
+                        <line class="grid-line" x1="-110" y1="-132" x2="-110" y2="132" />
+                        <line class="grid-line" x1="-88" y1="-132" x2="-88" y2="132" />
+                        <line class="grid-line" x1="-66" y1="-132" x2="-66" y2="132" />
+                        <line class="grid-line" x1="-44" y1="-132" x2="-44" y2="132" />
+                        <line class="grid-line" x1="-22" y1="-132" x2="-22" y2="132" />
+                        <line class="grid-line" x1="22" y1="-132" x2="22" y2="132" />
+                        <line class="grid-line" x1="44" y1="-132" x2="44" y2="132" />
+                        <line class="grid-line" x1="66" y1="-132" x2="66" y2="132" />
+                        <line class="grid-line" x1="88" y1="-132" x2="88" y2="132" />
+                        <line class="grid-line" x1="110" y1="-132" x2="110" y2="132" />
+                        <line class="grid-line" x1="132" y1="-132" x2="132" y2="132" />
+                        <!-- Horizontal grid lines: y = -6 to 6 -->
+                        <line class="grid-line" x1="-132" y1="-132" x2="132" y2="-132" />
+                        <line class="grid-line" x1="-132" y1="-110" x2="132" y2="-110" />
+                        <line class="grid-line" x1="-132" y1="-88" x2="132" y2="-88" />
+                        <line class="grid-line" x1="-132" y1="-66" x2="132" y2="-66" />
+                        <line class="grid-line" x1="-132" y1="-44" x2="132" y2="-44" />
+                        <line class="grid-line" x1="-132" y1="-22" x2="132" y2="-22" />
+                        <line class="grid-line" x1="-132" y1="22" x2="132" y2="22" />
+                        <line class="grid-line" x1="-132" y1="44" x2="132" y2="44" />
+                        <line class="grid-line" x1="-132" y1="66" x2="132" y2="66" />
+                        <line class="grid-line" x1="-132" y1="88" x2="132" y2="88" />
+                        <line class="grid-line" x1="-132" y1="110" x2="132" y2="110" />
+                        <line class="grid-line" x1="-132" y1="132" x2="132" y2="132" />
+                    </g>
+
+                    <!-- Axes -->
+                    <line class="axis" x1="-150" y1="0" x2="150" y2="0" />
+                    <line class="axis" x1="0" y1="-150" x2="0" y2="150" />
+
+                    <!-- Axis tick marks and labels -->
+                    <g class="tick-marks" style="font-family: var(--font-mono); font-size: 10px; fill: var(--text-muted);">
+                        <!-- X-axis ticks -->
+                        <line x1="-66" y1="-4" x2="-66" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-66" y="16" text-anchor="middle">-3</text>
+                        <line x1="-44" y1="-4" x2="-44" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-44" y="16" text-anchor="middle">-2</text>
+                        <line x1="-22" y1="-4" x2="-22" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-22" y="16" text-anchor="middle">-1</text>
+                        <line x1="22" y1="-4" x2="22" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="22" y="16" text-anchor="middle">1</text>
+                        <line x1="44" y1="-4" x2="44" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="44" y="16" text-anchor="middle">2</text>
+                        <line x1="66" y1="-4" x2="66" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="66" y="16" text-anchor="middle">3</text>
+                        <line x1="88" y1="-4" x2="88" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="88" y="16" text-anchor="middle">4</text>
+                        <line x1="110" y1="-4" x2="110" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="110" y="16" text-anchor="middle">5</text>
+                        <!-- Y-axis ticks -->
+                        <line x1="-4" y1="-88" x2="4" y2="-88" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="-84" text-anchor="end">4</text>
+                        <line x1="-4" y1="-66" x2="4" y2="-66" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="-62" text-anchor="end">3</text>
+                        <line x1="-4" y1="-44" x2="4" y2="-44" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="-40" text-anchor="end">2</text>
+                        <line x1="-4" y1="-22" x2="4" y2="-22" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="-18" text-anchor="end">1</text>
+                        <line x1="-4" y1="22" x2="4" y2="22" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="26" text-anchor="end">-1</text>
+                        <line x1="-4" y1="44" x2="4" y2="44" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-12" y="48" text-anchor="end">-2</text>
+                    </g>
+
+                    <!-- Reference angle arc (from positive x-axis, animated) -->
+                    <!-- θ ≈ 126.87° for point (-3, 4) -->
+                    <path class="ref-angle-arc" id="refAngleArc"
+                          d="M 35 0 A 35 35 0 0 0 -21 -28"
+                          fill="none" stroke-width="3" />
+                    <text class="ref-angle-label" x="8" y="-25">θ</text>
+
+                    <!-- Triangle sides (animated) - Scale: 22px per unit -->
+                    <!-- Point (-3, 4) = (-66, -88) in SVG coords -->
+                    <!-- x-side: from origin to (-66, 0) representing x = -3 -->
+                    <line class="triangle-side side-x" x1="0" y1="0" x2="-66" y2="0" />
+                    <!-- y-side: from (-66, 0) to (-66, -88) representing y = 4 -->
+                    <line class="triangle-side side-y" x1="-66" y1="0" x2="-66" y2="-88" />
+                    <!-- r-side (hypotenuse/terminal side): from origin to (-66, -88) -->
+                    <line class="triangle-side side-r" x1="0" y1="0" x2="-66" y2="-88" />
+
+                    <!-- Right angle marker at (-66, 0) corner -->
+                    <path class="right-angle" d="M -66 -14 L -52 -14 L -52 0"
+                          fill="none" stroke-width="2" />
+
+                    <!-- Labels for triangle sides -->
+                    <text class="label label-x" x="-33" y="30">x = −3</text>
+                    <text class="label label-y" x="-115" y="-44">y = 4</text>
+                    <text class="label label-r" x="-25" y="-55">r = 5</text>
+
+                    <!-- Point marker at (-3, 4) = (-66, -88) -->
+                    <circle class="point-marker" cx="-66" cy="-88" r="10" />
+                    <text class="point-label" x="-55" y="-102">(−3, 4)</text>
+                </svg>
+
+                <!-- Steps -->
+                <div class="steps-container">
+                    <div class="step-box step-0">
+                        <p class="step-header">Given Point</p>
+                        <p class="step-content">
+                            <span class="formula">Point: (<span style="color: var(--accent-secondary);">−3</span>, <span style="color: var(--accent-pink);">4</span>)</span><br>
+                            <span class="formula">x = −3, y = 4 →</span> <span class="result">Quadrant II</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-1">
+                        <p class="step-header">Step 1: Find r</p>
+                        <p class="step-content">
+                            <span class="formula">r = √(x² + y²)</span><br>
+                            <span class="formula">r = √(9 + 16) = √25</span><br>
+                            <span class="result">r = 5</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-2">
+                        <p class="step-header">Step 2: Apply Definitions</p>
+                        <p class="step-content">
+                            <span class="formula">sin θ = y/r, cos θ = x/r, tan θ = y/x</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-3">
+                        <p class="step-header">Step 3: Calculate All Six Values</p>
+                        <div class="trig-grid">
+                            <div class="trig-value">
+                                <span class="func">sin θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">4/5</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">csc θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">5/4</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">cos θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−3/5</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">sec θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−5/3</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">tan θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−4/3</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">cot θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−3/4</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 13: PROBLEM SET C (UPDATED - Quadrant IV)
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Your Turn</p>
+            <h2 class="reveal">Problem Set C</h2>
+            <p class="reveal">Terminal side passes through the point <strong style="color: var(--q4-color);">(5, −12)</strong> — <em>Quadrant IV</em></p>
+
+            <div class="problem-card reveal">
+                <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">On your paper, find:</p>
+                <div class="problem-grid" style="grid-template-columns: 1fr;">
+                    <div class="problem-item">
+                        <span class="letter">1)</span>
+                        <span class="math">r  (use r = √(x² + y²))</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">2)</span>
+                        <span class="math">sin θ  (use sin = y/r)</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">3)</span>
+                        <span class="math">csc θ  (reciprocal of sin)</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">4)</span>
+                        <span class="math">cot θ  (use cot = x/y)</span>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); margin-top: 1.5rem; font-size: 0.95rem;">Hint: 5, 12, 13 is a Pythagorean triple!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 14: CHECK YOUR SETUP (UPDATED)
+         ========================================== -->
+    <section class="slide" id="check-setup-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 3</p>
+            <h2 class="reveal">Check Your Setup</h2>
+
+            <div class="coord-plane-container">
+                <!-- Animated Coordinate Plane for (5, -12) — Scale: 8px per unit -->
+                <svg class="coord-plane-svg" id="coordPlaneC" width="320" height="320" viewBox="-160 -160 320 320">
+                    <!-- Grid lines (every 5 units = 40px, scale = 8px per unit) -->
+                    <g class="grid">
+                        <line class="grid-line" x1="-120" y1="-120" x2="-120" y2="120" />
+                        <line class="grid-line" x1="-80" y1="-120" x2="-80" y2="120" />
+                        <line class="grid-line" x1="-40" y1="-120" x2="-40" y2="120" />
+                        <line class="grid-line" x1="40" y1="-120" x2="40" y2="120" />
+                        <line class="grid-line" x1="80" y1="-120" x2="80" y2="120" />
+                        <line class="grid-line" x1="120" y1="-120" x2="120" y2="120" />
+                        <line class="grid-line" x1="-120" y1="-120" x2="120" y2="-120" />
+                        <line class="grid-line" x1="-120" y1="-80" x2="120" y2="-80" />
+                        <line class="grid-line" x1="-120" y1="-40" x2="120" y2="-40" />
+                        <line class="grid-line" x1="-120" y1="40" x2="120" y2="40" />
+                        <line class="grid-line" x1="-120" y1="80" x2="120" y2="80" />
+                        <line class="grid-line" x1="-120" y1="120" x2="120" y2="120" />
+                    </g>
+
+                    <!-- Axes -->
+                    <line class="axis" x1="-150" y1="0" x2="150" y2="0" />
+                    <line class="axis" x1="0" y1="-150" x2="0" y2="150" />
+
+                    <!-- Axis tick marks -->
+                    <g class="tick-marks" style="font-family: var(--font-mono); font-size: 10px; fill: var(--text-muted);">
+                        <line x1="40" y1="-4" x2="40" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="40" y="16" text-anchor="middle">5</text>
+                        <line x1="80" y1="-4" x2="80" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="80" y="16" text-anchor="middle">10</text>
+                        <line x1="-40" y1="-4" x2="-40" y2="4" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-40" y="16" text-anchor="middle">-5</text>
+                        <line x1="-4" y1="-40" x2="4" y2="-40" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-16" y="-36" text-anchor="end">5</text>
+                        <line x1="-4" y1="-80" x2="4" y2="-80" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-16" y="-76" text-anchor="end">10</text>
+                        <line x1="-4" y1="40" x2="4" y2="40" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-16" y="44" text-anchor="end">-5</text>
+                        <line x1="-4" y1="80" x2="4" y2="80" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-16" y="84" text-anchor="end">-10</text>
+                        <line x1="-4" y1="96" x2="4" y2="96" stroke="var(--text-muted)" stroke-width="1" />
+                        <text x="-16" y="100" text-anchor="end">-12</text>
+                    </g>
+
+                    <!-- Reference angle arc -->
+                    <path class="ref-angle-arc" id="refAngleArcC"
+                          d="M 35 0 A 35 35 0 0 1 31.2 15.9"
+                          fill="none" stroke-width="3" />
+                    <text class="ref-angle-label" x="28" y="12" style="opacity: 0; transition: opacity 0.3s ease;">θ</text>
+
+                    <!-- Triangle sides: Point (5, -12) → SVG coords (40, 96) at scale=8px/unit -->
+                    <line class="triangle-side side-x" x1="0" y1="0" x2="40" y2="0" />
+                    <line class="triangle-side side-y" x1="40" y1="0" x2="40" y2="96" />
+                    <line class="triangle-side side-r" x1="0" y1="0" x2="40" y2="96" />
+
+                    <!-- Right angle marker at (40, 0) -->
+                    <path class="right-angle" d="M 40 14 L 26 14 L 26 0"
+                          fill="none" stroke-width="2" />
+
+                    <!-- Side labels -->
+                    <text class="label label-x" x="20" y="-10">x = 5</text>
+                    <text class="label label-y" x="52" y="50">y = −12</text>
+                    <text class="label label-r" x="-10" y="58">r = 13</text>
+
+                    <!-- Point marker at (5, -12) -->
+                    <circle class="point-marker" cx="40" cy="96" r="10" />
+                    <text class="point-label" x="52" y="108">(5, −12)</text>
+                </svg>
+
+                <!-- Steps -->
+                <div class="steps-container">
+                    <div class="step-box step-0">
+                        <p class="step-header">Given Point</p>
+                        <p class="step-content">
+                            <span class="formula">Point: (<span style="color: var(--accent-secondary);">5</span>, <span style="color: var(--accent-pink);">−12</span>)</span><br>
+                            <span class="formula">x = 5, y = −12 →</span> <span class="result" style="color: var(--q4-color);">Quadrant IV</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-1">
+                        <p class="step-header">Step 1: Find r</p>
+                        <p class="step-content">
+                            <span class="formula">r = √(5² + (−12)²)</span><br>
+                            <span class="formula">r = √(25 + 144) = √169</span><br>
+                            <span class="result">r = 13</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-2">
+                        <p class="step-header">Step 2: Apply Definitions</p>
+                        <p class="step-content">
+                            <span class="formula">sin θ = y/r, csc θ = r/y, cot θ = x/y</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-3">
+                        <p class="step-header">Step 3: Calculate</p>
+                        <div class="trig-grid">
+                            <div class="trig-value">
+                                <span class="func">sin θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−12/13</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">csc θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−13/12</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">cos θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">5/13</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">sec θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">13/5</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">tan θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−12/5</span>
+                            </div>
+                            <div class="trig-value">
+                                <span class="func">cot θ</span>
+                                <span class="equals">=</span>
+                                <span class="val">−5/12</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic; margin-top: 1rem; text-align: center;">Note: In QIV, sin is negative, cos is positive, tan is negative</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 15: CYCLE 4 HEADER — ARC LENGTH
+         ========================================== -->
+    <section class="slide cycle-slide">
+        <div class="slide-inner">
+            <p class="cycle-number reveal-scale">4</p>
+            <h2 class="reveal">Arc Length</h2>
+            <p class="subtitle reveal">Using s = rθ to find arc length</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 16: PROBLEM SET D — ARC LENGTH
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 4</p>
+            <h2 class="reveal">Problem Set D: Arc Length</h2>
+            <p class="reveal">Use the formula <strong style="color: var(--accent);">s = rθ</strong> (θ must be in radians!)</p>
+
+            <div class="problem-card reveal">
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <span class="letter">a)</span>
+                        <span class="math">r = 8 cm, θ = π/3 rad → find s</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">b)</span>
+                        <span class="math">r = 12 in, θ = 150° → find s</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">c)</span>
+                        <span class="math">s = 20 m, r = 5 m → find θ (radians)</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">d)</span>
+                        <span class="math">s = 15π ft, θ = 2π/3 rad → find r</span>
+                    </div>
+                    <div class="problem-item">
+                        <span class="letter">e)</span>
+                        <span class="math">Wheel: 3 full rotations, r = 2 ft → distance?</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction reveal">Remember: Convert degrees to radians first! θ(rad) = θ(deg) × π/180</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 17: WORKED EXAMPLE — ARC LENGTH
+         ========================================== -->
+    <section class="slide" id="arc-length-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Worked Example</p>
+            <h2 class="reveal">Arc Length: r = 6, θ = π/3</h2>
+
+            <div class="coord-plane-container">
+                <!-- Arc Length SVG Diagram -->
+                <svg class="coord-plane-svg" id="arcLengthSvg" width="320" height="320" viewBox="-100 -100 200 200" style="background: var(--bg-secondary); border-radius: 12px; padding: 1rem;">
+                    <!-- Axes (lighter) -->
+                    <line class="axis" x1="-90" y1="0" x2="90" y2="0" />
+                    <line class="axis" x1="0" y1="-90" x2="0" y2="90" />
+
+                    <!-- Full circle (dashed outline) -->
+                    <circle class="circle-outline" cx="0" cy="0" r="60" fill="none" stroke="var(--text-secondary)" stroke-width="1" stroke-dasharray="3,3" />
+
+                    <!-- Radius to start of arc (horizontal) — step 0 -->
+                    <line class="arc-radius radius-start" x1="0" y1="0" x2="60" y2="0"
+                          stroke="var(--accent)" stroke-width="2"
+                          stroke-dasharray="100" stroke-dashoffset="100" />
+                    <text class="arc-label label-r-start" x="30" y="-8" fill="var(--accent)" opacity="0" font-size="13" text-anchor="middle">r = 6</text>
+
+                    <!-- Central angle arc (60° = π/3) — step 1 -->
+                    <path class="angle-arc-path"
+                          d="M 25 0 A 25 25 0 0 0 12.5 -21.65"
+                          fill="none" stroke="var(--accent-warning)" stroke-width="2"
+                          stroke-dasharray="100" stroke-dashoffset="100" />
+                    <text class="arc-label label-theta" x="24" y="-14" fill="var(--accent-warning)" opacity="0" font-size="12">θ = π/3</text>
+
+                    <!-- Radius to end of arc — step 1 -->
+                    <line class="arc-radius radius-end" x1="0" y1="0" x2="30" y2="-51.96"
+                          stroke="var(--accent)" stroke-width="2"
+                          stroke-dasharray="100" stroke-dashoffset="100" />
+
+                    <!-- Arc length (highlighted thick arc) — step 2 -->
+                    <path class="arc-length-highlight"
+                          d="M 60 0 A 60 60 0 0 0 30 -51.96"
+                          fill="none" stroke="var(--accent-secondary)" stroke-width="6" stroke-linecap="round"
+                          stroke-dasharray="200" stroke-dashoffset="200" />
+                    <text class="arc-label label-s" x="55" y="-30" fill="var(--accent-secondary)" opacity="0" font-size="14" font-weight="700">s = 2π</text>
+
+                    <!-- Endpoint markers -->
+                    <circle class="arc-point" cx="60" cy="0" r="5" fill="var(--accent)" opacity="0" />
+                    <circle class="arc-point" cx="30" cy="-51.96" r="5" fill="var(--accent)" opacity="0" />
+
+                    <!-- Origin marker -->
+                    <circle cx="0" cy="0" r="3" fill="var(--text-muted)" />
+                </svg>
+
+                <!-- Steps -->
+                <div class="steps-container">
+                    <div class="step-box step-0">
+                        <p class="step-header">Given Information</p>
+                        <p class="step-content">
+                            <span class="formula">Radius: <span style="color: var(--accent);">r = 6 cm</span></span><br>
+                            <span class="formula">Central angle: <span style="color: var(--accent-warning);">θ = π/3 radians</span></span><br>
+                            <span class="formula">Find: arc length s</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-1">
+                        <p class="step-header">Step 1: Apply the Formula</p>
+                        <p class="step-content">
+                            <span class="formula">s = rθ</span><br>
+                            <span class="formula">s = 6 × π/3</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-2">
+                        <p class="step-header">Step 2: Simplify</p>
+                        <p class="step-content">
+                            <span class="formula">s = 6π/3</span><br>
+                            <span class="result">s = 2π cm ≈ 6.28 cm</span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-3">
+                        <p class="step-header">Key Insight</p>
+                        <p class="step-content">
+                            <span class="formula">θ = π/3 is 1/6 of a full circle (2π)</span><br>
+                            <span class="formula">Circumference = 2πr = 12π</span><br>
+                            <span class="formula">So s = (1/6) × 12π = <span class="result">2π ✓</span></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 18: CHECK YOUR ANSWERS — ARC LENGTH
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 4</p>
+            <h2 class="reveal">Check Your Answers</h2>
+
+            <div class="answer-grid click-reveal" id="answerGridD">
+                <div class="answer-item" data-answer="a">
+                    <span class="problem-num">Problem a:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">s = 8π/3 ≈ 8.38 cm</span>
+                    <span class="note">Direct: s = rθ = 8(π/3)</span>
+                </div>
+                <div class="answer-item" data-answer="b">
+                    <span class="problem-num">Problem b:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">s = 10π ≈ 31.42 in</span>
+                    <span class="note">150° = 5π/6 rad, then s = 12(5π/6)</span>
+                </div>
+                <div class="answer-item" data-answer="c">
+                    <span class="problem-num">Problem c:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">θ = 4 radians</span>
+                    <span class="note">θ = s/r = 20/5 = 4</span>
+                </div>
+                <div class="answer-item" data-answer="d">
+                    <span class="problem-num">Problem d:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">r = 22.5 ft</span>
+                    <span class="note">r = s/θ = 15π ÷ (2π/3) = 45/2</span>
+                </div>
+                <div class="answer-item" data-answer="e">
+                    <span class="problem-num">Problem e:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">s = 12π ≈ 37.70 ft</span>
+                    <span class="note">3 rotations = 6π rad, s = 2(6π)</span>
+                </div>
+            </div>
+            <p class="click-hint-bar">Click each problem to reveal its answer</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 19: CYCLE 5 HEADER — RIGHT TRIANGLE WORD PROBLEMS
+         ========================================== -->
+    <section class="slide cycle-slide">
+        <div class="slide-inner">
+            <p class="cycle-number reveal-scale">5</p>
+            <h2 class="reveal">Right Triangle Applications</h2>
+            <p class="subtitle reveal">Multi-step word problems with real-world scenarios</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 20: PROBLEM SET E — WORD PROBLEMS
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 5</p>
+            <h2 class="reveal">Problem Set E: Word Problems</h2>
+            <p class="reveal">Draw a diagram for each scenario. Identify all right triangles.</p>
+
+            <div class="problem-card reveal">
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div style="padding: 1.25rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="color: var(--accent); font-family: var(--font-display); font-weight: 600; margin-bottom: 0.5rem;">Problem 1: Two Observation Points</div>
+                        <p style="color: var(--text-primary); line-height: 1.6; font-size: 1rem;">
+                            Two people stand 50 meters apart on level ground, both looking at the top of a building.
+                            Person A (closer) measures an angle of elevation of 60°.
+                            Person B measures an angle of elevation of 30°.
+                            Find the height of the building.
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.25rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="color: var(--accent); font-family: var(--font-display); font-weight: 600; margin-bottom: 0.5rem;">Problem 2: Ship Navigation</div>
+                        <p style="color: var(--text-primary); line-height: 1.6; font-size: 1rem;">
+                            A ship leaves port and sails 40 km on a bearing of N 60° E.
+                            It then changes course and sails 30 km on a bearing of N 30° W.
+                            How far is the ship from port?
+                            <br><em style="color: var(--text-muted); font-size: 0.9rem;">Hint: Break each leg into north and east components.</em>
+                        </p>
+                    </div>
+
+                    <div style="padding: 1.25rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="color: var(--accent); font-family: var(--font-display); font-weight: 600; margin-bottom: 0.5rem;">Problem 3: Sliding Ladder</div>
+                        <p style="color: var(--text-primary); line-height: 1.6; font-size: 1rem;">
+                            A 20-foot ladder leans against a wall at an angle of 75° with the ground.
+                            The base slides out 4 feet farther from the wall.
+                            What is the new angle with the ground? How far did the top slide down?
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="instruction reveal">Set up equations before solving. Label all known and unknown values on your diagram!</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 21: WORKED EXAMPLE — TWO OBSERVERS
+         ========================================== -->
+    <section class="slide" id="word-problem-slide">
+        <div class="slide-inner">
+            <p class="label reveal">Worked Example</p>
+            <h2 class="reveal">Two Observation Points</h2>
+
+            <div class="coord-plane-container">
+                <!-- Word Problem SVG -->
+                <svg class="coord-plane-svg" id="wordProblemSvg" width="400" height="280" viewBox="0 0 400 280" style="background: var(--bg-secondary); border-radius: 12px; padding: 1rem;">
+                    <!-- Ground line -->
+                    <line class="ground-line" x1="20" y1="230" x2="380" y2="230" stroke="var(--text-secondary)" stroke-width="2" />
+
+                    <!-- Building rectangle — step 0 -->
+                    <rect class="building-rect" x="70" y="50" width="30" height="180" fill="var(--bg-tertiary)" stroke="var(--accent)" stroke-width="2" opacity="0" rx="2" />
+
+                    <!-- Building height label (dashed line) -->
+                    <line class="building-height" x1="60" y1="50" x2="60" y2="230"
+                          stroke="var(--accent-pink)" stroke-width="2" stroke-dasharray="5,4"
+                          stroke-dashoffset="300" />
+                    <text class="wp-label label-h" x="40" y="145" fill="var(--accent-pink)" opacity="0" text-anchor="middle">h = ?</text>
+
+                    <!-- Person A marker — step 0 -->
+                    <circle class="person-marker person-a" cx="190" cy="225" r="7" fill="var(--q1-color)" opacity="0" />
+                    <text class="wp-label label-a" x="190" y="260" fill="var(--q1-color)" opacity="0" text-anchor="middle" font-size="13">Person A</text>
+
+                    <!-- Person B marker — step 0 -->
+                    <circle class="person-marker person-b" cx="310" cy="225" r="7" fill="var(--q4-color)" opacity="0" />
+                    <text class="wp-label label-b" x="310" y="260" fill="var(--q4-color)" opacity="0" text-anchor="middle" font-size="13">Person B</text>
+
+                    <!-- Distance between A and B — step 0 -->
+                    <line class="distance-line dist-ab" x1="195" y1="245" x2="305" y2="245"
+                          stroke="var(--accent-warning)" stroke-width="2"
+                          stroke-dasharray="200" stroke-dashoffset="200" />
+                    <text class="wp-label label-50m" x="250" y="270" fill="var(--accent-warning)" opacity="0" text-anchor="middle" font-size="13">50 m</text>
+
+                    <!-- Distance from building to A (x) — step 1 -->
+                    <line class="distance-line dist-bldg-a" x1="100" y1="245" x2="185" y2="245"
+                          stroke="var(--accent-secondary)" stroke-width="2"
+                          stroke-dasharray="200" stroke-dashoffset="200" />
+                    <text class="wp-label label-x" x="142" y="270" fill="var(--accent-secondary)" opacity="0" text-anchor="middle" font-size="13">x</text>
+
+                    <!-- Person A sight line (60°) — step 1 -->
+                    <line class="sight-line sight-a" x1="190" y1="225" x2="85" y2="50"
+                          stroke="var(--q1-color)" stroke-width="2"
+                          stroke-dasharray="300" stroke-dashoffset="300" />
+                    <text class="wp-label label-60" x="160" y="195" fill="var(--q1-color)" opacity="0" font-size="14">60°</text>
+
+                    <!-- Person B sight line (30°) — step 2 -->
+                    <line class="sight-line sight-b" x1="310" y1="225" x2="85" y2="50"
+                          stroke="var(--q4-color)" stroke-width="2"
+                          stroke-dasharray="400" stroke-dashoffset="400" />
+                    <text class="wp-label label-30" x="280" y="195" fill="var(--q4-color)" opacity="0" font-size="14">30°</text>
+
+                    <!-- Distance from building to B (x + 50) bracket — step 2 -->
+                    <path class="distance-arc" d="M 100 248 L 100 253 L 305 253 L 305 248"
+                          fill="none" stroke="var(--accent-secondary)" stroke-width="1.5"
+                          stroke-dasharray="300" stroke-dashoffset="300" />
+                    <text class="wp-label label-x50" x="202" y="275" fill="var(--accent-secondary)" opacity="0" text-anchor="middle" font-size="12">x + 50</text>
+                </svg>
+
+                <!-- Steps -->
+                <div class="steps-container">
+                    <div class="step-box step-0">
+                        <p class="step-header">Given Information</p>
+                        <p class="step-content">
+                            <span class="formula">Two people <span style="color: var(--accent-warning);">50 m apart</span></span><br>
+                            <span class="formula">Person A: angle of elevation = <span style="color: var(--q1-color);">60°</span></span><br>
+                            <span class="formula">Person B: angle of elevation = <span style="color: var(--q4-color);">30°</span></span><br>
+                            <span class="formula">Find: height <span style="color: var(--accent-pink);">h</span></span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-1">
+                        <p class="step-header">Step 1: Equation from Person A</p>
+                        <p class="step-content">
+                            <span class="formula">Let x = distance from building to A</span><br>
+                            <span class="formula">tan(60°) = h/x → <span class="result">h = x√3</span></span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-2">
+                        <p class="step-header">Step 2: Equation from Person B</p>
+                        <p class="step-content">
+                            <span class="formula">Distance from building to B: x + 50</span><br>
+                            <span class="formula">tan(30°) = h/(x + 50)</span><br>
+                            <span class="formula"><span class="result">h = (x + 50)/√3</span></span>
+                        </p>
+                    </div>
+
+                    <div class="step-box step-3">
+                        <p class="step-header">Step 3: Solve the System</p>
+                        <p class="step-content">
+                            <span class="formula">Set equal: x√3 = (x + 50)/√3</span><br>
+                            <span class="formula">Multiply by √3: 3x = x + 50</span><br>
+                            <span class="formula">2x = 50 → x = 25 m</span><br>
+                            <span class="formula">h = 25√3 ≈ <span class="result">43.3 meters</span></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 22: CHECK YOUR ANSWERS — WORD PROBLEMS
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Cycle 5</p>
+            <h2 class="reveal">Check Your Answers</h2>
+
+            <div class="answer-grid click-reveal" id="answerGridE">
+                <div class="answer-item" data-answer="1">
+                    <span class="problem-num">Problem 1:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">h = 25√3 ≈ 43.3 m</span>
+                    <span class="note">Set x√3 = (x+50)/√3 → x = 25</span>
+                </div>
+                <div class="answer-item" data-answer="2">
+                    <span class="problem-num">Problem 2:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">≈ 61.0 km from port</span>
+                    <span class="note">E: 40sin60° − 30sin30° ≈ 19.6, N: 40cos60° + 30cos30° ≈ 46.0, d = √(E² + N²)</span>
+                </div>
+                <div class="answer-item" data-answer="3">
+                    <span class="problem-num">Problem 3:</span>
+                    <span class="answer-placeholder">click to reveal</span>
+                    <span class="answer">θ ≈ 60.1°, slid down ≈ 3.1 ft</span>
+                    <span class="note">New base = 20cos75° + 4 ≈ 9.18 ft, cos⁻¹(9.18/20) ≈ 60.1°</span>
+                </div>
+            </div>
+            <p class="click-hint-bar">Click each problem to reveal its answer</p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 23: SUMMARY (UPDATED)
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Wrap Up</p>
+            <h2 class="reveal">Practice Time!</h2>
+
+            <ul class="summary-list">
+                <li>
+                    <span class="num">1</span>
+                    <div>
+                        <span class="title">Review All Five Cycles</span>
+                        <span class="desc">Unit circle, quadrant analysis, terminal side, arc length, and right triangle word problems</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="num">2</span>
+                    <div>
+                        <span class="title">Practice Delta Math Application Problems</span>
+                        <span class="desc">Work through the assigned problems including arc length and multi-step word problems</span>
+                    </div>
+                </li>
+                <li>
+                    <span class="num">3</span>
+                    <div>
+                        <span class="title">Solving Angles on Google Slides</span>
+                        <span class="desc">Solve the Free Response angle-solving problems on Google Slides. Take a picture and upload your answers to the slides and turn in.</span>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="cta-box reveal">
+                <p><strong>Remember:</strong> Use the Quiz Strategy Guide to choose your approach for each problem!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SLIDE 16: ASYNC CHECKLIST
+         ========================================== -->
+    <section class="slide">
+        <div class="slide-inner">
+            <p class="label reveal">Post in Chat</p>
+            <h2 class="reveal">Async Work Checklist</h2>
+
+            <ul class="checklist" id="asyncChecklist">
+                <li data-task="0">
+                    <span class="box"></span>
+                    <span class="task">Complete terminal side problem (Problem Set C)</span>
+                    <span class="time">8 min</span>
+                </li>
+                <li data-task="1">
+                    <span class="box"></span>
+                    <span class="task">Arc length practice problems (Problem Set D)</span>
+                    <span class="time">10 min</span>
+                </li>
+                <li data-task="2">
+                    <span class="box"></span>
+                    <span class="task">Word problem diagrams (Problem Set E)</span>
+                    <span class="offline-tag">Offline</span>
+                    <span class="time">15 min</span>
+                </li>
+                <li data-task="3">
+                    <span class="box"></span>
+                    <span class="task">Unit circle video (ONLY if you marked ⭐ problems)</span>
+                    <span class="time">8 min</span>
+                </li>
+                <li data-task="4">
+                    <span class="box"></span>
+                    <span class="task">Draw reference angle diagrams</span>
+                    <span class="offline-tag">Offline</span>
+                    <span class="time">10 min</span>
+                </li>
+                <li data-task="5">
+                    <span class="box"></span>
+                    <span class="task">Quadrant analysis with full work</span>
+                    <span class="time">12 min</span>
+                </li>
+                <li data-task="6">
+                    <span class="box"></span>
+                    <span class="task">Conversions practice (degrees ↔ radians, DMS)</span>
+                    <span class="time">10 min</span>
+                </li>
+                <li data-task="7">
+                    <span class="box"></span>
+                    <span class="task">Applications walkthrough</span>
+                    <span class="time">7 min</span>
+                </li>
+            </ul>
+            <div class="checklist-progress reveal">
+                <div class="progress-track">
+                    <div class="progress-fill" id="checklistFill"></div>
+                </div>
+                <span class="progress-text" id="checklistText">0 of 8 complete</span>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           Handles navigation, animations, progress
+           =========================================== */
+
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.progressBar = document.querySelector('.progress-bar');
+                this.navDots = document.querySelector('.nav-dots');
+                this.currentSlide = 0;
+                this.isScrolling = false;
+
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupTouchNav();
+                this.updateProgress();
+                this.setupUnitCircle();
+                this.setupQuadrantDiagram();
+                this.setupTerminalSideAnimation();
+                this.setupCheckSetupAnimation();
+                this.setupArcLengthAnimation();
+                this.setupWordProblemAnimation();
+                this.setupClickRevealAnswers();
+                this.setupTroubleSpots();
+                this.setupInteractiveChecklist();
+                this.setupHelpOverlay();
+                this.updateSlideCounter();
+
+                // Set total slide count
+                const totalEl = document.getElementById('slideTotalNum');
+                if (totalEl) totalEl.textContent = this.slides.length;
+            }
+
+            /* Create navigation dots */
+            createNavDots() {
+                this.slides.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot';
+                    dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                    this.navDots.appendChild(dot);
+                });
+            }
+
+            /* Intersection Observer for scroll-triggered animations */
+            setupIntersectionObserver() {
+                const options = {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const index = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = index;
+                            this.updateProgress();
+                            this.updateNavDots();
+
+                            // Trigger special animations for specific slides
+                            if (entry.target.id === 'terminal-slide') {
+                                this.animateTerminalSide();
+                            }
+                            if (entry.target.id === 'check-setup-slide') {
+                                this.animateCheckSetup();
+                            }
+                            if (entry.target.id === 'arc-length-slide') {
+                                this.animateArcLength();
+                            }
+                            if (entry.target.id === 'word-problem-slide') {
+                                this.animateWordProblem();
+                            }
+                        }
+                    });
+                }, options);
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            /* Keyboard navigation */
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    // Help overlay toggle
+                    if (e.key === '?') {
+                        e.preventDefault();
+                        this.toggleHelp();
+                        return;
+                    }
+
+                    if (e.key === 'Escape') {
+                        const overlay = document.getElementById('helpOverlay');
+                        if (overlay && overlay.classList.contains('visible')) {
+                            overlay.classList.remove('visible');
+                            return;
+                        }
+                    }
+
+                    // Don't navigate while help overlay is open
+                    if (document.getElementById('helpOverlay')?.classList.contains('visible')) return;
+
+                    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        this.nextSlide();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        this.prevSlide();
+                    }
+                });
+            }
+
+            /* Touch/swipe navigation */
+            setupTouchNav() {
+                let touchStartY = 0;
+                let touchEndY = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndY = e.changedTouches[0].screenY;
+                    const diff = touchStartY - touchEndY;
+
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) {
+                            this.nextSlide();
+                        } else {
+                            this.prevSlide();
+                        }
+                    }
+                }, { passive: true });
+            }
+
+            /* Navigation methods */
+            goToSlide(index) {
+                if (index >= 0 && index < this.slides.length) {
+                    this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.slides.length - 1) {
+                    this.goToSlide(this.currentSlide + 1);
+                }
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0) {
+                    this.goToSlide(this.currentSlide - 1);
+                }
+            }
+
+            /* Update progress bar */
+            updateProgress() {
+                const progress = ((this.currentSlide + 1) / this.slides.length) * 100;
+                this.progressBar.style.width = `${progress}%`;
+                this.updateSlideCounter();
+            }
+
+            /* Update navigation dots */
+            updateNavDots() {
+                const dots = this.navDots.querySelectorAll('.nav-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+
+            /* Update slide counter */
+            updateSlideCounter() {
+                const el = document.getElementById('slideCurrentNum');
+                if (el) el.textContent = this.currentSlide + 1;
+            }
+
+            /* ===========================================
+               UNIT CIRCLE INTERACTIVE
+               =========================================== */
+            setupUnitCircle() {
+                const cards = document.querySelectorAll('.solution-card');
+                const svg = document.getElementById('unitCircle');
+
+                if (!svg) return;
+
+                cards.forEach(card => {
+                    card.addEventListener('click', () => {
+                        // Remove active from all cards
+                        cards.forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+
+                        const angle = parseFloat(card.dataset.angle);
+                        const refAngle = parseFloat(card.dataset.ref);
+                        const quadrant = parseInt(card.dataset.quadrant);
+
+                        this.drawUnitCircleAngle(angle, refAngle, quadrant);
+                    });
+                });
+
+                // Auto-animate first card on slide visible
+                const slideObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            setTimeout(() => {
+                                const firstCard = document.querySelector('.solution-card');
+                                if (firstCard) firstCard.click();
+                            }, 800);
+                        }
+                    });
+                }, { threshold: 0.5 });
+
+                const unitCircleSlide = document.getElementById('unit-circle-slide');
+                if (unitCircleSlide) {
+                    slideObserver.observe(unitCircleSlide);
+                }
+            }
+
+            drawUnitCircleAngle(angleDeg, refAngleDeg, quadrant) {
+                const svg = document.getElementById('unitCircle');
+                const terminalSide = document.getElementById('terminalSide');
+                const refLine = document.getElementById('refLine');
+                const angleArc = document.getElementById('angleArc');
+                const refArc = document.getElementById('refArc');
+                const pointMarker = document.getElementById('pointMarker');
+                const coordLabel = document.getElementById('coordLabel');
+
+                // Reset animation
+                svg.classList.remove('animate');
+
+                // Convert to radians
+                const angleRad = (angleDeg * Math.PI) / 180;
+                const radius = 120;
+
+                // Calculate endpoint
+                const endX = radius * Math.cos(angleRad);
+                const endY = -radius * Math.sin(angleRad); // Negative because SVG y is inverted
+
+                // Set terminal side
+                terminalSide.setAttribute('x2', endX);
+                terminalSide.setAttribute('y2', endY);
+
+                // Set point marker
+                pointMarker.setAttribute('cx', endX);
+                pointMarker.setAttribute('cy', endY);
+
+                // Set coordinate label
+                const cosVal = Math.cos(angleRad);
+                const sinVal = Math.sin(angleRad);
+                coordLabel.textContent = `(${cosVal.toFixed(2)}, ${sinVal.toFixed(2)})`;
+                coordLabel.setAttribute('x', endX + 10);
+                coordLabel.setAttribute('y', endY - 10);
+
+                // Draw angle arc
+                const arcRadius = 30;
+                const startAngle = 0;
+                const endAngle = angleRad;
+                const largeArc = Math.abs(angleDeg) > 180 ? 1 : 0;
+                const sweep = angleDeg >= 0 ? 0 : 1;
+
+                const arcEndX = arcRadius * Math.cos(endAngle);
+                const arcEndY = -arcRadius * Math.sin(endAngle);
+
+                angleArc.setAttribute('d', `M ${arcRadius} 0 A ${arcRadius} ${arcRadius} 0 ${largeArc} ${sweep} ${arcEndX} ${arcEndY}`);
+
+                // Draw reference angle arc (from x-axis to terminal side, in the relevant quadrant)
+                if (refAngleDeg > 0 && quadrant !== 0) {
+                    const refRadius = 20;
+                    let refStartAngle, refEndAngle;
+
+                    // Determine reference angle position based on quadrant
+                    if (quadrant === 1) {
+                        refStartAngle = 0;
+                        refEndAngle = (refAngleDeg * Math.PI) / 180;
+                    } else if (quadrant === 2) {
+                        refStartAngle = Math.PI - (refAngleDeg * Math.PI) / 180;
+                        refEndAngle = Math.PI;
+                    } else if (quadrant === 3) {
+                        refStartAngle = Math.PI;
+                        refEndAngle = Math.PI + (refAngleDeg * Math.PI) / 180;
+                    } else if (quadrant === 4) {
+                        refStartAngle = 2 * Math.PI - (refAngleDeg * Math.PI) / 180;
+                        refEndAngle = 2 * Math.PI;
+                    }
+
+                    const refStartX = refRadius * Math.cos(refStartAngle);
+                    const refStartY = -refRadius * Math.sin(refStartAngle);
+                    const refEndX = refRadius * Math.cos(refEndAngle);
+                    const refEndY = -refRadius * Math.sin(refEndAngle);
+
+                    refArc.setAttribute('d', `M ${refStartX} ${refStartY} A ${refRadius} ${refRadius} 0 0 0 ${refEndX} ${refEndY}`);
+
+                    // Draw reference line to x-axis
+                    const xAxisPoint = endX;
+                    refLine.setAttribute('x1', endX);
+                    refLine.setAttribute('y1', endY);
+                    refLine.setAttribute('x2', xAxisPoint);
+                    refLine.setAttribute('y2', 0);
+                } else {
+                    refArc.setAttribute('d', '');
+                    refLine.setAttribute('x1', 0);
+                    refLine.setAttribute('y1', 0);
+                    refLine.setAttribute('x2', 0);
+                    refLine.setAttribute('y2', 0);
+                }
+
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    svg.classList.add('animate');
+                });
+            }
+
+            /* ===========================================
+               QUADRANT DIAGRAM INTERACTIVE
+               =========================================== */
+            setupQuadrantDiagram() {
+                const problems = document.querySelectorAll('.problem-b-item');
+                const svg = document.getElementById('quadrantDiagram');
+
+                if (!svg) return;
+
+                problems.forEach(problem => {
+                    problem.addEventListener('mouseenter', () => {
+                        const quadrant = problem.dataset.quadrant;
+                        this.highlightQuadrant(quadrant);
+                    });
+
+                    problem.addEventListener('mouseleave', () => {
+                        this.clearQuadrantHighlight();
+                    });
+                });
+            }
+
+            highlightQuadrant(quadrant) {
+                const quadrants = document.querySelectorAll('.quadrant-svg .quadrant');
+                quadrants.forEach(q => q.classList.remove('highlight'));
+
+                if (quadrant === '1') {
+                    document.querySelector('.quadrant-svg .q1').classList.add('highlight');
+                } else if (quadrant === '2') {
+                    document.querySelector('.quadrant-svg .q2').classList.add('highlight');
+                } else if (quadrant === '3') {
+                    document.querySelector('.quadrant-svg .q3').classList.add('highlight');
+                } else if (quadrant === '4') {
+                    document.querySelector('.quadrant-svg .q4').classList.add('highlight');
+                }
+            }
+
+            clearQuadrantHighlight() {
+                const quadrants = document.querySelectorAll('.quadrant-svg .quadrant');
+                quadrants.forEach(q => q.classList.remove('highlight'));
+            }
+
+            /* ===========================================
+               TERMINAL SIDE CLICK-TO-ADVANCE
+               Click anywhere on the slide to advance through steps
+               =========================================== */
+            setupTerminalSideAnimation() {
+                const terminalSlide = document.getElementById('terminal-slide');
+                if (!terminalSlide) return;
+
+                this.terminalStep = -1; // Start before step 0
+                this.maxTerminalStep = 3;
+
+                // Click handler for advancing steps
+                terminalSlide.addEventListener('click', (e) => {
+                    // Don't advance if clicking on navigation elements
+                    if (e.target.closest('.nav-dots')) return;
+
+                    this.advanceTerminalStep();
+                });
+
+                // Also allow spacebar/right arrow to advance when on this slide
+                document.addEventListener('keydown', (e) => {
+                    if (this.currentSlide !== Array.from(this.slides).indexOf(terminalSlide)) return;
+
+                    if (e.key === ' ' || e.key === 'ArrowRight') {
+                        // If we haven't finished all steps, advance step instead of slide
+                        if (this.terminalStep < this.maxTerminalStep) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.advanceTerminalStep();
+                        }
+                    }
+                });
+
+                // Add click hint to the slide
+                const hint = document.createElement('div');
+                hint.className = 'click-hint';
+                hint.innerHTML = '<span>Click to reveal each step</span>';
+                hint.style.cssText = `
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    opacity: 0;
+                    transition: opacity 0.5s ease;
+                    pointer-events: none;
+                `;
+                terminalSlide.querySelector('.slide-inner').appendChild(hint);
+            }
+
+            advanceTerminalStep() {
+                const svg = document.getElementById('coordPlane');
+                const stepBoxes = document.querySelectorAll('#terminal-slide .step-box');
+                const hint = document.querySelector('#terminal-slide .click-hint');
+
+                if (!svg) return;
+
+                if (this.terminalStep < this.maxTerminalStep) {
+                    this.terminalStep++;
+
+                    // Add step class to SVG
+                    svg.classList.add(`step-${this.terminalStep}`);
+
+                    // Show corresponding step box
+                    if (stepBoxes[this.terminalStep]) {
+                        stepBoxes[this.terminalStep].classList.add('active');
+                    }
+
+                    // Hide hint after first click
+                    if (hint && this.terminalStep > 0) {
+                        hint.style.opacity = '0';
+                    }
+                }
+            }
+
+            resetTerminalSlide() {
+                const svg = document.getElementById('coordPlane');
+                const stepBoxes = document.querySelectorAll('#terminal-slide .step-box');
+                const hint = document.querySelector('#terminal-slide .click-hint');
+
+                if (svg) {
+                    svg.className = 'coord-plane-svg';
+                }
+
+                stepBoxes.forEach(box => box.classList.remove('active'));
+
+                if (hint) {
+                    hint.style.opacity = '1';
+                }
+
+                this.terminalStep = -1;
+            }
+
+            animateTerminalSide() {
+                // Reset when entering the slide
+                this.resetTerminalSlide();
+
+                // Show the click hint
+                setTimeout(() => {
+                    const hint = document.querySelector('#terminal-slide .click-hint');
+                    if (hint) hint.style.opacity = '1';
+                }, 500);
+            }
+
+            /* ===========================================
+               CHECK SETUP SLIDE (Problem Set C) CLICK-TO-ADVANCE
+               Same pattern as the terminal side, but for (5, -12)
+               =========================================== */
+            setupCheckSetupAnimation() {
+                const slide = document.getElementById('check-setup-slide');
+                if (!slide) return;
+
+                this.checkSetupStep = -1;
+                this.maxCheckSetupStep = 3;
+
+                slide.addEventListener('click', (e) => {
+                    if (e.target.closest('.nav-dots')) return;
+                    this.advanceCheckSetupStep();
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (this.currentSlide !== Array.from(this.slides).indexOf(slide)) return;
+                    if (e.key === ' ' || e.key === 'ArrowRight') {
+                        if (this.checkSetupStep < this.maxCheckSetupStep) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.advanceCheckSetupStep();
+                        }
+                    }
+                });
+
+                // Add click hint
+                const hint = document.createElement('div');
+                hint.className = 'click-hint';
+                hint.innerHTML = '<span>Click to reveal each step</span>';
+                hint.style.cssText = `
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    font-size: 0.85rem;
+                    color: var(--text-muted);
+                    opacity: 0;
+                    transition: opacity 0.5s ease;
+                    pointer-events: none;
+                `;
+                slide.querySelector('.slide-inner').appendChild(hint);
+            }
+
+            advanceCheckSetupStep() {
+                const svg = document.getElementById('coordPlaneC');
+                const stepBoxes = document.querySelectorAll('#check-setup-slide .step-box');
+                const hint = document.querySelector('#check-setup-slide .click-hint');
+                const refLabel = document.querySelector('#check-setup-slide .ref-angle-label');
+
+                if (!svg) return;
+
+                if (this.checkSetupStep < this.maxCheckSetupStep) {
+                    this.checkSetupStep++;
+
+                    svg.classList.add(`step-${this.checkSetupStep}`);
+
+                    if (stepBoxes[this.checkSetupStep]) {
+                        stepBoxes[this.checkSetupStep].classList.add('active');
+                    }
+
+                    // Show reference angle label at step 3
+                    if (this.checkSetupStep === 3 && refLabel) {
+                        refLabel.style.opacity = '1';
+                    }
+
+                    if (hint && this.checkSetupStep > 0) {
+                        hint.style.opacity = '0';
+                    }
+                }
+            }
+
+            resetCheckSetup() {
+                const svg = document.getElementById('coordPlaneC');
+                const stepBoxes = document.querySelectorAll('#check-setup-slide .step-box');
+                const hint = document.querySelector('#check-setup-slide .click-hint');
+                const refLabel = document.querySelector('#check-setup-slide .ref-angle-label');
+
+                if (svg) svg.className = 'coord-plane-svg';
+                stepBoxes.forEach(box => box.classList.remove('active'));
+                if (hint) hint.style.opacity = '1';
+                if (refLabel) refLabel.style.opacity = '0';
+                this.checkSetupStep = -1;
+            }
+
+            animateCheckSetup() {
+                this.resetCheckSetup();
+                setTimeout(() => {
+                    const hint = document.querySelector('#check-setup-slide .click-hint');
+                    if (hint) hint.style.opacity = '1';
+                }, 500);
+            }
+
+            /* ===========================================
+               ARC LENGTH SLIDE CLICK-TO-ADVANCE
+               =========================================== */
+            setupArcLengthAnimation() {
+                const slide = document.getElementById('arc-length-slide');
+                if (!slide) return;
+
+                this.arcLengthStep = -1;
+                this.maxArcLengthStep = 3;
+
+                slide.addEventListener('click', (e) => {
+                    if (e.target.closest('.nav-dots')) return;
+                    this.advanceArcLengthStep();
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (this.currentSlide !== Array.from(this.slides).indexOf(slide)) return;
+                    if (e.key === ' ' || e.key === 'ArrowRight') {
+                        if (this.arcLengthStep < this.maxArcLengthStep) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.advanceArcLengthStep();
+                        }
+                    }
+                });
+
+                const hint = document.createElement('div');
+                hint.className = 'click-hint';
+                hint.innerHTML = '<span>Click to reveal each step</span>';
+                hint.style.cssText = `
+                    position: absolute; bottom: 1rem; left: 50%;
+                    transform: translateX(-50%); font-size: 0.85rem;
+                    color: var(--text-muted); opacity: 0;
+                    transition: opacity 0.5s ease; pointer-events: none;
+                `;
+                slide.querySelector('.slide-inner').appendChild(hint);
+            }
+
+            advanceArcLengthStep() {
+                const svg = document.getElementById('arcLengthSvg');
+                const stepBoxes = document.querySelectorAll('#arc-length-slide .step-box');
+                const hint = document.querySelector('#arc-length-slide .click-hint');
+
+                if (!svg || this.arcLengthStep >= this.maxArcLengthStep) return;
+
+                this.arcLengthStep++;
+                svg.classList.add(`step-${this.arcLengthStep}`);
+
+                if (stepBoxes[this.arcLengthStep]) {
+                    stepBoxes[this.arcLengthStep].classList.add('active');
+                }
+
+                if (hint && this.arcLengthStep > 0) {
+                    hint.style.opacity = '0';
+                }
+            }
+
+            resetArcLengthSlide() {
+                const svg = document.getElementById('arcLengthSvg');
+                const stepBoxes = document.querySelectorAll('#arc-length-slide .step-box');
+                const hint = document.querySelector('#arc-length-slide .click-hint');
+
+                if (svg) {
+                    for (let i = 0; i <= this.maxArcLengthStep; i++) {
+                        svg.classList.remove(`step-${i}`);
+                    }
+                }
+
+                stepBoxes.forEach(box => box.classList.remove('active'));
+                if (hint) hint.style.opacity = '1';
+                this.arcLengthStep = -1;
+            }
+
+            animateArcLength() {
+                this.resetArcLengthSlide();
+                setTimeout(() => {
+                    const hint = document.querySelector('#arc-length-slide .click-hint');
+                    if (hint) hint.style.opacity = '1';
+                }, 500);
+            }
+
+            /* ===========================================
+               WORD PROBLEM SLIDE CLICK-TO-ADVANCE
+               =========================================== */
+            setupWordProblemAnimation() {
+                const slide = document.getElementById('word-problem-slide');
+                if (!slide) return;
+
+                this.wordProblemStep = -1;
+                this.maxWordProblemStep = 3;
+
+                slide.addEventListener('click', (e) => {
+                    if (e.target.closest('.nav-dots')) return;
+                    this.advanceWordProblemStep();
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (this.currentSlide !== Array.from(this.slides).indexOf(slide)) return;
+                    if (e.key === ' ' || e.key === 'ArrowRight') {
+                        if (this.wordProblemStep < this.maxWordProblemStep) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.advanceWordProblemStep();
+                        }
+                    }
+                });
+
+                const hint = document.createElement('div');
+                hint.className = 'click-hint';
+                hint.innerHTML = '<span>Click to reveal each step</span>';
+                hint.style.cssText = `
+                    position: absolute; bottom: 1rem; left: 50%;
+                    transform: translateX(-50%); font-size: 0.85rem;
+                    color: var(--text-muted); opacity: 0;
+                    transition: opacity 0.5s ease; pointer-events: none;
+                `;
+                slide.querySelector('.slide-inner').appendChild(hint);
+            }
+
+            advanceWordProblemStep() {
+                const svg = document.getElementById('wordProblemSvg');
+                const stepBoxes = document.querySelectorAll('#word-problem-slide .step-box');
+                const hint = document.querySelector('#word-problem-slide .click-hint');
+
+                if (!svg || this.wordProblemStep >= this.maxWordProblemStep) return;
+
+                this.wordProblemStep++;
+                svg.classList.add(`step-${this.wordProblemStep}`);
+
+                if (stepBoxes[this.wordProblemStep]) {
+                    stepBoxes[this.wordProblemStep].classList.add('active');
+                }
+
+                if (hint && this.wordProblemStep > 0) {
+                    hint.style.opacity = '0';
+                }
+            }
+
+            resetWordProblemSlide() {
+                const svg = document.getElementById('wordProblemSvg');
+                const stepBoxes = document.querySelectorAll('#word-problem-slide .step-box');
+                const hint = document.querySelector('#word-problem-slide .click-hint');
+
+                if (svg) {
+                    for (let i = 0; i <= this.maxWordProblemStep; i++) {
+                        svg.classList.remove(`step-${i}`);
+                    }
+                }
+
+                stepBoxes.forEach(box => box.classList.remove('active'));
+                if (hint) hint.style.opacity = '1';
+                this.wordProblemStep = -1;
+            }
+
+            animateWordProblem() {
+                this.resetWordProblemSlide();
+                setTimeout(() => {
+                    const hint = document.querySelector('#word-problem-slide .click-hint');
+                    if (hint) hint.style.opacity = '1';
+                }, 500);
+            }
+
+            /* ===========================================
+               CLICK-TO-REVEAL ANSWERS
+               =========================================== */
+            setupClickRevealAnswers() {
+                const grids = document.querySelectorAll('.answer-grid.click-reveal');
+
+                grids.forEach(grid => {
+                    const items = grid.querySelectorAll('.answer-item');
+                    items.forEach(item => {
+                        item.addEventListener('click', () => {
+                            item.classList.toggle('revealed');
+                        });
+                    });
+                });
+            }
+
+            /* ===========================================
+               INTERACTIVE TROUBLE SPOTS (Quick Check)
+               =========================================== */
+            setupTroubleSpots() {
+                const buttons = document.querySelectorAll('.trouble-btn');
+                const countEl = document.getElementById('troubleCount');
+                if (!buttons.length) return;
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        btn.classList.toggle('starred');
+                        this.updateTroubleCount();
+                    });
+                });
+            }
+
+            updateTroubleCount() {
+                const starred = document.querySelectorAll('.trouble-btn.starred');
+                const countEl = document.getElementById('troubleCount');
+                if (!countEl) return;
+
+                if (starred.length === 0) {
+                    countEl.textContent = '';
+                    countEl.classList.remove('has-items');
+                } else {
+                    const letters = Array.from(starred).map(b => b.dataset.problem).join(', ');
+                    countEl.textContent = `Trouble spots: ${letters}`;
+                    countEl.classList.add('has-items');
+                }
+            }
+
+            /* ===========================================
+               INTERACTIVE CHECKLIST WITH LOCAL STORAGE
+               =========================================== */
+            setupInteractiveChecklist() {
+                const checklist = document.getElementById('asyncChecklist');
+                if (!checklist) return;
+
+                const items = checklist.querySelectorAll('li[data-task]');
+                const storageKey = 'trig-review-checklist-v2';
+
+                // Load saved state
+                let saved = {};
+                try {
+                    saved = JSON.parse(localStorage.getItem(storageKey)) || {};
+                } catch (e) { /* ignore */ }
+
+                // Apply saved state
+                items.forEach(item => {
+                    const taskId = item.dataset.task;
+                    if (saved[taskId]) {
+                        item.classList.add('checked');
+                    }
+
+                    item.addEventListener('click', () => {
+                        item.classList.toggle('checked');
+
+                        // Save state
+                        const state = {};
+                        items.forEach(i => {
+                            if (i.classList.contains('checked')) {
+                                state[i.dataset.task] = true;
+                            }
+                        });
+                        localStorage.setItem(storageKey, JSON.stringify(state));
+
+                        this.updateChecklistProgress();
+                    });
+                });
+
+                this.updateChecklistProgress();
+            }
+
+            updateChecklistProgress() {
+                const checklist = document.getElementById('asyncChecklist');
+                if (!checklist) return;
+
+                const total = checklist.querySelectorAll('li[data-task]').length;
+                const checked = checklist.querySelectorAll('li.checked').length;
+                const pct = Math.round((checked / total) * 100);
+
+                const fill = document.getElementById('checklistFill');
+                const text = document.getElementById('checklistText');
+
+                if (fill) fill.style.width = `${pct}%`;
+                if (text) text.textContent = `${checked} of ${total} complete`;
+            }
+
+            /* ===========================================
+               HELP OVERLAY
+               =========================================== */
+            setupHelpOverlay() {
+                const overlay = document.getElementById('helpOverlay');
+                if (!overlay) return;
+
+                // Close on click outside panel
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        overlay.classList.remove('visible');
+                    }
+                });
+            }
+
+            toggleHelp() {
+                const overlay = document.getElementById('helpOverlay');
+                if (overlay) {
+                    overlay.classList.toggle('visible');
+                }
+            }
+        }
+
+        /* Initialize on DOM ready */
+        document.addEventListener('DOMContentLoaded', () => {
+            new SlidePresentation();
+        });
+    </script>
+</body>
+</html>
