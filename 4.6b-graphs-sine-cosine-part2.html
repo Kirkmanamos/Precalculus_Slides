@@ -1,0 +1,1743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.6b Graphs of Sine and Cosine, Part 2</title>
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=general-sans@400,500,600&display=swap">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Change these to change the whole look
+           =========================================== */
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888aa;
+            --text-muted: #555577;
+            --accent: #00e5a0;
+            --accent-glow: rgba(0, 229, 160, 0.4);
+            --accent-dim: rgba(0, 229, 160, 0.15);
+
+            /* Transformation colors */
+            --color-amplitude: #fbbf24;
+            --color-period: #22d3ee;
+            --color-phase: #f472b6;
+            --color-vertical: #00e5a0;
+
+            /* Typography */
+            --font-display: 'Cabinet Grotesk', sans-serif;
+            --font-body: 'General Sans', sans-serif;
+            --font-mono: 'SF Mono', 'Monaco', 'Consolas', 'Menlo', monospace;
+
+            /* Spacing */
+            --slide-padding: clamp(1.5rem, 4vw, 3.5rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --duration-normal: 0.6s;
+        }
+
+        /* ===========================================
+           BASE STYLES
+           =========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(22, 33, 62, 0.8) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(30, 20, 50, 0.6) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--color-period));
+            box-shadow: 0 0 10px var(--accent-glow);
+            z-index: 100;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ===========================================
+           NAVIGATION DOTS
+           =========================================== */
+        .nav-dots {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .nav-dot:hover {
+            background: var(--text-secondary);
+            transform: scale(1.3);
+        }
+
+        .nav-dot.active {
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent-glow);
+            transform: scale(1.3);
+        }
+
+        /* ===========================================
+           KEYBOARD HINT
+           =========================================== */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            z-index: 100;
+            opacity: 0.6;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border: 1px solid var(--text-muted);
+            border-radius: 3px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           =========================================== */
+        .slide {
+            min-height: 100vh;
+            padding: var(--slide-padding);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* ===========================================
+           ANIMATIONS
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(1) { transition-delay: 0.1s; }
+        .reveal:nth-child(2) { transition-delay: 0.2s; }
+        .reveal:nth-child(3) { transition-delay: 0.3s; }
+        .reveal:nth-child(4) { transition-delay: 0.4s; }
+        .reveal:nth-child(5) { transition-delay: 0.5s; }
+        .reveal:nth-child(6) { transition-delay: 0.6s; }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        .unit-label {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent-glow);
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(2.4rem, 5vw, 4.2rem);
+            line-height: 1.1;
+            color: #ffffff;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            line-height: 1.2;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .neon {
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow), 0 0 40px rgba(0, 229, 160, 0.15);
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .math { font-family: var(--font-mono); }
+
+        /* ===========================================
+           TITLE SLIDE
+           =========================================== */
+        .title-slide {
+            text-align: center;
+            align-items: center;
+        }
+
+        .title-wave {
+            margin-top: 2.5rem;
+            filter: drop-shadow(0 0 8px var(--accent-glow));
+        }
+
+        /* ===========================================
+           CONTENT CARDS
+           =========================================== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* ===========================================
+           COLOR-CODED TAGS
+           =========================================== */
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .tag-amplitude {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--color-amplitude);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+        .tag-period {
+            background: rgba(34, 211, 238, 0.15);
+            color: var(--color-period);
+            border: 1px solid rgba(34, 211, 238, 0.3);
+        }
+        .tag-phase {
+            background: rgba(244, 114, 182, 0.15);
+            color: var(--color-phase);
+            border: 1px solid rgba(244, 114, 182, 0.3);
+        }
+        .tag-vertical {
+            background: rgba(0, 229, 160, 0.15);
+            color: var(--color-vertical);
+            border: 1px solid rgba(0, 229, 160, 0.3);
+        }
+
+        /* ===========================================
+           SVG GRAPH STYLES
+           =========================================== */
+        .graph-container {
+            display: flex;
+            justify-content: center;
+            margin: 0.5rem 0;
+        }
+
+        .graph-svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .graph-svg .grid-line {
+            stroke: rgba(255, 255, 255, 0.06);
+            stroke-width: 0.5;
+        }
+
+        .graph-svg .tick-label {
+            font-size: 10px;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+        }
+
+        .graph-svg .curve-main {
+            stroke: var(--accent);
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 4px var(--accent-glow));
+        }
+
+        .graph-svg .curve-repeat {
+            stroke: var(--accent);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            opacity: 0.4;
+        }
+
+        .graph-svg .key-point {
+            fill: var(--bg-primary);
+            stroke: var(--accent);
+            stroke-width: 2.5;
+        }
+
+        .graph-svg .point-label-text {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            fill: var(--accent);
+            text-anchor: middle;
+        }
+
+        /* Point type labels (max, mid, min) */
+        .point-tag {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 11px;
+            text-anchor: middle;
+        }
+
+        .point-tag.max { fill: var(--color-amplitude); }
+        .point-tag.min { fill: var(--color-phase); }
+        .point-tag.mid { fill: var(--text-secondary); }
+
+        /* ===========================================
+           TWO-COLUMN LAYOUT
+           =========================================== */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .col-label {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ===========================================
+           T-TABLES (VERTICAL)
+           =========================================== */
+        .t-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .t-table th {
+            padding: 0.4rem 0.6rem;
+            text-align: center;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .t-table td {
+            padding: 0.35rem 0.6rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+        }
+
+        .t-table .header-x { color: var(--color-period); }
+        .t-table .header-y { color: var(--color-amplitude); }
+        .t-table .label-col { color: var(--text-muted); font-size: 0.75rem; }
+
+        /* ===========================================
+           HORIZONTAL T-TABLE (under graphs)
+           =========================================== */
+        .h-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        .h-table th {
+            padding: 0.4rem 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            border-right: 2px solid rgba(255, 255, 255, 0.1);
+            width: 35px;
+        }
+
+        .h-table td {
+            padding: 0.4rem 0.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .h-table tr:first-child td,
+        .h-table tr:first-child th {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* ===========================================
+           5-COLUMN STEPS GRID (Slide 4)
+           =========================================== */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.8rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .step-column {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .step-column-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step-circle {
+            flex-shrink: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--bg-primary);
+        }
+
+        .step-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #ffffff;
+        }
+
+        .step-desc {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.6rem;
+        }
+
+        .formula-display {
+            font-family: var(--font-mono);
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+
+        .mini-table th {
+            padding: 0.3rem 0.3rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.68rem;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .mini-table td {
+            padding: 0.25rem 0.3rem;
+            text-align: center;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            font-size: 0.7rem;
+        }
+
+        .callout-box {
+            padding: 0.6rem 0.8rem;
+            border-left: 3px solid var(--accent);
+            background: rgba(0, 229, 160, 0.06);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.78rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .param-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.78rem;
+        }
+
+        .param-label {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            min-width: 20px;
+        }
+
+        .param-equals {
+            color: var(--text-muted);
+        }
+
+        .param-value {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        /* ===========================================
+           WORKED EXAMPLE SLIDES
+           =========================================== */
+        .example-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: auto auto;
+            gap: 1rem 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .analysis-side {
+            grid-row: 1 / 3;
+        }
+
+        .graph-side {
+            grid-row: 1;
+            grid-column: 2;
+        }
+
+        .table-side {
+            grid-row: 2;
+            grid-column: 2;
+        }
+
+        .example-function {
+            font-family: var(--font-mono);
+            font-size: 1.4rem;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .analysis-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .analysis-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .analysis-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            min-width: 65px;
+        }
+
+        .analysis-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #ffffff;
+        }
+
+        /* ===========================================
+           CLICK-TO-ADVANCE
+           =========================================== */
+        .step-box {
+            opacity: 0;
+            transform: translateX(-12px);
+            transition: all 0.5s var(--ease-out-expo);
+            pointer-events: none;
+        }
+
+        .step-box.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        /* SVG step groups: no transform, just fade */
+        svg .step-box {
+            transform: none;
+            transition: opacity 0.5s var(--ease-out-expo);
+        }
+
+        svg .step-box.active {
+            transform: none;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s;
+        }
+
+        .click-hint.hidden { opacity: 0; }
+
+        /* ===========================================
+           QUESTIONS / CLOSING SLIDES
+           =========================================== */
+        .center-slide {
+            text-align: center;
+            align-items: center;
+        }
+
+        .big-question {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            color: #ffffff;
+        }
+
+        .homework-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .homework-card h3 {
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
+            margin-bottom: 0.75rem;
+        }
+
+        .homework-card p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        /* ===========================================
+           RESPONSIVE
+           =========================================== */
+        @media (max-width: 768px) {
+            .nav-dots, .keyboard-hint { display: none; }
+            .two-col { grid-template-columns: 1fr; }
+            .example-layout { grid-template-columns: 1fr; }
+            .steps-grid { grid-template-columns: 1fr 1fr; }
+            .slide { padding: 1.5rem; }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: opacity 0.3s ease; transform: none; }
+            .step-box { transition: opacity 0.3s ease; transform: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progressBar"></div>
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+    <div class="keyboard-hint">
+        <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate
+    </div>
+
+    <!-- =============================================
+         SLIDE 1: TITLE
+         ============================================= -->
+    <section class="slide title-slide" id="slide-1">
+        <div class="unit-label reveal">Unit 4 &middot; Lesson 6b</div>
+        <h1 class="reveal">Graphs of <span class="neon">Sine &amp; Cosine</span></h1>
+        <p class="subtitle reveal" style="margin-top: 0.75rem;">Part 2: Transformations, T-Tables &amp; Graphing by Hand</p>
+        <div class="reveal" style="margin-top: 2.5rem;">
+            <svg class="title-wave" width="420" height="100" viewBox="-10 -5 420 110" aria-hidden="true">
+                <defs>
+                    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00e5a0"/>
+                        <stop offset="100%" stop-color="#22d3ee"/>
+                    </linearGradient>
+                </defs>
+                <line x1="0" y1="50" x2="400" y2="50" stroke="#555577" stroke-width="1"/>
+                <path id="title-curve" d="" stroke="url(#titleGrad)" stroke-width="2.5" fill="none" stroke-linecap="round" class="title-wave-path"/>
+                <circle cx="0" cy="50" r="5" fill="#00e5a0" class="title-dot"/>
+                <circle cx="100" cy="5" r="5" fill="#00e5a0" class="title-dot"/>
+                <circle cx="200" cy="50" r="5" fill="#00e5a0" class="title-dot"/>
+                <circle cx="300" cy="95" r="5" fill="#00e5a0" class="title-dot"/>
+                <circle cx="400" cy="50" r="5" fill="#00e5a0" class="title-dot"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 2: 5 KEY POINTS (PARENT GRAPHS)
+         ============================================= -->
+    <section class="slide" id="slide-2">
+        <h2 class="reveal">The <span class="neon">5 Key Points</span> of Sine &amp; Cosine</h2>
+        <p class="subtitle reveal" style="margin-bottom: 1.5rem;">The key to graphing any sine or cosine curve is knowing these points from the parent graphs.</p>
+
+        <div class="two-col reveal">
+            <!-- SINE PARENT -->
+            <div class="card">
+                <div class="col-label">y = <span class="neon">sin</span> x</div>
+                <div class="graph-container">
+                    <svg class="graph-svg" width="380" height="220" viewBox="-40 -30 420 230">
+                        <!-- Grid -->
+                        <line class="grid-line" x1="0" y1="0" x2="0" y2="160"/>
+                        <line class="grid-line" x1="80" y1="0" x2="80" y2="160"/>
+                        <line class="grid-line" x1="160" y1="0" x2="160" y2="160"/>
+                        <line class="grid-line" x1="240" y1="0" x2="240" y2="160"/>
+                        <line class="grid-line" x1="320" y1="0" x2="320" y2="160"/>
+                        <line class="grid-line" x1="0" y1="0" x2="320" y2="0"/>
+                        <line class="grid-line" x1="0" y1="80" x2="320" y2="80"/>
+                        <line class="grid-line" x1="0" y1="160" x2="320" y2="160"/>
+                        <!-- Axes -->
+                        <line x1="-20" y1="80" x2="350" y2="80" stroke="#555577" stroke-width="1.5"/>
+                        <line x1="0" y1="-10" x2="0" y2="180" stroke="#555577" stroke-width="1.5"/>
+                        <polygon points="350,80 342,76 342,84" fill="#555577"/>
+                        <polygon points="0,-10 -4,-2 4,-2" fill="#555577"/>
+                        <text x="358" y="84" fill="#8888aa" font-size="12">x</text>
+                        <text x="8" y="-4" fill="#8888aa" font-size="12">y</text>
+                        <!-- Tick labels -->
+                        <text class="tick-label" x="80" y="100">&#960;/2</text>
+                        <text class="tick-label" x="160" y="100">&#960;</text>
+                        <text class="tick-label" x="240" y="100">3&#960;/2</text>
+                        <text class="tick-label" x="320" y="100">2&#960;</text>
+                        <text class="tick-label" x="-18" y="5" text-anchor="end">1</text>
+                        <text class="tick-label" x="-18" y="165" text-anchor="end">-1</text>
+                        <!-- Curve (filled by JS) -->
+                        <path id="parent-sin-curve" d="" class="curve-main"/>
+                        <!-- Key points -->
+                        <circle cx="0" cy="80" r="6" class="key-point"/>
+                        <circle cx="80" cy="0" r="6" class="key-point"/>
+                        <circle cx="160" cy="80" r="6" class="key-point"/>
+                        <circle cx="240" cy="160" r="6" class="key-point"/>
+                        <circle cx="320" cy="80" r="6" class="key-point"/>
+                        <!-- Labels: max/mid/min -->
+                        <text class="point-tag mid" x="0" y="70">mid</text>
+                        <text class="point-tag max" x="80" y="-12">max</text>
+                        <text class="point-tag mid" x="160" y="70">mid</text>
+                        <text class="point-tag min" x="240" y="180">min</text>
+                        <text class="point-tag mid" x="320" y="70">mid</text>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- COSINE PARENT -->
+            <div class="card">
+                <div class="col-label">y = <span class="neon">cos</span> x</div>
+                <div class="graph-container">
+                    <svg class="graph-svg" width="380" height="220" viewBox="-40 -30 420 230">
+                        <line class="grid-line" x1="0" y1="0" x2="0" y2="160"/>
+                        <line class="grid-line" x1="80" y1="0" x2="80" y2="160"/>
+                        <line class="grid-line" x1="160" y1="0" x2="160" y2="160"/>
+                        <line class="grid-line" x1="240" y1="0" x2="240" y2="160"/>
+                        <line class="grid-line" x1="320" y1="0" x2="320" y2="160"/>
+                        <line class="grid-line" x1="0" y1="0" x2="320" y2="0"/>
+                        <line class="grid-line" x1="0" y1="80" x2="320" y2="80"/>
+                        <line class="grid-line" x1="0" y1="160" x2="320" y2="160"/>
+                        <line x1="-20" y1="80" x2="350" y2="80" stroke="#555577" stroke-width="1.5"/>
+                        <line x1="0" y1="-10" x2="0" y2="180" stroke="#555577" stroke-width="1.5"/>
+                        <polygon points="350,80 342,76 342,84" fill="#555577"/>
+                        <polygon points="0,-10 -4,-2 4,-2" fill="#555577"/>
+                        <text x="358" y="84" fill="#8888aa" font-size="12">x</text>
+                        <text x="8" y="-4" fill="#8888aa" font-size="12">y</text>
+                        <text class="tick-label" x="80" y="100">&#960;/2</text>
+                        <text class="tick-label" x="160" y="100">&#960;</text>
+                        <text class="tick-label" x="240" y="100">3&#960;/2</text>
+                        <text class="tick-label" x="320" y="100">2&#960;</text>
+                        <text class="tick-label" x="-18" y="5" text-anchor="end">1</text>
+                        <text class="tick-label" x="-18" y="165" text-anchor="end">-1</text>
+                        <path id="parent-cos-curve" d="" class="curve-main"/>
+                        <circle cx="0" cy="0" r="6" class="key-point"/>
+                        <circle cx="80" cy="80" r="6" class="key-point"/>
+                        <circle cx="160" cy="160" r="6" class="key-point"/>
+                        <circle cx="240" cy="80" r="6" class="key-point"/>
+                        <circle cx="320" cy="0" r="6" class="key-point"/>
+                        <text class="point-tag max" x="0" y="-12">max</text>
+                        <text class="point-tag mid" x="80" y="70">mid</text>
+                        <text class="point-tag min" x="160" y="180">min</text>
+                        <text class="point-tag mid" x="240" y="70">mid</text>
+                        <text class="point-tag max" x="320" y="-12">max</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 3: T-TABLES FOR PARENT GRAPHS
+         ============================================= -->
+    <section class="slide" id="slide-3">
+        <h2 class="reveal">Parent Graph <span class="neon">T-Tables</span></h2>
+        <p class="subtitle reveal" style="margin-bottom: 2rem;">Memorize these 5 key points &mdash; every transformation starts here.</p>
+
+        <div class="two-col reveal">
+            <div class="card">
+                <div class="col-label">y = sin x</div>
+                <table class="t-table">
+                    <thead><tr><th class="header-x">x</th><th class="header-y">y</th><th class="label-col">type</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>0</td><td class="label-col">mid</td></tr>
+                        <tr><td>&#960;/2</td><td>1</td><td class="label-col">max</td></tr>
+                        <tr><td>&#960;</td><td>0</td><td class="label-col">mid</td></tr>
+                        <tr><td>3&#960;/2</td><td>&minus;1</td><td class="label-col">min</td></tr>
+                        <tr><td>2&#960;</td><td>0</td><td class="label-col">mid</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card">
+                <div class="col-label">y = cos x</div>
+                <table class="t-table">
+                    <thead><tr><th class="header-x">x</th><th class="header-y">y</th><th class="label-col">type</th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>1</td><td class="label-col">max</td></tr>
+                        <tr><td>&#960;/2</td><td>0</td><td class="label-col">mid</td></tr>
+                        <tr><td>&#960;</td><td>&minus;1</td><td class="label-col">min</td></tr>
+                        <tr><td>3&#960;/2</td><td>0</td><td class="label-col">mid</td></tr>
+                        <tr><td>2&#960;</td><td>1</td><td class="label-col">max</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 4: STEPS FOR GRAPHING (5 Columns)
+         ============================================= -->
+    <section class="slide" id="slide-4">
+        <h2 class="reveal">Steps for <span class="neon">Graphing</span></h2>
+        <div class="formula-display reveal">
+            y = <span style="color:var(--color-amplitude)">a</span> sin(<span style="color:var(--color-period)">b</span>(x &minus; <span style="color:var(--color-phase)">c</span>)) + <span style="color:var(--color-vertical)">d</span>
+        </div>
+
+        <div class="steps-grid reveal">
+            <!-- COLUMN 1: T-TABLE -->
+            <div class="step-column">
+                <div class="step-column-header">
+                    <span class="step-circle" style="background: #e8e8f0;">1</span>
+                    <span class="step-title">T-TABLE</span>
+                </div>
+                <p class="step-desc">Write down the 5 key points for the parent graph.</p>
+                <table class="mini-table">
+                    <thead><tr><th class="header-x">x</th><th class="header-y">y</th><th style="color:var(--text-muted)"></th></tr></thead>
+                    <tbody>
+                        <tr><td>0</td><td>0</td><td style="color:var(--text-muted);font-size:0.65rem">mid</td></tr>
+                        <tr><td>&#960;/2</td><td>1</td><td style="color:var(--text-muted);font-size:0.65rem">max</td></tr>
+                        <tr><td>&#960;</td><td>0</td><td style="color:var(--text-muted);font-size:0.65rem">mid</td></tr>
+                        <tr><td>3&#960;/2</td><td>&minus;1</td><td style="color:var(--text-muted);font-size:0.65rem">min</td></tr>
+                        <tr><td>2&#960;</td><td>0</td><td style="color:var(--text-muted);font-size:0.65rem">mid</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COLUMN 2: ANALYZE -->
+            <div class="step-column">
+                <div class="step-column-header">
+                    <span class="step-circle" style="background: var(--color-period);">2</span>
+                    <span class="step-title">ANALYZE</span>
+                </div>
+                <p class="step-desc">Identify the transformations:</p>
+                <div class="param-row">
+                    <span class="tag tag-amplitude" style="font-size:0.68rem;padding:0.2rem 0.5rem;">|a|</span>
+                    <span class="param-equals">=</span>
+                    <span class="param-value">amplitude</span>
+                </div>
+                <div class="param-row">
+                    <span class="tag tag-period" style="font-size:0.68rem;padding:0.2rem 0.5rem;">2&#960;/|b|</span>
+                    <span class="param-equals">=</span>
+                    <span class="param-value">period</span>
+                </div>
+                <div class="param-row">
+                    <span class="tag tag-phase" style="font-size:0.68rem;padding:0.2rem 0.5rem;">c</span>
+                    <span class="param-equals">=</span>
+                    <span class="param-value">phase shift</span>
+                </div>
+                <div class="param-row">
+                    <span class="tag tag-vertical" style="font-size:0.68rem;padding:0.2rem 0.5rem;">d</span>
+                    <span class="param-equals">=</span>
+                    <span class="param-value">vertical shift</span>
+                </div>
+                <p class="step-desc" style="margin-top:0.4rem;font-size:0.72rem;color:var(--color-amplitude);">If a &lt; 0: reflect over x-axis</p>
+            </div>
+
+            <!-- COLUMN 3: NEW X -->
+            <div class="step-column">
+                <div class="step-column-header">
+                    <span class="step-circle" style="background: var(--color-phase);">3</span>
+                    <span class="step-title">NEW X</span>
+                </div>
+                <p class="step-desc">Use <span style="color:var(--color-period)">period</span> then <span style="color:var(--color-phase)">phase shift</span> to adjust x-coordinates.</p>
+                <table class="mini-table">
+                    <thead><tr><th colspan="1" style="color:var(--color-period);font-size:0.65rem;">x &middot; (1/b) + c</th></tr></thead>
+                    <tbody>
+                        <tr><td>0 &middot; (1/b) + c</td></tr>
+                        <tr><td>&#960;/2 &middot; (1/b) + c</td></tr>
+                        <tr><td>&#960; &middot; (1/b) + c</td></tr>
+                        <tr><td>3&#960;/2 &middot; (1/b) + c</td></tr>
+                        <tr><td>2&#960; &middot; (1/b) + c</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COLUMN 4: NEW Y -->
+            <div class="step-column">
+                <div class="step-column-header">
+                    <span class="step-circle" style="background: var(--color-amplitude);">4</span>
+                    <span class="step-title">NEW Y</span>
+                </div>
+                <p class="step-desc">Use <span style="color:var(--color-amplitude)">amplitude</span> then <span style="color:var(--color-vertical)">vertical shift</span> to adjust y-coordinates.</p>
+                <table class="mini-table">
+                    <thead><tr><th colspan="1" style="color:var(--color-amplitude);font-size:0.65rem;">y &middot; a + d</th></tr></thead>
+                    <tbody>
+                        <tr><td>0 &middot; a + d</td></tr>
+                        <tr><td>1 &middot; a + d</td></tr>
+                        <tr><td>0 &middot; a + d</td></tr>
+                        <tr><td>(&minus;1) &middot; a + d</td></tr>
+                        <tr><td>0 &middot; a + d</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COLUMN 5: GRAPH -->
+            <div class="step-column">
+                <div class="step-column-header">
+                    <span class="step-circle" style="background: #8b5cf6;">5</span>
+                    <span class="step-title">GRAPH</span>
+                </div>
+                <p class="step-desc">Set up axes and scale appropriately.</p>
+                <p class="step-desc">Plot the 5 transformed points.</p>
+                <p class="step-desc">Connect with a smooth curve.</p>
+                <p class="step-desc">Repeat the pattern for additional periods.</p>
+                <div class="callout-box">
+                    The order matters:<br>
+                    <strong>multiply before<br>add/subtract!</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 5: EXAMPLE 1 — y = 3 sin(x/2)
+         ============================================= -->
+    <section class="slide" id="slide-5" data-click-steps="7">
+        <div class="example-function reveal">y = 3 sin(x/2)</div>
+
+        <div class="example-layout">
+            <!-- LEFT: Analysis -->
+            <div class="analysis-side">
+                <div class="analysis-panel reveal">
+                    <div class="step-box step-0">
+                        <h3 style="font-size:0.95rem;">Parent: y = sin x</h3>
+                        <table class="t-table" style="font-size:0.78rem;">
+                            <thead><tr><th class="header-x">x</th><th class="header-y">y</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>0</td></tr>
+                                <tr><td>&#960;/2</td><td>1</td></tr>
+                                <tr><td>&#960;</td><td>0</td></tr>
+                                <tr><td>3&#960;/2</td><td>&minus;1</td></tr>
+                                <tr><td>2&#960;</td><td>0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="step-box step-1" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.95rem;">Analyze</h3>
+                        <div class="analysis-row">
+                            <span class="analysis-label" style="color:var(--color-amplitude)">Amp</span>
+                            <span class="analysis-value">3</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-period)">Period</span>
+                            <span class="analysis-value">2&#960; / (1/2) = 4&#960;</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-phase)">Phase</span>
+                            <span class="analysis-value">none</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-vertical)">V. Shift</span>
+                            <span class="analysis-value">none</span>
+                        </div>
+                    </div>
+
+                    <div class="step-box step-2" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-period)">New X: multiply by 2</h3>
+                        <p style="font-size:0.75rem;color:var(--text-secondary);">1/b = 1/(1/2) = 2</p>
+                    </div>
+
+                    <div class="step-box step-3" style="margin-top:0.3rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-amplitude)">New Y: multiply by 3</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Graph -->
+            <div class="graph-side reveal">
+                <div class="graph-container">
+                    <svg class="graph-svg" id="ex1-svg" width="560" height="300" viewBox="-50 -30 560 310">
+                        <!-- Grid: x-axis 60px per &#960;, y-axis 40px per unit -->
+                        <!-- Vertical grid at &#960; intervals -->
+                        <line class="grid-line" x1="0" y1="0" x2="0" y2="280"/>
+                        <line class="grid-line" x1="60" y1="0" x2="60" y2="280"/>
+                        <line class="grid-line" x1="120" y1="0" x2="120" y2="280"/>
+                        <line class="grid-line" x1="180" y1="0" x2="180" y2="280"/>
+                        <line class="grid-line" x1="240" y1="0" x2="240" y2="280"/>
+                        <line class="grid-line" x1="300" y1="0" x2="300" y2="280"/>
+                        <line class="grid-line" x1="360" y1="0" x2="360" y2="280"/>
+                        <line class="grid-line" x1="420" y1="0" x2="420" y2="280"/>
+                        <line class="grid-line" x1="480" y1="0" x2="480" y2="280"/>
+                        <!-- Horizontal grid at unit intervals -->
+                        <line class="grid-line" x1="0" y1="20" x2="480" y2="20"/>
+                        <line class="grid-line" x1="0" y1="60" x2="480" y2="60"/>
+                        <line class="grid-line" x1="0" y1="100" x2="480" y2="100"/>
+                        <line class="grid-line" x1="0" y1="140" x2="480" y2="140"/>
+                        <line class="grid-line" x1="0" y1="180" x2="480" y2="180"/>
+                        <line class="grid-line" x1="0" y1="220" x2="480" y2="220"/>
+                        <line class="grid-line" x1="0" y1="260" x2="480" y2="260"/>
+                        <!-- Axes: center at y=140, 40px per unit -->
+                        <line x1="-30" y1="140" x2="500" y2="140" stroke="#555577" stroke-width="1.5"/>
+                        <line x1="0" y1="-10" x2="0" y2="290" stroke="#555577" stroke-width="1.5"/>
+                        <!-- X ticks -->
+                        <text class="tick-label" x="60" y="156">&#960;</text>
+                        <text class="tick-label" x="120" y="156">2&#960;</text>
+                        <text class="tick-label" x="180" y="156">3&#960;</text>
+                        <text class="tick-label" x="240" y="156">4&#960;</text>
+                        <text class="tick-label" x="300" y="156">5&#960;</text>
+                        <text class="tick-label" x="360" y="156">6&#960;</text>
+                        <text class="tick-label" x="420" y="156">7&#960;</text>
+                        <text class="tick-label" x="480" y="156">8&#960;</text>
+                        <!-- Y ticks -->
+                        <text class="tick-label" x="-12" y="24" text-anchor="end">3</text>
+                        <text class="tick-label" x="-12" y="64" text-anchor="end">2</text>
+                        <text class="tick-label" x="-12" y="104" text-anchor="end">1</text>
+                        <text class="tick-label" x="-12" y="184" text-anchor="end">&minus;1</text>
+                        <text class="tick-label" x="-12" y="224" text-anchor="end">&minus;2</text>
+                        <text class="tick-label" x="-12" y="264" text-anchor="end">&minus;3</text>
+
+                        <!-- First period curve + points: step 5 -->
+                        <g class="step-box step-5">
+                            <path id="ex1-curve-p1" d="" class="curve-main"/>
+                            <!-- Key points: (0,0)→(0,140), (&#960;,3)→(60,20), (2&#960;,0)→(120,140), (3&#960;,-3)→(180,260), (4&#960;,0)→(240,140) -->
+                            <circle cx="0" cy="140" r="5" class="key-point"/>
+                            <circle cx="60" cy="20" r="5" class="key-point"/>
+                            <circle cx="120" cy="140" r="5" class="key-point"/>
+                            <circle cx="180" cy="260" r="5" class="key-point"/>
+                            <circle cx="240" cy="140" r="5" class="key-point"/>
+                            <!-- Period bracket -->
+                            <line x1="0" y1="275" x2="240" y2="275" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <line x1="0" y1="270" x2="0" y2="280" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <line x1="240" y1="270" x2="240" y2="280" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <text x="120" y="293" fill="var(--color-period)" font-size="10" text-anchor="middle" font-family="var(--font-body)">one period (4&#960;)</text>
+                        </g>
+
+                        <!-- Second period: step 6 -->
+                        <g class="step-box step-6">
+                            <path id="ex1-curve-p2" d="" class="curve-repeat"/>
+                            <circle cx="300" cy="20" r="4" class="key-point" style="stroke-width:2;opacity:0.5;"/>
+                            <circle cx="360" cy="140" r="4" class="key-point" style="stroke-width:2;opacity:0.5;"/>
+                            <circle cx="420" cy="260" r="4" class="key-point" style="stroke-width:2;opacity:0.5;"/>
+                            <circle cx="480" cy="140" r="4" class="key-point" style="stroke-width:2;opacity:0.5;"/>
+                            <text x="360" y="293" fill="var(--color-period)" font-size="10" text-anchor="middle" font-family="var(--font-body)" opacity="0.5">repeat</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- BOTTOM RIGHT: Transformed T-Table -->
+            <div class="table-side">
+                <div class="step-box step-4" style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.6rem 0.8rem;">
+                    <h3 style="font-size:0.85rem;margin-bottom:0.4rem;">Transformed T-Table</h3>
+                    <table class="h-table">
+                        <tr><th class="header-x">x</th><td>0</td><td>&#960;</td><td>2&#960;</td><td>3&#960;</td><td>4&#960;</td></tr>
+                        <tr><th class="header-y">y</th><td>0</td><td>3</td><td>0</td><td>&minus;3</td><td>0</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="click-hint" id="hint-5">Click or press <kbd>&rarr;</kbd> to advance &middot; <span class="step-counter">0/7</span></div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 6: EXAMPLE 2 — y = -sin(x + &#960;/2) + 1
+         ============================================= -->
+    <section class="slide" id="slide-6" data-click-steps="6">
+        <div class="example-function reveal">y = &minus;sin(x + &#960;/2) + 1</div>
+
+        <div class="example-layout">
+            <div class="analysis-side">
+                <div class="analysis-panel reveal">
+                    <div class="step-box step-0">
+                        <h3 style="font-size:0.95rem;">Parent: y = sin x</h3>
+                        <table class="t-table" style="font-size:0.78rem;">
+                            <thead><tr><th class="header-x">x</th><th class="header-y">y</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>0</td></tr>
+                                <tr><td>&#960;/2</td><td>1</td></tr>
+                                <tr><td>&#960;</td><td>0</td></tr>
+                                <tr><td>3&#960;/2</td><td>&minus;1</td></tr>
+                                <tr><td>2&#960;</td><td>0</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="step-box step-1" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.95rem;">Analyze</h3>
+                        <div class="analysis-row">
+                            <span class="analysis-label" style="color:var(--color-amplitude)">Amp</span>
+                            <span class="analysis-value">1 (reflected)</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-period)">Period</span>
+                            <span class="analysis-value">2&#960;</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-phase)">Phase</span>
+                            <span class="analysis-value">left &#960;/2</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-vertical)">V. Shift</span>
+                            <span class="analysis-value">up 1</span>
+                        </div>
+                    </div>
+
+                    <div class="step-box step-2" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-phase)">New X: subtract &#960;/2</h3>
+                        <p style="font-size:0.75rem;color:var(--text-secondary);">No stretch (b = 1), shift left &#960;/2</p>
+                    </div>
+
+                    <div class="step-box step-3" style="margin-top:0.3rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-amplitude)">New Y: &times; (&minus;1), then + 1</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Graph -->
+            <!-- Coordinate system: &#960;/2 = 80px, y=0 at py=160, yScale=80 -->
+            <div class="graph-side reveal">
+                <div class="graph-container">
+                    <svg class="graph-svg" id="ex2-svg" width="560" height="280" viewBox="-50 -20 560 280">
+                        <!-- Grid: vertical at &#960;/2 intervals (80px) -->
+                        <line class="grid-line" x1="0" y1="0" x2="0" y2="240"/>
+                        <line class="grid-line" x1="80" y1="0" x2="80" y2="240"/>
+                        <line class="grid-line" x1="160" y1="0" x2="160" y2="240"/>
+                        <line class="grid-line" x1="240" y1="0" x2="240" y2="240"/>
+                        <line class="grid-line" x1="320" y1="0" x2="320" y2="240"/>
+                        <line class="grid-line" x1="400" y1="0" x2="400" y2="240"/>
+                        <line class="grid-line" x1="480" y1="0" x2="480" y2="240"/>
+                        <!-- Horizontal at unit intervals (80px) -->
+                        <line class="grid-line" x1="0" y1="0" x2="480" y2="0"/>
+                        <line class="grid-line" x1="0" y1="80" x2="480" y2="80"/>
+                        <line class="grid-line" x1="0" y1="160" x2="480" y2="160"/>
+                        <line class="grid-line" x1="0" y1="240" x2="480" y2="240"/>
+                        <!-- Axes: y=0 at py=160, x=0 at px=80 -->
+                        <line x1="-30" y1="160" x2="500" y2="160" stroke="#555577" stroke-width="1.5"/>
+                        <line x1="80" y1="-10" x2="80" y2="250" stroke="#555577" stroke-width="1.5"/>
+                        <!-- X ticks: x=-&#960;/2 at px=0, x=0 at px=80, ... -->
+                        <text class="tick-label" x="0" y="176">&minus;&#960;/2</text>
+                        <text class="tick-label" x="80" y="176">0</text>
+                        <text class="tick-label" x="160" y="176">&#960;/2</text>
+                        <text class="tick-label" x="240" y="176">&#960;</text>
+                        <text class="tick-label" x="320" y="176">3&#960;/2</text>
+                        <text class="tick-label" x="400" y="176">2&#960;</text>
+                        <text class="tick-label" x="480" y="176">5&#960;/2</text>
+                        <!-- Y ticks -->
+                        <text class="tick-label" x="65" y="5" text-anchor="end">2</text>
+                        <text class="tick-label" x="65" y="85" text-anchor="end">1</text>
+                        <text class="tick-label" x="65" y="245" text-anchor="end">&minus;1</text>
+                        <!-- Midline y=1 dashed -->
+                        <line x1="-30" y1="80" x2="500" y2="80" stroke="var(--color-vertical)" stroke-width="1" stroke-dasharray="6,4" opacity="0.25"/>
+
+                        <!-- Curve + points: step 5 -->
+                        <g class="step-box step-5">
+                            <path id="ex2-curve" d="" class="curve-main"/>
+                            <!-- Repeat period -->
+                            <path id="ex2-curve-r" d="" class="curve-repeat"/>
+                            <!-- Key points: (-&#960;/2,1)→(0,80), (0,0)→(80,160), (&#960;/2,1)→(160,80), (&#960;,2)→(240,0), (3&#960;/2,1)→(320,80) -->
+                            <circle cx="0" cy="80" r="5" class="key-point"/>
+                            <circle cx="80" cy="160" r="5" class="key-point"/>
+                            <circle cx="160" cy="80" r="5" class="key-point"/>
+                            <circle cx="240" cy="0" r="5" class="key-point"/>
+                            <circle cx="320" cy="80" r="5" class="key-point"/>
+                            <!-- Coordinate labels -->
+                            <text class="point-label-text" x="0" y="70">(&minus;&#960;/2, 1)</text>
+                            <text class="point-label-text" x="80" y="178">(0, 0)</text>
+                            <text class="point-label-text" x="160" y="70">(&#960;/2, 1)</text>
+                            <text class="point-label-text" x="240" y="-8">(&#960;, 2)</text>
+                            <text class="point-label-text" x="320" y="70">(3&#960;/2, 1)</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Transformed T-Table -->
+            <div class="table-side">
+                <div class="step-box step-4" style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.6rem 0.8rem;">
+                    <h3 style="font-size:0.85rem;margin-bottom:0.4rem;">Transformed T-Table</h3>
+                    <table class="h-table">
+                        <tr><th class="header-x">x</th><td>&minus;&#960;/2</td><td>0</td><td>&#960;/2</td><td>&#960;</td><td>3&#960;/2</td></tr>
+                        <tr><th class="header-y">y</th><td>1</td><td>0</td><td>1</td><td>2</td><td>1</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="click-hint" id="hint-6">Click or press <kbd>&rarr;</kbd> to advance &middot; <span class="step-counter">0/6</span></div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 7: EXAMPLE 3 — y = (1/2)cos(2x - 2&#960;) - 1
+         ============================================= -->
+    <section class="slide" id="slide-7" data-click-steps="6">
+        <div class="example-function reveal">y = &#189; cos(2x &minus; 2&#960;) &minus; 1</div>
+
+        <div class="example-layout">
+            <div class="analysis-side">
+                <div class="analysis-panel reveal">
+                    <div class="step-box step-0">
+                        <h3 style="font-size:0.9rem;">Rewrite:</h3>
+                        <p class="math" style="font-size:0.95rem;color:#fff;margin-bottom:0.5rem;">y = &#189; cos(2(x &minus; &#960;)) &minus; 1</p>
+                        <h3 style="font-size:0.9rem;">Parent: y = cos x</h3>
+                        <table class="t-table" style="font-size:0.78rem;">
+                            <thead><tr><th class="header-x">x</th><th class="header-y">y</th></tr></thead>
+                            <tbody>
+                                <tr><td>0</td><td>1</td></tr>
+                                <tr><td>&#960;/2</td><td>0</td></tr>
+                                <tr><td>&#960;</td><td>&minus;1</td></tr>
+                                <tr><td>3&#960;/2</td><td>0</td></tr>
+                                <tr><td>2&#960;</td><td>1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="step-box step-1" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.95rem;">Analyze</h3>
+                        <div class="analysis-row">
+                            <span class="analysis-label" style="color:var(--color-amplitude)">Amp</span>
+                            <span class="analysis-value">1/2</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-period)">Period</span>
+                            <span class="analysis-value">2&#960; / 2 = &#960;</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-phase)">Phase</span>
+                            <span class="analysis-value">right &#960;</span>
+                        </div>
+                        <div class="analysis-row" style="margin-top:0.3rem;">
+                            <span class="analysis-label" style="color:var(--color-vertical)">V. Shift</span>
+                            <span class="analysis-value">down 1</span>
+                        </div>
+                    </div>
+
+                    <div class="step-box step-2" style="margin-top:0.5rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-period)">New X: &times; &#189;, then + &#960;</h3>
+                        <p style="font-size:0.75rem;color:var(--text-secondary);">1/b = 1/2, then shift right &#960;</p>
+                    </div>
+
+                    <div class="step-box step-3" style="margin-top:0.3rem;">
+                        <h3 style="font-size:0.9rem;color:var(--color-amplitude)">New Y: &times; &#189;, then &minus; 1</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Graph -->
+            <!-- x: 0 to 3&#960;, 160px per &#960;. y: yScale=80, y=0 at py=40 -->
+            <div class="graph-side reveal">
+                <div class="graph-container">
+                    <svg class="graph-svg" id="ex3-svg" width="560" height="260" viewBox="-50 -20 560 260">
+                        <!-- Grid: vertical at &#960;/4 intervals (40px) -->
+                        <line class="grid-line" x1="0" y1="0" x2="480" y2="0"/>
+                        <line class="grid-line" x1="0" y1="40" x2="480" y2="40"/>
+                        <line class="grid-line" x1="0" y1="80" x2="480" y2="80"/>
+                        <line class="grid-line" x1="0" y1="120" x2="480" y2="120"/>
+                        <line class="grid-line" x1="0" y1="160" x2="480" y2="160"/>
+                        <line class="grid-line" x1="0" y1="200" x2="480" y2="200"/>
+                        <!-- Vertical at &#960;/2 intervals (80px) -->
+                        <line class="grid-line" x1="0" y1="0" x2="0" y2="200"/>
+                        <line class="grid-line" x1="80" y1="0" x2="80" y2="200"/>
+                        <line class="grid-line" x1="160" y1="0" x2="160" y2="200"/>
+                        <line class="grid-line" x1="240" y1="0" x2="240" y2="200"/>
+                        <line class="grid-line" x1="320" y1="0" x2="320" y2="200"/>
+                        <line class="grid-line" x1="400" y1="0" x2="400" y2="200"/>
+                        <line class="grid-line" x1="480" y1="0" x2="480" y2="200"/>
+                        <!-- Axes: y=0 at py=40, x=0 at px=0 -->
+                        <line x1="-30" y1="40" x2="500" y2="40" stroke="#555577" stroke-width="1.5"/>
+                        <line x1="0" y1="-10" x2="0" y2="220" stroke="#555577" stroke-width="1.5"/>
+                        <!-- X ticks (160px per &#960;) -->
+                        <text class="tick-label" x="80" y="33">&#960;/2</text>
+                        <text class="tick-label" x="160" y="33">&#960;</text>
+                        <text class="tick-label" x="240" y="33">3&#960;/2</text>
+                        <text class="tick-label" x="320" y="33">2&#960;</text>
+                        <text class="tick-label" x="400" y="33">5&#960;/2</text>
+                        <text class="tick-label" x="480" y="33">3&#960;</text>
+                        <!-- Y ticks (80px per unit) -->
+                        <text class="tick-label" x="-12" y="45" text-anchor="end">0</text>
+                        <text class="tick-label" x="-12" y="85" text-anchor="end">&minus;&#189;</text>
+                        <text class="tick-label" x="-12" y="125" text-anchor="end">&minus;1</text>
+                        <text class="tick-label" x="-12" y="165" text-anchor="end">&minus;3/2</text>
+                        <text class="tick-label" x="-12" y="205" text-anchor="end">&minus;2</text>
+                        <!-- Midline y=-1 dashed -->
+                        <line x1="-30" y1="120" x2="500" y2="120" stroke="var(--color-vertical)" stroke-width="1" stroke-dasharray="6,4" opacity="0.25"/>
+
+                        <!-- Curve + points: step 5 -->
+                        <g class="step-box step-5">
+                            <path id="ex3-curve" d="" class="curve-main"/>
+                            <path id="ex3-curve-r" d="" class="curve-repeat"/>
+                            <!-- Key points: (&#960;,-&#189;)→(160,80), (5&#960;/4,-1)→(200,120), (3&#960;/2,-3/2)→(240,160), (7&#960;/4,-1)→(280,120), (2&#960;,-&#189;)→(320,80) -->
+                            <circle cx="160" cy="80" r="5" class="key-point"/>
+                            <circle cx="200" cy="120" r="5" class="key-point"/>
+                            <circle cx="240" cy="160" r="5" class="key-point"/>
+                            <circle cx="280" cy="120" r="5" class="key-point"/>
+                            <circle cx="320" cy="80" r="5" class="key-point"/>
+                            <!-- Labels -->
+                            <text class="point-label-text" x="160" y="70">(&#960;, &minus;&#189;)</text>
+                            <text class="point-label-text" x="200" y="138">(5&#960;/4, &minus;1)</text>
+                            <text class="point-label-text" x="240" y="178">(3&#960;/2, &minus;3/2)</text>
+                            <text class="point-label-text" x="280" y="138">(7&#960;/4, &minus;1)</text>
+                            <text class="point-label-text" x="320" y="70">(2&#960;, &minus;&#189;)</text>
+                            <!-- Period bracket -->
+                            <line x1="160" y1="210" x2="320" y2="210" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <line x1="160" y1="205" x2="160" y2="215" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <line x1="320" y1="205" x2="320" y2="215" stroke="var(--color-period)" stroke-width="1.5"/>
+                            <text x="240" y="228" fill="var(--color-period)" font-size="10" text-anchor="middle" font-family="var(--font-body)">one period (&#960;)</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Transformed T-Table -->
+            <div class="table-side">
+                <div class="step-box step-4" style="background:var(--bg-card);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.6rem 0.8rem;">
+                    <h3 style="font-size:0.85rem;margin-bottom:0.4rem;">Transformed T-Table</h3>
+                    <table class="h-table">
+                        <tr><th class="header-x">x</th><td>&#960;</td><td>5&#960;/4</td><td>3&#960;/2</td><td>7&#960;/4</td><td>2&#960;</td></tr>
+                        <tr><th class="header-y">y</th><td>&minus;&#189;</td><td>&minus;1</td><td>&minus;3/2</td><td>&minus;1</td><td>&minus;&#189;</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="click-hint" id="hint-7">Click or press <kbd>&rarr;</kbd> to advance &middot; <span class="step-counter">0/6</span></div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 8: QUESTIONS
+         ============================================= -->
+    <section class="slide center-slide" id="slide-8">
+        <div class="big-question reveal">What are your <span class="neon">questions</span>?</div>
+    </section>
+
+    <!-- =============================================
+         SLIDE 9: HOMEWORK
+         ============================================= -->
+    <section class="slide center-slide" id="slide-9">
+        <div class="homework-card reveal">
+            <h3>Homework</h3>
+            <p>Graphs of Sine and Cosine<br>Practice Worksheet</p>
+        </div>
+    </section>
+
+
+    <!-- =============================================
+         JAVASCRIPT
+         ============================================= -->
+    <script>
+        /* ===========================================
+           ACCURATE CURVE GENERATOR
+           Samples the actual math function at 300+
+           points to produce a precise SVG path.
+           =========================================== */
+        function genCurvePath(fn, xMin, xMax, toPx, toPy, n = 300) {
+            let d = '';
+            for (let i = 0; i <= n; i++) {
+                const x = xMin + (i / n) * (xMax - xMin);
+                const y = fn(x);
+                const px = toPx(x);
+                const py = toPy(y);
+                d += (i === 0 ? 'M ' : ' L ') + px.toFixed(2) + ' ' + py.toFixed(2);
+            }
+            return d;
+        }
+
+        /* ===========================================
+           GENERATE ALL GRAPH CURVES
+           Populates empty <path> elements with
+           mathematically accurate curve data
+           =========================================== */
+        function generateAllCurves() {
+            const PI = Math.PI;
+
+            /* --- Title wave (decorative sine) --- */
+            // x: 0 to 2PI mapped to px 0-400, y center at 50, amplitude 45
+            const titlePath = genCurvePath(
+                x => Math.sin(x),
+                0, 2 * PI,
+                x => x * (400 / (2 * PI)),
+                y => 50 - y * 45
+            );
+            document.getElementById('title-curve').setAttribute('d', titlePath);
+
+            /* --- Parent sine (Slide 2) --- */
+            // x: 0 to 2PI → 0 to 320px. y center=80, scale=80
+            const sinPath = genCurvePath(
+                x => Math.sin(x),
+                0, 2 * PI,
+                x => x * (320 / (2 * PI)),
+                y => 80 - y * 80
+            );
+            document.getElementById('parent-sin-curve').setAttribute('d', sinPath);
+
+            /* --- Parent cosine (Slide 2) --- */
+            const cosPath = genCurvePath(
+                x => Math.cos(x),
+                0, 2 * PI,
+                x => x * (320 / (2 * PI)),
+                y => 80 - y * 80
+            );
+            document.getElementById('parent-cos-curve').setAttribute('d', cosPath);
+
+            /* --- Example 1: y = 3sin(x/2) --- */
+            // x: 0 to 8PI, 60px per PI. y center=140, scale=40px/unit
+            const ex1ToPx = x => x * (60 / PI);
+            const ex1ToPy = y => 140 - y * 40;
+            const ex1fn = x => 3 * Math.sin(x / 2);
+
+            // First period: 0 to 4PI
+            document.getElementById('ex1-curve-p1').setAttribute('d',
+                genCurvePath(ex1fn, 0, 4 * PI, ex1ToPx, ex1ToPy));
+            // Second period: 4PI to 8PI
+            document.getElementById('ex1-curve-p2').setAttribute('d',
+                genCurvePath(ex1fn, 4 * PI, 8 * PI, ex1ToPx, ex1ToPy));
+
+            /* --- Example 2: y = -sin(x + PI/2) + 1 --- */
+            // x: -PI/2 maps to px=0, so toPx(x) = (x + PI/2) * (80/(PI/2)) = (x + PI/2) * 160/PI
+            // y: y=0 at py=160, scale=80px/unit
+            const ex2ToPx = x => (x + PI / 2) * (160 / PI);
+            const ex2ToPy = y => 160 - y * 80;
+            const ex2fn = x => -Math.sin(x + PI / 2) + 1;
+
+            // Main period: -PI/2 to 3PI/2
+            document.getElementById('ex2-curve').setAttribute('d',
+                genCurvePath(ex2fn, -PI / 2, 3 * PI / 2, ex2ToPx, ex2ToPy));
+            // Repeat: 3PI/2 to 5PI/2
+            document.getElementById('ex2-curve-r').setAttribute('d',
+                genCurvePath(ex2fn, 3 * PI / 2, 5 * PI / 2, ex2ToPx, ex2ToPy));
+
+            /* --- Example 3: y = (1/2)cos(2(x-PI)) - 1 --- */
+            // x: 0 to 3PI, 160px per PI. y: y=0 at py=40, scale=80px/unit
+            const ex3ToPx = x => x * (160 / PI);
+            const ex3ToPy = y => 40 - y * 80;
+            const ex3fn = x => 0.5 * Math.cos(2 * (x - PI)) - 1;
+
+            // Main period: PI to 2PI
+            document.getElementById('ex3-curve').setAttribute('d',
+                genCurvePath(ex3fn, PI, 2 * PI, ex3ToPx, ex3ToPy));
+            // Repeat: 2PI to 3PI
+            document.getElementById('ex3-curve-r').setAttribute('d',
+                genCurvePath(ex3fn, 2 * PI, 3 * PI, ex3ToPx, ex3ToPy));
+        }
+
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           =========================================== */
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.currentSlide = 0;
+                this.clickSteps = {};
+                this.init();
+            }
+
+            init() {
+                this.createNavDots();
+                this.setupIntersectionObserver();
+                this.setupKeyboardNav();
+                this.setupWheelNav();
+                this.setupTouchNav();
+                this.setupClickToAdvance();
+                this.updateProgress();
+                this.animateTitleWave();
+            }
+
+            createNavDots() {
+                const nav = document.getElementById('navDots');
+                this.slides.forEach((_, i) => {
+                    const dot = document.createElement('button');
+                    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                    dot.addEventListener('click', () => this.goToSlide(i));
+                    nav.appendChild(dot);
+                });
+            }
+
+            setupIntersectionObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            const index = Array.from(this.slides).indexOf(entry.target);
+                            this.currentSlide = index;
+                            this.updateNavDots();
+                            this.updateProgress();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            setupKeyboardNav() {
+                document.addEventListener('keydown', (e) => {
+                    const slide = this.slides[this.currentSlide];
+                    const maxSteps = parseInt(slide.dataset.clickSteps || '0');
+
+                    if (maxSteps > 0) {
+                        const currentStep = this.clickSteps[this.currentSlide] ?? -1;
+                        if (currentStep < maxSteps - 1) {
+                            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') {
+                                e.preventDefault();
+                                this.advanceStep(this.currentSlide);
+                                return;
+                            }
+                        }
+                    }
+
+                    switch (e.key) {
+                        case 'ArrowDown': case 'ArrowRight': case ' ':
+                            e.preventDefault();
+                            this.nextSlide();
+                            break;
+                        case 'ArrowUp': case 'ArrowLeft':
+                            e.preventDefault();
+                            this.prevSlide();
+                            break;
+                    }
+                });
+            }
+
+            setupWheelNav() {
+                let lastWheel = 0;
+                document.addEventListener('wheel', (e) => {
+                    const now = Date.now();
+                    if (now - lastWheel < 800) return;
+                    lastWheel = now;
+                    if (e.deltaY > 30) this.nextSlide();
+                    else if (e.deltaY < -30) this.prevSlide();
+                }, { passive: true });
+            }
+
+            setupTouchNav() {
+                let touchStartY = 0;
+                document.addEventListener('touchstart', (e) => {
+                    touchStartY = e.touches[0].clientY;
+                }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    const diff = touchStartY - e.changedTouches[0].clientY;
+                    if (Math.abs(diff) > 50) {
+                        if (diff > 0) this.nextSlide();
+                        else this.prevSlide();
+                    }
+                }, { passive: true });
+            }
+
+            setupClickToAdvance() {
+                this.slides.forEach((slide, index) => {
+                    const maxSteps = parseInt(slide.dataset.clickSteps || '0');
+                    if (maxSteps > 0) {
+                        this.clickSteps[index] = -1;
+                        slide.addEventListener('click', (e) => {
+                            if (e.target.closest('.nav-dots') || e.target.closest('.nav-dot')) return;
+                            this.advanceStep(index);
+                        });
+                    }
+                });
+            }
+
+            advanceStep(slideIndex) {
+                const slide = this.slides[slideIndex];
+                const maxSteps = parseInt(slide.dataset.clickSteps || '0');
+                let current = this.clickSteps[slideIndex];
+                if (current >= maxSteps - 1) return;
+
+                current++;
+                this.clickSteps[slideIndex] = current;
+
+                // Activate ALL elements with this step class
+                const allStepEls = slide.querySelectorAll(`.step-${current}`);
+                allStepEls.forEach(el => {
+                    el.classList.add('active');
+                    // Setup and trigger draw-in animation for curves
+                    el.querySelectorAll('.curve-main, .curve-repeat').forEach(path => {
+                        if (path.getTotalLength) {
+                            const len = path.getTotalLength();
+                            path.style.strokeDasharray = len;
+                            path.style.strokeDashoffset = len;
+                            requestAnimationFrame(() => {
+                                path.style.transition = 'stroke-dashoffset 1.5s ease-out';
+                                path.style.strokeDashoffset = '0';
+                            });
+                        }
+                    });
+                });
+
+                // Update counter
+                const counter = slide.querySelector('.step-counter');
+                if (counter) counter.textContent = `${current + 1}/${maxSteps}`;
+
+                // Hide hint when done
+                if (current >= maxSteps - 1) {
+                    const hint = slide.querySelector('.click-hint');
+                    if (hint) hint.classList.add('hidden');
+                }
+            }
+
+            nextSlide() {
+                if (this.currentSlide < this.slides.length - 1)
+                    this.goToSlide(this.currentSlide + 1);
+            }
+
+            prevSlide() {
+                if (this.currentSlide > 0)
+                    this.goToSlide(this.currentSlide - 1);
+            }
+
+            goToSlide(index) {
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+                this.currentSlide = index;
+                this.updateNavDots();
+                this.updateProgress();
+            }
+
+            updateNavDots() {
+                document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === this.currentSlide);
+                });
+            }
+
+            updateProgress() {
+                const progress = (this.currentSlide / (this.slides.length - 1)) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            }
+
+            animateTitleWave() {
+                const path = document.querySelector('.title-wave-path');
+                if (!path || !path.getTotalLength) return;
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length;
+                setTimeout(() => {
+                    path.style.transition = 'stroke-dashoffset 2s ease-out';
+                    path.style.strokeDashoffset = '0';
+                }, 800);
+
+                document.querySelectorAll('.title-dot').forEach((dot, i) => {
+                    dot.style.opacity = '0';
+                    dot.style.transition = `opacity 0.4s ease ${1.5 + i * 0.15}s`;
+                    setTimeout(() => { dot.style.opacity = '1'; }, 10);
+                });
+            }
+        }
+
+        /* ===========================================
+           INITIALIZE
+           =========================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            generateAllCurves();
+            new SlidePresentation();
+        });
+    </script>
+</body>
+</html>
