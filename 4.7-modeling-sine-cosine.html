@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.7 Modeling with Sine and Cosine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark-navy: #1a365d;
+  --blue-accent: #2563eb;
+  --red-accent: #dc2626;
+  --green-accent: #16a34a;
+  --grid-line: #dbeafe;
+  --dark-blue-curve: #1e40af;
+  --bg-white: #ffffff;
+  --light-grid-bg: #f8faff;
+  --teal-accent: #0891b2;
+  --orange-accent: #ea580c;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+  background: var(--bg-white);
+  color: var(--dark-navy);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Grid background */
+.grid-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 30px 30px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Progress bar */
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+  transition: width 0.4s ease;
+  z-index: 1000;
+}
+
+/* Navigation dots */
+#nav-dots {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.nav-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--blue-accent);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+  background: var(--blue-accent);
+  transform: scale(1.3);
+}
+
+.nav-dot:hover {
+  background: var(--blue-accent);
+  opacity: 0.7;
+}
+
+/* Slides container */
+#slides-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 60px 40px 60px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+/* Title slide centering */
+.slide.title-slide {
+  justify-content: center;
+  background: var(--dark-navy);
+}
+
+/* Slide titles */
+.slide-title {
+  font-size: 2em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.slide-subtitle {
+  font-size: 1.15em;
+  font-weight: 400;
+  color: var(--dark-navy);
+  text-align: center;
+  margin-bottom: 20px;
+  max-width: 900px;
+  line-height: 1.5;
+}
+
+/* Example label */
+.example-label {
+  position: absolute;
+  top: 18px;
+  left: 30px;
+  background: var(--blue-accent);
+  color: white;
+  padding: 4px 18px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.95em;
+  letter-spacing: 1px;
+}
+
+/* Copyright */
+.copyright {
+  position: absolute;
+  bottom: 12px;
+  right: 24px;
+  font-size: 0.72em;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Math expressions */
+.math {
+  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
+  font-style: italic;
+}
+
+.mono-math {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.red { color: var(--red-accent); font-weight: 700; }
+.blue { color: var(--blue-accent); font-weight: 700; }
+.green { color: var(--green-accent); font-weight: 700; }
+.teal { color: var(--teal-accent); font-weight: 700; }
+.dark-blue { color: var(--dark-blue-curve); }
+
+/* Step reveal (click-to-advance) */
+.step {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin: 6px 0;
+}
+
+.step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Click hint */
+.click-hint {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85em;
+  color: #94a3b8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Equation display */
+.equation-box {
+  background: white;
+  border: 2px solid var(--blue-accent);
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin: 8px 0;
+  display: inline-block;
+}
+
+.equation-box.red-border {
+  border-color: var(--red-accent);
+}
+
+.equation-box.green-border {
+  border-color: var(--green-accent);
+}
+
+/* Data table */
+.data-table {
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.data-table th, .data-table td {
+  border: 1.5px solid var(--dark-navy);
+  padding: 6px 18px;
+  text-align: center;
+  min-width: 70px;
+}
+
+.data-table th {
+  background: var(--grid-line);
+  font-weight: 700;
+  color: var(--dark-navy);
+}
+
+.data-table td {
+  background: white;
+}
+
+.data-table .highlight-max {
+  background: #dbeafe;
+  font-weight: 700;
+}
+
+.data-table .highlight-min {
+  background: #fef2f2;
+  font-weight: 700;
+}
+
+/* Two-column layout */
+.two-col {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Steps list */
+.steps-list {
+  text-align: left;
+  max-width: 900px;
+  width: 100%;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 8px 0;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.step-number {
+  background: var(--blue-accent);
+  color: white;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+.step-content {
+  flex: 1;
+}
+
+/* SVG graph styles */
+.graph-svg {
+  border: 1.5px solid #c7d2fe;
+  border-radius: 6px;
+  background: white;
+}
+
+/* Gallery grid for real-world examples */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.gallery-item {
+  background: white;
+  border: 2px solid var(--grid-line);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.gallery-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-item:hover {
+  border-color: var(--blue-accent);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.15);
+  transform: translateY(-4px);
+}
+
+.gallery-icon {
+  font-size: 2.8em;
+  margin-bottom: 6px;
+}
+
+.gallery-label {
+  font-weight: 600;
+  color: var(--dark-navy);
+  font-size: 0.95em;
+}
+
+/* Scatter plot dot animation */
+@keyframes dropIn {
+  0% { r: 0; opacity: 0; }
+  60% { r: 6; opacity: 1; }
+  80% { r: 4.5; }
+  100% { r: 5; opacity: 1; }
+}
+
+/* Wave drawing animation */
+@keyframes drawWave {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Keyboard hint */
+.keyboard-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.8em;
+  color: #94a3b8;
+  z-index: 999;
+}
+
+.key-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 0.85em;
+  background: #f8fafc;
+}
+
+/* Answer callout */
+.answer-callout {
+  background: #fef2f2;
+  border-left: 4px solid var(--red-accent);
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 10px 0;
+  font-size: 1.05em;
+  max-width: 700px;
+}
+
+/* Tip box */
+.tip-box {
+  background: #f0fdf4;
+  border-left: 4px solid var(--green-accent);
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 10px 0;
+  font-size: 0.95em;
+  max-width: 700px;
+}
+
+/* Section divider slide */
+.slide.section-slide {
+  justify-content: center;
+  background: var(--dark-navy);
+}
+
+.section-title {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1.2em;
+  color: #93c5fd;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Highlight row in table */
+.data-table tr.active-row td {
+  background: #eff6ff;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div id="progress-bar" style="width: 0%"></div>
+<nav id="nav-dots"></nav>
+
+<div id="slides-container">
+
+<!-- ============================================================
+     SLIDE 0: TITLE SLIDE
+     ============================================================ -->
+<section class="slide title-slide" data-steps="0">
+  <div style="text-align:center;">
+    <div style="font-size:1.1em; color:#93c5fd; letter-spacing:3px; margin-bottom:12px; font-weight:600;">SECTION 4.7</div>
+    <h1 style="font-size:3em; color:white; font-weight:700; line-height:1.2;">Mathematical Modeling<br>with Sine and Cosine</h1>
+    <div style="width:80px; height:4px; background:var(--teal-accent); margin:24px auto;"></div>
+    <p style="color:#93c5fd; font-size:1.1em; margin-top:8px;">Precalculus</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1: REAL-WORLD APPLICATIONS GALLERY
+     ============================================================ -->
+<section class="slide" data-steps="0">
+  <h2 class="slide-title">Sine &amp; Cosine Are Everywhere</h2>
+  <p class="slide-subtitle">These functions model any phenomenon that repeats in a predictable cycle.</p>
+
+  <div class="gallery-grid">
+    <div class="gallery-item" style="transition-delay: 0.1s">
+      <div class="gallery-icon">🌊</div>
+      <div class="gallery-label">Tidal Height</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.2s">
+      <div class="gallery-icon">🎵</div>
+      <div class="gallery-label">Sound Waves</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.3s">
+      <div class="gallery-icon">🌡️</div>
+      <div class="gallery-label">Yearly Temperatures</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.4s">
+      <div class="gallery-icon">🌅</div>
+      <div class="gallery-label">Sunset Times</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.5s">
+      <div class="gallery-icon">⚡</div>
+      <div class="gallery-label">Electricity / Voltage</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.6s">
+      <div class="gallery-icon">🕰️</div>
+      <div class="gallery-label">Pendulum</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.7s">
+      <div class="gallery-icon">🔩</div>
+      <div class="gallery-label">Spring</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.8s">
+      <div class="gallery-icon">🎡</div>
+      <div class="gallery-label">Ferris Wheel</div>
+    </div>
+    <div class="gallery-item" style="transition-delay: 0.9s">
+      <div class="gallery-icon">❤️</div>
+      <div class="gallery-label">Heartbeat / EKG</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2: PROBLEM SETUP (the dock/tides problem)
+     ============================================================ -->
+<section class="slide" data-steps="0">
+  <span class="example-label">EXAMPLE</span>
+  <h2 class="slide-title" style="margin-top:10px;">Tidal Depth at a Dock</h2>
+  <p class="slide-subtitle" style="max-width:800px;">Throughout the day, the depth of the water at the end of a dock varies with the tides. The table shows the depths <span class="math">y</span> (in feet) at various times during the morning.</p>
+
+  <div class="two-col" style="align-items:center;">
+    <div class="col" style="min-width:260px; flex:0 0 auto;">
+      <table class="data-table">
+        <thead>
+          <tr><th>Time</th><th>Depth, <span class="math">y</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Midnight</td><td>3.4</td></tr>
+          <tr><td>2 a.m.</td><td>8.7</td></tr>
+          <tr class="highlight-max"><td>4 a.m.</td><td class="highlight-max">11.3</td></tr>
+          <tr><td>6 a.m.</td><td>9.1</td></tr>
+          <tr><td>8 a.m.</td><td>3.8</td></tr>
+          <tr class="highlight-min"><td>10 a.m.</td><td class="highlight-min">0.1</td></tr>
+          <tr><td>Noon</td><td>1.2</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col" style="text-align:left; font-size:1.05em; line-height:1.7;">
+      <p><strong class="blue">a.</strong> Use a <strong>cosine function</strong> to model the data.<br>
+      Let <span class="math">t</span> be the time, with <span class="math">t</span> = 0 at midnight.</p>
+      <p style="margin-top:12px;"><strong class="blue">b.</strong> A boat needs at least <strong>10 feet</strong> of water to moor at the dock. During what times in the afternoon can it safely dock?</p>
+      <p style="margin-top:12px;"><strong class="blue">c.</strong> Find a <strong>sine model</strong> for this data.</p>
+    </div>
+  </div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3: SCATTERPLOT - Start by plotting the data
+     ============================================================ -->
+<section class="slide" data-steps="1">
+  <span class="example-label">EXAMPLE</span>
+  <h2 class="slide-title" style="margin-top:10px;">Step 1: Make a Scatterplot</h2>
+  <p class="slide-subtitle">Plot the data points to visualize the pattern before building a model.</p>
+
+  <svg class="graph-svg" viewBox="-30 -20 380 220" width="640" height="370" id="scatter-svg">
+    <!-- Grid lines -->
+    <g stroke="#e2e8f0" stroke-width="0.5">
+      <line x1="0" y1="0" x2="320" y2="0"/>
+      <line x1="0" y1="30" x2="320" y2="30"/>
+      <line x1="0" y1="60" x2="320" y2="60"/>
+      <line x1="0" y1="90" x2="320" y2="90"/>
+      <line x1="0" y1="120" x2="320" y2="120"/>
+      <line x1="0" y1="150" x2="320" y2="150"/>
+      <line x1="0" y1="180" x2="320" y2="180"/>
+    </g>
+    <!-- Axes -->
+    <line x1="0" y1="180" x2="330" y2="180" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="0" y1="190" x2="0" y2="-10" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <defs>
+      <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--dark-navy)"/>
+      </marker>
+    </defs>
+    <!-- X-axis labels (time in hours) -->
+    <text x="0" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">0</text>
+    <text x="53.3" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">2</text>
+    <text x="106.7" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">4</text>
+    <text x="160" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">6</text>
+    <text x="213.3" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">8</text>
+    <text x="266.7" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">10</text>
+    <text x="320" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">12</text>
+    <text x="170" y="215" text-anchor="middle" font-size="12" font-style="italic" fill="var(--dark-navy)">hours since midnight</text>
+    <!-- Y-axis labels -->
+    <text x="-8" y="183" text-anchor="end" font-size="11" fill="var(--dark-navy)">0</text>
+    <text x="-8" y="153" text-anchor="end" font-size="11" fill="var(--dark-navy)">2</text>
+    <text x="-8" y="123" text-anchor="end" font-size="11" fill="var(--dark-navy)">4</text>
+    <text x="-8" y="93" text-anchor="end" font-size="11" fill="var(--dark-navy)">6</text>
+    <text x="-8" y="63" text-anchor="end" font-size="11" fill="var(--dark-navy)">8</text>
+    <text x="-8" y="33" text-anchor="end" font-size="11" fill="var(--dark-navy)">10</text>
+    <text x="-8" y="3" text-anchor="end" font-size="11" fill="var(--dark-navy)">12</text>
+    <text x="-22" y="90" text-anchor="middle" font-size="12" font-style="italic" fill="var(--dark-navy)" transform="rotate(-90,-22,90)">depth (feet)</text>
+    <!-- X-axis tick marks -->
+    <g stroke="var(--dark-navy)" stroke-width="1">
+      <line x1="53.3" y1="178" x2="53.3" y2="182"/>
+      <line x1="106.7" y1="178" x2="106.7" y2="182"/>
+      <line x1="160" y1="178" x2="160" y2="182"/>
+      <line x1="213.3" y1="178" x2="213.3" y2="182"/>
+      <line x1="266.7" y1="178" x2="266.7" y2="182"/>
+      <line x1="320" y1="178" x2="320" y2="182"/>
+    </g>
+    <!-- Data points: (0,3.4) (2,8.7) (4,11.3) (6,9.1) (8,3.8) (10,0.1) (12,1.2)
+         x-scale: 26.67px per hour, y-scale: 15px per foot, y inverted from 180 -->
+    <g class="scatter-points">
+      <circle cx="0" cy="129" r="0" fill="var(--blue-accent)" class="data-dot" style="animation-delay:0.3s"/>
+      <circle cx="53.3" cy="49.5" r="0" fill="var(--blue-accent)" class="data-dot" style="animation-delay:0.5s"/>
+      <circle cx="106.7" cy="10.5" r="0" fill="var(--red-accent)" class="data-dot" style="animation-delay:0.7s"/>
+      <circle cx="160" cy="43.5" r="0" fill="var(--blue-accent)" class="data-dot" style="animation-delay:0.9s"/>
+      <circle cx="213.3" cy="123" r="0" fill="var(--blue-accent)" class="data-dot" style="animation-delay:1.1s"/>
+      <circle cx="266.7" cy="178.5" r="0" fill="var(--red-accent)" class="data-dot" style="animation-delay:1.3s"/>
+      <circle cx="320" cy="162" r="0" fill="var(--blue-accent)" class="data-dot" style="animation-delay:1.5s"/>
+    </g>
+    <!-- Max/min annotations (step 1) -->
+    <g class="step" data-step="0" style="margin:0;">
+      <text x="106.7" y="0" text-anchor="middle" font-size="10" font-weight="700" fill="var(--red-accent)">MAX = 11.3</text>
+      <text x="266.7" y="175" text-anchor="middle" font-size="10" font-weight="700" fill="var(--red-accent)" dy="-10">MIN = 0.1</text>
+    </g>
+  </svg>
+
+  <div class="step" data-step="0">
+    <div class="tip-box">
+      <strong class="green">Key Observations:</strong> The <span class="red">maximum</span> depth is 11.3 ft at <span class="math">t</span> = 4 (4 a.m.) and the <span class="red">minimum</span> is 0.1 ft at <span class="math">t</span> = 10 (10 a.m.). This looks like a cosine curve!
+    </div>
+  </div>
+  <div class="click-hint">Click to reveal observations</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4: PART A - Finding the cosine model (worked example)
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <span class="example-label">PART A</span>
+  <h2 class="slide-title" style="margin-top:10px;">Building the Cosine Model</h2>
+  <p class="slide-subtitle">We need to find <span class="math">a</span>, <span class="math">b</span>, <span class="math">c</span>, and <span class="math">d</span> in: &nbsp;<span class="math" style="font-size:1.1em;">y = a cos(b(t &minus; c)) + d</span></p>
+
+  <div class="steps-list">
+    <div class="step" data-step="0">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <strong>Vertical Translation</strong> (<span class="math">d</span>) = average of max and min<br>
+          <span class="math" style="font-size:1.15em;"><span class="math">d</span> = &frac12;(11.3 + 0.1) = <span class="blue">5.7</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="1">
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <strong>Amplitude</strong> (<span class="math">a</span>) = half the distance between max &amp; min<br>
+          <span class="math" style="font-size:1.15em;"><span class="math">a</span> = &frac12;(max &minus; min) = &frac12;(11.3 &minus; 0.1) = <span class="blue">5.6</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="2">
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <strong>Period</strong>: The cosine function completes <strong>&frac12;</strong> of a cycle between consecutive max and min.<br>
+          <span class="math" style="font-size:1.05em;">period = 2(time of min &minus; time of max) = 2(10 &minus; 4) = <span class="blue">12</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="3">
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <strong>Find <span class="math">b</span></strong> from the period:<br>
+          <span class="math" style="font-size:1.15em;">period = 2&pi;/b &nbsp;&rarr;&nbsp; 12 = 2&pi;/b &nbsp;&rarr;&nbsp; <span class="math">b</span> = <span class="blue">&pi;/6</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="4">
+      <div class="step-item">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <strong>Phase Shift</strong> (<span class="math">c</span>): High tide (max) occurs at <span class="math">t</span> = 4. Since cosine starts at its max, the phase shift is <span class="blue">c = 4</span>.
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="5">
+      <div style="text-align:center; margin-top:10px;">
+        <div class="equation-box">
+          <span class="math" style="font-size:1.1em;"><span class="red">y</span> = 5.6 cos(<sup>&pi;</sup>&frasl;<sub>6</sub>(<span class="math">t</span> &minus; 4)) + 5.7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="click-hint">Click to reveal each step</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5: GRAPH OF THE COSINE MODEL
+     ============================================================ -->
+<section class="slide" data-steps="1">
+  <span class="example-label">PART A</span>
+  <h2 class="slide-title" style="margin-top:10px;">Let's Confirm in the Calculator</h2>
+  <p class="slide-subtitle">The model <span class="math">y</span> = 5.6 cos(<sup>&pi;</sup>&frasl;<sub>6</sub>(<span class="math">t</span> &minus; 4)) + 5.7 should fit the scatter data.</p>
+
+  <svg class="graph-svg" viewBox="-35 -20 420 240" width="700" height="400" id="model-svg">
+    <!-- Grid lines -->
+    <g stroke="#e2e8f0" stroke-width="0.5">
+      <line x1="0" y1="0" x2="360" y2="0"/>
+      <line x1="0" y1="30" x2="360" y2="30"/>
+      <line x1="0" y1="60" x2="360" y2="60"/>
+      <line x1="0" y1="90" x2="360" y2="90"/>
+      <line x1="0" y1="120" x2="360" y2="120"/>
+      <line x1="0" y1="150" x2="360" y2="150"/>
+      <line x1="0" y1="180" x2="360" y2="180"/>
+    </g>
+    <!-- Axes -->
+    <line x1="0" y1="180" x2="370" y2="180" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrow2)"/>
+    <line x1="0" y1="190" x2="0" y2="-10" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrow2)"/>
+    <defs>
+      <marker id="arrow2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--dark-navy)"/>
+      </marker>
+    </defs>
+    <!-- X-axis labels -->
+    <text x="0" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">0</text>
+    <text x="60" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">2</text>
+    <text x="120" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">4</text>
+    <text x="180" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">6</text>
+    <text x="240" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">8</text>
+    <text x="300" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">10</text>
+    <text x="360" y="198" text-anchor="middle" font-size="11" fill="var(--dark-navy)">12</text>
+    <text x="190" y="218" text-anchor="middle" font-size="12" font-style="italic" fill="var(--dark-navy)">hours since midnight</text>
+    <!-- Y-axis labels -->
+    <text x="-8" y="183" text-anchor="end" font-size="11" fill="var(--dark-navy)">0</text>
+    <text x="-8" y="153" text-anchor="end" font-size="11" fill="var(--dark-navy)">2</text>
+    <text x="-8" y="123" text-anchor="end" font-size="11" fill="var(--dark-navy)">4</text>
+    <text x="-8" y="93" text-anchor="end" font-size="11" fill="var(--dark-navy)">6</text>
+    <text x="-8" y="63" text-anchor="end" font-size="11" fill="var(--dark-navy)">8</text>
+    <text x="-8" y="33" text-anchor="end" font-size="11" fill="var(--dark-navy)">10</text>
+    <text x="-8" y="3" text-anchor="end" font-size="11" fill="var(--dark-navy)">12</text>
+    <text x="-25" y="90" text-anchor="middle" font-size="12" font-style="italic" fill="var(--dark-navy)" transform="rotate(-90,-25,90)">depth (feet)</text>
+    <!-- Tick marks -->
+    <g stroke="var(--dark-navy)" stroke-width="1">
+      <line x1="60" y1="178" x2="60" y2="182"/>
+      <line x1="120" y1="178" x2="120" y2="182"/>
+      <line x1="180" y1="178" x2="180" y2="182"/>
+      <line x1="240" y1="178" x2="240" y2="182"/>
+      <line x1="300" y1="178" x2="300" y2="182"/>
+      <line x1="360" y1="178" x2="360" y2="182"/>
+    </g>
+    <!-- Data points (always visible) -->
+    <circle cx="0" cy="129" r="5" fill="var(--blue-accent)"/>
+    <circle cx="60" cy="49.5" r="5" fill="var(--blue-accent)"/>
+    <circle cx="120" cy="10.5" r="5" fill="var(--blue-accent)"/>
+    <circle cx="180" cy="43.5" r="5" fill="var(--blue-accent)"/>
+    <circle cx="240" cy="123" r="5" fill="var(--blue-accent)"/>
+    <circle cx="300" cy="178.5" r="5" fill="var(--blue-accent)"/>
+    <circle cx="360" cy="162" r="5" fill="var(--blue-accent)"/>
+
+    <!-- Cosine curve: y = 5.6cos(π/6(t-4)) + 5.7
+         In SVG: yPx = 180 - (5.6*cos(π/6*(t-4)) + 5.7)*15
+         Generated at many points for smooth curve -->
+    <path id="cosine-curve" d="" fill="none" stroke="var(--red-accent)" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- d-line (midline) -->
+    <line class="step" data-step="0" x1="0" y1="94.5" x2="360" y2="94.5" stroke="var(--teal-accent)" stroke-width="1.5" stroke-dasharray="8,4" style="margin:0"/>
+    <text class="step" data-step="0" x="365" y="98" font-size="11" fill="var(--teal-accent)" font-weight="600" style="margin:0">d = 5.7</text>
+  </svg>
+
+  <div class="click-hint">Click to show the midline</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6: PART B - Setup: Graph the model with y = 10
+     ============================================================ -->
+<section class="slide" data-steps="4">
+  <span class="example-label">PART B</span>
+  <h2 class="slide-title" style="margin-top:10px;">When Can the Boat Safely Dock?</h2>
+  <p class="slide-subtitle">The boat needs <strong>at least 10 feet</strong> of water. We need to find where our model is <em>above</em> the line <span class="math green">y</span> = 10.</p>
+
+  <svg class="graph-svg" viewBox="-35 -20 560 240" width="740" height="320" id="partb-svg">
+    <!-- Grid lines -->
+    <g stroke="#e2e8f0" stroke-width="0.5">
+      <line x1="0" y1="0" x2="510" y2="0"/>
+      <line x1="0" y1="30" x2="510" y2="30"/>
+      <line x1="0" y1="60" x2="510" y2="60"/>
+      <line x1="0" y1="90" x2="510" y2="90"/>
+      <line x1="0" y1="120" x2="510" y2="120"/>
+      <line x1="0" y1="150" x2="510" y2="150"/>
+      <line x1="0" y1="180" x2="510" y2="180"/>
+    </g>
+    <!-- Axes -->
+    <line x1="0" y1="180" x2="520" y2="180" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrow3)"/>
+    <line x1="0" y1="190" x2="0" y2="-10" stroke="var(--dark-navy)" stroke-width="2" marker-end="url(#arrow3)"/>
+    <defs>
+      <marker id="arrow3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+        <polygon points="0 0, 8 3, 0 6" fill="var(--dark-navy)"/>
+      </marker>
+    </defs>
+    <!-- X-axis labels (0 to 24, step 4) -->
+    <text x="0" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">0</text>
+    <text x="85" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">4</text>
+    <text x="170" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">8</text>
+    <text x="255" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">12</text>
+    <text x="340" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">16</text>
+    <text x="425" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">20</text>
+    <text x="510" y="198" text-anchor="middle" font-size="10" fill="var(--dark-navy)">24</text>
+    <text x="260" y="218" text-anchor="middle" font-size="11" font-style="italic" fill="var(--dark-navy)">hours since midnight</text>
+    <!-- Y-axis labels -->
+    <text x="-8" y="183" text-anchor="end" font-size="10" fill="var(--dark-navy)">0</text>
+    <text x="-8" y="153" text-anchor="end" font-size="10" fill="var(--dark-navy)">2</text>
+    <text x="-8" y="123" text-anchor="end" font-size="10" fill="var(--dark-navy)">4</text>
+    <text x="-8" y="93" text-anchor="end" font-size="10" fill="var(--dark-navy)">6</text>
+    <text x="-8" y="63" text-anchor="end" font-size="10" fill="var(--dark-navy)">8</text>
+    <text x="-8" y="33" text-anchor="end" font-size="10" fill="var(--dark-navy)">10</text>
+    <text x="-8" y="3" text-anchor="end" font-size="10" fill="var(--dark-navy)">12</text>
+    <text x="-25" y="90" text-anchor="middle" font-size="11" font-style="italic" fill="var(--dark-navy)" transform="rotate(-90,-25,90)">depth (feet)</text>
+    <!-- Tick marks -->
+    <g stroke="var(--dark-navy)" stroke-width="1">
+      <line x1="85" y1="178" x2="85" y2="182"/>
+      <line x1="170" y1="178" x2="170" y2="182"/>
+      <line x1="255" y1="178" x2="255" y2="182"/>
+      <line x1="340" y1="178" x2="340" y2="182"/>
+      <line x1="425" y1="178" x2="425" y2="182"/>
+      <line x1="510" y1="178" x2="510" y2="182"/>
+    </g>
+    <!-- Noon / PM labels under axis -->
+    <text x="255" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">noon</text>
+    <text x="340" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">4 pm</text>
+    <text x="425" y="210" text-anchor="middle" font-size="9" fill="#94a3b8">8 pm</text>
+
+    <!-- Cosine curve for 24 hours -->
+    <path id="cosine-curve-24" d="" fill="none" stroke="var(--blue-accent)" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- y = 10 line (step 0) -->
+    <g class="step" data-step="0" style="margin:0">
+      <line x1="0" y1="30" x2="510" y2="30" stroke="var(--green-accent)" stroke-width="2" stroke-dasharray="8,4"/>
+      <text x="515" y="34" font-size="11" fill="var(--green-accent)" font-weight="600">y = 10</text>
+    </g>
+
+    <!-- ALL four intersection points shown as open circles (step 1) -->
+    <g class="step" data-step="1" style="margin:0">
+      <!-- Morning: t ≈ 2.67 -->
+      <circle cx="56.7" cy="30" r="5" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <text x="56.7" y="22" text-anchor="middle" font-size="9" fill="#94a3b8">t &asymp; 2.67</text>
+      <!-- Morning: t ≈ 5.33 -->
+      <circle cx="113.3" cy="30" r="5" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <text x="113.3" y="22" text-anchor="middle" font-size="9" fill="#94a3b8">t &asymp; 5.33</text>
+      <!-- Afternoon: t ≈ 14.67 -->
+      <circle cx="311.7" cy="30" r="5" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <text x="311.7" y="22" text-anchor="middle" font-size="9" fill="#94a3b8">t &asymp; 14.67</text>
+      <!-- Afternoon: t ≈ 17.33 -->
+      <circle cx="368.3" cy="30" r="5" fill="none" stroke="#94a3b8" stroke-width="2"/>
+      <text x="368.3" y="22" text-anchor="middle" font-size="9" fill="#94a3b8">t &asymp; 17.33</text>
+    </g>
+
+    <!-- Highlight afternoon pair in red + dim morning pair (step 2) -->
+    <g class="step" data-step="2" style="margin:0">
+      <!-- Dim the morning pair with white overlay -->
+      <circle cx="56.7" cy="30" r="10" fill="white" opacity="0.7"/>
+      <circle cx="113.3" cy="30" r="10" fill="white" opacity="0.7"/>
+      <!-- Bold the afternoon pair -->
+      <circle cx="311.7" cy="30" r="7" fill="var(--red-accent)" opacity="0.25"/>
+      <circle cx="311.7" cy="30" r="3.5" fill="var(--red-accent)"/>
+      <text x="311.7" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="var(--red-accent)">(14.67, 10)</text>
+      <circle cx="368.3" cy="30" r="7" fill="var(--red-accent)" opacity="0.25"/>
+      <circle cx="368.3" cy="30" r="3.5" fill="var(--red-accent)"/>
+      <text x="368.3" y="-4" text-anchor="middle" font-size="10" font-weight="700" fill="var(--red-accent)">(17.33, 10)</text>
+      <!-- Shaded safe-docking region -->
+      <rect x="311.7" y="0" width="56.6" height="30" fill="var(--green-accent)" opacity="0.10" rx="2"/>
+    </g>
+  </svg>
+
+  <!-- Step 0: explain y = 10 -->
+  <div class="step" data-step="0" style="max-width:740px; text-align:left;">
+    <p style="font-size:0.95em; line-height:1.5; color:var(--dark-navy);">The boat needs depth &ge; 10 ft, so we draw the line <span class="green" style="font-weight:600;">y = 10</span>. Where the <span class="blue">curve is above</span> this line, the water is deep enough.</p>
+  </div>
+
+  <!-- Step 1: all four intersections -->
+  <div class="step" data-step="1" style="max-width:740px; text-align:left;">
+    <p style="font-size:0.95em; line-height:1.5; color:var(--dark-navy);">The curve crosses <span class="green">y = 10</span> at <strong>four points</strong> over 24 hours &mdash; because each full cycle of the cosine hits this height twice (once going up, once coming down).</p>
+  </div>
+
+  <!-- Step 2: why the afternoon pair -->
+  <div class="step" data-step="2" style="max-width:740px; text-align:left;">
+    <p style="font-size:0.95em; line-height:1.5; color:var(--dark-navy);"><strong class="red">Why the afternoon pair?</strong> The problem asks for <em>afternoon</em> docking times. The first two intersections (<span class="math">t</span> &asymp; 2.67 and 5.33) are in the <em>morning</em>. The second pair (<span class="math">t</span> &asymp; 14.67 and 17.33) falls after noon &mdash; those are our answer window.</p>
+  </div>
+
+  <!-- Step 3: callout about the region -->
+  <div class="step" data-step="3" style="max-width:740px; text-align:left;">
+    <div class="tip-box">
+      <strong class="green">Reading the graph:</strong> Between the two <span class="red">red points</span>, the blue curve stays <em>above</em> the green line. That shaded region is when the depth &ge; 10 ft and the boat can safely dock.
+    </div>
+  </div>
+
+  <div class="click-hint">Click to reveal each step</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7: PART B continued - Converting t to clock time
+     ============================================================ -->
+<section class="slide" data-steps="4">
+  <span class="example-label">PART B</span>
+  <h2 class="slide-title" style="margin-top:10px;">Converting to Clock Time</h2>
+  <p class="slide-subtitle">We found <span class="math">t</span> &asymp; 14.67 and <span class="math">t</span> &asymp; 17.33. But what times are those?</p>
+
+  <div class="steps-list" style="max-width:760px;">
+    <div class="step" data-step="0">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <strong>Why not radians?</strong> In this problem, <span class="math">t</span> is measured in <strong>hours</strong>, not radians. The value 14.67 means 14.67 <em>hours</em> after midnight &mdash; the decimal part (0.67) is a fraction of an hour, not an angle.
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="1">
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <strong>What does the decimal mean?</strong> The whole-number part gives us the hour. The decimal part is a fraction of an hour that we need to convert to minutes.
+          <div style="margin-top:8px; font-size:1.05em;">
+            <span class="math">t</span> = 14<span class="blue">.67</span> &nbsp;&rarr;&nbsp; 14 hours + <span class="blue">0.67</span> &times; 60 min = 14 hours <strong>40 min</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="2">
+      <div style="background:#f8faff; border:1.5px solid var(--grid-line); border-radius:8px; padding:16px 24px; margin:6px 0;">
+        <div style="display:flex; gap:40px; justify-content:center; flex-wrap:wrap; font-size:1.05em;">
+          <div style="text-align:center;">
+            <div style="color:#94a3b8; font-size:0.85em; margin-bottom:4px;">Left boundary</div>
+            <span class="math">t</span> = 14.67 hours<br>
+            <span style="font-size:1.4em;">&darr;</span><br>
+            14 h 40 min = <strong class="red">2:40 PM</strong>
+          </div>
+          <div style="text-align:center;">
+            <div style="color:#94a3b8; font-size:0.85em; margin-bottom:4px;">Right boundary</div>
+            <span class="math">t</span> = 17.33 hours<br>
+            <span style="font-size:1.4em;">&darr;</span><br>
+            17 h 20 min = <strong class="red">5:20 PM</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="2">
+      <div class="tip-box" style="margin-top:6px;">
+        <strong class="green">Calculator shortcut:</strong> On a TI-84, enter 14.67 then press <span class="mono-math" style="font-size:0.9em;">2nd</span> &rarr; <span class="mono-math" style="font-size:0.9em;">ANGLE</span> &rarr; <span class="mono-math" style="font-size:0.9em;">&blacktriangleright;DMS</span> to convert decimal hours to hours&deg; minutes&prime; seconds&Prime; automatically.
+      </div>
+    </div>
+
+    <div class="step" data-step="3">
+      <div class="answer-callout" style="text-align:center; margin:10px auto;">
+        <strong class="red">Answer:</strong> The boat can safely dock between <strong>2:40 PM</strong> and <strong>5:20 PM</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="click-hint">Click to reveal each step</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7: PART C - Finding the sine model
+     ============================================================ -->
+<section class="slide" data-steps="4">
+  <span class="example-label">PART C</span>
+  <h2 class="slide-title" style="margin-top:10px;">Finding the Sine Model</h2>
+  <p class="slide-subtitle">Convert from cosine to sine. We know: <span class="math">y</span> = 5.6 cos(<sup>&pi;</sup>&frasl;<sub>6</sub>(<span class="math">t</span> &minus; 4)) + 5.7</p>
+
+  <div class="steps-list">
+    <div class="step" data-step="0">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <strong>Graph the cosine model</strong> and the horizontal line <span class="teal">y = 5.7</span> (the vertical translation / midline).
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="1">
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <strong>Find the first intersection</strong> where the cosine curve crosses the midline while <em>increasing</em>. Using the calculator's Intersect feature: the first rising crossing is at <span class="blue">(<span class="math">1, 5.7</span>)</span>.
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="2">
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <strong>Set the phase shift</strong> to <span class="math">c</span> = <span class="blue">1</span>. Since sine starts at the midline going up, this is exactly where our sine function begins its cycle. All other parameters stay the same (amplitude = 5.6, period = 12, vertical translation = 5.7).
+        </div>
+      </div>
+    </div>
+
+    <div class="step" data-step="3">
+      <div style="text-align:center; margin-top:14px;">
+        <div class="equation-box red-border">
+          <span class="math" style="font-size:1.1em;"><span class="red">y</span> = 5.6 sin(<sup>&pi;</sup>&frasl;<sub>6</sub>(<span class="math">t</span> &minus; 1)) + 5.7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Diagram showing cosine and midline with intersection -->
+  <svg class="graph-svg step" data-step="0" viewBox="-35 -20 420 200" width="580" height="280" style="margin-top:10px;">
+    <g stroke="#e2e8f0" stroke-width="0.5">
+      <line x1="0" y1="30" x2="360" y2="30"/>
+      <line x1="0" y1="60" x2="360" y2="60"/>
+      <line x1="0" y1="90" x2="360" y2="90"/>
+      <line x1="0" y1="120" x2="360" y2="120"/>
+      <line x1="0" y1="150" x2="360" y2="150"/>
+    </g>
+    <line x1="0" y1="150" x2="370" y2="150" stroke="var(--dark-navy)" stroke-width="1.5"/>
+    <line x1="0" y1="155" x2="0" y2="-5" stroke="var(--dark-navy)" stroke-width="1.5"/>
+    <!-- Y-axis labels -->
+    <text x="-6" y="154" text-anchor="end" font-size="10" fill="var(--dark-navy)">0</text>
+    <text x="-6" y="124" text-anchor="end" font-size="10" fill="var(--dark-navy)">4</text>
+    <text x="-6" y="94" text-anchor="end" font-size="10" fill="var(--dark-navy)">8</text>
+    <text x="-6" y="64" text-anchor="end" font-size="10" fill="var(--dark-navy)">12</text>
+    <!-- X-axis: 0 to 12 hours, 30px per hour -->
+    <text x="0" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">0</text>
+    <text x="120" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">4</text>
+    <text x="240" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">8</text>
+    <text x="360" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">12</text>
+    <text x="60" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">2</text>
+    <text x="180" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">6</text>
+    <text x="300" y="168" text-anchor="middle" font-size="10" fill="var(--dark-navy)">10</text>
+    <text x="190" y="185" text-anchor="middle" font-size="10" font-style="italic" fill="var(--dark-navy)">time</text>
+    <!-- Midline y = 5.7 → svg y = 150 - 5.7*((150-30)/12) = 150 - 5.7*10 = 93 -->
+    <line x1="0" y1="93" x2="360" y2="93" stroke="var(--teal-accent)" stroke-width="1.5" stroke-dasharray="8,4"/>
+    <text x="365" y="97" font-size="10" fill="var(--teal-accent)" font-weight="600">y = 5.7</text>
+    <!-- Cosine curve (blue) -->
+    <path id="cosine-partc" d="" fill="none" stroke="var(--blue-accent)" stroke-width="2.5"/>
+    <!-- Intersection point at (1, 5.7) -->
+    <g class="step" data-step="1" style="margin:0">
+      <circle cx="30" cy="93" r="6" fill="var(--red-accent)"/>
+      <text x="30" y="84" text-anchor="middle" font-size="11" font-weight="700" fill="var(--red-accent)">(1, 5.7)</text>
+      <line x1="30" y1="93" x2="30" y2="150" stroke="var(--red-accent)" stroke-width="1" stroke-dasharray="4,3"/>
+    </g>
+  </svg>
+
+  <div class="click-hint">Click to reveal each step</div>
+  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8: QUESTIONS
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">What are your questions?</div>
+  <div class="section-subtitle">Section 4.7 &mdash; Modeling with Sine and Cosine</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9: HOMEWORK
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">Homework</div>
+  <div class="section-subtitle">Modeling with Sine and Cosine WORKSHEET</div>
+</section>
+
+</div><!-- end slides-container -->
+
+<!-- Keyboard hint -->
+<div class="keyboard-hint">
+  <span class="key-icon">&larr;</span>
+  <span class="key-icon">&rarr;</span>
+  <span>or click to advance steps</span>
+</div>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   Handles navigation, step reveals, and animations
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = document.querySelectorAll('.slide');
+    this.currentSlide = 0;
+    this.slideSteps = []; // track current step per slide
+    this.maxSteps = [];   // max steps per slide
+    this.transitioning = false;
+
+    this.slides.forEach((slide, i) => {
+      const max = parseInt(slide.getAttribute('data-steps')) || 0;
+      this.maxSteps.push(max);
+      this.slideSteps.push(-1); // -1 means no steps revealed yet
+    });
+
+    this.buildNavDots();
+    this.showSlide(0);
+    this.bindEvents();
+    this.generateCurves();
+  }
+
+  /* Build navigation dots */
+  buildNavDots() {
+    const nav = document.getElementById('nav-dots');
+    this.slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot';
+      dot.addEventListener('click', () => this.goToSlide(i));
+      nav.appendChild(dot);
+    });
+    this.dots = document.querySelectorAll('.nav-dot');
+  }
+
+  /* Show a specific slide */
+  showSlide(index) {
+    this.slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'exit-left');
+      if (i < index) slide.classList.add('exit-left');
+    });
+    this.slides[index].classList.add('active');
+    this.dots.forEach((d, i) => d.classList.toggle('active', i === index));
+
+    // Progress bar
+    const pct = (index / (this.slides.length - 1)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+
+    // Animate gallery items on slide 1
+    if (index === 1) {
+      setTimeout(() => {
+        this.slides[1].querySelectorAll('.gallery-item').forEach(item => {
+          item.classList.add('visible');
+        });
+      }, 200);
+    }
+
+    // Animate scatter plot dots on slide 3
+    if (index === 2 || index === 3) {
+      this.animateScatterDots();
+    }
+
+    // Draw cosine curves when their slides become active
+    // Slide 5: 12-hour "confirm in calculator" graph
+    if (index === 5) {
+      this.drawCosineCurveAnimated('cosine-curve', 0, 12, 30);
+    }
+    // Slide 6: 24-hour Part B graph
+    if (index === 6) {
+      this.drawCosineCurveAnimated('cosine-curve-24', 0, 24, 21.25);
+    }
+  }
+
+  /* Navigate to slide */
+  goToSlide(index) {
+    if (index < 0 || index >= this.slides.length || this.transitioning) return;
+    this.transitioning = true;
+    this.currentSlide = index;
+    this.showSlide(index);
+    setTimeout(() => { this.transitioning = false; }, 500);
+  }
+
+  /* Advance: reveal next step, or go to next slide */
+  advance() {
+    const slide = this.slides[this.currentSlide];
+    const maxStep = this.maxSteps[this.currentSlide];
+    const currentStep = this.slideSteps[this.currentSlide];
+
+    if (currentStep < maxStep - 1) {
+      // Reveal next step
+      this.slideSteps[this.currentSlide]++;
+      const nextStep = this.slideSteps[this.currentSlide];
+      const steps = slide.querySelectorAll('.step[data-step="' + nextStep + '"]');
+      steps.forEach(s => s.classList.add('visible'));
+
+      // Hide click hint if all steps revealed
+      if (nextStep >= maxStep - 1) {
+        const hint = slide.querySelector('.click-hint');
+        if (hint) hint.style.opacity = '0';
+      }
+    } else {
+      // Go to next slide
+      if (this.currentSlide < this.slides.length - 1) {
+        this.goToSlide(this.currentSlide + 1);
+      }
+    }
+  }
+
+  /* Go back: hide last step, or go to previous slide */
+  goBack() {
+    const currentStep = this.slideSteps[this.currentSlide];
+
+    if (currentStep >= 0) {
+      // Hide current step
+      const slide = this.slides[this.currentSlide];
+      const steps = slide.querySelectorAll('.step[data-step="' + currentStep + '"]');
+      steps.forEach(s => s.classList.remove('visible'));
+      this.slideSteps[this.currentSlide]--;
+
+      // Show click hint again
+      const hint = slide.querySelector('.click-hint');
+      if (hint) hint.style.opacity = '';
+    } else {
+      if (this.currentSlide > 0) {
+        this.goToSlide(this.currentSlide - 1);
+      }
+    }
+  }
+
+  /* Bind keyboard, click, and touch events */
+  bindEvents() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        this.advance();
+      } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+        e.preventDefault();
+        this.goBack();
+      }
+    });
+
+    // Click on slide to advance steps
+    document.getElementById('slides-container').addEventListener('click', (e) => {
+      if (e.target.closest('.nav-dot') || e.target.closest('a')) return;
+      this.advance();
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+    document.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) this.advance();
+        else this.goBack();
+      }
+    });
+  }
+
+  /* Animate scatter plot data dots */
+  animateScatterDots() {
+    const dots = document.querySelectorAll('.data-dot');
+    dots.forEach(dot => {
+      dot.style.animation = 'none';
+      dot.offsetHeight; // force reflow
+      dot.style.animation = `dropIn 0.5s ease forwards ${dot.style.animationDelay}`;
+    });
+  }
+
+  /* Generate cosine curve path:
+     y = 5.6*cos(π/6*(t-4)) + 5.7
+     SVG coords: xPx = t * pxPerHour, yPx = 180 - y * 15 */
+  generateCosinePath(tStart, tEnd, pxPerHour) {
+    const points = [];
+    const yScale = 15; // px per foot
+    const yBase = 180;
+    const dt = 0.1;
+    for (let t = tStart; t <= tEnd; t += dt) {
+      const y = 5.6 * Math.cos(Math.PI / 6 * (t - 4)) + 5.7;
+      const xPx = t * pxPerHour;
+      const yPx = yBase - y * yScale;
+      points.push([xPx, yPx]);
+    }
+    let d = 'M ' + points[0][0].toFixed(1) + ' ' + points[0][1].toFixed(1);
+    for (let i = 1; i < points.length; i++) {
+      d += ' L ' + points[i][0].toFixed(1) + ' ' + points[i][1].toFixed(1);
+    }
+    return d;
+  }
+
+  /* Draw cosine curve with animation */
+  drawCosineCurveAnimated(pathId, tStart, tEnd, pxPerHour) {
+    const path = document.getElementById(pathId);
+    if (!path) return;
+    const d = this.generateCosinePath(tStart, tEnd, pxPerHour);
+    path.setAttribute('d', d);
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = len;
+    path.style.strokeDashoffset = len;
+    path.style.transition = 'none';
+    path.offsetHeight;
+    path.style.transition = 'stroke-dashoffset 1.5s ease';
+    path.style.strokeDashoffset = '0';
+  }
+
+  /* Generate all static curves */
+  generateCurves() {
+    // Part C cosine curve (smaller graph, different scale)
+    const partcPath = document.getElementById('cosine-partc');
+    if (partcPath) {
+      const points = [];
+      const pxPerHour = 30;
+      const yScale = 10; // (150-30)/12 = 10
+      const yBase = 150;
+      for (let t = 0; t <= 12; t += 0.1) {
+        const y = 5.6 * Math.cos(Math.PI / 6 * (t - 4)) + 5.7;
+        const xPx = t * pxPerHour;
+        const yPx = yBase - y * yScale;
+        points.push([xPx, yPx]);
+      }
+      let d = 'M ' + points[0][0].toFixed(1) + ' ' + points[0][1].toFixed(1);
+      for (let i = 1; i < points.length; i++) {
+        d += ' L ' + points[i][0].toFixed(1) + ' ' + points[i][1].toFixed(1);
+      }
+      partcPath.setAttribute('d', d);
+    }
+  }
+}
+
+/* Initialize on load */
+window.addEventListener('DOMContentLoaded', () => {
+  new SlidePresentation();
+});
+</script>
+</body>
+</html>
