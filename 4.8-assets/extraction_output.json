@@ -1,0 +1,5093 @@
+{
+  "file": "4.8 graphs of other trig functions TEACHER.pptx",
+  "slide_width_inches": 13.33,
+  "slide_height_inches": 7.5,
+  "total_slides": 34,
+  "slides": [
+    {
+      "slide_number": 1,
+      "title": "4.8 Graphs of Other Trig Functions",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.66,
+            "top_inches": 0.84,
+            "width_inches": 11.79,
+            "height_inches": 3.67
+          },
+          "depth": 0,
+          "text_content": "4.8 Graphs of Other Trig Functions",
+          "paragraphs": [
+            {
+              "text": "4.8 Graphs of Other Trig Functions",
+              "runs": [
+                {
+                  "text": "4.8 Graphs of Other Trig Functions",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "CENTER_TITLE (3)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 3,
+          "name": "Subtitle 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.86,
+            "top_inches": 5.04,
+            "width_inches": 10.15,
+            "height_inches": 1.59
+          },
+          "depth": 0,
+          "text_content": "Sketch the graphs of tangent and cotangent functions.\nSketch the graphs of secant and cosecant functions.",
+          "paragraphs": [
+            {
+              "text": "Sketch the graphs of tangent and cotangent functions.",
+              "runs": [
+                {
+                  "text": "Sketch the graphs of tangent and cotangent functions.",
+                  "formatting": {
+                    "size_pt": 24.0
+                  }
+                }
+              ]
+            },
+            {
+              "text": "Sketch the graphs of secant and cosecant functions.",
+              "runs": [
+                {
+                  "text": "Sketch the graphs of secant and cosecant functions.",
+                  "formatting": {
+                    "size_pt": 24.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "SUBTITLE (4)",
+          "placeholder_idx": 1
+        }
+      ],
+      "all_text": [
+        "4.8 Graphs of Other Trig Functions",
+        "Sketch the graphs of tangent and cotangent functions.\nSketch the graphs of secant and cosecant functions."
+      ],
+      "notes": "",
+      "layout": "Title Slide",
+      "additional_relationship_images": [
+        "slide1_rel_img1.jpg"
+      ]
+    },
+    {
+      "slide_number": 2,
+      "title": "How to teach Graphs of Other Trig Functions",
+      "shapes": [
+        {
+          "shape_id": 3,
+          "name": "Title 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "How to teach Graphs of Other Trig Functions",
+          "paragraphs": [
+            {
+              "text": "How to teach Graphs of Other Trig Functions",
+              "runs": [
+                {
+                  "text": "How to teach Graphs of Other Trig Functions",
+                  "formatting": {
+                    "size_pt": 44.0,
+                    "font_name": "KG First Time In Forever"
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 6,
+          "name": "Content Placeholder 5",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.74,
+            "top_inches": 2.62,
+            "width_inches": 5.8,
+            "height_inches": 3.63
+          },
+          "depth": 0,
+          "text_content": "How to Teach Graphing Tangent and Cotangent\n\n",
+          "paragraphs": [
+            {
+              "text": "How to Teach Graphing Tangent and Cotangent",
+              "runs": [
+                {
+                  "text": "How to Teach Graphing Tangent and Cotangent",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "color": "3366FF"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            },
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            },
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            }
+          ],
+          "placeholder_type": "OBJECT (7)",
+          "placeholder_idx": 1
+        },
+        {
+          "shape_id": 9,
+          "name": "Content Placeholder 8",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 6.69,
+            "top_inches": 2.62,
+            "width_inches": 5.8,
+            "height_inches": 3.63
+          },
+          "depth": 0,
+          "text_content": "How to Teach Graphing Secant and Cosecant",
+          "paragraphs": [
+            {
+              "text": "How to Teach Graphing Secant and Cosecant",
+              "runs": [
+                {
+                  "text": "How to Teach Graphing Secant and Cosecant",
+                  "formatting": {
+                    "size_pt": 28.0
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ],
+          "placeholder_type": "OBJECT (7)",
+          "placeholder_idx": 2
+        },
+        {
+          "shape_id": 5,
+          "name": "Picture 4",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 2.15,
+            "top_inches": 3.61,
+            "width_inches": 2.55,
+            "height_inches": 3.5
+          },
+          "depth": 0,
+          "image_file": "slide2_img2.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 172567
+        },
+        {
+          "shape_id": 8,
+          "name": "Picture 7",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 8.18,
+            "top_inches": 3.61,
+            "width_inches": 2.55,
+            "height_inches": 3.5
+          },
+          "depth": 0,
+          "image_file": "slide2_img3.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 317710
+        },
+        {
+          "shape_id": 11,
+          "name": "TextBox 10",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.67,
+            "top_inches": 1.28,
+            "width_inches": 12.0,
+            "height_inches": 0.91
+          },
+          "depth": 0,
+          "text_content": "Teacher, need some tips on teaching this complicated topic to your students? Check out my blog posts with videos showing the technique that I use with much success.",
+          "paragraphs": [
+            {
+              "text": "Teacher, need some tips on teaching this complicated topic to your students? Check out my blog posts with videos showing the technique that I use with much success.",
+              "runs": [
+                {
+                  "text": "Teacher, need some tips on teaching this complicated topic to your students? Check out my blog posts with videos showing the technique that I use with much success.",
+                  "formatting": {
+                    "size_pt": 24.0
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "How to teach Graphs of Other Trig Functions",
+        "How to Teach Graphing Tangent and Cotangent\n\n",
+        "How to Teach Graphing Secant and Cosecant",
+        "Teacher, need some tips on teaching this complicated topic to your students? Check out my blog posts with videos showing the technique that I use with much success."
+      ],
+      "notes": null,
+      "layout": "Two Content",
+      "additional_relationship_images": [
+        "slide2_rel_img4.jpg"
+      ]
+    },
+    {
+      "slide_number": 3,
+      "title": "Tangent and Cotangent",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.66,
+            "top_inches": 0.84,
+            "width_inches": 11.79,
+            "height_inches": 3.67
+          },
+          "depth": 0,
+          "text_content": "Tangent and Cotangent",
+          "paragraphs": [
+            {
+              "text": "Tangent and Cotangent",
+              "runs": [
+                {
+                  "text": "Tangent and Cotangent",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "Tangent and Cotangent"
+      ],
+      "notes": null,
+      "layout": "Section Header"
+    },
+    {
+      "slide_number": 4,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 49,
+          "name": "Text Box 49",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 1.49,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 50,
+          "name": "Text Box 50",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 6.6,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 51,
+          "name": "Text Box 51",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 4.05,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 52,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 2.16,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 53,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 5.94,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 58,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.73,
+            "top_inches": 2.82,
+            "width_inches": 1.2,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 59,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 3.38,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 60,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 4.71,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 61,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.73,
+            "top_inches": 5.38,
+            "width_inches": 1.2,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 1028,
+          "name": "Picture 4",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 5.65,
+            "top_inches": 1.28,
+            "width_inches": 6.35,
+            "height_inches": 4.95
+          },
+          "depth": 0,
+          "image_file": "slide4_img5.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 10449
+        }
+      ],
+      "all_text": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "-1",
+        "undefined",
+        "-1",
+        "1",
+        "undefined"
+      ],
+      "notes": "",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide4_rel_img6.png",
+        "slide4_rel_img7.png"
+      ]
+    },
+    {
+      "slide_number": 5,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 49,
+          "name": "Text Box 49",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 1.49,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 50,
+          "name": "Text Box 50",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 6.6,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 51,
+          "name": "Text Box 51",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 4.05,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 52,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 2.16,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 53,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 5.94,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 58,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.73,
+            "top_inches": 2.82,
+            "width_inches": 1.2,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 59,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 3.38,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 60,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.03,
+            "top_inches": 4.71,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 61,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.73,
+            "top_inches": 5.38,
+            "width_inches": 1.2,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "Group 4",
+          "shape_type": "GROUP (6)",
+          "position": {
+            "left_inches": 5.65,
+            "top_inches": 1.28,
+            "width_inches": 6.35,
+            "height_inches": 5.2
+          },
+          "depth": 0,
+          "grouped_shapes": [
+            {
+              "shape_id": 1028,
+              "name": "Picture 4",
+              "shape_type": "PICTURE (13)",
+              "position": {
+                "left_inches": 5.89,
+                "top_inches": 1.9,
+                "width_inches": 4.73,
+                "height_inches": 3.69
+              },
+              "depth": 1,
+              "image_file": "slide4_img5.png",
+              "image_content_type": "image/png",
+              "image_size_bytes": 10449
+            },
+            {
+              "shape_id": 1027,
+              "name": "Picture 3",
+              "shape_type": "PICTURE (13)",
+              "position": {
+                "left_inches": 5.89,
+                "top_inches": 1.9,
+                "width_inches": 4.73,
+                "height_inches": 3.69
+              },
+              "depth": 1,
+              "image_file": "slide5_img9.png",
+              "image_content_type": "image/png",
+              "image_size_bytes": 19706
+            },
+            {
+              "shape_id": 33835,
+              "name": "Oval 43",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 7.42,
+                "top_inches": 3.73,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33838,
+              "name": "Oval 46",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 8.82,
+                "top_inches": 3.73,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33840,
+              "name": "Oval 48",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 10.24,
+                "top_inches": 3.72,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33851,
+              "name": "Oval 59",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 7.76,
+                "top_inches": 3.31,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33858,
+              "name": "Oval 66",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 8.47,
+                "top_inches": 4.13,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33859,
+              "name": "Oval 67",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 9.18,
+                "top_inches": 3.31,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 33860,
+              "name": "Oval 68",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 9.88,
+                "top_inches": 4.13,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 4,
+              "name": "Straight Connector 3",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 9.61,
+                "top_inches": 1.9,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            },
+            {
+              "shape_id": 34,
+              "name": "Straight Connector 33",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 8.19,
+                "top_inches": 1.9,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            },
+            {
+              "shape_id": 35,
+              "name": "Straight Connector 34",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 6.79,
+                "top_inches": 1.9,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "0",
+        "0",
+        "0",
+        "1",
+        "-1",
+        "undefined",
+        "-1",
+        "1",
+        "undefined"
+      ],
+      "notes": "",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide5_rel_img10.png"
+      ]
+    },
+    {
+      "slide_number": 6,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 1034,
+          "name": "Picture 10",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 5.64,
+            "top_inches": 1.27,
+            "width_inches": 7.2,
+            "height_inches": 5.4
+          },
+          "depth": 0,
+          "image_file": "slide6_img11.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 21456
+        },
+        {
+          "shape_id": 41044,
+          "name": "AutoShape 84",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 10.0,
+            "top_inches": 3.7,
+            "width_inches": 0.52,
+            "height_inches": 1.91
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 41047,
+          "name": "Text Box 87",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.9,
+            "top_inches": 1.63,
+            "width_inches": 5.5,
+            "height_inches": 1.51
+          },
+          "depth": 0,
+          "text_content": "The period is the distance between two consecutive asymptotes.",
+          "paragraphs": [
+            {
+              "text": "The period is the distance between two consecutive asymptotes.",
+              "runs": [
+                {
+                  "text": "The ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "period",
+                  "formatting": {
+                    "underline": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": " is the distance between two consecutive asymptotes.",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 41048,
+          "name": "Text Box 88",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.97,
+            "top_inches": 4.34,
+            "width_inches": 4.8,
+            "height_inches": 0.57
+          },
+          "depth": 0,
+          "text_content": "The amplitude is undefined ",
+          "paragraphs": [
+            {
+              "text": "The amplitude is undefined ",
+              "runs": [
+                {
+                  "text": "The ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "amplitude",
+                  "formatting": {
+                    "underline": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": " is undefined ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Text Box 88",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.99,
+            "top_inches": 5.06,
+            "width_inches": 5.67,
+            "height_inches": 0.57
+          },
+          "depth": 0,
+          "text_content": "but you can have a vertical stretch.",
+          "paragraphs": [
+            {
+              "text": "but you can have a vertical stretch.",
+              "runs": [
+                {
+                  "text": "but you can have a ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "vertical stretch",
+                  "formatting": {
+                    "italic": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": ".",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "The period is the distance between two consecutive asymptotes.",
+        "The amplitude is undefined ",
+        "but you can have a vertical stretch."
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide6_rel_img12.png",
+        "slide6_rel_img13.png"
+      ]
+    },
+    {
+      "slide_number": 7,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 36,
+          "name": "Text Box 49",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 1.42,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 37,
+          "name": "Text Box 50",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 6.52,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 38,
+          "name": "Text Box 51",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 3.97,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 39,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 1.98,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 40,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 5.85,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 41,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 2.64,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 42,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 3.3,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 43,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 4.53,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 44,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 5.19,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 1028,
+          "name": "Picture 4",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 5.51,
+            "top_inches": 1.39,
+            "width_inches": 6.68,
+            "height_inches": 5.2
+          },
+          "depth": 0,
+          "image_file": "slide4_img5.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 10449
+        }
+      ],
+      "all_text": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "1",
+        "-1",
+        "0",
+        "-1",
+        "1",
+        "0"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide7_rel_img15.png",
+        "slide7_rel_img16.png"
+      ]
+    },
+    {
+      "slide_number": 8,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 36,
+          "name": "Text Box 49",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 1.42,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 37,
+          "name": "Text Box 50",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 6.52,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 38,
+          "name": "Text Box 51",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.1,
+            "top_inches": 3.97,
+            "width_inches": 1.25,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "undefined",
+          "paragraphs": [
+            {
+              "text": "undefined",
+              "runs": [
+                {
+                  "text": "undefined",
+                  "formatting": {
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 39,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 1.98,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 40,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 5.85,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 41,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 2.64,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 42,
+          "name": "Text Box 53",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 3.3,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "-1",
+          "paragraphs": [
+            {
+              "text": "-1",
+              "runs": [
+                {
+                  "text": "-1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 43,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 4.53,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "1",
+          "paragraphs": [
+            {
+              "text": "1",
+              "runs": [
+                {
+                  "text": "1",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 44,
+          "name": "Text Box 52",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.43,
+            "top_inches": 5.19,
+            "width_inches": 0.6,
+            "height_inches": 0.5
+          },
+          "depth": 0,
+          "text_content": "0",
+          "paragraphs": [
+            {
+              "text": "0",
+              "runs": [
+                {
+                  "text": "0",
+                  "formatting": {
+                    "size_pt": 24.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 2,
+          "name": "Group 1",
+          "shape_type": "GROUP (6)",
+          "position": {
+            "left_inches": 5.51,
+            "top_inches": 1.39,
+            "width_inches": 6.68,
+            "height_inches": 5.2
+          },
+          "depth": 0,
+          "grouped_shapes": [
+            {
+              "shape_id": 1028,
+              "name": "Picture 4",
+              "shape_type": "PICTURE (13)",
+              "position": {
+                "left_inches": 5.51,
+                "top_inches": 1.84,
+                "width_inches": 5.4,
+                "height_inches": 4.21
+              },
+              "depth": 1,
+              "image_file": "slide4_img5.png",
+              "image_content_type": "image/png",
+              "image_size_bytes": 10449
+            },
+            {
+              "shape_id": 5122,
+              "name": "Picture 2",
+              "shape_type": "PICTURE (13)",
+              "position": {
+                "left_inches": 5.51,
+                "top_inches": 1.84,
+                "width_inches": 5.4,
+                "height_inches": 4.21
+              },
+              "depth": 1,
+              "image_file": "slide8_img18.png",
+              "image_content_type": "image/png",
+              "image_size_bytes": 27089
+            },
+            {
+              "shape_id": 45,
+              "name": "Oval 43",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 7.63,
+                "top_inches": 3.45,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 46,
+              "name": "Oval 46",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 9.23,
+                "top_inches": 3.45,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 48,
+              "name": "Oval 59",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 8.03,
+                "top_inches": 3.93,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 50,
+              "name": "Oval 66",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 8.42,
+                "top_inches": 4.39,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 54,
+              "name": "Oval 67",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 9.62,
+                "top_inches": 3.94,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 55,
+              "name": "Oval 68",
+              "shape_type": "AUTO_SHAPE (1)",
+              "position": {
+                "left_inches": 10.03,
+                "top_inches": 4.4,
+                "width_inches": 0.13,
+                "height_inches": 0.13
+              },
+              "depth": 1,
+              "text_content": "",
+              "paragraphs": [
+                {
+                  "text": "",
+                  "runs": []
+                }
+              ]
+            },
+            {
+              "shape_id": 56,
+              "name": "Straight Connector 55",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 10.51,
+                "top_inches": 2.0,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            },
+            {
+              "shape_id": 57,
+              "name": "Straight Connector 56",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 8.91,
+                "top_inches": 1.9,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            },
+            {
+              "shape_id": 60,
+              "name": "Straight Connector 59",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 7.31,
+                "top_inches": 1.9,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            },
+            {
+              "shape_id": 62,
+              "name": "Straight Connector 61",
+              "shape_type": "LINE (9)",
+              "position": {
+                "left_inches": 5.69,
+                "top_inches": 2.09,
+                "width_inches": 0.0,
+                "height_inches": 3.88
+              },
+              "depth": 1
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "undefined",
+        "undefined",
+        "undefined",
+        "1",
+        "-1",
+        "0",
+        "-1",
+        "1",
+        "0"
+      ],
+      "notes": null,
+      "layout": "Title Only"
+    },
+    {
+      "slide_number": 9,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 2050,
+          "name": "Picture 2",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 6.09,
+            "top_inches": 1.1,
+            "width_inches": 7.2,
+            "height_inches": 5.4
+          },
+          "depth": 0,
+          "image_file": "slide9_img19.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 22851
+        },
+        {
+          "shape_id": 41044,
+          "name": "AutoShape 84",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.47,
+            "top_inches": 3.12,
+            "width_inches": 0.4,
+            "height_inches": 1.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 2,
+          "name": "Text Box 87",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.53,
+            "top_inches": 1.63,
+            "width_inches": 5.5,
+            "height_inches": 1.51
+          },
+          "depth": 0,
+          "text_content": "The period is the distance between two consecutive asymptotes",
+          "paragraphs": [
+            {
+              "text": "The period is the distance between two consecutive asymptotes",
+              "runs": [
+                {
+                  "text": "The ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "period",
+                  "formatting": {
+                    "underline": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": " is the distance between two consecutive asymptotes",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 3,
+          "name": "Text Box 88",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.53,
+            "top_inches": 4.34,
+            "width_inches": 4.63,
+            "height_inches": 0.57
+          },
+          "depth": 0,
+          "text_content": "The amplitude is undefined",
+          "paragraphs": [
+            {
+              "text": "The amplitude is undefined",
+              "runs": [
+                {
+                  "text": "The ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "amplitude",
+                  "formatting": {
+                    "underline": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": " is undefined",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "Text Box 88",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.53,
+            "top_inches": 5.06,
+            "width_inches": 5.67,
+            "height_inches": 0.57
+          },
+          "depth": 0,
+          "text_content": "but you can have a vertical stretch.",
+          "paragraphs": [
+            {
+              "text": "but you can have a vertical stretch.",
+              "runs": [
+                {
+                  "text": "but you can have a ",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "vertical stretch",
+                  "formatting": {
+                    "italic": true,
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": ".",
+                  "formatting": {
+                    "size_pt": 28.0,
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "The period is the distance between two consecutive asymptotes",
+        "The amplitude is undefined",
+        "but you can have a vertical stretch."
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide9_rel_img20.png",
+        "slide9_rel_img21.png"
+      ]
+    },
+    {
+      "slide_number": 10,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 12290,
+          "name": "Rectangle 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.12,
+            "top_inches": 0.85,
+            "width_inches": 3.76,
+            "height_inches": 3.02
+          },
+          "depth": 0,
+          "text_content": "Basic Characteristics of Tangent \u000band \u000bCotangent Curves",
+          "paragraphs": [
+            {
+              "text": "Basic Characteristics of Tangent \u000band \u000bCotangent Curves",
+              "runs": [
+                {
+                  "text": "Basic Characteristics of Tangent ",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "and ",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "Cotangent Curves",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 4294967295
+        },
+        {
+          "shape_id": 4,
+          "name": "Rectangle 3",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.24,
+            "top_inches": 0.92,
+            "width_inches": 3.3,
+            "height_inches": 0.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "Rectangle 4",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.62,
+            "top_inches": 0.92,
+            "width_inches": 3.3,
+            "height_inches": 0.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 14,
+          "name": "Rectangle 13",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.22,
+            "top_inches": 4.91,
+            "width_inches": 3.3,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 15,
+          "name": "Rectangle 14",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.63,
+            "top_inches": 4.91,
+            "width_inches": 3.3,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 10,
+          "name": "Rectangle 9",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.21,
+            "top_inches": 3.36,
+            "width_inches": 3.3,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 11,
+          "name": "Rectangle 10",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.63,
+            "top_inches": 3.36,
+            "width_inches": 3.3,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "Basic Characteristics of Tangent \u000band \u000bCotangent Curves"
+      ],
+      "notes": null,
+      "layout": "Blank",
+      "additional_relationship_images": [
+        "slide10_rel_img22.png"
+      ]
+    },
+    {
+      "slide_number": 11,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 12290,
+          "name": "Rectangle 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.12,
+            "top_inches": 0.85,
+            "width_inches": 3.76,
+            "height_inches": 3.02
+          },
+          "depth": 0,
+          "text_content": "Basic Characteristics of Tangent \u000band \u000bCotangent Curves",
+          "paragraphs": [
+            {
+              "text": "Basic Characteristics of Tangent \u000band \u000bCotangent Curves",
+              "runs": [
+                {
+                  "text": "Basic Characteristics of Tangent ",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "and ",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "Cotangent Curves",
+                  "formatting": {
+                    "size_pt": 34.0,
+                    "font_name": "Bookman Old Style"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 4294967295
+        }
+      ],
+      "all_text": [
+        "Basic Characteristics of Tangent \u000band \u000bCotangent Curves"
+      ],
+      "notes": "",
+      "layout": "Blank"
+    },
+    {
+      "slide_number": 12,
+      "title": "The key to graphing any tangent or cotangent curve is to be familiar with the 5 key points from their parent graphs.",
+      "shapes": [
+        {
+          "shape_id": 5,
+          "name": "Picture 4",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 8.68,
+            "top_inches": 1.38,
+            "width_inches": 3.82,
+            "height_inches": 3.18
+          },
+          "depth": 0,
+          "image_file": "slide12_img23.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 13990
+        },
+        {
+          "shape_id": 1026,
+          "name": "Picture 2",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 1.75,
+            "top_inches": 1.28,
+            "width_inches": 3.82,
+            "height_inches": 3.18
+          },
+          "depth": 0,
+          "image_file": "slide12_img24.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 13262
+        },
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "The key to graphing any tangent or cotangent curve is to be familiar with the 5 key points from their parent graphs.",
+          "paragraphs": [
+            {
+              "text": "The key to graphing any tangent or cotangent curve is to be familiar with the 5 key points from their parent graphs.",
+              "runs": [
+                {
+                  "text": "The key to graphing any ",
+                  "formatting": {
+                    "size_pt": 36.0
+                  }
+                },
+                {
+                  "text": "tangent",
+                  "formatting": {}
+                },
+                {
+                  "text": " or cotangent curve is to be familiar with the 5 key points from their parent graphs.",
+                  "formatting": {
+                    "size_pt": 36.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "The key to graphing any tangent or cotangent curve is to be familiar with the 5 key points from their parent graphs."
+      ],
+      "notes": null,
+      "layout": "1_Title Only",
+      "additional_relationship_images": [
+        "slide12_rel_img25.png",
+        "slide12_rel_img26.jpg",
+        "slide12_rel_img27.png"
+      ]
+    },
+    {
+      "slide_number": 13,
+      "title": "Steps for graphing a tangent or cotangent function",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.1,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "Steps for graphing a tangent or cotangent function",
+          "paragraphs": [
+            {
+              "text": "Steps for graphing a tangent or cotangent function",
+              "runs": [
+                {
+                  "text": "Steps for graphing a tangent or cotangent function",
+                  "formatting": {
+                    "size_pt": 40.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 3,
+          "name": "Content Placeholder 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 1.22,
+            "top_inches": 1.17,
+            "width_inches": 11.61,
+            "height_inches": 0.99
+          },
+          "depth": 0,
+          "text_content": "T-TABLE. Write down a t-table with 5 points for the parent graph.\nANALYZE. Determine the transformations of the function.",
+          "paragraphs": [
+            {
+              "text": "T-TABLE. Write down a t-table with 5 points for the parent graph.",
+              "runs": [
+                {
+                  "text": "T-TABLE. Write down a t-table with 5 points for the parent graph.",
+                  "formatting": {
+                    "size_pt": 24.0
+                  }
+                }
+              ]
+            },
+            {
+              "text": "ANALYZE. Determine the transformations of the function.",
+              "runs": [
+                {
+                  "text": "ANALYZE. Determine the transformations of the function.",
+                  "formatting": {
+                    "size_pt": 24.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "OBJECT (7)",
+          "placeholder_idx": 1
+        },
+        {
+          "shape_id": 6,
+          "name": "Rectangle 5",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.66,
+            "top_inches": 3.2,
+            "width_inches": 2.1,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "vertical stretch",
+          "paragraphs": [
+            {
+              "text": "vertical stretch",
+              "runs": [
+                {
+                  "text": "vertical stretch",
+                  "formatting": {
+                    "size_pt": 22.0,
+                    "theme_color": "BACKGROUND_1 (14)",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 7,
+          "name": "Rectangle 6",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.67,
+            "top_inches": 4.03,
+            "width_inches": 2.1,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "vertical translation",
+          "paragraphs": [
+            {
+              "text": "vertical translation",
+              "runs": [
+                {
+                  "text": "vertical translation",
+                  "formatting": {
+                    "size_pt": 22.0,
+                    "theme_color": "BACKGROUND_1 (14)",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Rectangle 7",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 2.92,
+            "top_inches": 3.23,
+            "width_inches": 2.1,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "period",
+          "paragraphs": [
+            {
+              "text": "period",
+              "runs": [
+                {
+                  "text": "period",
+                  "formatting": {
+                    "size_pt": 22.0,
+                    "theme_color": "BACKGROUND_1 (14)",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 9,
+          "name": "Rectangle 8",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 2.92,
+            "top_inches": 4.07,
+            "width_inches": 2.1,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "phase shift",
+          "paragraphs": [
+            {
+              "text": "phase shift",
+              "runs": [
+                {
+                  "text": "phase shift",
+                  "formatting": {
+                    "size_pt": 22.0,
+                    "theme_color": "BACKGROUND_1 (14)",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Connector: Elbow 12",
+          "shape_type": "LINE (9)",
+          "position": {
+            "left_inches": 4.81,
+            "top_inches": 3.24,
+            "width_inches": 0.55,
+            "height_inches": 0.14
+          },
+          "depth": 0
+        },
+        {
+          "shape_id": 15,
+          "name": "Connector: Elbow 14",
+          "shape_type": "LINE (9)",
+          "position": {
+            "left_inches": 4.4,
+            "top_inches": 3.65,
+            "width_inches": 1.38,
+            "height_inches": 0.14
+          },
+          "depth": 0
+        },
+        {
+          "shape_id": 23,
+          "name": "Connector: Elbow 22",
+          "shape_type": "LINE (9)",
+          "position": {
+            "left_inches": 7.35,
+            "top_inches": 3.23,
+            "width_inches": 0.52,
+            "height_inches": 0.11
+          },
+          "depth": 0
+        },
+        {
+          "shape_id": 24,
+          "name": "Connector: Elbow 23",
+          "shape_type": "LINE (9)",
+          "position": {
+            "left_inches": 6.93,
+            "top_inches": 3.65,
+            "width_inches": 1.35,
+            "height_inches": 0.12
+          },
+          "depth": 0
+        },
+        {
+          "shape_id": 10,
+          "name": "TextBox 9",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.22,
+            "top_inches": 5.0,
+            "width_inches": 9.68,
+            "height_inches": 1.62
+          },
+          "depth": 0,
+          "text_content": "NEW X-COORDINATES. Use the period, then phase shift to adjust the x-coordinates from the parent graph’s t-table.\nNEW Y-COORDINATES. Use the vertical stretch, then vertical translation to adjust the y-coordinates from the parent graph’s t-table.\nSet up axes, scale, plot points, and draw the graph!",
+          "paragraphs": [
+            {
+              "text": "NEW X-COORDINATES. Use the period, then phase shift to adjust the x-coordinates from the parent graph’s t-table.",
+              "runs": [
+                {
+                  "text": "NEW X-COORDINATES. Use the period, ",
+                  "formatting": {
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": "then",
+                  "formatting": {
+                    "bold": true,
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": " phase shift to adjust the x-coordinates from the parent graph’s t-table.",
+                  "formatting": {
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            },
+            {
+              "text": "NEW Y-COORDINATES. Use the vertical stretch, then vertical translation to adjust the y-coordinates from the parent graph’s t-table.",
+              "runs": [
+                {
+                  "text": "NEW Y-COORDINATES. Use the vertical stretch, ",
+                  "formatting": {
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": "then",
+                  "formatting": {
+                    "bold": true,
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": " vertical translation to adjust the y-coordinates from the parent graph’s t-table.",
+                  "formatting": {
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            },
+            {
+              "text": "Set up axes, scale, plot points, and draw the graph!",
+              "runs": [
+                {
+                  "text": "Set up axes, scale, plot points, and draw the graph!",
+                  "formatting": {
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 11,
+          "name": "TextBox 10",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 11.58,
+            "top_inches": 5.12,
+            "width_inches": 1.6,
+            "height_inches": 1.92
+          },
+          "depth": 0,
+          "text_content": "The order matters:\n\nmultiply before add/subtract!",
+          "paragraphs": [
+            {
+              "text": "The order matters:",
+              "runs": [
+                {
+                  "text": "The order matters:",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            },
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            },
+            {
+              "text": "multiply before add/subtract!",
+              "runs": [
+                {
+                  "text": "multiply before add/subtract!",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "Steps for graphing a tangent or cotangent function",
+        "T-TABLE. Write down a t-table with 5 points for the parent graph.\nANALYZE. Determine the transformations of the function.",
+        "vertical stretch",
+        "vertical translation",
+        "period",
+        "phase shift",
+        "NEW X-COORDINATES. Use the period, then phase shift to adjust the x-coordinates from the parent graph’s t-table.\nNEW Y-COORDINATES. Use the vertical stretch, then vertical translation to adjust the y-coordinates from the parent graph’s t-table.\nSet up axes, scale, plot points, and draw the graph!",
+        "The order matters:\n\nmultiply before add/subtract!"
+      ],
+      "notes": "Teacher, if these steps are confusing, please watch my video where I show the process: https://www.hoffmath.com/2024/09/tangent.html",
+      "layout": "Title and Content",
+      "additional_relationship_images": [
+        "slide13_rel_img28.png",
+        "slide13_rel_img29.png"
+      ]
+    },
+    {
+      "slide_number": 14,
+      "title": null,
+      "shapes": [],
+      "all_text": [],
+      "notes": null,
+      "layout": "1_Title Only",
+      "additional_relationship_images": [
+        "slide14_rel_img30.jpg",
+        "slide14_rel_img31.png"
+      ]
+    },
+    {
+      "slide_number": 15,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 7,
+          "name": "Arrow: Right 6",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 3.12,
+            "top_inches": 5.22,
+            "width_inches": 1.25,
+            "height_inches": 0.7
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Picture 12",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 8.73,
+            "top_inches": 1.42,
+            "width_inches": 4.04,
+            "height_inches": 4.5
+          },
+          "depth": 0,
+          "image_file": "slide15_img32.jpg",
+          "image_content_type": "image/jpeg",
+          "image_size_bytes": 277397
+        }
+      ],
+      "all_text": [],
+      "notes": null,
+      "layout": "1_Title Only",
+      "additional_relationship_images": [
+        "slide15_rel_img33.png",
+        "slide15_rel_img34.png",
+        "slide15_rel_img35.png",
+        "slide15_rel_img36.png",
+        "slide15_rel_img37.png",
+        "slide15_rel_img38.png",
+        "slide15_rel_img39.png"
+      ]
+    },
+    {
+      "slide_number": 16,
+      "title": null,
+      "shapes": [],
+      "all_text": [],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide16_rel_img40.jpg",
+        "slide16_rel_img41.png"
+      ]
+    },
+    {
+      "slide_number": 17,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 5,
+          "name": "TextBox 4",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 4.89,
+            "top_inches": 1.34,
+            "width_inches": 2.1,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by 2",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by 2",
+              "runs": [
+                {
+                  "text": "multiply y’s by 2",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 9,
+          "name": "TextBox 8",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.25,
+            "top_inches": 3.76,
+            "width_inches": 2.18,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "subtract 1 from y’s",
+          "paragraphs": [
+            {
+              "text": "subtract 1 from y’s",
+              "runs": [
+                {
+                  "text": "subtract 1 from y’s",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 12,
+          "name": "TextBox 11",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 3.6,
+            "top_inches": 4.62,
+            "width_inches": 2.58,
+            "height_inches": 0.71
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by 2, then subtract 1 from y’s",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by 2, then subtract 1 from y’s",
+              "runs": [
+                {
+                  "text": "multiply y’s by 2, ",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": "then",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": " subtract 1 from y’s",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 14,
+          "name": "Arrow: Right 13",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 4.03,
+            "top_inches": 5.47,
+            "width_inches": 0.84,
+            "height_inches": 0.6
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "LEFT (1)"
+            }
+          ]
+        },
+        {
+          "shape_id": 15,
+          "name": "TextBox 14",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 3.6,
+            "top_inches": 6.54,
+            "width_inches": 2.0,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "multiply x’s by 3",
+          "paragraphs": [
+            {
+              "text": "multiply x’s by 3",
+              "runs": [
+                {
+                  "text": "multiply x’s by 3",
+                  "formatting": {
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Picture 7",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 8.26,
+            "top_inches": 1.74,
+            "width_inches": 4.59,
+            "height_inches": 3.71
+          },
+          "depth": 0,
+          "image_file": "slide17_img42.jpg",
+          "image_content_type": "image/jpeg",
+          "image_size_bytes": 290809
+        }
+      ],
+      "all_text": [
+        "multiply y’s by 2",
+        "subtract 1 from y’s",
+        "multiply y’s by 2, then subtract 1 from y’s",
+        "multiply x’s by 3"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide17_rel_img43.png",
+        "slide17_rel_img44.png",
+        "slide17_rel_img45.png",
+        "slide17_rel_img46.png"
+      ]
+    },
+    {
+      "slide_number": 18,
+      "title": "Cosecant",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.66,
+            "top_inches": 0.84,
+            "width_inches": 11.79,
+            "height_inches": 3.67
+          },
+          "depth": 0,
+          "text_content": "Cosecant",
+          "paragraphs": [
+            {
+              "text": "Cosecant",
+              "runs": [
+                {
+                  "text": "Cosecant",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "Cosecant"
+      ],
+      "notes": null,
+      "layout": "Section Header"
+    },
+    {
+      "slide_number": 19,
+      "title": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "cosecant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the sine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "To graph the cosecant you need to take every point on the sine curve and take the reciprocal"
+      ],
+      "notes": "",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide19_rel_img47.png",
+        "slide19_rel_img48.jpg"
+      ]
+    },
+    {
+      "slide_number": 20,
+      "title": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 1026,
+          "name": "Picture 2",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 2.12,
+            "top_inches": 1.39,
+            "width_inches": 9.09,
+            "height_inches": 5.3
+          },
+          "depth": 0,
+          "image_file": "slide20_img49.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 30497
+        },
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "cosecant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the sine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 4,
+          "name": "Line 48",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 4.64,
+            "top_inches": 1.39,
+            "width_inches": 0.0,
+            "height_inches": 5.19
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "Line 49",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 2.59,
+            "top_inches": 1.39,
+            "width_inches": 0.0,
+            "height_inches": 5.19
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 6,
+          "name": "Line 50",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 8.71,
+            "top_inches": 1.39,
+            "width_inches": 0.0,
+            "height_inches": 5.19
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 7,
+          "name": "Line 51",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 10.75,
+            "top_inches": 1.39,
+            "width_inches": 0.0,
+            "height_inches": 5.19
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 10,
+          "name": "Rectangle 9",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.31,
+            "top_inches": 3.13,
+            "width_inches": 0.26,
+            "height_inches": 0.41
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Line 52",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.68,
+            "top_inches": 1.39,
+            "width_inches": 0.0,
+            "height_inches": 5.19
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 15,
+          "name": "Oval 60",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.93,
+            "top_inches": 2.49,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 12,
+          "name": "Oval 57",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.93,
+            "top_inches": 3.61,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 16,
+          "name": "Oval 57",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.57,
+            "top_inches": 3.25,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 20,
+          "name": "Oval 57, 7pi 6 -1/2",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 8.98,
+            "top_inches": 4.33,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 21,
+          "name": "Oval 57",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 8.98,
+            "top_inches": 5.43,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 24,
+          "name": "Oval 57",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.65,
+            "top_inches": 4.69,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "To graph the cosecant you need to take every point on the sine curve and take the reciprocal"
+      ],
+      "notes": "",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide20_rel_img50.png",
+        "slide20_rel_img51.png",
+        "slide20_rel_img52.png",
+        "slide20_rel_img53.png",
+        "slide20_rel_img54.png"
+      ]
+    },
+    {
+      "slide_number": 21,
+      "title": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 2050,
+          "name": "Picture 2",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 2.12,
+            "top_inches": 1.39,
+            "width_inches": 9.09,
+            "height_inches": 5.3
+          },
+          "depth": 0,
+          "image_file": "slide21_img55.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 22872
+        },
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the cosecant you need to take every point on the sine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "cosecant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the sine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 6,
+          "name": "Line 50",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 8.69,
+            "top_inches": 1.66,
+            "width_inches": 0.0,
+            "height_inches": 5.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 7,
+          "name": "Line 51",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 10.75,
+            "top_inches": 1.66,
+            "width_inches": 0.0,
+            "height_inches": 5.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Line 52",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.65,
+            "top_inches": 1.66,
+            "width_inches": 0.0,
+            "height_inches": 5.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Line 50",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 2.56,
+            "top_inches": 1.66,
+            "width_inches": 0.0,
+            "height_inches": 5.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 14,
+          "name": "Line 51",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 4.63,
+            "top_inches": 1.66,
+            "width_inches": 0.0,
+            "height_inches": 5.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "To graph the cosecant you need to take every point on the sine curve and take the reciprocal"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide21_rel_img56.png"
+      ]
+    },
+    {
+      "slide_number": 22,
+      "title": "Secant",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.66,
+            "top_inches": 0.84,
+            "width_inches": 11.79,
+            "height_inches": 3.67
+          },
+          "depth": 0,
+          "text_content": "Secant",
+          "paragraphs": [
+            {
+              "text": "Secant",
+              "runs": [
+                {
+                  "text": "Secant",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "Secant"
+      ],
+      "notes": null,
+      "layout": "Section Header"
+    },
+    {
+      "slide_number": 23,
+      "title": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "secant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the cosine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "To graph the secant you need to take every point on the cosine curve and take the reciprocal"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide23_rel_img57.png",
+        "slide23_rel_img58.jpg"
+      ]
+    },
+    {
+      "slide_number": 24,
+      "title": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 3076,
+          "name": "Picture 4",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 2.12,
+            "top_inches": 1.35,
+            "width_inches": 9.09,
+            "height_inches": 5.3
+          },
+          "depth": 0,
+          "image_file": "slide24_img59.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 34124
+        },
+        {
+          "shape_id": 6,
+          "name": "Line 48",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 3.62,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "Line 50",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.68,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 9,
+          "name": "Line 51",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.72,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 10,
+          "name": "Line 52",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 5.64,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 16,
+          "name": "Oval 60",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.27,
+            "top_inches": 2.45,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 18,
+          "name": "Oval 57",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.6,
+            "top_inches": 3.18,
+            "width_inches": 0.16,
+            "height_inches": 0.16
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 19,
+          "name": "Text Box 59",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 6.76,
+            "top_inches": 3.22,
+            "width_inches": 0.7,
+            "height_inches": 0.3
+          },
+          "depth": 0,
+          "text_content": "(0, 1)",
+          "paragraphs": [
+            {
+              "text": "(0, 1)",
+              "runs": [
+                {
+                  "text": "(0, 1)",
+                  "formatting": {
+                    "size_pt": 20.0,
+                    "color": "9800CC",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "secant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the cosine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "(0, 1)",
+        "To graph the secant you need to take every point on the cosine curve and take the reciprocal"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide24_rel_img60.png",
+        "slide24_rel_img61.png"
+      ]
+    },
+    {
+      "slide_number": 25,
+      "title": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+      "shapes": [
+        {
+          "shape_id": 4098,
+          "name": "Picture 2",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 2.12,
+            "top_inches": 1.35,
+            "width_inches": 9.09,
+            "height_inches": 5.3
+          },
+          "depth": 0,
+          "image_file": "slide25_img62.png",
+          "image_content_type": "image/png",
+          "image_size_bytes": 26791
+        },
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+          "paragraphs": [
+            {
+              "text": "To graph the secant you need to take every point on the cosine curve and take the reciprocal",
+              "runs": [
+                {
+                  "text": "To graph the ",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": "secant",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 32.0
+                  }
+                },
+                {
+                  "text": " you need to take every point on the cosine curve and take the reciprocal",
+                  "formatting": {
+                    "size_pt": 32.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 5,
+          "name": "Line 48",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 3.62,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 7,
+          "name": "Line 50",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 7.68,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 12,
+          "name": "Line 51",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.72,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Line 52",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 5.64,
+            "top_inches": 1.59,
+            "width_inches": 0.0,
+            "height_inches": 4.9
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "To graph the secant you need to take every point on the cosine curve and take the reciprocal"
+      ],
+      "notes": null,
+      "layout": "Title Only"
+    },
+    {
+      "slide_number": 26,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 4,
+          "name": "Rectangle 3",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.42,
+            "top_inches": 1.18,
+            "width_inches": 3.3,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "Rectangle 4",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.84,
+            "top_inches": 1.18,
+            "width_inches": 3.3,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 6,
+          "name": "Rectangle 5",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.45,
+            "top_inches": 2.49,
+            "width_inches": 6.7,
+            "height_inches": 0.6
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 12,
+          "name": "Rectangle 11",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 6.42,
+            "top_inches": 4.54,
+            "width_inches": 3.3,
+            "height_inches": 1.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Rectangle 12",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 9.84,
+            "top_inches": 4.54,
+            "width_inches": 3.3,
+            "height_inches": 1.0
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": []
+            }
+          ]
+        },
+        {
+          "shape_id": 3,
+          "name": "Rectangle 2",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.12,
+            "top_inches": 0.77,
+            "width_inches": 3.76,
+            "height_inches": 3.19
+          },
+          "depth": 0,
+          "text_content": "Basic Characteristics of Secant \u000band \u000bCosecant Curves",
+          "paragraphs": [
+            {
+              "text": "Basic Characteristics of Secant \u000band \u000bCosecant Curves",
+              "runs": [
+                {
+                  "text": "Basic Characteristics of Secant ",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "and ",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "Cosecant Curves",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "Basic Characteristics of Secant \u000band \u000bCosecant Curves"
+      ],
+      "notes": null,
+      "layout": "Blank",
+      "additional_relationship_images": [
+        "slide26_rel_img63.png"
+      ]
+    },
+    {
+      "slide_number": 27,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 3,
+          "name": "Rectangle 2",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 0.12,
+            "top_inches": 0.77,
+            "width_inches": 3.76,
+            "height_inches": 3.19
+          },
+          "depth": 0,
+          "text_content": "Basic Characteristics of Secant \u000band \u000bCosecant Curves",
+          "paragraphs": [
+            {
+              "text": "Basic Characteristics of Secant \u000band \u000bCosecant Curves",
+              "runs": [
+                {
+                  "text": "Basic Characteristics of Secant ",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "and ",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                },
+                {
+                  "text": "Cosecant Curves",
+                  "formatting": {
+                    "font_name": "Bookman Old Style"
+                  }
+                }
+              ],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        }
+      ],
+      "all_text": [
+        "Basic Characteristics of Secant \u000band \u000bCosecant Curves"
+      ],
+      "notes": null,
+      "layout": "Blank"
+    },
+    {
+      "slide_number": 28,
+      "title": "Steps for graphing a secant or cosecant function",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.06,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "Steps for graphing a secant or cosecant function",
+          "paragraphs": [
+            {
+              "text": "Steps for graphing a secant or cosecant function",
+              "runs": [
+                {
+                  "text": "Steps for graphing a secant or cosecant function",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 40.0
+                  }
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 3,
+          "name": "Diagram 2",
+          "shape_type": "unknown",
+          "position": {
+            "left_inches": 0.78,
+            "top_inches": 1.11,
+            "width_inches": 11.77,
+            "height_inches": 5.93
+          },
+          "depth": 0
+        }
+      ],
+      "all_text": [
+        "Steps for graphing a secant or cosecant function"
+      ],
+      "notes": "Teacher, if these steps are confusing, please watch my video where I show the process: https://www.hoffmath.com/2024/09/secant.html",
+      "layout": "Title Only"
+    },
+    {
+      "slide_number": 29,
+      "title": null,
+      "shapes": [],
+      "all_text": [],
+      "notes": "On Calculator, go to table setup and change independent to ask.",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide29_rel_img64.png"
+      ]
+    },
+    {
+      "slide_number": 30,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 78903,
+          "name": "Text Box 55",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 7.79,
+            "top_inches": 6.25,
+            "width_inches": 2.23,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "in calculator...",
+          "paragraphs": [
+            {
+              "text": "in calculator...",
+              "runs": [
+                {
+                  "text": "in calculator...",
+                  "formatting": {
+                    "color": "FF0000",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "LEFT (1)"
+            }
+          ]
+        },
+        {
+          "shape_id": 78904,
+          "name": "Text Box 56",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 7.79,
+            "top_inches": 6.7,
+            "width_inches": 2.82,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "y = 2/sin(x + /4)",
+          "paragraphs": [
+            {
+              "text": "y = 2/sin(x + /4)",
+              "runs": [
+                {
+                  "text": "y = 2/sin(x + ",
+                  "formatting": {
+                    "color": "FF0000",
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "",
+                  "formatting": {
+                    "color": "FF0000",
+                    "font_name": "Times New Roman"
+                  }
+                },
+                {
+                  "text": "/4)",
+                  "formatting": {
+                    "color": "FF0000",
+                    "font_name": "Times New Roman"
+                  }
+                }
+              ],
+              "alignment": "LEFT (1)"
+            }
+          ]
+        },
+        {
+          "shape_id": 8,
+          "name": "TextBox 7",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 5.14,
+            "top_inches": 1.57,
+            "width_inches": 2.1,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by 2",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by 2",
+              "runs": [
+                {
+                  "text": "multiply y’s by 2",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 5,
+          "name": "TextBox 4",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 2.36,
+            "top_inches": 1.97,
+            "width_inches": 3.6,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "no change from the parent graph",
+          "paragraphs": [
+            {
+              "text": "no change from the parent graph",
+              "runs": [
+                {
+                  "text": "no change from the parent graph",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 6,
+          "name": "TextBox 5",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 3.11,
+            "top_inches": 2.82,
+            "width_inches": 3.6,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "no change from the parent graph",
+          "paragraphs": [
+            {
+              "text": "no change from the parent graph",
+              "runs": [
+                {
+                  "text": "no change from the parent graph",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 10,
+          "name": "TextBox 9",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 1.8,
+            "top_inches": 3.99,
+            "width_inches": 2.1,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by 2",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by 2",
+              "runs": [
+                {
+                  "text": "multiply y’s by 2",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 12,
+          "name": "Arrow: Right 11",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 2.22,
+            "top_inches": 4.84,
+            "width_inches": 0.84,
+            "height_inches": 0.6
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "LEFT (1)"
+            }
+          ]
+        },
+        {
+          "shape_id": 15,
+          "name": "Picture 14",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 8.48,
+            "top_inches": 1.51,
+            "width_inches": 4.02,
+            "height_inches": 3.88
+          },
+          "depth": 0,
+          "image_file": "slide30_img65.jpg",
+          "image_content_type": "image/jpeg",
+          "image_size_bytes": 138192
+        }
+      ],
+      "all_text": [
+        "in calculator...",
+        "y = 2/sin(x + /4)",
+        "multiply y’s by 2",
+        "no change from the parent graph",
+        "no change from the parent graph",
+        "multiply y’s by 2"
+      ],
+      "notes": "On Calculator, go to table setup and change independent to ask.",
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide30_rel_img66.png",
+        "slide30_rel_img67.png",
+        "slide30_rel_img68.png",
+        "slide30_rel_img69.png",
+        "slide30_rel_img70.png",
+        "slide30_rel_img71.png"
+      ]
+    },
+    {
+      "slide_number": 31,
+      "title": null,
+      "shapes": [],
+      "all_text": [],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide31_rel_img72.png"
+      ]
+    },
+    {
+      "slide_number": 32,
+      "title": null,
+      "shapes": [
+        {
+          "shape_id": 5,
+          "name": "TextBox 4",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 4.35,
+            "top_inches": 1.53,
+            "width_inches": 2.1,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by -2",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by -2",
+              "runs": [
+                {
+                  "text": "multiply y’s by -2",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 10,
+          "name": "TextBox 9",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 3.6,
+            "top_inches": 3.52,
+            "width_inches": 1.5,
+            "height_inches": 0.4
+          },
+          "depth": 0,
+          "text_content": "add 1 to y’s",
+          "paragraphs": [
+            {
+              "text": "add 1 to y’s",
+              "runs": [
+                {
+                  "text": "add 1 to y’s",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 13,
+          "name": "Right Brace 12",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 4.03,
+            "top_inches": 1.33,
+            "width_inches": 0.32,
+            "height_inches": 0.83
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "CENTER (2)"
+            }
+          ]
+        },
+        {
+          "shape_id": 19,
+          "name": "TextBox 18",
+          "shape_type": "TEXT_BOX (17)",
+          "position": {
+            "left_inches": 3.76,
+            "top_inches": 4.33,
+            "width_inches": 2.23,
+            "height_inches": 0.71
+          },
+          "depth": 0,
+          "text_content": "multiply y’s by -2, then add 1 to y’s",
+          "paragraphs": [
+            {
+              "text": "multiply y’s by -2, then add 1 to y’s",
+              "runs": [
+                {
+                  "text": "multiply y’s by -2, ",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": "then",
+                  "formatting": {
+                    "bold": true,
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                },
+                {
+                  "text": " add 1 to y’s",
+                  "formatting": {
+                    "size_pt": 18.0,
+                    "color": "0070C0",
+                    "font_name": "+mj-lt"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "shape_id": 21,
+          "name": "Arrow: Right 20",
+          "shape_type": "AUTO_SHAPE (1)",
+          "position": {
+            "left_inches": 4.36,
+            "top_inches": 5.38,
+            "width_inches": 0.84,
+            "height_inches": 0.6
+          },
+          "depth": 0,
+          "text_content": "",
+          "paragraphs": [
+            {
+              "text": "",
+              "runs": [],
+              "alignment": "LEFT (1)"
+            }
+          ]
+        },
+        {
+          "shape_id": 11,
+          "name": "Picture 10",
+          "shape_type": "PICTURE (13)",
+          "position": {
+            "left_inches": 9.3,
+            "top_inches": 1.34,
+            "width_inches": 3.59,
+            "height_inches": 3.34
+          },
+          "depth": 0,
+          "image_file": "slide32_img73.jpg",
+          "image_content_type": "image/jpeg",
+          "image_size_bytes": 128923
+        }
+      ],
+      "all_text": [
+        "multiply y’s by -2",
+        "add 1 to y’s",
+        "multiply y’s by -2, then add 1 to y’s"
+      ],
+      "notes": null,
+      "layout": "Title Only",
+      "additional_relationship_images": [
+        "slide32_rel_img74.png",
+        "slide32_rel_img75.png",
+        "slide32_rel_img76.png",
+        "slide32_rel_img77.png",
+        "slide32_rel_img78.png",
+        "slide32_rel_img79.png",
+        "slide32_rel_img80.png",
+        "slide32_rel_img81.png"
+      ]
+    },
+    {
+      "slide_number": 33,
+      "title": "What are your questions?",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.66,
+            "top_inches": 0.84,
+            "width_inches": 11.79,
+            "height_inches": 3.67
+          },
+          "depth": 0,
+          "text_content": "What are your questions?",
+          "paragraphs": [
+            {
+              "text": "What are your questions?",
+              "runs": [
+                {
+                  "text": "What are your questions?",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "CENTER_TITLE (3)",
+          "placeholder_idx": 0
+        }
+      ],
+      "all_text": [
+        "What are your questions?"
+      ],
+      "notes": null,
+      "layout": "Title Slide"
+    },
+    {
+      "slide_number": 34,
+      "title": "Homework",
+      "shapes": [
+        {
+          "shape_id": 2,
+          "name": "Title 1",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.72,
+            "top_inches": 0.26,
+            "width_inches": 11.78,
+            "height_inches": 1.2
+          },
+          "depth": 0,
+          "text_content": "Homework",
+          "paragraphs": [
+            {
+              "text": "Homework",
+              "runs": [
+                {
+                  "text": "Homework",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "TITLE (1)",
+          "placeholder_idx": 0
+        },
+        {
+          "shape_id": 3,
+          "name": "Content Placeholder 2",
+          "shape_type": "PLACEHOLDER (14)",
+          "position": {
+            "left_inches": 0.74,
+            "top_inches": 1.71,
+            "width_inches": 11.76,
+            "height_inches": 4.6
+          },
+          "depth": 0,
+          "text_content": "Graphs of other Trig Functions CIRCUIT",
+          "paragraphs": [
+            {
+              "text": "Graphs of other Trig Functions CIRCUIT",
+              "runs": [
+                {
+                  "text": "Graphs of other Trig Functions CIRCUIT",
+                  "formatting": {}
+                }
+              ]
+            }
+          ],
+          "placeholder_type": "OBJECT (7)",
+          "placeholder_idx": 1
+        }
+      ],
+      "all_text": [
+        "Homework",
+        "Graphs of other Trig Functions CIRCUIT"
+      ],
+      "notes": null,
+      "layout": "Title and Content"
+    }
+  ]
+}
+
+
+================================================================================
+EXTRACTION SUMMARY
+================================================================================
+Total slides: 34
+Slide dimensions: 13.33" x 7.5"
+Total unique images saved: 78
+Images saved to: /Users/kirkmanamos/Documents/GitHub/Precalculus_Slides/4.8-assets
+
+Saved image files:
+  slide10_rel_img22.png (48,838 bytes)
+  slide12_img23.png (13,990 bytes)
+  slide12_img24.png (13,262 bytes)
+  slide12_rel_img25.png (9,401 bytes)
+  slide12_rel_img26.jpg (51,436 bytes)
+  slide12_rel_img27.png (9,341 bytes)
+  slide13_rel_img28.png (8,823 bytes)
+  slide13_rel_img29.png (9,189 bytes)
+  slide14_rel_img30.jpg (54,541 bytes)
+  slide14_rel_img31.png (9,679 bytes)
+  slide15_img32.jpg (277,397 bytes)
+  slide15_rel_img33.png (4,743 bytes)
+  slide15_rel_img34.png (1,577 bytes)
+  slide15_rel_img35.png (2,572 bytes)
+  slide15_rel_img36.png (9,635 bytes)
+  slide15_rel_img37.png (1,566 bytes)
+  slide15_rel_img38.png (6,676 bytes)
+  slide15_rel_img39.png (3,190 bytes)
+  slide16_rel_img40.jpg (54,562 bytes)
+  slide16_rel_img41.png (10,369 bytes)
+  slide17_img42.jpg (290,809 bytes)
+  slide17_rel_img43.png (4,432 bytes)
+  slide17_rel_img44.png (12,718 bytes)
+  slide17_rel_img45.png (4,880 bytes)
+  slide17_rel_img46.png (3,292 bytes)
+  slide19_rel_img47.png (1,833 bytes)
+  slide19_rel_img48.jpg (75,922 bytes)
+  slide1_rel_img1.jpg (36,528 bytes)
+  slide20_img49.png (30,497 bytes)
+  slide20_rel_img50.png (1,499 bytes)
+  slide20_rel_img51.png (1,923 bytes)
+  slide20_rel_img52.png (1,929 bytes)
+  slide20_rel_img53.png (1,652 bytes)
+  slide20_rel_img54.png (2,373 bytes)
+  slide21_img55.png (22,872 bytes)
+  slide21_rel_img56.png (1,951 bytes)
+  slide23_rel_img57.png (2,597 bytes)
+  slide23_rel_img58.jpg (74,944 bytes)
+  slide24_img59.png (34,124 bytes)
+  slide24_rel_img60.png (2,512 bytes)
+  slide24_rel_img61.png (1,856 bytes)
+  slide25_img62.png (26,791 bytes)
+  slide26_rel_img63.png (44,590 bytes)
+  slide29_rel_img64.png (10,573 bytes)
+  slide2_img2.png (172,567 bytes)
+  slide2_img3.png (317,710 bytes)
+  slide2_rel_img4.jpg (51,465 bytes)
+  slide30_img65.jpg (138,192 bytes)
+  slide30_rel_img66.png (17,770 bytes)
+  slide30_rel_img67.png (11,133 bytes)
+  slide30_rel_img68.png (2,438 bytes)
+  slide30_rel_img69.png (2,417 bytes)
+  slide30_rel_img70.png (10,618 bytes)
+  slide30_rel_img71.png (4,214 bytes)
+  slide31_rel_img72.png (10,046 bytes)
+  slide32_img73.jpg (128,923 bytes)
+  slide32_rel_img74.png (10,126 bytes)
+  slide32_rel_img75.png (5,315 bytes)
+  slide32_rel_img76.png (13,398 bytes)
+  slide32_rel_img77.png (3,210 bytes)
+  slide32_rel_img78.png (3,671 bytes)
+  slide32_rel_img79.png (8,188 bytes)
+  slide32_rel_img80.png (1,409 bytes)
+  slide32_rel_img81.png (4,254 bytes)
+  slide4_img5.png (10,449 bytes)
+  slide4_rel_img6.png (7,884 bytes)
+  slide4_rel_img7.png (5,422 bytes)
+  slide5_img9.png (19,706 bytes)
+  slide5_rel_img10.png (5,409 bytes)
+  slide6_img11.png (21,456 bytes)
+  slide6_rel_img12.png (2,556 bytes)
+  slide6_rel_img13.png (2,331 bytes)
+  slide7_rel_img15.png (4,509 bytes)
+  slide7_rel_img16.png (7,845 bytes)
+  slide8_img18.png (27,089 bytes)
+  slide9_img19.png (22,851 bytes)
+  slide9_rel_img20.png (2,608 bytes)
+  slide9_rel_img21.png (2,303 bytes)
+
+Slide-by-slide overview:
+  Slide  1: 4.8 Graphs of Other Trig Functions
+           2 shapes, 2 text blocks, 0 direct images, 1 relationship images
+  Slide  2: How to teach Graphs of Other Trig Functions
+           6 shapes, 4 text blocks, 2 direct images, 1 relationship images
+  Slide  3: Tangent and Cotangent
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide  4: (no title)
+           10 shapes, 9 text blocks, 1 direct images, 2 relationship images
+  Slide  5: (no title)
+           10 shapes, 9 text blocks, 0 direct images, 1 relationship images
+  Slide  6: (no title)
+           5 shapes, 3 text blocks, 1 direct images, 2 relationship images
+  Slide  7: (no title)
+           10 shapes, 9 text blocks, 1 direct images, 2 relationship images
+  Slide  8: (no title)
+           10 shapes, 9 text blocks, 0 direct images, 0 relationship images
+  Slide  9: (no title)
+           5 shapes, 3 text blocks, 1 direct images, 2 relationship images
+  Slide 10: (no title)
+           7 shapes, 1 text blocks, 0 direct images, 1 relationship images
+  Slide 11: (no title)
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 12: The key to graphing any tangent or cotangent curve is to be familiar with the 5 key points from their parent graphs.
+           3 shapes, 1 text blocks, 2 direct images, 3 relationship images
+  Slide 13: Steps for graphing a tangent or cotangent function
+           12 shapes, 8 text blocks, 0 direct images, 2 relationship images
+  Slide 14: (no title)
+           0 shapes, 0 text blocks, 0 direct images, 2 relationship images
+  Slide 15: (no title)
+           2 shapes, 0 text blocks, 1 direct images, 7 relationship images
+  Slide 16: (no title)
+           0 shapes, 0 text blocks, 0 direct images, 2 relationship images
+  Slide 17: (no title)
+           6 shapes, 4 text blocks, 1 direct images, 4 relationship images
+  Slide 18: Cosecant
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 19: To graph the cosecant you need to take every point on the sine curve and take the reciprocal
+           1 shapes, 1 text blocks, 0 direct images, 2 relationship images
+  Slide 20: To graph the cosecant you need to take every point on the sine curve and take the reciprocal
+           14 shapes, 1 text blocks, 1 direct images, 5 relationship images
+  Slide 21: To graph the cosecant you need to take every point on the sine curve and take the reciprocal
+           7 shapes, 1 text blocks, 1 direct images, 1 relationship images
+  Slide 22: Secant
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 23: To graph the secant you need to take every point on the cosine curve and take the reciprocal
+           1 shapes, 1 text blocks, 0 direct images, 2 relationship images
+  Slide 24: To graph the secant you need to take every point on the cosine curve and take the reciprocal
+           9 shapes, 2 text blocks, 1 direct images, 2 relationship images
+  Slide 25: To graph the secant you need to take every point on the cosine curve and take the reciprocal
+           6 shapes, 1 text blocks, 1 direct images, 0 relationship images
+  Slide 26: (no title)
+           6 shapes, 1 text blocks, 0 direct images, 1 relationship images
+  Slide 27: (no title)
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 28: Steps for graphing a secant or cosecant function
+           2 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 29: (no title)
+           0 shapes, 0 text blocks, 0 direct images, 1 relationship images
+  Slide 30: (no title)
+           8 shapes, 6 text blocks, 1 direct images, 6 relationship images
+  Slide 31: (no title)
+           0 shapes, 0 text blocks, 0 direct images, 1 relationship images
+  Slide 32: (no title)
+           6 shapes, 3 text blocks, 1 direct images, 8 relationship images
+  Slide 33: What are your questions?
+           1 shapes, 1 text blocks, 0 direct images, 0 relationship images
+  Slide 34: Homework
+           2 shapes, 2 text blocks, 0 direct images, 0 relationship images

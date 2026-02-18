@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4.8 Graphs of Other Trig Functions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --dark-navy: #1a365d;
+  --blue-accent: #2563eb;
+  --red-accent: #dc2626;
+  --green-accent: #16a34a;
+  --grid-line: #dbeafe;
+  --dark-blue-curve: #1e40af;
+  --bg-white: #ffffff;
+  --light-grid-bg: #f8faff;
+  --teal-accent: #0891b2;
+  --orange-accent: #ea580c;
+  --purple-accent: #7c3aed;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
+  background: var(--bg-white);
+  color: var(--dark-navy);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+.grid-bg {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 30px 30px;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#progress-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+  transition: width 0.4s ease;
+  z-index: 1000;
+}
+
+#nav-dots {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.nav-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--blue-accent);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-dot.active {
+  background: var(--blue-accent);
+  transform: scale(1.3);
+}
+
+.nav-dot:hover {
+  background: var(--blue-accent);
+  opacity: 0.7;
+}
+
+#slides-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 60px 40px 60px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.slide.title-slide {
+  justify-content: center;
+  background: var(--dark-navy);
+}
+
+.slide.section-slide {
+  justify-content: center;
+  background: var(--dark-navy);
+}
+
+.section-title {
+  font-size: 2.8em;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1.2em;
+  color: #93c5fd;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.slide-title {
+  font-size: 1.85em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.slide-subtitle {
+  font-size: 1.1em;
+  font-weight: 400;
+  color: var(--dark-navy);
+  text-align: center;
+  margin-bottom: 15px;
+  max-width: 900px;
+  line-height: 1.5;
+}
+
+.example-label {
+  position: absolute;
+  top: 18px;
+  left: 30px;
+  background: var(--blue-accent);
+  color: white;
+  padding: 4px 18px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.95em;
+  letter-spacing: 1px;
+}
+
+.copyright {
+  position: absolute;
+  bottom: 12px;
+  right: 24px;
+  font-size: 0.72em;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.math {
+  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
+  font-style: italic;
+}
+
+.math-normal {
+  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
+  font-style: normal;
+}
+
+.red { color: var(--red-accent); font-weight: 700; }
+.blue { color: var(--blue-accent); font-weight: 700; }
+.green { color: var(--green-accent); font-weight: 700; }
+.teal { color: var(--teal-accent); font-weight: 700; }
+.dark-blue { color: var(--dark-blue-curve); }
+.purple { color: var(--purple-accent); font-weight: 700; }
+.orange { color: var(--orange-accent); font-weight: 700; }
+
+.step {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* SVG step groups: only use opacity, no translateY shift */
+svg .step {
+  transform: none;
+  transition: opacity 0.5s ease;
+}
+svg .step.visible {
+  transform: none;
+}
+
+.click-hint {
+  position: absolute;
+  bottom: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.85em;
+  color: #94a3b8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.equation-box {
+  background: white;
+  border: 2px solid var(--blue-accent);
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin: 8px 0;
+  display: inline-block;
+}
+
+.data-table {
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+
+.data-table th, .data-table td {
+  border: 1.5px solid var(--dark-navy);
+  padding: 5px 16px;
+  text-align: center;
+  min-width: 60px;
+}
+
+.data-table th {
+  background: var(--grid-line);
+  font-weight: 700;
+  color: var(--dark-navy);
+}
+
+.data-table td {
+  background: white;
+}
+
+.data-table .highlight-und {
+  background: #fef2f2;
+  color: var(--red-accent);
+  font-weight: 600;
+}
+
+.two-col {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.steps-list {
+  text-align: left;
+  max-width: 900px;
+  width: 100%;
+}
+
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 6px 0;
+  font-size: 1em;
+  line-height: 1.5;
+}
+
+.step-number {
+  background: var(--blue-accent);
+  color: white;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85em;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.char-table {
+  border-collapse: collapse;
+  font-size: 0.88em;
+  width: 100%;
+  max-width: 820px;
+}
+
+.char-table th, .char-table td {
+  border: 1.5px solid var(--dark-navy);
+  padding: 6px 12px;
+  text-align: center;
+}
+
+.char-table th {
+  background: var(--dark-navy);
+  color: white;
+  font-weight: 700;
+  font-size: 1.05em;
+}
+
+.char-table td {
+  background: white;
+}
+
+.char-table td:first-child {
+  background: #f1f5f9;
+  font-weight: 600;
+  text-align: left;
+  padding-left: 14px;
+}
+
+.char-table .fill-blank {
+  background: #eff6ff;
+  cursor: pointer;
+  min-width: 120px;
+  min-height: 30px;
+  transition: background 0.3s ease;
+}
+
+.char-table .fill-blank.revealed {
+  background: #dcfce7;
+  font-weight: 600;
+}
+
+.tip-box {
+  background: #f0fdf4;
+  border-left: 4px solid var(--green-accent);
+  padding: 12px 20px;
+  border-radius: 0 8px 8px 0;
+  margin: 8px 0;
+  font-size: 0.95em;
+  max-width: 700px;
+}
+
+.annotation {
+  color: var(--blue-accent);
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+.graph-svg {
+  border: 1.5px solid #c7d2fe;
+  border-radius: 6px;
+  background: white;
+}
+
+.asymptote-line {
+  stroke: var(--red-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  opacity: 0.7;
+}
+
+.trig-curve {
+  fill: none;
+  stroke: var(--dark-blue-curve);
+  stroke-width: 2.5;
+}
+
+.trig-curve-light {
+  fill: none;
+  stroke: var(--blue-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3;
+  opacity: 0.5;
+}
+
+.transform-diagram {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.transform-box {
+  background: white;
+  border: 2px solid var(--blue-accent);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 0.95em;
+  text-align: center;
+}
+
+.transform-box.y-box {
+  border-color: var(--green-accent);
+}
+
+.transform-arrow {
+  font-size: 1.2em;
+  color: #94a3b8;
+}
+
+.transform-header {
+  font-size: 0.78em;
+  color: #64748b;
+  margin-bottom: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.flow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  max-width: 550px;
+}
+
+.flow-step {
+  background: white;
+  border: 2px solid var(--blue-accent);
+  border-radius: 8px;
+  padding: 10px 20px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.92em;
+  line-height: 1.4;
+}
+
+.flow-step strong {
+  color: var(--blue-accent);
+}
+
+.flow-step .sub-text {
+  font-size: 0.88em;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.flow-arrow-down {
+  color: var(--blue-accent);
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+.worked-example {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.worked-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.worked-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.t-table {
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+
+.t-table th, .t-table td {
+  border: 1.5px solid var(--dark-navy);
+  padding: 3px 10px;
+  text-align: center;
+}
+
+.t-table th {
+  background: var(--grid-line);
+  font-weight: 700;
+}
+
+.t-table td {
+  background: white;
+}
+
+.t-table .new-col {
+  background: #eff6ff;
+}
+
+.t-table .final-col {
+  background: #dcfce7;
+}
+
+.keyboard-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.8em;
+  color: #94a3b8;
+  z-index: 999;
+}
+
+.key-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 24px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 0.85em;
+  background: #f8fafc;
+}
+
+@media (max-width: 768px) {
+  #nav-dots { display: none; }
+  .keyboard-hint { display: none; }
+  .slide { padding: 20px 24px; }
+  .slide-title { font-size: 1.4em; }
+  .two-col { flex-direction: column; }
+  .worked-example { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div id="progress-bar" style="width: 0%"></div>
+<nav id="nav-dots"></nav>
+
+<div id="slides-container">
+
+<!-- ============================================================
+     SLIDE 0: TITLE SLIDE
+     ============================================================ -->
+<section class="slide title-slide" data-steps="0">
+  <div style="text-align:center;">
+    <div style="font-size:1.1em; color:#93c5fd; letter-spacing:3px; margin-bottom:12px; font-weight:600;">SECTION 4.8</div>
+    <h1 style="font-size:2.8em; color:white; font-weight:700; line-height:1.2;">Graphs of Other<br>Trig Functions</h1>
+    <div style="width:80px; height:4px; background:var(--teal-accent); margin:24px auto;"></div>
+    <p style="color:#93c5fd; font-size:1.05em; margin-top:8px;">Sketch the graphs of tangent, cotangent, secant, and cosecant functions.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1: SECTION HEADER - Tangent & Cotangent
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">Tangent &amp; Cotangent</div>
+  <div class="section-subtitle">Understanding the parent graphs</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2: TANGENT VALUE TABLE + GRAPH
+     All points and curves generated by JS for accuracy
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title">Graph <span class="math">y</span> = tan <span class="math">x</span></h2>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="col" style="align-items:center;">
+      <table class="data-table step" data-step="0">
+        <tr><th><span class="math">x</span></th><th>tan <span class="math">x</span></th></tr>
+        <tr><td><span class="math">0</span></td><td>0</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td></tr>
+        <tr><td class="highlight-und"><span class="math">&pi;/2</span></td><td class="highlight-und">und</td></tr>
+        <tr><td><span class="math">3&pi;/4</span></td><td>&minus;1</td></tr>
+        <tr><td><span class="math">&pi;</span></td><td>0</td></tr>
+        <tr><td><span class="math">5&pi;/4</span></td><td>1</td></tr>
+        <tr><td class="highlight-und"><span class="math">3&pi;/2</span></td><td class="highlight-und">und</td></tr>
+        <tr><td><span class="math">7&pi;/4</span></td><td>&minus;1</td></tr>
+        <tr><td><span class="math">2&pi;</span></td><td>0</td></tr>
+      </table>
+    </div>
+    <div class="col" style="align-items:center;">
+      <!-- Graph: x-range [-π/4, 9π/4], y-range [-4, 4] -->
+      <svg id="svg-tan-main" class="graph-svg step" data-step="1" viewBox="0 0 460 340" width="440" height="320"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 3: TANGENT PROPERTIES
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title">Properties of Tangent</h2>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="col" style="align-items:flex-start; max-width:420px; gap:14px; padding-left:30px;">
+      <div class="step" data-step="0" style="font-size:1.15em; line-height:1.7;">
+        The <span style="text-decoration:underline; font-weight:600;">period</span> is the distance between two consecutive asymptotes.
+      </div>
+      <div class="step" data-step="1" style="font-size:1.15em; line-height:1.7;">
+        The <span style="text-decoration:underline; font-weight:600;">amplitude</span> is undefined<br>
+        but you can have a <em>vertical stretch</em>.
+      </div>
+    </div>
+    <div class="col" style="align-items:center;">
+      <svg id="svg-tan-prop" class="graph-svg" viewBox="0 0 380 300" width="360" height="280"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 4: COTANGENT VALUE TABLE + GRAPH
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title">Graph <span class="math">y</span> = cot <span class="math">x</span></h2>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="col" style="align-items:center;">
+      <table class="data-table step" data-step="0">
+        <tr><th><span class="math">x</span></th><th>cot <span class="math">x</span></th></tr>
+        <tr><td class="highlight-und"><span class="math">0</span></td><td class="highlight-und">und</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>0</td></tr>
+        <tr><td><span class="math">3&pi;/4</span></td><td>&minus;1</td></tr>
+        <tr><td class="highlight-und"><span class="math">&pi;</span></td><td class="highlight-und">und</td></tr>
+        <tr><td><span class="math">5&pi;/4</span></td><td>1</td></tr>
+        <tr><td><span class="math">3&pi;/2</span></td><td>0</td></tr>
+        <tr><td><span class="math">7&pi;/4</span></td><td>&minus;1</td></tr>
+        <tr><td class="highlight-und"><span class="math">2&pi;</span></td><td class="highlight-und">und</td></tr>
+      </table>
+    </div>
+    <div class="col" style="align-items:center;">
+      <svg id="svg-cot-main" class="graph-svg step" data-step="1" viewBox="0 0 460 340" width="440" height="320"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 5: COTANGENT PROPERTIES
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title">Properties of Cotangent</h2>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="col" style="align-items:flex-start; max-width:420px; gap:14px; padding-left:30px;">
+      <div class="step" data-step="0" style="font-size:1.15em; line-height:1.7;">
+        The <span style="text-decoration:underline; font-weight:600;">period</span> is the distance between two consecutive asymptotes.
+      </div>
+      <div class="step" data-step="1" style="font-size:1.15em; line-height:1.7;">
+        The <span style="text-decoration:underline; font-weight:600;">amplitude</span> is undefined<br>
+        but you can have a <em>vertical stretch</em>.
+      </div>
+    </div>
+    <div class="col" style="align-items:center;">
+      <svg id="svg-cot-prop" class="graph-svg" viewBox="0 0 380 300" width="360" height="280"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 6: BASIC CHARACTERISTICS TABLE - TAN & COT
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <h2 class="slide-title">Basic Characteristics of Tangent &amp; Cotangent</h2>
+  <table class="char-table" style="margin-top:15px;">
+    <tr>
+      <th style="width:160px;"></th>
+      <th><span class="math-normal">f(x)</span> = tan(<span class="math">x</span>)</th>
+      <th><span class="math-normal">f(x)</span> = cot(<span class="math">x</span>)</th>
+    </tr>
+    <tr>
+      <td>Domain</td>
+      <td class="fill-blank step" data-step="0"><span class="math" style="font-size:0.9em;">x &ne; &pi;/2 + n&pi;</span></td>
+      <td class="fill-blank step" data-step="0"><span class="math" style="font-size:0.9em;">x &ne; n&pi;</span></td>
+    </tr>
+    <tr>
+      <td>Range</td>
+      <td colspan="2" class="fill-blank step" data-step="1" style="text-align:center;">All real numbers</td>
+    </tr>
+    <tr>
+      <td>Period</td>
+      <td colspan="2" class="fill-blank step" data-step="2" style="text-align:center;"><span class="math">&pi;</span></td>
+    </tr>
+    <tr>
+      <td><span class="math">x</span>-intercepts</td>
+      <td class="fill-blank step" data-step="3"><span class="math">(n&pi;, 0)</span></td>
+      <td class="fill-blank step" data-step="3"><span class="math">(&pi;/2 + n&pi;, 0)</span></td>
+    </tr>
+    <tr>
+      <td><span class="math">y</span>-intercept</td>
+      <td class="fill-blank step" data-step="4">(0, 0)</td>
+      <td class="fill-blank step" data-step="4">None</td>
+    </tr>
+    <tr>
+      <td>Vertical Asymptotes</td>
+      <td class="fill-blank step" data-step="5"><span class="math">x = &pi;/2 + n&pi;</span></td>
+      <td class="fill-blank step" data-step="5"><span class="math">x = n&pi;</span></td>
+    </tr>
+    <tr>
+      <td>Even / Odd</td>
+      <td colspan="2" class="step" data-step="5" style="text-align:center;">Odd</td>
+    </tr>
+    <tr>
+      <td>Symmetry</td>
+      <td colspan="2" class="step" data-step="5" style="text-align:center;">About the origin</td>
+    </tr>
+  </table>
+  <span class="click-hint">Click to fill in</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 7: KEY TO GRAPHING - 5 KEY POINTS
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title" style="font-size:1.6em;">The key to graphing any tangent or cotangent curve is to be<br>familiar with the <span class="blue">5 key points</span> from their parent graphs.</h2>
+  <div class="two-col" style="margin-top:15px;">
+    <div class="col step" data-step="0" style="align-items:center;">
+      <div style="font-weight:700; margin-bottom:8px; font-size:1.1em;"><span class="math">y</span> = tan <span class="math">x</span></div>
+      <table class="data-table" style="font-size:0.88em;">
+        <tr><th><span class="math">x</span></th><th>tan <span class="math">x</span></th><th></th></tr>
+        <tr><td><span class="math">&minus;&pi;/2</span></td><td class="highlight-und">und</td><td style="font-size:0.85em;color:#64748b;">asymptote</td></tr>
+        <tr><td><span class="math">&minus;&pi;/4</span></td><td>&minus;1</td><td style="font-size:0.85em;color:#64748b;">low</td></tr>
+        <tr><td><span class="math">0</span></td><td>0</td><td style="font-size:0.85em;color:#64748b;">inflection</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td><td style="font-size:0.85em;color:#64748b;">high</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td class="highlight-und">und</td><td style="font-size:0.85em;color:#64748b;">asymptote</td></tr>
+      </table>
+    </div>
+    <div class="col step" data-step="1" style="align-items:center;">
+      <div style="font-weight:700; margin-bottom:8px; font-size:1.1em;"><span class="math">y</span> = cot <span class="math">x</span></div>
+      <table class="data-table" style="font-size:0.88em;">
+        <tr><th><span class="math">x</span></th><th>cot <span class="math">x</span></th><th></th></tr>
+        <tr><td class="highlight-und"><span class="math">0</span></td><td class="highlight-und">und</td><td style="font-size:0.85em;color:#64748b;">asymptote</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td><td style="font-size:0.85em;color:#64748b;">high</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>0</td><td style="font-size:0.85em;color:#64748b;">inflection</td></tr>
+        <tr><td><span class="math">3&pi;/4</span></td><td>&minus;1</td><td style="font-size:0.85em;color:#64748b;">low</td></tr>
+        <tr><td><span class="math">&pi;</span></td><td class="highlight-und">und</td><td style="font-size:0.85em;color:#64748b;">asymptote</td></tr>
+      </table>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 8: STEPS FOR GRAPHING TAN/COT
+     ============================================================ -->
+<section class="slide" data-steps="4">
+  <h2 class="slide-title">Steps for Graphing a Tangent or Cotangent Function</h2>
+  <div class="steps-list" style="margin-top:12px;">
+    <div class="step-item step" data-step="0">
+      <div class="step-number">1</div>
+      <div class="step-content"><strong>T-TABLE.</strong> Write down a t-table with 5 points for the parent graph.</div>
+    </div>
+    <div class="step-item step" data-step="1">
+      <div class="step-number">2</div>
+      <div class="step-content"><strong>ANALYZE.</strong> Determine the transformations of the function.</div>
+    </div>
+    <div class="step" data-step="1" style="margin-left: 42px;">
+      <div class="transform-diagram">
+        <div>
+          <div class="transform-header">affects <span class="math">x</span>-coordinates</div>
+          <div class="transform-box">period</div>
+          <div class="transform-box" style="margin-top:6px;">phase shift</div>
+        </div>
+        <div class="transform-arrow">&rarr;</div>
+        <div>
+          <div class="transform-header">affects <span class="math">y</span>-coordinates</div>
+          <div class="transform-box y-box">vertical stretch</div>
+          <div class="transform-box y-box" style="margin-top:6px;">vertical translation</div>
+        </div>
+      </div>
+    </div>
+    <div class="step-item step" data-step="2">
+      <div class="step-number">3</div>
+      <div class="step-content"><strong>NEW X-COORDINATES.</strong> Use the period, <strong>then</strong> phase shift to adjust the <span class="math">x</span>-coordinates.</div>
+    </div>
+    <div class="step-item step" data-step="2">
+      <div class="step-number">4</div>
+      <div class="step-content"><strong>NEW Y-COORDINATES.</strong> Use the vertical stretch, <strong>then</strong> vertical translation to adjust the <span class="math">y</span>-coordinates.</div>
+    </div>
+    <div class="step-item step" data-step="3">
+      <div class="step-number">5</div>
+      <div class="step-content">Set up axes, scale, plot points, and draw the graph!</div>
+    </div>
+  </div>
+  <div class="tip-box step" data-step="3" style="margin-top:10px;">
+    <strong>The order matters:</strong> multiply before add/subtract!
+  </div>
+  <span class="click-hint">Click to reveal steps</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 9: EXAMPLE 1 - y = tan(2x) + 3
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <div class="example-label">EXAMPLE 1</div>
+  <h2 class="slide-title" style="margin-top:20px;">Sketch two periods of <span class="math">y</span> = tan(2<span class="math">x</span>) + 3</h2>
+  <div class="worked-example" style="margin-top:8px;">
+    <div class="worked-left">
+      <div class="step" data-step="0" style="font-size:0.9em; margin-bottom:4px;"><strong>Parent t-table &amp; Analysis:</strong></div>
+      <table class="t-table step" data-step="0">
+        <tr><th><span class="math">x</span></th><th>tan <span class="math">x</span></th><th class="step" data-step="2" style="padding:3px 8px;">new <span class="math">x</span></th><th class="step" data-step="4" style="padding:3px 8px;">new <span class="math">y</span></th></tr>
+        <tr><td><span class="math">&minus;&pi;/2</span></td><td>und</td><td class="new-col step" data-step="2"><span class="math">&minus;&pi;/4</span></td><td class="final-col step" data-step="4">und</td></tr>
+        <tr><td><span class="math">&minus;&pi;/4</span></td><td>&minus;1</td><td class="new-col step" data-step="2"><span class="math">&minus;&pi;/8</span></td><td class="final-col step" data-step="4">2</td></tr>
+        <tr><td>0</td><td>0</td><td class="new-col step" data-step="2">0</td><td class="final-col step" data-step="4">3</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td><td class="new-col step" data-step="2"><span class="math">&pi;/8</span></td><td class="final-col step" data-step="4">4</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>und</td><td class="new-col step" data-step="2"><span class="math">&pi;/4</span></td><td class="final-col step" data-step="4">und</td></tr>
+      </table>
+      <div class="step" data-step="1" style="margin-top:8px;">
+        <div class="annotation">Period: &pi;/2 &rarr; multiply x's by 1/2</div>
+        <div class="annotation">Phase shift: none</div>
+        <div class="annotation">Vertical stretch: 1 (none)</div>
+        <div class="annotation">Vertical translation: +3</div>
+      </div>
+      <div class="step" data-step="3" style="margin-top:6px;">
+        <span class="annotation">x: multiply by 1/2</span>
+      </div>
+      <div class="step" data-step="5" style="margin-top:4px;">
+        <span class="annotation">y: add 3</span>
+      </div>
+    </div>
+    <div class="worked-right">
+      <svg id="svg-ex1" class="graph-svg step" data-step="5" viewBox="0 0 400 320" width="380" height="300"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to advance</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 10: EXAMPLE 2 - y = 2cot(x/3) - 1
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <div class="example-label">EXAMPLE 2</div>
+  <h2 class="slide-title" style="margin-top:20px;">Sketch the graph of <span class="math">y</span> = 2 cot(<span class="math">x</span>/3) &minus; 1</h2>
+  <div class="worked-example" style="margin-top:8px;">
+    <div class="worked-left">
+      <div class="step" data-step="0" style="font-size:0.9em; margin-bottom:4px;"><strong>Parent t-table &amp; Analysis:</strong></div>
+      <table class="t-table step" data-step="0">
+        <tr><th><span class="math">x</span></th><th>cot <span class="math">x</span></th><th class="step" data-step="2" style="padding:3px 8px;">new <span class="math">x</span></th><th class="step" data-step="4" style="padding:3px 8px;">new <span class="math">y</span></th></tr>
+        <tr><td>0</td><td>und</td><td class="new-col step" data-step="2">0</td><td class="final-col step" data-step="4">und</td></tr>
+        <tr><td><span class="math">&pi;/4</span></td><td>1</td><td class="new-col step" data-step="2"><span class="math">3&pi;/4</span></td><td class="final-col step" data-step="4">1</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>0</td><td class="new-col step" data-step="2"><span class="math">3&pi;/2</span></td><td class="final-col step" data-step="4">&minus;1</td></tr>
+        <tr><td><span class="math">3&pi;/4</span></td><td>&minus;1</td><td class="new-col step" data-step="2"><span class="math">9&pi;/4</span></td><td class="final-col step" data-step="4">&minus;3</td></tr>
+        <tr><td><span class="math">&pi;</span></td><td>und</td><td class="new-col step" data-step="2"><span class="math">3&pi;</span></td><td class="final-col step" data-step="4">und</td></tr>
+      </table>
+      <div class="step" data-step="1" style="margin-top:8px;">
+        <div class="annotation">Period: 3&pi; &rarr; multiply x's by 3</div>
+        <div class="annotation">Phase shift: none</div>
+        <div class="annotation">Vertical stretch: 2 &rarr; multiply y's by 2</div>
+        <div class="annotation">Vertical translation: &minus;1 &rarr; subtract 1 from y's</div>
+      </div>
+      <div class="step" data-step="3" style="margin-top:6px;">
+        <span class="annotation">x: multiply by 3</span>
+      </div>
+      <div class="step" data-step="5" style="margin-top:4px;">
+        <span class="annotation">y: multiply by 2, <strong>then</strong> subtract 1</span>
+      </div>
+    </div>
+    <div class="worked-right">
+      <svg id="svg-ex2" class="graph-svg step" data-step="5" viewBox="0 0 400 320" width="380" height="300"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to advance</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 11: SECTION HEADER - Cosecant
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">Cosecant</div>
+  <div class="section-subtitle">The reciprocal of sine</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 12: GRAPHING COSECANT - CONCEPT
+     ============================================================ -->
+<section class="slide" data-steps="3">
+  <h2 class="slide-title">To graph the <strong>cosecant</strong> you need to take every point<br>on the sine curve and take the reciprocal</h2>
+  <div style="margin-top:15px; position:relative; width:100%; max-width:800px;">
+    <svg id="svg-csc-concept" class="graph-svg" viewBox="0 0 700 300" width="700" height="300"></svg>
+    <div class="step" data-step="0" style="text-align:center; margin-top:6px; font-size:0.9em; color:#64748b;">
+      <span class="math" style="color:var(--blue-accent);">y = sin(x)</span> shown dashed
+    </div>
+  </div>
+  <span class="click-hint">Click to build the graph</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 13: SECTION HEADER - Secant
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">Secant</div>
+  <div class="section-subtitle">The reciprocal of cosine</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 14: GRAPHING SECANT - CONCEPT
+     ============================================================ -->
+<section class="slide" data-steps="3">
+  <h2 class="slide-title">To graph the <strong>secant</strong> you need to take every point<br>on the cosine curve and take the reciprocal</h2>
+  <div style="margin-top:15px; position:relative; width:100%; max-width:800px;">
+    <svg id="svg-sec-concept" class="graph-svg" viewBox="0 0 700 300" width="700" height="300"></svg>
+    <div class="step" data-step="0" style="text-align:center; margin-top:6px; font-size:0.9em; color:#64748b;">
+      <span class="math" style="color:var(--blue-accent);">y = cos(x)</span> shown dashed
+    </div>
+  </div>
+  <span class="click-hint">Click to build the graph</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 15: BASIC CHARACTERISTICS TABLE - SEC & CSC
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <h2 class="slide-title">Basic Characteristics of Secant &amp; Cosecant</h2>
+  <table class="char-table" style="margin-top:15px;">
+    <tr>
+      <th style="width:160px;"></th>
+      <th><span class="math-normal">f(x)</span> = csc(<span class="math">x</span>)</th>
+      <th><span class="math-normal">f(x)</span> = sec(<span class="math">x</span>)</th>
+    </tr>
+    <tr>
+      <td>Domain</td>
+      <td class="fill-blank step" data-step="0"><span class="math" style="font-size:0.9em;">x &ne; n&pi;</span></td>
+      <td class="fill-blank step" data-step="0"><span class="math" style="font-size:0.9em;">x &ne; &pi;/2 + n&pi;</span></td>
+    </tr>
+    <tr>
+      <td>Range</td>
+      <td colspan="2" class="fill-blank step" data-step="1" style="text-align:center;">(&minus;&infin;, &minus;1] &cup; [1, &infin;)</td>
+    </tr>
+    <tr>
+      <td>Period</td>
+      <td colspan="2" class="fill-blank step" data-step="2" style="text-align:center;"><span class="math">2&pi;</span></td>
+    </tr>
+    <tr>
+      <td>Intercepts</td>
+      <td class="fill-blank step" data-step="3">None</td>
+      <td class="fill-blank step" data-step="3">(0, 1)</td>
+    </tr>
+    <tr>
+      <td>Vertical Asymptotes</td>
+      <td class="fill-blank step" data-step="4"><span class="math">x = n&pi;</span></td>
+      <td class="fill-blank step" data-step="4"><span class="math">x = &pi;/2 + n&pi;</span></td>
+    </tr>
+    <tr>
+      <td>Even / Odd</td>
+      <td class="step" data-step="5" style="text-align:center;">Odd</td>
+      <td class="step" data-step="5" style="text-align:center;">Even</td>
+    </tr>
+    <tr>
+      <td>Symmetry</td>
+      <td class="step" data-step="5" style="text-align:center;">About the origin</td>
+      <td class="step" data-step="5" style="text-align:center;">About the <span class="math">y</span>-axis</td>
+    </tr>
+  </table>
+  <span class="click-hint">Click to fill in</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 16: STEPS FOR GRAPHING SEC/CSC
+     ============================================================ -->
+<section class="slide" data-steps="4">
+  <h2 class="slide-title" style="font-size:1.7em;"><strong>Steps for Graphing a Secant or Cosecant Function</strong></h2>
+  <div class="flow-steps" style="margin-top:14px;">
+    <div class="flow-step step" data-step="0">
+      <strong>1) Analyze the function's reciprocal function</strong>
+      <div class="sub-text">Find the vertical/horizontal dilation, reflection, or translation</div>
+    </div>
+    <div class="flow-arrow-down step" data-step="0">&darr;</div>
+    <div class="flow-step step" data-step="1">
+      <strong>2) Make the t-table for the reciprocal function.</strong>
+    </div>
+    <div class="flow-arrow-down step" data-step="1">&darr;</div>
+    <div class="flow-step step" data-step="2">
+      <strong>3) Identify the vertical asymptotes</strong>
+      <div class="sub-text">This is where the reciprocal function (sine or cosine) would cross its midline</div>
+    </div>
+    <div class="flow-arrow-down step" data-step="2">&darr;</div>
+    <div class="flow-step step" data-step="3">
+      <strong>4) Plot the asymptotes and other points from the t-table and sketch the graph</strong>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal steps</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 17: EXAMPLE 3 - y = 2csc(x + π/4)
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <div class="example-label">EXAMPLE 3</div>
+  <h2 class="slide-title" style="margin-top:20px;">Sketch the graph of <span class="math">y</span> = 2 csc(<span class="math">x</span> + <span class="math">&pi;</span>/4)</h2>
+  <div class="worked-example" style="margin-top:8px;">
+    <div class="worked-left">
+      <div class="step" data-step="0" style="font-size:0.88em; margin-bottom:4px;"><strong>Reciprocal: <span class="math">y</span> = 2 sin(<span class="math">x</span> + &pi;/4)</strong></div>
+      <div class="step" data-step="1" style="margin-bottom:6px;">
+        <div class="annotation">Vertical stretch: 2 &rarr; multiply y's by 2</div>
+        <div class="annotation">Period: 2&pi; (no change)</div>
+        <div class="annotation">Phase shift: &minus;&pi;/4 (left &pi;/4)</div>
+      </div>
+      <table class="t-table step" data-step="2">
+        <tr><th><span class="math">x</span></th><th>sin <span class="math">x</span></th><th class="step" data-step="3" style="padding:3px 8px;">new <span class="math">x</span></th><th class="step" data-step="4" style="padding:3px 8px;">new <span class="math">y</span></th></tr>
+        <tr><td>0</td><td>0</td><td class="new-col step" data-step="3">&minus;&pi;/4</td><td class="final-col step" data-step="4">0 (asym)</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>1</td><td class="new-col step" data-step="3">&pi;/4</td><td class="final-col step" data-step="4">2</td></tr>
+        <tr><td><span class="math">&pi;</span></td><td>0</td><td class="new-col step" data-step="3">3&pi;/4</td><td class="final-col step" data-step="4">0 (asym)</td></tr>
+        <tr><td><span class="math">3&pi;/2</span></td><td>&minus;1</td><td class="new-col step" data-step="3">5&pi;/4</td><td class="final-col step" data-step="4">&minus;2</td></tr>
+        <tr><td><span class="math">2&pi;</span></td><td>0</td><td class="new-col step" data-step="3">7&pi;/4</td><td class="final-col step" data-step="4">0 (asym)</td></tr>
+      </table>
+    </div>
+    <div class="worked-right">
+      <svg id="svg-ex3" class="graph-svg step" data-step="5" viewBox="0 0 400 300" width="380" height="280"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to advance</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 18: EXAMPLE 4 - y = -2sec(πx - π) + 1
+     ============================================================ -->
+<section class="slide" data-steps="6">
+  <div class="example-label">EXAMPLE 4</div>
+  <h2 class="slide-title" style="margin-top:20px;">Sketch the graph of <span class="math">y</span> = &minus;2 sec(<span class="math">&pi;x</span> &minus; <span class="math">&pi;</span>) + 1</h2>
+  <div class="worked-example" style="margin-top:8px;">
+    <div class="worked-left">
+      <div class="step" data-step="0" style="font-size:0.88em; margin-bottom:4px;"><strong>Reciprocal: <span class="math">y</span> = &minus;2 cos(&pi;<span class="math">x</span> &minus; &pi;) + 1</strong></div>
+      <div class="step" data-step="1" style="margin-bottom:6px;">
+        <div class="annotation">Vertical stretch: &minus;2 &rarr; multiply y's by &minus;2</div>
+        <div class="annotation">Vertical translation: +1 &rarr; add 1 to y's</div>
+        <div class="annotation">Period: 2&pi;/&pi; = 2</div>
+        <div class="annotation">Phase shift: &pi;/&pi; = 1 (right 1)</div>
+      </div>
+      <table class="t-table step" data-step="2">
+        <tr><th><span class="math">x</span></th><th>cos <span class="math">x</span></th><th class="step" data-step="3" style="padding:3px 6px;">new <span class="math">x</span></th><th class="step" data-step="4" style="padding:3px 6px;">new <span class="math">y</span></th></tr>
+        <tr><td>0</td><td>1</td><td class="new-col step" data-step="3">1</td><td class="final-col step" data-step="4">&minus;1</td></tr>
+        <tr><td><span class="math">&pi;/2</span></td><td>0</td><td class="new-col step" data-step="3">1.5</td><td class="final-col step" data-step="4">1 (asym)</td></tr>
+        <tr><td><span class="math">&pi;</span></td><td>&minus;1</td><td class="new-col step" data-step="3">2</td><td class="final-col step" data-step="4">3</td></tr>
+        <tr><td><span class="math">3&pi;/2</span></td><td>0</td><td class="new-col step" data-step="3">2.5</td><td class="final-col step" data-step="4">1 (asym)</td></tr>
+        <tr><td><span class="math">2&pi;</span></td><td>1</td><td class="new-col step" data-step="3">3</td><td class="final-col step" data-step="4">&minus;1</td></tr>
+      </table>
+      <div class="step" data-step="5" style="margin-top:4px;">
+        <span class="annotation">y: multiply by &minus;2, <strong>then</strong> add 1</span>
+      </div>
+    </div>
+    <div class="worked-right">
+      <svg id="svg-ex4" class="graph-svg step" data-step="5" viewBox="0 0 400 320" width="380" height="300"></svg>
+    </div>
+  </div>
+  <span class="click-hint">Click to advance</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 19: QUESTIONS
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">What are your questions?</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 20: HOMEWORK
+     ============================================================ -->
+<section class="slide section-slide" data-steps="0">
+  <div class="section-title">Homework</div>
+  <div class="section-subtitle" style="margin-top:20px;">Graphs of Other Trig Functions CIRCUIT</div>
+</section>
+
+</div><!-- end slides-container -->
+
+<div class="keyboard-hint">
+  <span class="key-icon">&larr;</span>
+  <span class="key-icon">&rarr;</span>
+  <span style="margin-left:4px;">or click to navigate</span>
+</div>
+
+<script>
+/* ===========================================
+   GRAPH BUILDER
+   Creates accurate SVG graphs using a consistent
+   coordinate mapping system. Every graph defines:
+     mathToX(val) → SVG x pixel
+     mathToY(val) → SVG y pixel
+   Then both curves AND points use the SAME mapping.
+   =========================================== */
+
+class GraphBuilder {
+  constructor(svgId, viewBox) {
+    this.svg = document.getElementById(svgId);
+    if (!this.svg) return;
+    this.ns = 'http://www.w3.org/2000/svg';
+    // Parse viewBox
+    const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+    this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+  }
+
+  /* Create a coordinate system mapping
+     mathXMin/mathXMax → maps to svgXMin/svgXMax pixels
+     mathYMin/mathYMax → maps to svgYMin/svgYMax pixels (Y is inverted) */
+  setCoords(mathXMin, mathXMax, mathYMin, mathYMax, svgPadLeft, svgPadRight, svgPadTop, svgPadBottom) {
+    this.mathXMin = mathXMin;
+    this.mathXMax = mathXMax;
+    this.mathYMin = mathYMin;
+    this.mathYMax = mathYMax;
+    this.svgXMin = svgPadLeft;
+    this.svgXMax = this.vbW - svgPadRight;
+    this.svgYMin = svgPadTop;       // top of graph area
+    this.svgYMax = this.vbH - svgPadBottom; // bottom of graph area
+  }
+
+  mx(val) { return this.svgXMin + (val - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+  my(val) { return this.svgYMax - (val - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
+
+  /* Add light grid background */
+  addGrid() {
+    const pat = document.createElementNS(this.ns, 'pattern');
+    const patId = 'grid-' + Math.random().toString(36).substr(2,5);
+    pat.setAttribute('id', patId);
+    pat.setAttribute('width', '40'); pat.setAttribute('height', '40');
+    pat.setAttribute('patternUnits', 'userSpaceOnUse');
+    const p = document.createElementNS(this.ns, 'path');
+    p.setAttribute('d', 'M 40 0 L 0 0 0 40');
+    p.setAttribute('fill', 'none'); p.setAttribute('stroke', '#e2e8f0'); p.setAttribute('stroke-width', '0.5');
+    pat.appendChild(p);
+    this.svg.appendChild(pat);
+    const r = document.createElementNS(this.ns, 'rect');
+    r.setAttribute('width', this.vbW); r.setAttribute('height', this.vbH);
+    r.setAttribute('fill', 'url(#' + patId + ')');
+    this.svg.appendChild(r);
+  }
+
+  /* Add axes */
+  addAxes(showArrows) {
+    // x-axis
+    const xAxis = this.line(this.svgXMin - 10, this.my(0), this.svgXMax + 10, this.my(0), '#1a365d', 1.5);
+    // y-axis
+    const originX = this.mx(0);
+    const yAxis = this.line(originX, this.svgYMin - 5, originX, this.svgYMax + 5, '#1a365d', 1.5);
+  }
+
+  /* Draw a line */
+  line(x1, y1, x2, y2, color, width, dasharray) {
+    const l = document.createElementNS(this.ns, 'line');
+    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+    l.setAttribute('stroke', color || '#1a365d');
+    l.setAttribute('stroke-width', width || 1);
+    if (dasharray) l.setAttribute('stroke-dasharray', dasharray);
+    this.svg.appendChild(l);
+    return l;
+  }
+
+  /* Draw text label */
+  label(x, y, text, opts) {
+    const t = document.createElementNS(this.ns, 'text');
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('font-size', (opts && opts.size) || '11');
+    t.setAttribute('fill', (opts && opts.color) || '#64748b');
+    t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+    if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+    t.textContent = text;
+    this.svg.appendChild(t);
+    return t;
+  }
+
+  /* Draw a vertical asymptote */
+  asymptote(mathX, cls) {
+    const svgX = this.mx(mathX);
+    const l = this.line(svgX, this.svgYMin - 5, svgX, this.svgYMax + 5, '#dc2626', 1.5, '6 4');
+    l.setAttribute('opacity', '0.7');
+    if (cls) l.setAttribute('class', cls);
+    return l;
+  }
+
+  /* Draw a horizontal dashed line (midline) */
+  hline(mathY, color) {
+    const sy = this.my(mathY);
+    this.line(this.svgXMin - 10, sy, this.svgXMax + 10, sy, color || '#16a34a', 1, '4 3').setAttribute('opacity', '0.5');
+  }
+
+  /* Plot a point */
+  point(mathX, mathY, color, radius) {
+    const c = document.createElementNS(this.ns, 'circle');
+    c.setAttribute('cx', this.mx(mathX)); c.setAttribute('cy', this.my(mathY));
+    c.setAttribute('r', radius || 4.5);
+    c.setAttribute('fill', color || '#2563eb');
+    c.setAttribute('stroke', 'white'); c.setAttribute('stroke-width', '1.5');
+    this.svg.appendChild(c);
+    return c;
+  }
+
+  /* Draw a continuous math curve using a function f(x)→y
+     Splits at discontinuities (where |y| > yClip) */
+  curve(f, xStart, xEnd, steps, color, width, dasharray, yClip, stepClass) {
+    const segs = [];
+    let currentSeg = [];
+    const n = steps || 500;
+    const clip = yClip || (this.mathYMax - this.mathYMin) * 1.5;
+
+    for (let i = 0; i <= n; i++) {
+      const mathX = xStart + (i / n) * (xEnd - xStart);
+      const mathY = f(mathX);
+      if (isNaN(mathY) || !isFinite(mathY) || Math.abs(mathY) > clip) {
+        if (currentSeg.length >= 2) segs.push(currentSeg);
+        currentSeg = [];
+        continue;
+      }
+      currentSeg.push([this.mx(mathX), this.my(mathY)]);
+    }
+    if (currentSeg.length >= 2) segs.push(currentSeg);
+
+    const g = document.createElementNS(this.ns, 'g');
+    if (stepClass) g.setAttribute('class', stepClass);
+
+    segs.forEach(seg => {
+      let d = 'M ' + seg[0][0].toFixed(1) + ' ' + seg[0][1].toFixed(1);
+      for (let i = 1; i < seg.length; i++) {
+        d += ' L ' + seg[i][0].toFixed(1) + ' ' + seg[i][1].toFixed(1);
+      }
+      const path = document.createElementNS(this.ns, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', color || '#1e40af');
+      path.setAttribute('stroke-width', width || 2.5);
+      if (dasharray) path.setAttribute('stroke-dasharray', dasharray);
+      g.appendChild(path);
+    });
+
+    this.svg.appendChild(g);
+    return g;
+  }
+
+  /* Add x-axis tick labels at specific math values */
+  addXLabels(labels) {
+    // labels: [ {val: Math.PI/2, text: 'π/2'}, ... ]
+    labels.forEach(lb => {
+      this.label(this.mx(lb.val), this.my(0) + 16, lb.text, { size: '11', anchor: 'middle' });
+    });
+  }
+
+  /* Add y-axis tick labels */
+  addYLabels(labels) {
+    labels.forEach(lb => {
+      this.label(this.mx(0) - 14, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end' });
+    });
+  }
+
+  /* Period bracket below */
+  addPeriodBracket(x1, x2, labelText) {
+    const sx1 = this.mx(x1), sx2 = this.mx(x2);
+    const by = this.svgYMax + 12;
+    this.line(sx1, by - 5, sx1, by + 5, '#2563eb', 2);
+    this.line(sx1, by, sx2, by, '#2563eb', 2);
+    this.line(sx2, by - 5, sx2, by + 5, '#2563eb', 2);
+    this.label((sx1 + sx2) / 2, by + 16, labelText, { color: '#2563eb', weight: '700', size: '12' });
+  }
+
+  /* Wrap elements in a step group */
+  startStep(stepNum) {
+    const g = document.createElementNS(this.ns, 'g');
+    g.setAttribute('class', 'step');
+    g.setAttribute('data-step', stepNum);
+    this.svg.appendChild(g);
+    this._stepGroup = g;
+    this._origSvg = this.svg;
+    this.svg = g; // redirect all drawing to this group
+  }
+
+  endStep() {
+    this.svg = this._origSvg;
+    this._stepGroup = null;
+  }
+}
+
+/* ===========================================
+   BUILD ALL GRAPHS
+   Each graph is built with precise coordinate
+   mappings. Points are computed from the SAME
+   math as the curves.
+   =========================================== */
+function buildAllGraphs() {
+  const PI = Math.PI;
+
+  // -----------------------------------------------
+  // SLIDE 2: y = tan(x), x from -π/4 to 9π/4
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-tan-main');
+    if (g.svg) {
+      g.setCoords(-PI/4, 9*PI/4, -4, 4, 60, 20, 25, 25);
+      g.addGrid();
+      g.addAxes();
+      // X labels
+      g.addXLabels([
+        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'},
+        {val: 3*PI/2, text: '3π/2'}, {val: 2*PI, text: '2π'}
+      ]);
+      // Y labels
+      g.addYLabels([{val: 4, text: '4'}, {val: 2, text: '2'}, {val: -2, text: '−2'}, {val: -4, text: '−4'}]);
+      // Asymptotes at π/2 and 3π/2
+      g.asymptote(PI/2);
+      g.asymptote(3*PI/2);
+      // Tan curve
+      g.curve(x => Math.tan(x), -PI/4, 9*PI/4, 800, '#1e40af', 2.5, null, 10);
+      // Key points from table
+      const pts = [
+        [0, 0], [PI/4, 1], [3*PI/4, -1], [PI, 0],
+        [5*PI/4, 1], [7*PI/4, -1], [2*PI, 0]
+      ];
+      pts.forEach(p => g.point(p[0], p[1]));
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 3: Tangent properties - single period
+  // x from 0 to 2π, showing one full period between π/2 and 3π/2
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-tan-prop');
+    if (g.svg) {
+      g.setCoords(0, 2*PI, -4, 4, 40, 20, 20, 35);
+      g.addGrid();
+      g.addAxes();
+      g.asymptote(PI/2);
+      g.asymptote(3*PI/2);
+      g.curve(x => Math.tan(x), 0, 2*PI, 600, '#1e40af', 2.5, null, 10);
+      // Key points in the central period
+      g.point(3*PI/4, -1);
+      g.point(PI, 0);
+      g.point(5*PI/4, 1);
+      // Period bracket
+      g.addPeriodBracket(PI/2, 3*PI/2, 'period = π');
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 4: y = cot(x), x from -π/4 to 9π/4
+  // Asymptotes at 0, π, 2π
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-cot-main');
+    if (g.svg) {
+      g.setCoords(-PI/4, 9*PI/4, -4, 4, 60, 20, 25, 25);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'},
+        {val: 3*PI/2, text: '3π/2'}, {val: 2*PI, text: '2π'}
+      ]);
+      g.addYLabels([{val: 4, text: '4'}, {val: 2, text: '2'}, {val: -2, text: '−2'}, {val: -4, text: '−4'}]);
+      // Asymptotes at 0, π, 2π
+      g.asymptote(0);
+      g.asymptote(PI);
+      g.asymptote(2*PI);
+      // Cot curve: two full periods 0→π and π→2π
+      g.curve(x => 1/Math.tan(x), -PI/4 + 0.01, 9*PI/4, 800, '#1e40af', 2.5, null, 10);
+      // Key points
+      const pts = [
+        [PI/4, 1], [PI/2, 0], [3*PI/4, -1],
+        [5*PI/4, 1], [3*PI/2, 0], [7*PI/4, -1]
+      ];
+      pts.forEach(p => g.point(p[0], p[1]));
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 5: Cotangent properties - two periods visible
+  // x from -PI/4 to 9π/4, same as main but with period bracket
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-cot-prop');
+    if (g.svg) {
+      g.setCoords(-PI/4, 9*PI/4, -4, 4, 40, 20, 20, 35);
+      g.addGrid();
+      g.addAxes();
+      g.asymptote(0);
+      g.asymptote(PI);
+      g.asymptote(2*PI);
+      // Two periods of cot
+      g.curve(x => 1/Math.tan(x), -PI/4 + 0.01, 9*PI/4, 600, '#1e40af', 2.5, null, 10);
+      // Points for both periods
+      g.point(PI/4, 1); g.point(PI/2, 0); g.point(3*PI/4, -1);
+      g.point(5*PI/4, 1); g.point(3*PI/2, 0); g.point(7*PI/4, -1);
+      // Period bracket
+      g.addPeriodBracket(0, PI, 'period = π');
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 12: Cosecant concept - show sin, then asymptotes, then csc
+  // x from -π/2 to 5π/2, y from -3 to 3
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-csc-concept');
+    if (g.svg) {
+      g.setCoords(-PI/2, 5*PI/2, -3, 3, 50, 30, 20, 20);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'},
+        {val: 3*PI/2, text: '3π/2'}, {val: 2*PI, text: '2π'}
+      ]);
+      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}, {val: 2, text: '2'}, {val: -2, text: '−2'}]);
+
+      // Step 0: sine curve (dashed)
+      g.startStep(0);
+      g.curve(x => Math.sin(x), -PI/2, 5*PI/2, 500, '#2563eb', 1.5, '5 3', null);
+      g.endStep();
+
+      // Step 1: asymptotes where sin=0
+      g.startStep(1);
+      [-PI/2, 0, PI, 2*PI, 5*PI/2].forEach(v => {
+        // Only draw asymptotes at integer multiples of π where sin=0
+      });
+      [0, PI, 2*PI].forEach(v => g.asymptote(v));
+      g.endStep();
+
+      // Step 2: csc curve and key points
+      g.startStep(2);
+      g.curve(x => 1/Math.sin(x), -PI/2, 5*PI/2, 1000, '#0891b2', 2.5, null, 8);
+      // Key points where sin = ±1 → csc = ±1
+      g.point(PI/2, 1, '#0891b2');
+      g.point(3*PI/2, -1, '#0891b2');
+      g.point(5*PI/2, 1, '#0891b2');
+      g.endStep();
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 14: Secant concept - show cos, then asymptotes, then sec
+  // x from -π/2 to 5π/2, y from -3 to 3
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-sec-concept');
+    if (g.svg) {
+      g.setCoords(-PI/2, 5*PI/2, -3, 3, 50, 30, 20, 20);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'},
+        {val: 3*PI/2, text: '3π/2'}, {val: 2*PI, text: '2π'}
+      ]);
+      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}, {val: 2, text: '2'}, {val: -2, text: '−2'}]);
+
+      // Step 0: cosine curve (dashed)
+      g.startStep(0);
+      g.curve(x => Math.cos(x), -PI/2, 5*PI/2, 500, '#2563eb', 1.5, '5 3', null);
+      g.endStep();
+
+      // Step 1: asymptotes where cos=0
+      g.startStep(1);
+      [PI/2, 3*PI/2, 5*PI/2].forEach(v => g.asymptote(v));
+      g.endStep();
+
+      // Step 2: sec curve and key points
+      g.startStep(2);
+      g.curve(x => 1/Math.cos(x), -PI/2, 5*PI/2, 1000, '#7c3aed', 2.5, null, 8);
+      g.point(0, 1, '#7c3aed');
+      g.point(PI, -1, '#7c3aed');
+      g.point(2*PI, 1, '#7c3aed');
+      // Label (0,1)
+      const lbl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      lbl.setAttribute('x', g.mx(0) + 10); lbl.setAttribute('y', g.my(1) - 8);
+      lbl.setAttribute('font-size', '11'); lbl.setAttribute('fill', '#7c3aed'); lbl.setAttribute('font-weight', '600');
+      lbl.textContent = '(0, 1)';
+      g.svg.appendChild(lbl);
+      g.endStep();
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 9: Example 1 - y = tan(2x) + 3
+  // Period = π/2. One period: -π/4 to π/4. Show 2 periods: -π/4 to 3π/4
+  // Key points: (-π/8, 2), (0, 3), (π/8, 4), asymptotes at ±π/4, 3π/4
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-ex1');
+    if (g.svg) {
+      // x from -3π/8 to 7π/8, y from -2 to 8
+      g.setCoords(-3*PI/8, 7*PI/8, -2, 8, 50, 20, 20, 20);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: -PI/4, text: '−π/4'}, {val: -PI/8, text: '−π/8'},
+        {val: PI/8, text: 'π/8'}, {val: PI/4, text: 'π/4'},
+        {val: 3*PI/8, text: '3π/8'}, {val: PI/2, text: 'π/2'},
+        {val: 5*PI/8, text: '5π/8'}, {val: 3*PI/4, text: '3π/4'}
+      ]);
+      g.addYLabels([
+        {val: 0, text: '0'}, {val: 2, text: '2'}, {val: 3, text: '3'},
+        {val: 4, text: '4'}, {val: 6, text: '6'}
+      ]);
+      // Asymptotes at -π/4, π/4, 3π/4
+      g.asymptote(-PI/4);
+      g.asymptote(PI/4);
+      g.asymptote(3*PI/4);
+      // Midline y=3
+      g.hline(3, '#16a34a');
+      // The function
+      g.curve(x => Math.tan(2*x) + 3, -3*PI/8, 7*PI/8, 800, '#1e40af', 2.5, null, 15);
+      // Key points
+      g.point(-PI/8, 2, '#16a34a');
+      g.point(0, 3, '#16a34a');
+      g.point(PI/8, 4, '#16a34a');
+      // Second period points
+      g.point(3*PI/8, 2, '#16a34a');
+      g.point(PI/2, 3, '#16a34a');
+      g.point(5*PI/8, 4, '#16a34a');
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 10: Example 2 - y = 2cot(x/3) - 1
+  // Period = 3π. Asymptotes at 0 and 3π.
+  // Key points: (3π/4, 1), (3π/2, -1), (9π/4, -3)
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-ex2');
+    if (g.svg) {
+      // x from -π/2 to 3π + π/2, y from -5 to 5
+      g.setCoords(-PI/2, 3*PI + PI/2, -5, 5, 50, 20, 20, 20);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: 3*PI/4, text: '3π/4'}, {val: 3*PI/2, text: '3π/2'},
+        {val: 9*PI/4, text: '9π/4'}, {val: 3*PI, text: '3π'}
+      ]);
+      g.addYLabels([
+        {val: 1, text: '1'}, {val: -1, text: '−1'}, {val: -3, text: '−3'},
+        {val: 3, text: '3'}, {val: -5, text: '−5'}
+      ]);
+      // Asymptotes at 0 and 3π
+      g.asymptote(0);
+      g.asymptote(3*PI);
+      // Midline y = -1
+      g.hline(-1, '#16a34a');
+      // The function: y = 2*cot(x/3) - 1
+      g.curve(x => 2 / Math.tan(x / 3) - 1, -PI/2, 3*PI + PI/2, 800, '#1e40af', 2.5, null, 15);
+      // Key points
+      g.point(3*PI/4, 1, '#16a34a');
+      g.point(3*PI/2, -1, '#16a34a');
+      g.point(9*PI/4, -3, '#16a34a');
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 17: Example 3 - y = 2csc(x + π/4)
+  // Reciprocal: y = 2sin(x + π/4)
+  // Phase shift: left π/4. Period: 2π.
+  // Asymptotes where sin(x + π/4) = 0 → x = -π/4, 3π/4, 7π/4
+  // Key points: (π/4, 2), (5π/4, -2)
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-ex3');
+    if (g.svg) {
+      // x from -π/2 to 2π, y from -4 to 4
+      g.setCoords(-PI/2, 2*PI, -4, 4, 50, 20, 15, 15);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: -PI/4, text: '−π/4'}, {val: PI/4, text: 'π/4'},
+        {val: 3*PI/4, text: '3π/4'}, {val: 5*PI/4, text: '5π/4'}, {val: 7*PI/4, text: '7π/4'}
+      ]);
+      g.addYLabels([{val: 2, text: '2'}, {val: -2, text: '−2'}]);
+      // Sine helper (dashed)
+      g.curve(x => 2*Math.sin(x + PI/4), -PI/2, 2*PI, 400, '#2563eb', 1.5, '5 3', null);
+      // Asymptotes
+      g.asymptote(-PI/4);
+      g.asymptote(3*PI/4);
+      g.asymptote(7*PI/4);
+      // Csc curve
+      g.curve(x => 2/Math.sin(x + PI/4), -PI/2, 2*PI, 1000, '#0891b2', 2.5, null, 10);
+      // Key points
+      g.point(PI/4, 2, '#0891b2');
+      g.point(5*PI/4, -2, '#0891b2');
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 18: Example 4 - y = -2sec(πx - π) + 1
+  // Reciprocal: y = -2cos(πx - π) + 1
+  // Period: 2. Phase shift: right 1.
+  // Asymptotes where cos(πx - π) = 0 → πx - π = π/2 + nπ → x = 1.5, 2.5
+  // Key points: (1, -1), (2, 3), (3, -1)
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-ex4');
+    if (g.svg) {
+      // x from 0.3 to 3.7, y from -3 to 5
+      g.setCoords(0.3, 3.7, -3, 5, 50, 20, 20, 20);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([
+        {val: 0.5, text: '0.5'}, {val: 1, text: '1'}, {val: 1.5, text: '1.5'},
+        {val: 2, text: '2'}, {val: 2.5, text: '2.5'}, {val: 3, text: '3'}, {val: 3.5, text: '3.5'}
+      ]);
+      g.addYLabels([
+        {val: -1, text: '−1'}, {val: 1, text: '1'}, {val: 3, text: '3'}
+      ]);
+      // Midline y=1
+      g.hline(1, '#16a34a');
+      // Cosine helper (dashed)
+      g.curve(x => -2*Math.cos(PI*x - PI) + 1, 0.3, 3.7, 400, '#2563eb', 1.5, '5 3', null);
+      // Asymptotes where cos(πx - π) = 0: x = 0.5, 1.5, 2.5, 3.5
+      g.asymptote(0.5);
+      g.asymptote(1.5);
+      g.asymptote(2.5);
+      g.asymptote(3.5);
+      // Sec curve: y = -2sec(πx - π) + 1 = -2/cos(πx - π) + 1
+      g.curve(x => -2/Math.cos(PI*x - PI) + 1, 0.3, 3.7, 1000, '#7c3aed', 2.5, null, 12);
+      // Key points
+      g.point(1, -1, '#7c3aed');
+      g.point(2, 3, '#7c3aed');
+      g.point(3, -1, '#7c3aed');
+    }
+  }
+}
+
+
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = document.querySelectorAll('.slide');
+    this.currentSlide = 0;
+    this.slideSteps = [];
+    this.maxSteps = [];
+    this.transitioning = false;
+
+    this.slides.forEach((slide) => {
+      const max = parseInt(slide.getAttribute('data-steps')) || 0;
+      this.maxSteps.push(max);
+      this.slideSteps.push(-1);
+    });
+
+    this.buildNavDots();
+    this.showSlide(0);
+    this.bindEvents();
+  }
+
+  buildNavDots() {
+    const nav = document.getElementById('nav-dots');
+    this.slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'nav-dot';
+      dot.addEventListener('click', () => this.goToSlide(i));
+      nav.appendChild(dot);
+    });
+    this.dots = document.querySelectorAll('.nav-dot');
+  }
+
+  showSlide(index) {
+    this.slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'exit-left');
+      if (i < index) slide.classList.add('exit-left');
+    });
+    this.slides[index].classList.add('active');
+    this.dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    const pct = (index / (this.slides.length - 1)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  }
+
+  goToSlide(index) {
+    if (index < 0 || index >= this.slides.length || this.transitioning) return;
+    this.transitioning = true;
+    this.currentSlide = index;
+    this.showSlide(index);
+    setTimeout(() => { this.transitioning = false; }, 500);
+  }
+
+  advance() {
+    const slide = this.slides[this.currentSlide];
+    const maxStep = this.maxSteps[this.currentSlide];
+    const currentStep = this.slideSteps[this.currentSlide];
+
+    if (currentStep < maxStep - 1) {
+      this.slideSteps[this.currentSlide]++;
+      const nextStep = this.slideSteps[this.currentSlide];
+      const steps = slide.querySelectorAll('.step[data-step="' + nextStep + '"]');
+      steps.forEach(s => {
+        s.classList.add('visible');
+        if (s.classList.contains('fill-blank')) s.classList.add('revealed');
+      });
+
+      if (nextStep >= maxStep - 1) {
+        const hint = slide.querySelector('.click-hint');
+        if (hint) hint.style.opacity = '0';
+      }
+    } else {
+      if (this.currentSlide < this.slides.length - 1) {
+        this.goToSlide(this.currentSlide + 1);
+      }
+    }
+  }
+
+  goBack() {
+    const currentStep = this.slideSteps[this.currentSlide];
+
+    if (currentStep >= 0) {
+      const slide = this.slides[this.currentSlide];
+      const steps = slide.querySelectorAll('.step[data-step="' + currentStep + '"]');
+      steps.forEach(s => {
+        s.classList.remove('visible');
+        if (s.classList.contains('fill-blank')) s.classList.remove('revealed');
+      });
+      this.slideSteps[this.currentSlide]--;
+      const hint = slide.querySelector('.click-hint');
+      if (hint) hint.style.opacity = '';
+    } else {
+      if (this.currentSlide > 0) {
+        this.goToSlide(this.currentSlide - 1);
+      }
+    }
+  }
+
+  bindEvents() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault(); this.advance();
+      } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+        e.preventDefault(); this.goBack();
+      }
+    });
+
+    document.getElementById('slides-container').addEventListener('click', (e) => {
+      if (e.target.closest('.nav-dot') || e.target.closest('a')) return;
+      this.advance();
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', (e) => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) { diff > 0 ? this.advance() : this.goBack(); }
+    });
+  }
+}
+
+/* Initialize on load */
+window.addEventListener('DOMContentLoaded', () => {
+  buildAllGraphs();
+  new SlidePresentation();
+});
+</script>
+</body>
+</html>
