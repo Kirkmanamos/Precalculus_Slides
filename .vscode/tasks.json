@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Slidev: Install deps (trial-run)",
+            "type": "shell",
+            "command": "/opt/homebrew/bin/npm",
+            "args": ["install"],
+            "options": {
+                "cwd": "${workspaceFolder}/slidev/trial-run"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Slidev: Dev (trial-run, port 3030)",
+            "type": "shell",
+            "command": "/opt/homebrew/bin/npm",
+            "args": ["run", "dev", "--", "--port", "3030"],
+            "options": {
+                "cwd": "${workspaceFolder}/slidev/trial-run"
+            },
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}
+

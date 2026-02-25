@@ -6,5 +6,14 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true
     },
-    "hide-files.files": []
+    "hide-files.files": [],
+
+    /* ===========================================
+       SLIDEV (VS CODE EXTENSION)
+       Minimal, docs-aligned setup for local (workspace) Slidev installs.
+       - `slidev.include` helps the extension discover slide decks.
+       - `npm exec -- slidev` runs the local CLI from each deck folder.
+       =========================================== */
+    "slidev.include": ["**/slides.md"],
+    "slidev.dev-command": "npm exec -- slidev ${args}"
 }
