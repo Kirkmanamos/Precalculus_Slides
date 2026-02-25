@@ -5,6 +5,7 @@ This directory stores experimental and future [Slidev](https://sli.dev/) project
 ## Structure
 
 - `trial-run/` - minimal starter deck used to verify the workflow
+- `precalculus-prototype/` - styled math-focused prototype deck for future lessons
 
 ## Typical workflow
 
