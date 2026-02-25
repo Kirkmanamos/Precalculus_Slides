@@ -1,0 +1,13 @@
+{
+  "name": "slidev-trial-run",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "slidev --open false",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.2.0"
+  }
+}
