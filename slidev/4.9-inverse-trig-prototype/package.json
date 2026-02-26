@@ -1,0 +1,16 @@
+{
+  "name": "slidev-4-9-inverse-trig-prototype",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.2.0"
+  },
+  "dependencies": {
+    "@slidev/theme-default": "^0.25.0"
+  }
+}

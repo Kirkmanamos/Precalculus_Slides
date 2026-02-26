@@ -1,0 +1,564 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* ===========================================
+   THEME TOKENS
+   Shared design variables for dark/light modes and math color conventions.
+   To modify: update tokens here first before touching slide-specific styles.
+   =========================================== */
+:root {
+  --deck-font-display: 'Space Grotesk', sans-serif;
+  --deck-font-body: 'IBM Plex Sans', sans-serif;
+  --deck-font-mono: 'IBM Plex Mono', monospace;
+
+  --q1-color: #4ade80;
+  --q2-color: #22d3ee;
+  --q3-color: #f472b6;
+  --q4-color: #fbbf24;
+
+  --tri-x-color: #22d3ee;
+  --tri-y-color: #f472b6;
+  --tri-r-color: #4ade80;
+
+  /* Dark defaults (used before the toggle initializes). */
+  --deck-bg-base: #071018;
+  --deck-bg-base-2: #081421;
+  --deck-bg-elevated: rgba(255, 255, 255, 0.03);
+  --deck-panel: rgba(8, 17, 29, 0.86);
+  --deck-panel-soft: rgba(10, 21, 35, 0.76);
+  --deck-text-primary: #eef6ff;
+  --deck-text-muted: #a8bfd0;
+  --deck-line: rgba(168, 191, 208, 0.18);
+  --deck-grid-line: rgba(168, 191, 208, 0.11);
+  --deck-axis-line: rgba(230, 242, 255, 0.85);
+  --deck-accent: #5eead4;
+  --deck-accent-strong: #14b8a6;
+  --deck-accent-2: #93c5fd;
+  --deck-accent-3: #fca5a5;
+  --deck-curve: #93c5fd;
+  --deck-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
+
+html[data-precalc-theme='light'] {
+  --deck-bg-base: #f7fbff;
+  --deck-bg-base-2: #eef5fb;
+  --deck-bg-elevated: rgba(255, 255, 255, 0.92);
+  --deck-panel: rgba(255, 255, 255, 0.82);
+  --deck-panel-soft: rgba(255, 255, 255, 0.72);
+  --deck-text-primary: #102132;
+  --deck-text-muted: #475f73;
+  --deck-line: rgba(16, 33, 50, 0.12);
+  --deck-grid-line: rgba(16, 33, 50, 0.08);
+  --deck-axis-line: rgba(16, 33, 50, 0.8);
+  --deck-accent: #0f766e;
+  --deck-accent-strong: #0f766e;
+  --deck-accent-2: #1d4ed8;
+  --deck-accent-3: #be123c;
+  --deck-curve: #1d4ed8;
+  --deck-shadow: 0 16px 44px rgba(16, 33, 50, 0.12);
+}
+
+/* ===========================================
+   GLOBAL SLIDE SURFACE
+   Establishes typography, background layers, and base link/code treatment.
+   To modify: tune atmosphere via gradients/grid opacity.
+   =========================================== */
+.slidev-layout,
+.slidev-page {
+  font-family: var(--deck-font-body);
+  color: var(--deck-text-primary);
+}
+
+.slidev-layout {
+  position: relative;
+  background:
+    radial-gradient(circle at 16% 14%, color-mix(in srgb, var(--deck-accent) 20%, transparent), transparent 44%),
+    radial-gradient(circle at 85% 18%, color-mix(in srgb, var(--deck-accent-2) 18%, transparent), transparent 42%),
+    radial-gradient(circle at 78% 84%, color-mix(in srgb, var(--deck-accent-3) 13%, transparent), transparent 42%),
+    linear-gradient(180deg, var(--deck-bg-base) 0%, var(--deck-bg-base-2) 100%);
+}
+
+.slidev-layout::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--deck-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--deck-grid-line) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: radial-gradient(circle at 50% 44%, black 38%, transparent 100%);
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: var(--deck-font-display);
+  color: var(--deck-text-primary);
+  letter-spacing: -0.03em;
+}
+
+.slidev-layout h1 {
+  line-height: 0.98;
+}
+
+.slidev-layout h2 {
+  line-height: 1.05;
+}
+
+.slidev-layout p,
+.slidev-layout li {
+  color: var(--deck-text-muted);
+}
+
+.slidev-layout strong {
+  color: var(--deck-text-primary);
+}
+
+.slidev-layout code {
+  font-family: var(--deck-font-mono);
+  background: var(--deck-bg-elevated);
+  border: 1px solid var(--deck-line);
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+}
+
+.katex,
+.katex-display {
+  color: var(--deck-text-primary);
+}
+
+/* ===========================================
+   PERSISTENT THEME TOGGLE
+   Fixed UI for dark/light switching across all slides.
+   To modify: move placement or change chrome styling here.
+   =========================================== */
+.global-top-shell {
+  position: fixed;
+  top: 12px;
+  right: 14px;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.theme-toggle {
+  pointer-events: auto;
+  border: 1px solid var(--deck-line);
+  background: color-mix(in srgb, var(--deck-panel) 88%, transparent);
+  color: var(--deck-text-primary);
+  border-radius: 999px;
+  padding: 0.38rem 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: var(--deck-shadow);
+  backdrop-filter: blur(10px);
+  font: 600 0.8rem/1 var(--deck-font-body);
+}
+
+.theme-toggle__label {
+  color: var(--deck-text-muted);
+}
+
+.theme-toggle__value {
+  color: var(--deck-text-primary);
+}
+
+.theme-toggle:hover {
+  border-color: color-mix(in srgb, var(--deck-accent) 45%, var(--deck-line));
+}
+
+/* ===========================================
+   SLIDE WRAPPERS
+   Common shell styles for cover and content panels.
+   To modify: change padding/radius to shift presentation density.
+   =========================================== */
+.hero-slide,
+.panel-slide {
+  padding: 1.35rem 1.45rem !important;
+}
+
+.hero-shell,
+.panel-box,
+.panel-grid > div {
+  border-radius: 22px;
+  border: 1px solid var(--deck-line);
+  background: linear-gradient(180deg, var(--deck-panel), var(--deck-panel-soft));
+  box-shadow: var(--deck-shadow);
+  backdrop-filter: blur(10px);
+}
+
+.hero-shell {
+  padding: 1.35rem;
+  min-height: 78%;
+  display: grid;
+  align-content: center;
+  gap: 0.85rem;
+}
+
+.hero-tag {
+  color: var(--deck-accent-2);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+}
+
+.hero-subtitle {
+  color: var(--deck-accent);
+  font-weight: 600;
+}
+
+.hero-goals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.hero-goals .goal {
+  border-radius: 14px;
+  border: 1px solid var(--deck-line);
+  background: var(--deck-bg-elevated);
+  padding: 0.7rem;
+}
+
+.hero-goals .goal-label {
+  color: var(--deck-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.hero-goals .goal-text {
+  color: var(--deck-text-primary);
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+.panel-box {
+  padding: 1rem 1.05rem;
+}
+
+.panel-title {
+  margin-bottom: 0.35rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--deck-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+}
+
+.hint-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--deck-line);
+  background: var(--deck-bg-elevated);
+  border-radius: 999px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.78rem;
+  color: var(--deck-text-muted);
+  margin-top: 0.5rem;
+}
+
+/* ===========================================
+   CONTENT MODULES
+   Reusable cards, tables, callouts, and SVG wrappers.
+   To modify: adjust spacing and borders for more/less contrast.
+   =========================================== */
+.concept-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.concept-card {
+  border: 1px solid var(--deck-line);
+  border-radius: 14px;
+  background: var(--deck-bg-elevated);
+  padding: 0.8rem;
+}
+
+.concept-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.flow-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.55rem;
+  align-items: center;
+}
+
+.flow-pill {
+  border-radius: 999px;
+  border: 1px solid var(--deck-line);
+  background: color-mix(in srgb, var(--deck-bg-elevated) 92%, transparent);
+  padding: 0.38rem 0.65rem;
+  text-align: center;
+  color: var(--deck-text-primary);
+  font-weight: 600;
+}
+
+.flow-arrow {
+  color: var(--deck-accent);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.info-list,
+.step-list {
+  margin: 0.3rem 0 0;
+  padding-left: 1.15rem;
+  line-height: 1.35;
+}
+
+.math-card,
+.work-card,
+.summary-card,
+.svg-card {
+  border: 1px solid var(--deck-line);
+  border-radius: 16px;
+  background: var(--deck-bg-elevated);
+  padding: 0.8rem;
+}
+
+.math-card + .math-card,
+.work-card + .work-card,
+.summary-card + .summary-card {
+  margin-top: 0.75rem;
+}
+
+.math-card .label,
+.summary-card .label {
+  color: var(--deck-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-size: 0.72rem;
+  margin-bottom: 0.3rem;
+}
+
+.math-big {
+  color: var(--deck-text-primary);
+  font-size: 1.05rem;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.summary-table th,
+.summary-table td {
+  border: 1px solid var(--deck-line);
+  padding: 0.5rem 0.55rem;
+  text-align: left;
+}
+
+.summary-table th {
+  color: var(--deck-text-primary);
+  background: color-mix(in srgb, var(--deck-bg-elevated) 90%, transparent);
+}
+
+.summary-table td {
+  color: var(--deck-text-muted);
+}
+
+.summary-table td strong {
+  color: var(--deck-text-primary);
+}
+
+.svg-card svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.svg-card .caption {
+  margin-top: 0.45rem;
+  font-size: 0.82rem;
+  color: var(--deck-text-muted);
+}
+
+.inverse-preview-grid line {
+  stroke: var(--deck-grid-line);
+  stroke-width: 1;
+}
+
+.inverse-preview-grid .axis {
+  stroke: var(--deck-axis-line);
+  stroke-width: 1.5;
+}
+
+.inverse-preview-grid .diag {
+  stroke: color-mix(in srgb, var(--deck-text-muted) 80%, transparent);
+  stroke-dasharray: 4 4;
+}
+
+.inverse-preview-grid .sin-curve {
+  fill: none;
+  stroke: var(--deck-accent-3);
+  stroke-width: 2.4;
+}
+
+.inverse-preview-grid .arcsin-curve {
+  fill: none;
+  stroke: var(--deck-accent-2);
+  stroke-width: 2.4;
+}
+
+.inverse-preview-grid .restricted-box {
+  fill: none;
+  stroke: var(--deck-accent);
+  stroke-width: 1.4;
+  stroke-dasharray: 5 4;
+}
+
+.inverse-preview-grid text {
+  fill: var(--deck-text-muted);
+  font-family: var(--deck-font-mono);
+  font-size: 10px;
+}
+
+.work-card.problem {
+  border-color: color-mix(in srgb, var(--deck-accent) 25%, var(--deck-line));
+}
+
+.work-card.answer {
+  border-color: color-mix(in srgb, var(--deck-accent-2) 28%, var(--deck-line));
+}
+
+.step-row {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.4rem;
+}
+
+.step-chip {
+  border: 1px solid var(--deck-line);
+  background: var(--deck-bg-elevated);
+  border-radius: 12px;
+  padding: 0.5rem 0.6rem;
+  color: var(--deck-text-primary);
+}
+
+.step-chip__title {
+  display: block;
+  color: var(--deck-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  margin-bottom: 0.18rem;
+}
+
+.step-chip p {
+  margin: 0;
+  color: var(--deck-text-primary);
+}
+
+.answer-banner {
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--deck-accent) 35%, var(--deck-line));
+  background: color-mix(in srgb, var(--deck-accent) 12%, transparent);
+  padding: 0.7rem 0.85rem;
+  color: var(--deck-text-primary);
+  font-weight: 700;
+}
+
+.teacher-note {
+  border-left: 3px solid var(--deck-accent);
+  padding-left: 0.7rem;
+  color: var(--deck-text-muted);
+  font-size: 0.88rem;
+}
+
+.principal-range {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.principal-range .range-line {
+  border-radius: 12px;
+  border: 1px solid var(--deck-line);
+  background: var(--deck-bg-elevated);
+  padding: 0.55rem 0.65rem;
+  color: var(--deck-text-primary);
+}
+
+.success-list {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.4rem;
+}
+
+.success-item {
+  border: 1px solid var(--deck-line);
+  border-radius: 12px;
+  background: var(--deck-bg-elevated);
+  padding: 0.55rem 0.65rem;
+  color: var(--deck-text-primary);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  border: 1px solid var(--deck-line);
+  background: var(--deck-bg-elevated);
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+  color: var(--deck-text-primary);
+  font-size: 0.82rem;
+}
+
+/* ===========================================
+   RESPONSIVE + REDUCED MOTION
+   Keeps the prototype readable on smaller displays and respects user prefs.
+   To modify: adjust breakpoints if projector aspect ratios differ.
+   =========================================== */
+@media (max-width: 960px) {
+  .hero-goals {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-two {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media print {
+  .global-top-shell {
+    display: none !important;
+  }
+}

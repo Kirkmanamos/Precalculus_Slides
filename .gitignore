@@ -1,0 +1,22 @@
+# ===========================================
+# Node / Slidev
+# Keep source files and lockfiles; ignore installed deps and build outputs.
+# ===========================================
+**/node_modules/
+**/dist/
+**/.vite/
+**/.slidev/
+
+# ===========================================
+# Python / Manim generated files
+# ===========================================
+__pycache__/
+*.py[cod]
+manim/media/
+
+# ===========================================
+# OS / editor noise
+# ===========================================
+.DS_Store
+Thumbs.db
+
