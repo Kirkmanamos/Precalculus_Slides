@@ -37,7 +37,11 @@ Use exact values, not decimals, for the standard reference set.
 
 <div class="formula-card">
   <div class="formula-label">Reference Rule</div>
-  <div class="formula-text math">Use 1/2, sqrt(2)/2, sqrt(3)/2 when conventional.</div>
+  <div class="formula-text">
+
+Use $1/2$, $\frac{\sqrt{2}}{2}$, $\frac{\sqrt{3}}{2}$ when conventional.
+
+  </div>
 </div>
 
 <div class="quadrant-legend">
@@ -49,24 +53,16 @@ Use exact values, not decimals, for the standard reference set.
 
 ::right::
 
-<div class="table-card">
-  <table class="exact-table">
-    <thead>
-      <tr>
-        <th>&theta;</th>
-        <th>sin &theta;</th>
-        <th>cos &theta;</th>
-        <th>tan &theta;</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>0&deg;</td><td>0</td><td>1</td><td>0</td></tr>
-      <tr><td>30&deg;</td><td>1/2</td><td>sqrt(3)/2</td><td>sqrt(3)/3</td></tr>
-      <tr><td>45&deg;</td><td>sqrt(2)/2</td><td>sqrt(2)/2</td><td>1</td></tr>
-      <tr><td>60&deg;</td><td>sqrt(3)/2</td><td>1/2</td><td>sqrt(3)</td></tr>
-      <tr><td>90&deg;</td><td>1</td><td>0</td><td>undefined</td></tr>
-    </tbody>
-  </table>
+<div class="table-card" markdown="1">
+
+| $\theta$ | $\sin \theta$ | $\cos \theta$ | $\tan \theta$ |
+| :--- | :--- | :--- | :--- |
+| $0^\circ$ | $0$ | $1$ | $0$ |
+| $30^\circ$ | $1/2$ | $\frac{\sqrt{3}}{2}$ | $\frac{\sqrt{3}}{3}$ |
+| $45^\circ$ | $\frac{\sqrt{2}}{2}$ | $\frac{\sqrt{2}}{2}$ | $1$ |
+| $60^\circ$ | $\frac{\sqrt{3}}{2}$ | $1/2$ | $\sqrt{3}$ |
+| $90^\circ$ | $1$ | $0$ | undefined |
+
 </div>
 
 ---
@@ -77,35 +73,57 @@ class: panel-slide
 
 <div class="formula-card wide">
   <div class="formula-label">General Form</div>
-  <div class="formula-text math">y = a sin(b(x - h)) + k</div>
+  <div class="formula-text">
+
+$$y = a \sin(b(x - h)) + k$$
+
+  </div>
 </div>
 
 <div class="parameter-grid">
   <div class="metric">
     <div class="metric-label">Amplitude</div>
-    <div class="metric-value math">|a|</div>
+    <div class="metric-value">
+
+$|a|$
+
+  </div>
   </div>
   <div class="metric">
     <div class="metric-label">Period</div>
-    <div class="metric-value math">2π/|b|</div>
+    <div class="metric-value">
+
+$\frac{2\pi}{|b|}$
+
+  </div>
   </div>
   <div class="metric">
     <div class="metric-label">Phase Shift</div>
-    <div class="metric-value math">h</div>
+    <div class="metric-value">
+
+$h$
+
+  </div>
   </div>
   <div class="metric">
     <div class="metric-label">Midline</div>
-    <div class="metric-value math">y = k</div>
+    <div class="metric-value">
+
+$y = k$
+
+  </div>
   </div>
 </div>
 
 <div class="example-strip">
+
   <span class="label">Example</span>
-  <span class="math">y = 2 sin(x - π/2) - 1</span>
-  <span>Amplitude = 2</span>
-  <span>Period = 2π</span>
-  <span>Shift right π/2</span>
-  <span>Midline y = -1</span>
+  <span>$y = 2 \sin\left(x - \frac{\pi}{2}\right) - 1$</span>
+  <span>Amplitude = $2$</span>
+  <span>Period = $2\pi$</span>
+  <span>Shift right $\frac{\pi}{2}$</span>
+  <span>Midline $y = -1$</span>
+
 </div>
 
 ---
@@ -115,23 +133,23 @@ class: panel-slide
 
 # Exact Checkpoints
 
-For one period of <span class="math">y = 2 sin(x - π/2) - 1</span>, use quarter-period checkpoints.
+For one period of $y = 2 \sin\left(x - \frac{\pi}{2}\right) - 1$, use quarter-period checkpoints.
 
 <div class="table-card">
   <table class="exact-table">
     <thead>
       <tr>
-        <th>x</th>
-        <th>sin(x - π/2)</th>
-        <th>y</th>
+        <th>$x$</th>
+        <th>$\sin\left(x - \frac{\pi}{2}\right)$</th>
+        <th>$y$</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>π/2</td><td>0</td><td>-1</td></tr>
-      <tr><td>π</td><td>1</td><td>1</td></tr>
-      <tr><td>3π/2</td><td>0</td><td>-1</td></tr>
-      <tr><td>2π</td><td>-1</td><td>-3</td></tr>
-      <tr><td>5π/2</td><td>0</td><td>-1</td></tr>
+      <tr><td>$\frac{\pi}{2}$</td><td>$0$</td><td>$-1$</td></tr>
+      <tr><td>$\pi$</td><td>$1$</td><td>$1$</td></tr>
+      <tr><td>$\frac{3\pi}{2}$</td><td>$0$</td><td>$-1$</td></tr>
+      <tr><td>$2\pi$</td><td>$-1$</td><td>$-3$</td></tr>
+      <tr><td>$\frac{5\pi}{2}$</td><td>$0$</td><td>$-1$</td></tr>
     </tbody>
   </table>
 </div>
@@ -207,28 +225,38 @@ Use stepwise reveals for worked examples so answers do not appear too early.
 <div class="step-stack">
   <div class="step-card">
     <div class="step-tag">Given</div>
-    <p class="math">y = 3 sin(2x) + 4</p>
+    <div class="text-center my-2">
+
+$$y = 3 \sin(2x) + 4$$
+
+  </div>
   </div>
 
   <v-click>
     <div class="step-card">
       <div class="step-tag">Step 1</div>
-      <p>Amplitude = <span class="math">3</span></p>
-    </div>
+
+Amplitude = $3$
+
+  </div>
   </v-click>
 
   <v-click>
     <div class="step-card">
       <div class="step-tag">Step 2</div>
-      <p>Period = <span class="math">2π/2 = π</span></p>
-    </div>
+
+Period = $\frac{2\pi}{2} = \pi$
+
+  </div>
   </v-click>
 
   <v-click>
     <div class="step-card">
       <div class="step-tag">Step 3</div>
-      <p>Midline = <span class="math">y = 4</span></p>
-    </div>
+
+Midline $y = 4$
+
+  </div>
   </v-click>
 </div>
 
