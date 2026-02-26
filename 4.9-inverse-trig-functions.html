@@ -103,7 +103,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 40px 60px 40px 60px;
   opacity: 0;
   transform: translateX(60px);
@@ -752,14 +752,20 @@ svg .step.visible {
 <!-- ============================================================
      SLIDE 9: EXAMPLES 2 & 3 - Exact Values
      ============================================================ -->
-<section class="slide" data-steps="2">
+<section class="slide" data-steps="4">
   <div class="example-label">EXAMPLES</div>
   <h2 class="slide-title" style="margin-top:20px;">If possible, find the exact value.</h2>
   <div class="comp-grid" style="margin-top:20px;">
     <div class="comp-item">
       <div class="comp-problem">2) arcsin(&minus;<sup>1</sup>&frasl;<sub>2</sub>)</div>
       <div class="comp-step step" data-step="0" style="text-align:center;">
-        <div style="color:var(--blue-accent); font-size:0.9em; margin-bottom:4px;">What angle in [&minus;&pi;/2, &pi;/2] has sin = &minus;1/2?</div>
+        <div style="color:var(--blue-accent); font-size:0.95em; margin-bottom:4px; font-weight:600;">What angle gives a sine of &minus;1/2?</div>
+        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
+          The domain for inverse sine is <strong class="red">[&minus;&pi;/2, &pi;/2]</strong>.<br>
+          Sine is negative in Quadrant IV. The reference angle is &pi;/6.
+        </div>
+      </div>
+      <div class="comp-step step" data-step="1" style="text-align:center;">
         <div class="equation-box" style="font-size:1.2em; padding:8px 20px;">
           = <span class="green">&minus;&pi;/6</span>
         </div>
@@ -767,11 +773,45 @@ svg .step.visible {
     </div>
     <div class="comp-item">
       <div class="comp-problem">3) sin<sup>&minus;1</sup>(2)</div>
-      <div class="comp-step step" data-step="1" style="text-align:center;">
+      <div class="comp-step step" data-step="2" style="text-align:center;">
+        <div style="color:var(--blue-accent); font-size:0.95em; margin-bottom:4px; font-weight:600;">What angle gives a sine of 2?</div>
+        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
+          The sine of any angle can never be greater than 1!
+        </div>
+      </div>
+      <div class="comp-step step" data-step="3" style="text-align:center;">
         <div class="warn-box" style="max-width:300px;">
           <strong class="red">Not possible</strong><br>
           because the domain of inverse sine is [&minus;1, 1]
         </div>
+      </div>
+    </div>
+  </div>
+  <span class="click-hint">Click to reveal</span>
+  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+</section>
+
+<!-- ============================================================
+     SLIDE 9B: GRAPHICAL VIEW OF EXAMPLE 2
+     ============================================================ -->
+<section class="slide" data-steps="2">
+  <h2 class="slide-title">Graphical View: arcsin(&minus;<sup>1</sup>&frasl;<sub>2</sub>) = &minus;<sup>&pi;</sup>&frasl;<sub>6</sub></h2>
+  <p class="slide-subtitle">We can see this exact answer dynamically on both the Sine graph and the Inverse Sine graph.</p>
+  <div class="two-col" style="margin-top:10px;">
+    <div class="col" style="align-items:center;">
+      <div style="font-weight:600; margin-bottom:8px; color:var(--dark-navy);">y = sin(x) on [&minus;&pi;/2, &pi;/2]</div>
+      <svg id="svg-sin-ex2" class="graph-svg step" data-step="0" viewBox="0 0 380 260" width="360" height="245"></svg>
+      <div class="step" data-step="0" style="margin-top:8px; font-size:0.95em; text-align:center; max-width:320px;">
+        Where does the graph of <span class="math">y</span> = sin(<span class="math">x</span>) cross the line <strong class="red">y = &minus;1/2</strong>?<br>
+        <span class="math blue">At x = &minus;&pi;/6</span>
+      </div>
+    </div>
+    <div class="col" style="align-items:center;">
+      <div style="font-weight:600; margin-bottom:8px; color:var(--dark-navy);">y = arcsin(x)</div>
+      <svg id="svg-arcsin-ex2" class="graph-svg step" data-step="1" viewBox="0 0 380 260" width="360" height="245"></svg>
+      <div class="step" data-step="1" style="margin-top:8px; font-size:0.95em; text-align:center; max-width:320px;">
+        What is the <span class="math">y</span>-value on the <span class="math">y</span> = arcsin(<span class="math">x</span>) graph when <strong class="red">x = &minus;1/2</strong>?<br>
+        <span class="math purple">y = &minus;&pi;/6</span>
       </div>
     </div>
   </div>
@@ -789,6 +829,7 @@ svg .step.visible {
     <div class="comp-item" style="min-width:260px;">
       <div class="comp-problem">4) arctan(&minus;8.45)</div>
       <div class="comp-step step" data-step="0" style="text-align:center;">
+        <div style="color:var(--dark-navy); font-size:0.85em; margin-bottom:6px; font-weight:600;">Check: Is your calculator in <strong class="red">Radian</strong> mode?</div>
         <div class="equation-box" style="font-size:1.1em; padding:8px 16px;">
           &asymp; <span class="green">&minus;1.4530</span>
         </div>
@@ -798,7 +839,8 @@ svg .step.visible {
     <div class="comp-item" style="min-width:260px;">
       <div class="comp-problem">5) arccos(2)</div>
       <div class="comp-step step" data-step="1" style="text-align:center;">
-        <div class="warn-box" style="max-width:280px;">
+        <div style="color:var(--blue-accent); font-size:0.9em; margin-bottom:4px; font-weight:600;">Try it in your calculator. You will get an error!</div>
+        <div class="warn-box" style="margin:0 auto; max-width:280px;">
           <strong class="red">Not possible</strong><br>
           domain of inverse cosine is [&minus;1, 1]
         </div>
@@ -807,6 +849,11 @@ svg .step.visible {
     <div class="comp-item" style="min-width:260px;">
       <div class="comp-problem">6) sec<sup>&minus;1</sup>(3.4)</div>
       <div class="comp-step step" data-step="2" style="text-align:center;">
+        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
+          Calculators don't have a sec<sup>&minus;1</sup> key.<br>
+          Use the reciprocal identity:<br>
+          sec &theta; = 3.4 &rarr; <strong class="blue">cos &theta; = 1/3.4</strong>
+        </div>
         <div style="color:var(--blue-accent); font-size:0.88em; margin-bottom:4px;">= cos<sup>&minus;1</sup>(1/3.4)</div>
         <div class="equation-box" style="font-size:1.1em; padding:8px 16px;">
           &asymp; <span class="green">1.2720</span>
@@ -856,24 +903,33 @@ svg .step.visible {
 <!-- ============================================================
      SLIDE 12: COMPOSITIONS - TRICKY CASES
      ============================================================ -->
-<section class="slide" data-steps="4">
+<section class="slide" data-steps="8">
   <h2 class="slide-title" style="font-size:1.6em;">Compositions &mdash; Tricky Cases</h2>
   <div class="warn-box" style="text-align:center; max-width:600px; margin-bottom:10px; font-size:0.92em;">
-    You can <strong>NOT</strong> always just &ldquo;cancel&rdquo; a function and its inverse!
+    You can <strong>NOT</strong> always just &ldquo;cancel&rdquo; a function and its inverse!<br>
+    The answer must be in the restricted domain of the outer inverse function.
   </div>
   <div class="comp-grid" style="margin-top:5px;">
     <div class="comp-item">
       <div class="comp-problem">cos<sup>&minus;1</sup>(cos 210&deg;)</div>
-      <div class="comp-step step" data-step="0">= cos<sup>&minus;1</sup>(&minus;<sup>&radic;3</sup>&frasl;<sub>2</sub>)</div>
-      <div class="comp-step step" data-step="1">
+      <div class="comp-step step" data-step="0" style="font-size:0.9em; color:var(--blue-accent);">1. Evaluate the inner function first:</div>
+      <div class="comp-step step" data-step="1">= cos<sup>&minus;1</sup>(&minus;<sup>&radic;3</sup>&frasl;<sub>2</sub>)</div>
+      <div class="comp-step step" data-step="2" style="font-size:0.9em; color:var(--blue-accent); margin-top:4px; text-align:center;">
+        2. What angle in [0&deg;, 180&deg;] has a cosine of &minus;&radic;3/2?<br>It must be in Quadrant II.
+      </div>
+      <div class="comp-step step" data-step="3">
         <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">150&deg;</span></div>
         <div style="color:var(--red-accent); font-size:0.85em; font-weight:600; margin-top:4px;">NOT 210&deg;! (210&deg; is outside [0&deg;, 180&deg;])</div>
       </div>
     </div>
     <div class="comp-item">
       <div class="comp-problem">arcsin(sin(<sup>3&pi;</sup>&frasl;<sub>2</sub>))</div>
-      <div class="comp-step step" data-step="2">= arcsin(&minus;1)</div>
-      <div class="comp-step step" data-step="3">
+      <div class="comp-step step" data-step="4" style="font-size:0.9em; color:var(--purple-accent);">1. Evaluate the inner function first:</div>
+      <div class="comp-step step" data-step="5">= arcsin(&minus;1)</div>
+      <div class="comp-step step" data-step="6" style="font-size:0.9em; color:var(--purple-accent); margin-top:4px; text-align:center;">
+        2. What angle in [&minus;&pi;/2, &pi;/2] has a sine of &minus;1?<br>It must be at the bottom of the unit circle.
+      </div>
+      <div class="comp-step step" data-step="7">
         <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;&pi;/2</span></div>
         <div style="color:var(--red-accent); font-size:0.85em; font-weight:600; margin-top:4px;">NOT 3&pi;/2! (3&pi;/2 is outside [&minus;&pi;/2, &pi;/2])</div>
       </div>
@@ -908,31 +964,37 @@ svg .step.visible {
 <!-- ============================================================
      SLIDE 14: EXAMPLES 7 & 8 - Compositions
      ============================================================ -->
-<section class="slide" data-steps="4">
+<section class="slide" data-steps="7">
   <div class="example-label">EXAMPLES</div>
   <h2 class="slide-title" style="margin-top:20px;">If possible, find the exact value.</h2>
   <div class="comp-grid" style="margin-top:16px;">
     <div class="comp-item">
       <div class="comp-problem">7) arcsin(sin(<sup>5&pi;</sup>&frasl;<sub>3</sub>))</div>
       <div class="comp-step step" data-step="0">
-        <span class="annotation">sin(5&pi;/3) = &minus;&radic;3/2</span>
+        <span class="annotation">Step 1: sin(5&pi;/3) is &minus;&radic;3/2 (Quadrant IV)</span>
       </div>
       <div class="comp-step step" data-step="1">
         = arcsin(&minus;<sup>&radic;3</sup>&frasl;<sub>2</sub>)
       </div>
-      <div class="comp-step step" data-step="1">
+      <div class="comp-step step" data-step="2">
+        <span class="annotation" style="color:#64748b;">Step 2: What angle in [&minus;&pi;/2, &pi;/2] gives a sine of &minus;&radic;3/2?</span>
+      </div>
+      <div class="comp-step step" data-step="3">
         <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;&pi;/3</span></div>
       </div>
     </div>
     <div class="comp-item">
       <div class="comp-problem">8) tan[arctan(&minus;5)]</div>
-      <div class="comp-step step" data-step="2">
-        <span class="annotation">&minus;5 is in the domain of arctan</span>
+      <div class="comp-step step" data-step="4">
+        <span class="annotation" style="color:var(--dark-navy);">Step 1: Is &minus;5 in the domain of arctan?</span>
       </div>
-      <div class="comp-step step" data-step="3">
+      <div class="comp-step step" data-step="5" style="font-size:0.9em; text-align:center;">
+        Yes, domain of arctan is (&minus;&infin;, &infin;).<br>Therefore, the inverse properties apply perfectly here.
+      </div>
+      <div class="comp-step step" data-step="6">
         <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;5</span></div>
         <div style="font-size:0.88em; color:#64748b; margin-top:4px;">
-          tan and arctan cancel since &minus;5 is a valid input
+          tan and arctan cancel algebraically.
         </div>
       </div>
     </div>
@@ -944,7 +1006,7 @@ svg .step.visible {
 <!-- ============================================================
      SLIDE 15: EXAMPLE 9 - tan(arccos(2/3)) with Triangle
      ============================================================ -->
-<section class="slide" data-steps="3">
+<section class="slide" data-steps="4">
   <div class="example-label">EXAMPLE 9</div>
   <div class="advanced-label">HONORS</div>
   <h2 class="slide-title" style="margin-top:20px;">
@@ -953,14 +1015,20 @@ svg .step.visible {
   <div class="worked-example" style="margin-top:10px;">
     <div class="worked-left" style="gap:10px;">
       <div class="step" data-step="0" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 1: Set up the inner function as an angle</span><br>
         <div>Let <span class="math">&theta;</span> = arccos(<sup>2</sup>&frasl;<sub>3</sub>)</div>
         <div>Then cos <span class="math">&theta;</span> = <sup>2</sup>&frasl;<sub>3</sub> = <sup>adj</sup>&frasl;<sub>hyp</sub></div>
       </div>
       <div class="step" data-step="1" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 2: Find the missing side</span><br>
         <div>By Pythagorean Theorem:</div>
         <div>opp = &radic;(3&sup2; &minus; 2&sup2;) = <strong class="blue">&radic;5</strong></div>
       </div>
-      <div class="step" data-step="2" style="text-align:left; max-width:360px;">
+      <div class="step" data-step="2" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 3: Evaluate the outer function</span><br>
+        We want tan(<span class="math">&theta;</span>).
+      </div>
+      <div class="step" data-step="3" style="text-align:left; max-width:360px;">
         <div style="font-size:1.0em;">tan <span class="math">&theta;</span> = <sup>opp</sup>&frasl;<sub>adj</sub></div>
         <div class="equation-box" style="font-size:1.3em; padding:8px 20px; margin-top:6px;">
           = <span class="green"><sup>&radic;5</sup>&frasl;<sub>2</sub></span>
@@ -978,7 +1046,7 @@ svg .step.visible {
 <!-- ============================================================
      SLIDE 16: EXAMPLE 10 - cot(arccos(3x)) Algebraic Expression
      ============================================================ -->
-<section class="slide" data-steps="3">
+<section class="slide" data-steps="4">
   <div class="example-label">EXAMPLE 10</div>
   <div class="advanced-label">HONORS</div>
   <h2 class="slide-title" style="margin-top:20px;">
@@ -990,14 +1058,20 @@ svg .step.visible {
   <div class="worked-example" style="margin-top:8px;">
     <div class="worked-left" style="gap:10px;">
       <div class="step" data-step="0" style="font-size:0.95em; line-height:1.7; text-align:left; max-width:380px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 1: Set up the inner function as an angle</span><br>
         <div>Let <span class="math">&theta;</span> = arccos(3<span class="math">x</span>)</div>
         <div>Then cos <span class="math">&theta;</span> = 3<span class="math">x</span> = <sup>3<span class="math">x</span></sup>&frasl;<sub>1</sub> = <sup>adj</sup>&frasl;<sub>hyp</sub></div>
       </div>
       <div class="step" data-step="1" style="font-size:0.95em; line-height:1.7; text-align:left; max-width:380px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 2: Find the missing side</span><br>
         <div>By Pythagorean Theorem:</div>
-        <div>opp = &radic;(1 &minus; 9<span class="math">x</span>&sup2;) = <strong class="blue">&radic;(1 &minus; 9<span class="math">x</span>&sup2;)</strong></div>
+        <div>opp = &radic;(1&sup2; &minus; (3<span class="math">x</span>)&sup2;) = <strong class="blue">&radic;(1 &minus; 9<span class="math">x</span>&sup2;)</strong></div>
       </div>
       <div class="step" data-step="2" style="text-align:left; max-width:380px;">
+        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 3: Evaluate the outer function</span><br>
+        We want cot(<span class="math">&theta;</span>).
+      </div>
+      <div class="step" data-step="3" style="text-align:left; max-width:380px;">
         <div style="font-size:0.95em;">cot <span class="math">&theta;</span> = <sup>adj</sup>&frasl;<sub>opp</sub></div>
         <div class="equation-box" style="font-size:1.2em; padding:8px 20px; margin-top:6px;">
           = <span class="green"><sup>3<span class="math">x</span></sup>&frasl;<sub>&radic;(1 &minus; 9<span class="math">x</span>&sup2;)</sub></span>
@@ -1019,13 +1093,7 @@ svg .step.visible {
   <div class="section-title">What are your questions?</div>
 </section>
 
-<!-- ============================================================
-     SLIDE 18: HOMEWORK
-     ============================================================ -->
-<section class="slide section-slide" data-steps="0">
-  <div class="section-title">Homework</div>
-  <div class="section-subtitle" style="margin-top:20px;">Inverse Trigonometric Functions CIRCUIT worksheet</div>
-</section>
+
 
 </div><!-- end slides-container -->
 
@@ -1235,6 +1303,60 @@ function buildAllGraphs() {
       // Brace-like vertical lines showing restricted domain
       g.line(g.mx(-PI/2), g.my(-1.3), g.mx(-PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
       g.line(g.mx(PI/2), g.my(-1.3), g.mx(PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
+      g.endStep();
+    }
+  }
+
+  // -----------------------------------------------
+  // SLIDE 9B: Graphical View for arcsin(-1/2) = -π/6
+  // -----------------------------------------------
+  {
+    const g = new GraphBuilder('svg-sin-ex2');
+    if (g.svg) {
+      g.setCoords(-PI/2, PI/2, -1.2, 1.2, 45, 20, 20, 25);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([{val: -PI/2, text: '−π/2'}, {val: PI/2, text: 'π/2'}]);
+      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}, {val: -0.5, text: '−½'}]);
+      
+      // y = sin(x) curve on [-π/2, π/2]
+      g.curve(x => Math.sin(x), -PI/2, PI/2, 200, '#1e40af', 2.5, null, null);
+      g.point(-PI/2, -1, '#1e40af', 3);
+      g.point(PI/2, 1, '#1e40af', 3);
+      
+      // Step 0: Draw y = -1/2 line and intersection
+      g.startStep(0);
+      g.hline(-0.5, '#dc2626', '4 4');
+      g.point(-PI/6, -0.5, '#dc2626', 5);
+      // Dotted line up to x-axis
+      g.line(g.mx(-PI/6), g.my(-0.5), g.mx(-PI/6), g.my(0), '#2563eb', 1.5, '3 3');
+      g.label(g.mx(-PI/6), g.my(0) - 8, '−π/6', { size: '12', color: '#2563eb', weight: '700' });
+      g.endStep();
+    }
+  }
+
+  {
+    const g = new GraphBuilder('svg-arcsin-ex2');
+    if (g.svg) {
+      g.setCoords(-1.2, 1.2, -PI/2, PI/2, 50, 20, 20, 25);
+      g.addGrid();
+      g.addAxes();
+      g.addXLabels([{val: -1, text: '−1'}, {val: 1, text: '1'}, {val: -0.5, text: '−½'}]);
+      g.addYLabels([{val: PI/2, text: 'π/2'}, {val: -PI/2, text: '−π/2'}]);
+      
+      // y = arcsin(x) curve
+      g.curve(x => Math.asin(x), -1, 1, 300, '#7c3aed', 2.5, null, null);
+      g.point(-1, -PI/2, '#7c3aed', 3);
+      g.point(1, PI/2, '#7c3aed', 3);
+      
+      // Step 1: Draw x = -1/2 line and intersection
+      g.startStep(1);
+      const mx = g.mx(-0.5);
+      g.line(mx, g.svgYMin, mx, g.svgYMax, '#dc2626', 1, '4 4');
+      g.point(-0.5, -PI/6, '#dc2626', 5);
+      // Dotted line to y-axis
+      g.line(g.mx(-0.5), g.my(-PI/6), g.mx(0), g.my(-PI/6), '#7c3aed', 1.5, '3 3');
+      g.label(g.mx(0) + 18, g.my(-PI/6) + 4, '−π/6', { size: '12', color: '#7c3aed', weight: '700' });
       g.endStep();
     }
   }
