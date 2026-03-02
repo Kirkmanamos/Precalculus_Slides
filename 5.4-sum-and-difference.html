@@ -84,9 +84,10 @@
 
         /* ===== STEP REVEALS ===== */
         .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
-        .step { opacity: 0; max-height: 0; overflow: hidden; margin-bottom: 0; transition: opacity 0.4s ease, max-height 0.45s ease, margin-bottom 0.3s ease; }
-        .step.visible { opacity: 1; max-height: 600px; margin-bottom: 0.5rem; }
+        .step { display: none; }
+        .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.5rem; }
         .step.visible:last-child { margin-bottom: 0; }
+        @keyframes stepReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .step-label { font-size: 0.6em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 4px; }
         .step-math  { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; }
         .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
@@ -135,7 +136,7 @@
         .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent)); transition: width 0.4s ease; z-index: 100; }
         .click-hint { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.45em; color: rgba(100,116,139,0.6); letter-spacing: 0.1em; text-transform: uppercase; animation: pulse 2s ease-in-out infinite; z-index: 100; }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-        @media (prefers-reduced-motion: reduce) { .slide, .step { transition: opacity 0.3s ease; transform: none !important; } }
+        @media (prefers-reduced-motion: reduce) { .slide { transition: opacity 0.3s ease; transform: none !important; } .step.visible { animation: none; opacity: 1; } }
     </style>
 </head>
 <body>

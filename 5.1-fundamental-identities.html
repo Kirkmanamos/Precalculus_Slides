@@ -248,23 +248,23 @@ body {
 }
 
 .step {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  margin-bottom: 0;
-  transition: opacity 0.4s ease, max-height 0.45s ease, margin-bottom 0.3s ease;
-  display: flex;
+  display: none;
   align-items: flex-start;
   gap: 16px;
   width: 100%;
 }
 
 .step.visible {
-  opacity: 1;
-  max-height: 600px;
+  display: flex;
+  animation: stepReveal 0.4s ease both;
   margin-bottom: 0.5rem;
 }
 .step.visible:last-child { margin-bottom: 0; }
+
+@keyframes stepReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* Small all-caps label column */
 .step-label {
@@ -386,7 +386,8 @@ body {
    REDUCED MOTION
    =========================================== */
 @media (prefers-reduced-motion: reduce) {
-  .slide, .step, .col-reveal { transition: opacity 0.15s ease !important; }
+  .slide, .col-reveal { transition: opacity 0.15s ease !important; }
+  .step.visible { animation: none; opacity: 1; }
 }
 
 /* ===========================================
