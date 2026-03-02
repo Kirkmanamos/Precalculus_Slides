@@ -7,12 +7,13 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ## Current Status (as of 2026-03-01)
 
-### Safety Fixes Applied to 5.1–5.4
+### Step Reveal Overhaul (5.1–5.5)
 
-- **Max-height collapse** — hidden steps now take zero layout space (`max-height: 0`) so examples no longer overflow the slide
-- **Bidirectional step navigation** — left/up arrow retreats one step at a time before going to the previous slide
-- **Dynamic font scaling (`_fitContent`)** — measures available height after each reveal/retreat and reduces `font-size` if steps overflow; minimum 14px floor; KaTeX scales proportionally
-- **Copyright removed from 5.1** — all 9 `© Hoff Math. All Rights Reserved` lines and the `.copyright` CSS block removed
+- **`display: none` / keyframe reveal** — replaced `max-height` + `overflow: hidden` collapse with `display: none` → `display: block/flex` + `@keyframes stepReveal`. Steps now render at full natural height with zero clipping, even for tall nested KaTeX fractions.
+- **Scrollable `.steps-area`** — `overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem`. Steps that exceed the visible area scroll within the slide. `scrollIntoView({ behavior: 'smooth', block: 'nearest' })` auto-scrolls to each newly revealed step.
+- **Bidirectional step navigation** — left/up arrow retreats one step before going to previous slide
+- **Mobile-friendly** — no fixed height constraints; content adapts to any screen size
+- **Copyright removed from 5.1** — all 9 `© Hoff Math` lines and CSS block removed
 
 ---
 
