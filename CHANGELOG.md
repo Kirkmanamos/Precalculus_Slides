@@ -16,6 +16,13 @@ Update this file whenever a new presentation, component, scene, or major feature
 - `5.4-sum-and-difference.html` — Sum and Difference Identities (7 examples, formula reference card, two-problem layouts, HoffMath Classroom style)
 - `5.5-double-half-angle.html` — Double &amp; Half Angle Identities (6 examples, two reference cards, three-part answer grid, quadrant analysis, HoffMath Classroom style)
 
+**5.5 Refinements:**
+- Boxed step cards with descriptive subtitle labels (new step reveal style, user-approved for future decks)
+- Bidirectional step navigation — left/up arrow retreats one step at a time before going to previous slide
+- Dynamic font scaling (`_fitContent`) — after each reveal/retreat, measures available height and reduces slide `font-size` proportionally so all steps always fit without overflow; scales KaTeX math with it; minimum 14px floor
+- Hidden steps collapse to `max-height: 0` so they take no layout space until revealed
+- Formula reference rows vertically center the function label with the math
+
 ---
 
 ## Current Status (as of 2026-02-26)
