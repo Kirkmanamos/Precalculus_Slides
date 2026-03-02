@@ -738,16 +738,44 @@
             if (cur < max - 1) {
                 cur++; slide.dataset.currentStep = cur;
                 slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.add('visible');
-                this._sync(); return true;
+                this._sync();
+                this._fitContent(slide);
+                return true;
             }
             return false;
         }
         _retreatStep(slide) {
             let cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < 0) return false; // nothing visible to hide
+            if (cur < 0) return false;
             slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
             slide.dataset.currentStep = cur - 1;
-            this._sync(); return true;
+            this._sync();
+            this._fitContent(slide);
+            return true;
+        }
+        /* Dynamically scales the slide's font-size so all revealed steps fit
+           within the fixed viewport height. Runs after the CSS expand transition
+           completes (450ms) so scrollHeight reflects the final layout. */
+        _fitContent(slide) {
+            if (!slide.dataset.steps) return;
+            const body = slide.querySelector('.slide-body');
+            if (!body) return;
+            slide.style.fontSize = ''; // reset to base before measuring
+            setTimeout(() => {
+                const padTop  = parseInt(getComputedStyle(slide).paddingTop)    || 80;
+                const padBot  = parseInt(getComputedStyle(slide).paddingBottom) || 48;
+                const header  = slide.querySelector('.slide-header');
+                const headerH = header
+                    ? header.offsetHeight + parseInt(getComputedStyle(header).marginBottom || 0)
+                    : 0;
+                const available = slide.clientHeight - padTop - padBot - headerH;
+                const actual    = body.scrollHeight;
+                if (available > 0 && actual > available) {
+                    const base  = parseFloat(getComputedStyle(document.body).fontSize);
+                    const scale = available / actual;
+                    slide.style.fontSize = Math.max(base * scale, 14).toFixed(1) + 'px';
+                }
+            }, 460); // wait for max-height transition to finish
         }
         _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
         _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
