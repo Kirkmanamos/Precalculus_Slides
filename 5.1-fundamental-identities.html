@@ -126,7 +126,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 60px;
+  padding: 40px 60px 80px;
+  scroll-padding-bottom: 80px;
   opacity: 0;
   transform: translateX(60px);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -807,33 +808,9 @@ class Presentation {
       const el = slide.querySelector(`[data-step="${curStep}"]`);
       if (el) el.classList.remove('visible');
       slide.dataset.currentStep = curStep - 1;
-      this._fitContent(slide);
     } else {
       this._goTo(this.current - 1);
     }
-  }
-
-  /* ---- Dynamic font scaling — shrinks slide font if steps overflow ---- */
-  _fitContent(slide) {
-    if (!slide.dataset.steps) return;
-    const body = slide.querySelector('.steps-area');
-    if (!body) return;
-    slide.style.fontSize = '';
-    setTimeout(() => {
-      const padTop  = parseInt(getComputedStyle(slide).paddingTop)    || 80;
-      const padBot  = parseInt(getComputedStyle(slide).paddingBottom) || 48;
-      const header  = slide.querySelector('.slide-header, h2.slide-title');
-      const headerH = header
-        ? header.offsetHeight + parseInt(getComputedStyle(header).marginBottom || 0)
-        : 0;
-      const available = slide.clientHeight - padTop - padBot - headerH;
-      const actual    = body.scrollHeight;
-      if (available > 0 && actual > available) {
-        const base  = parseFloat(getComputedStyle(document.body).fontSize);
-        const scale = available / actual;
-        slide.style.fontSize = Math.max(base * scale, 14).toFixed(1) + 'px';
-      }
-    }, 460);
   }
 
   /* ---- Forward: reveal next step or advance slide ---- */
@@ -855,7 +832,7 @@ class Presentation {
 
     // Handles both .step and .col-reveal elements
     const el = slide.querySelector(`[data-step="${stepNum}"]`);
-    if (el) el.classList.add('visible');
+    if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
 
     const maxSteps = parseInt(slide.dataset.steps || '0');
     const hint = slide.querySelector('.click-hint');
@@ -864,7 +841,6 @@ class Presentation {
         ? 'Press → or Space for next slide'
         : 'Click to reveal next step';
     }
-    this._fitContent(slide);
   }
 
   /* ---- Bind keyboard + click events ---- */

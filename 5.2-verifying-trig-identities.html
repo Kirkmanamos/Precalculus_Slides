@@ -63,6 +63,7 @@
             flex-direction: column;
             justify-content: center;
         }
+        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
 
         /* ===== BACKGROUNDS ===== */
         .title-slide { background: var(--dark-navy); color: white; justify-content: center; }
@@ -134,7 +135,7 @@
         }
 
         /* ===== STEP REVEALS ===== */
-        .steps-area { display: flex; flex-direction: column; overflow: hidden; }
+        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
 
         .step {
             opacity: 0;
@@ -842,9 +843,8 @@
                 curStep++;
                 slide.dataset.currentStep = curStep;
                 const el = slide.querySelector(`#${slide.id}-step-${curStep}`);
-                if (el) el.classList.add('visible');
+                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
                 this._sync();
-                this._fitContent(slide);
                 return true;
             }
             return false;
@@ -854,28 +854,7 @@
             if (cur < 0) return false;
             slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
             slide.dataset.currentStep = cur - 1;
-            this._sync(); this._fitContent(slide); return true;
-        }
-        _fitContent(slide) {
-            if (!slide.dataset.steps) return;
-            const body = slide.querySelector('.slide-body');
-            if (!body) return;
-            slide.style.fontSize = '';
-            setTimeout(() => {
-                const padTop  = parseInt(getComputedStyle(slide).paddingTop)    || 80;
-                const padBot  = parseInt(getComputedStyle(slide).paddingBottom) || 48;
-                const header  = slide.querySelector('.slide-header');
-                const headerH = header
-                    ? header.offsetHeight + parseInt(getComputedStyle(header).marginBottom || 0)
-                    : 0;
-                const available = slide.clientHeight - padTop - padBot - headerH;
-                const actual    = body.scrollHeight;
-                if (available > 0 && actual > available) {
-                    const base  = parseFloat(getComputedStyle(document.body).fontSize);
-                    const scale = available / actual;
-                    slide.style.fontSize = Math.max(base * scale, 14).toFixed(1) + 'px';
-                }
-            }, 460);
+            this._sync(); return true;
         }
 
         _next() {
