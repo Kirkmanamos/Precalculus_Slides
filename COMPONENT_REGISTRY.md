@@ -62,6 +62,39 @@ No manual import needed.
 
 ### Interactive Demo Components
 
+#### `RevealCard.vue`
+
+**File:** `slidev/4.9-inverse-trig-prototype/components/RevealCard.vue`
+**Lines:** 94
+**Status:** ✅ Working
+**What it does:** A click-to-reveal card for conceptual discovery moments. Shows
+a question/prompt face; clicking reveals the answer with a smooth fade+slide
+transition. Clicking again collapses it. Respects `prefers-reduced-motion`.
+
+**Slots:**
+- `#prompt` — question or concept label shown by default
+- `#answer` — revealed content (supports KaTeX inline math via `$...$`)
+
+**Props:** None (self-contained state via `ref(false)`)
+
+**Usage:**
+```vue
+<RevealCard>
+  <template #prompt>What is the domain of arcsin?</template>
+  <template #answer>$-1 \le x \le 1$ — only ratios that sine can produce.</template>
+</RevealCard>
+```
+
+**Layout helpers (styles/index.css):**
+- `.reveal-grid` — 3-column grid of RevealCards (collapses to 1-col on narrow screens)
+- `.reveal-col` — single-column stack of RevealCards
+
+**To reuse in a new deck:**
+Copy `RevealCard.vue` to the new deck's `components/` folder. The component reads
+all color/font tokens from `--deck-*` CSS variables.
+
+---
+
 #### `ArcsinGraphDemo.vue`
 
 **File:** `slidev/4.9-inverse-trig-prototype/components/ArcsinGraphDemo.vue`

@@ -1,42 +1,32 @@
 ---
 theme: default
-title: "4.9 Inverse Trig Functions (Slidev Prototype)"
-info: "Prototype subset conversion of the 4.9 inverse trig deck with click-to-reveal and an interactive arcsin demo."
+title: "4.9 — Inverse Trig Functions"
+info: "Precalculus 4.9 — Inverse Trigonometric Functions"
+layout: cover
+class: hero-slide
 drawings:
   persist: false
 transition: fade-out
 mdc: true
 ---
 
----
-layout: cover
-class: hero-slide
----
-
 <div class="hero-shell">
-  <div class="hero-tag">Section 4.9 Prototype</div>
-  <h1>Inverse Trig Functions</h1>
-  <p class="hero-subtitle">Slidev experiment: KaTeX math, click-to-reveal solutions, and interactive graph exploration</p>
-
+  <div class="eyebrow">Section 4.9</div>
+  <h1>Inverse Trig<br>Functions</h1>
+  <p class="hero-subtitle">Finding angles from ratios — <strong>arcsin</strong>, <strong>arccos</strong>, and <strong>arctan</strong>.</p>
   <div class="hero-goals">
     <div class="goal">
-      <div class="goal-label">Prototype Scope</div>
-      <div class="goal-text">Subset conversion (5-6 slides)</div>
+      <div class="goal-label">Understand</div>
+      <div class="goal-text">Why domain restrictions are required for inverses to exist</div>
     </div>
     <div class="goal">
-      <div class="goal-label">Interaction</div>
-      <div class="goal-text">Reveal steps + simple math demo</div>
+      <div class="goal-label">Compute</div>
+      <div class="goal-text">Exact values for special angles using principal ranges</div>
     </div>
     <div class="goal">
-      <div class="goal-label">Math Rendering</div>
-      <div class="goal-text">KaTeX + SVG diagrams</div>
+      <div class="goal-label">Evaluate</div>
+      <div class="goal-text">Compositions like arcsin(sin θ) using principal range rules</div>
     </div>
-  </div>
-
-  <div class="tag-row">
-    <span class="tag">Dark/Light Toggle</span>
-    <span class="tag">Teacher-paced reveals</span>
-    <span class="tag">Future Manim-ready pipeline</span>
   </div>
 </div>
 
@@ -47,50 +37,64 @@ class: panel-slide
 
 <div class="panel-box">
   <div class="eyebrow">Recall</div>
-  <h2 class="panel-title">How trig vs inverse trig behaves</h2>
-  <p>Think of the inverse trig function as reversing the input/output roles.</p>
-
-  <div class="concept-grid">
-    <div class="concept-card">
-      <h3>Trig Function</h3>
-      <div class="flow-row">
-        <div class="flow-pill">angle</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-pill">ratio</div>
-      </div>
+  <h2 class="panel-title">How trig functions work</h2>
+  <div class="concept-card">
+    <h3>Trig Function</h3>
+    <p style="font-size:0.84rem; margin-bottom:0.5rem; color:var(--deck-text-muted);">Start with an angle — get a ratio.</p>
+    <div class="flow-row">
+      <div class="flow-pill">angle θ</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-pill">ratio</div>
     </div>
-
-    <div class="concept-card" v-click>
-      <h3>Inverse Trig Function</h3>
-      <div class="flow-row">
-        <div class="flow-pill">ratio</div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-pill">angle</div>
-      </div>
-    </div>
+    <p style="font-size:0.82rem; margin-top:0.5rem; color:var(--deck-text-muted);">e.g. sin(π/6) = ½</p>
   </div>
-
-  <div class="hint-chip">Space / click to reveal steps</div>
+  <div class="concept-card" style="margin-top:0.7rem;" v-click>
+    <h3>Inverse Trig Function</h3>
+    <p style="font-size:0.84rem; margin-bottom:0.5rem; color:var(--deck-text-muted);">Start with a ratio — get back an angle.</p>
+    <div class="flow-row">
+      <div class="flow-pill">ratio</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-pill">angle θ</div>
+    </div>
+    <p style="font-size:0.82rem; margin-top:0.5rem; color:var(--deck-text-muted);">e.g. arcsin(½) = π/6</p>
+  </div>
 </div>
 
 ::right::
 
 <div class="panel-box">
-  <div class="eyebrow">Key Ideas</div>
+  <div class="eyebrow">Key Shift</div>
   <h2 class="panel-title">What changes with inverses?</h2>
-
   <v-clicks>
 
-  - The output is an **angle**, not a side ratio.
-  - We must use a **restricted domain** on the original trig function to make it one-to-one.
-  - For this prototype, we focus on **$\arcsin(x)$** and its principal range.
-  - Both notations are common: **$\arcsin(x)$** and **$\sin^{-1}(x)$**.
+  - The output is now an **angle**, not a ratio.
+  - We need a **restricted domain** so the original function is one-to-one.
+  - Both $\arcsin(x)$ and $\sin^{-1}(x)$ mean the same thing.
+  - **Caution:** $\sin^{-1}(x)$ means inverse sine, **not** $\dfrac{1}{\sin(x)}$. The $-1$ is not an exponent.
 
   </v-clicks>
+</div>
 
-  <div class="summary-card" v-click>
-    <div class="label">Caution</div>
-    <p><strong>$\sin^{-1}(x)$</strong> means inverse sine, not <strong>$\dfrac{1}{\sin(x)}$</strong>.</p>
+---
+class: panel-slide
+---
+
+<div class="panel-box" style="max-width: 720px; margin: 0 auto;">
+  <div class="eyebrow">The Problem</div>
+  <h2 class="panel-title">Why can't we invert sine everywhere on ℝ?</h2>
+  <p>For a function to have an inverse, it must be <strong>one-to-one</strong> — each output from exactly one input. Sine is not.</p>
+  <div class="reveal-grid" style="margin-top: 0.9rem;"><RevealCard>
+<template #prompt>Does y = sin(x) pass the Horizontal Line Test?</template>
+<template #answer>No — the line y = 0 crosses the sine curve at x = 0, π, −π, … Many inputs share the same output, so sine is not one-to-one on ℝ.</template>
+</RevealCard>
+<RevealCard>
+<template #prompt>Which interval do we restrict sine to?</template>
+<template #answer>[−π/2, π/2] — sine is strictly increasing on this window and covers every output in [−1, 1] exactly once.</template>
+</RevealCard>
+<RevealCard>
+<template #prompt>What does the restriction give us?</template>
+<template #answer>A one-to-one function. Its inverse arcsin(x) maps each x ∈ [−1, 1] to exactly one angle in [−π/2, π/2].</template>
+</RevealCard>
   </div>
 </div>
 
@@ -99,128 +103,118 @@ layout: two-cols
 class: panel-slide
 ---
 
-## Inverse Sine: Definition, Domain, Range
-
-To define an inverse, we restrict the sine function to the interval
-$[-\pi/2,\pi/2]$ so it is one-to-one.
-
-<v-clicks>
-
-- Notation: $y=\arcsin(x)$ or $y=\sin^{-1}(x)$
-- Domain: $-1 \le x \le 1$
-- Range (principal values): $-\pi/2 \le \arcsin(x) \le \pi/2$
-- The output of inverse sine is an angle in radians.
-
-</v-clicks>
+<div class="panel-box">
+  <div class="eyebrow">Definition</div>
+  <h2 class="panel-title">y = arcsin(x)</h2>
+  <div class="work-card problem" style="margin-top:0.65rem;">
+    <div class="label">Formal Definition</div>
+    <p style="margin:0.3rem 0 0;">y = arcsin(x) means sin(y) = x,<br>where y is the unique angle in [−π/2, π/2].</p>
+  </div>
+  <div class="principal-range" style="margin-top: 0.75rem;">
+    <div class="range-line">Input (domain): x ∈ [−1, 1]</div>
+    <div class="range-line">Output (range): y ∈ [−π/2, π/2]</div>
+    <div class="range-line">Output is always an <strong>angle in radians</strong>.</div>
+  </div>
+</div>
 
 ::right::
 
-## Visual Strategy (Prototype)
-
-Use the interactive graph on the next slide to model the full idea:
-
-1. Graph the restricted sine function on $[-\pi/2,\pi/2]$.
-2. Reflect across the line $y=x$.
-3. Read $\arcsin(x)$ as the output angle in the principal range.
-
-<v-clicks>
-
-- Common mistake: choosing an angle outside the principal range
-- Teacher move: ask "What interval must the answer come from?"
-- Then verify on the interactive graph with a slider input
-
-</v-clicks>
-
----
-
-# Example 1 Prototype
-
-Use the slider to explore the graph of `y = arcsin(x)` and verify that outputs stay in the principal range.
-
-<ArcsinGraphDemo />
-
-## Anchor Points
-
-- `(-1, -pi/2)`
-- `(0, 0)`
-- `(1, pi/2)`
-
-## Teacher Prompt
-
-- Ask students to predict `arcsin(1/2)` before using the preset button.
-- Emphasize that the output is an angle (in radians).
-
----
-class: panel-slide
----
-
-## Worked Example: `arcsin(-1/2)`
-
-Teacher-paced reveal prototype using Slidev fragments.
-
-<v-clicks>
-
-- Find an angle whose sine is `-1/2`.
-- Reference angle is `pi/6` because `sin(pi/6) = 1/2`.
-- Use the principal range `[-pi/2, pi/2]`, so choose the angle `-pi/6`.
-- Therefore, `arcsin(-1/2) = -pi/6`.
-
-</v-clicks>
-
-<div class="summary-card" style="margin-top: 0.75rem;">
-  <div class="label">Range Check</div>
-  <p><code>sin(-pi/6) = -1/2</code> and <code>-pi/6</code> is in <code>[-pi/2, pi/2]</code>.</p>
+<div class="panel-box">
+  <div class="eyebrow">Properties</div>
+  <h2 class="panel-title">Click each to explore</h2>
+  <div class="reveal-col"><RevealCard>
+<template #prompt>What values of x are allowed as input?</template>
+<template #answer>Domain: −1 ≤ x ≤ 1. Only ratios that sine can produce — values outside this interval have no inverse sine.</template>
+</RevealCard>
+<RevealCard>
+<template #prompt>What angles can arcsin(x) output?</template>
+<template #answer>Range: −π/2 ≤ arcsin(x) ≤ π/2. This is the principal range — approximately −90° to 90°.</template>
+</RevealCard>
+<RevealCard>
+<template #prompt>What is arcsin(1), and why?</template>
+<template #answer>arcsin(1) = π/2, because sin(π/2) = 1 and π/2 lies in the principal range.</template>
+</RevealCard>
+  </div>
 </div>
 
 ---
-layout: two-cols
 class: panel-slide
 ---
 
-<div class="panel-box">
-  <div class="eyebrow">Composition Example</div>
-  <h2 class="panel-title">Evaluate arcsin(sin(π/3)) exactly</h2>
+<div class="panel-box explorer-panel">
+  <div class="eyebrow">Explore</div>
+  <h2 class="panel-title" style="margin-bottom:0.3rem;">Graph of y = arcsin(x)</h2>
+  <p style="margin-bottom:0.65rem; font-size:0.88rem;">Drag the slider to any input value. Watch the output angle update in real time.</p>
+  <ArcsinGraphDemo />
+</div>
 
-  <div class="work-card problem">
+<!--
+Presenter notes
+Anchor points: (−1, −π/2), (0, 0), (1, π/2)
+Ask students: "What do you predict arcsin(½) equals?" before pressing the preset.
+Emphasize: the output is always in [−π/2, π/2].
+-->
+
+---
+class: panel-slide
+---
+
+<div class="panel-box" style="max-width: 680px; margin: 0 auto;">
+  <div class="eyebrow">Worked Example</div>
+  <h2 class="panel-title">Find arcsin(−½) exactly.</h2>
+  <div class="work-card problem" style="margin-top:0.65rem;">
     <div class="label">Goal</div>
-    <div class="math-big">arcsin(sin(π/3))</div>
+    <p style="margin:0.25rem 0 0;">Find θ ∈ [−π/2, π/2] such that sin(θ) = −½.</p>
   </div>
+  <div class="step-list" style="margin-top:0.55rem;">
+  <v-clicks>
 
-  <div class="step-row">
-    <div class="step-chip" v-click>
-      <div class="step-chip__title">Step 1</div>
-      <p>Check whether pi/3 lies in the principal range of arcsin: [-pi/2, pi/2].</p>
-    </div>
-    <div class="step-chip" v-click>
-      <div class="step-chip__title">Step 2</div>
-      <p>Yes, because -pi/2 <= pi/3 <= pi/2.</p>
-    </div>
-    <div class="step-chip" v-click>
-      <div class="step-chip__title">Step 3</div>
-      <p>Since the input angle is already in the inverse sine range, the composition returns the same angle.</p>
-    </div>
+  - **Reference angle:** $\sin(\pi/6) = 1/2$, so the reference angle is $\pi/6$.
+  - **Sign & quadrant:** We need $\sin(\theta) < 0$. In $[-\pi/2,\, \pi/2]$, negative sine means $\theta < 0$.
+  - **Choose the angle:** $\theta = -\pi/6$ gives $\sin(-\pi/6) = -1/2$. ✓
+  - **Answer:** $\arcsin(-1/2) = -\pi/6$
+
+  </v-clicks>
   </div>
+</div>
 
-  <div class="answer-banner" v-click>
-    arcsin(sin(pi/3)) = pi/3
+---
+layout: two-cols
+class: panel-slide
+---
+
+<div class="panel-box">
+  <div class="eyebrow">Worked Example — Composition</div>
+  <h2 class="panel-title">Evaluate arcsin(sin π/3) exactly.</h2>
+  <div class="work-card problem" style="margin-top:0.65rem;">
+    <div class="label">Goal</div>
+    <div class="math-big">arcsin(sin π/3) = ?</div>
+  </div>
+  <div class="step-list" style="margin-top:0.5rem;">
+  <v-clicks>
+
+  - **Check the inner angle:** Is $\pi/3$ in the principal range $[-\pi/2,\, \pi/2]$?
+  - **Verify:** Yes — $-\pi/2 \le \pi/3 \le \pi/2$.
+  - **Conclude:** Since $\pi/3$ is already in the principal range, the composition returns it unchanged.
+  - **Answer:** $\arcsin(\sin(\pi/3)) = \pi/3$
+
+  </v-clicks>
   </div>
 </div>
 
 ::right::
 
-<div class="panel-box">
-  <div class="eyebrow">Prototype Success Check</div>
-  <h2 class="panel-title">What this experiment proves</h2>
-
-  <div class="success-list">
-    <div class="success-item" v-click>KaTeX renders inverse trig notation and exact values cleanly.</div>
-    <div class="success-item" v-click>Click-to-reveal steps work for teacher-paced examples.</div>
-    <div class="success-item" v-click>Vue components can support interactive math demos inside Slidev.</div>
-    <div class="success-item" v-click>Dark/light mode can be handled at the deck level without duplicating slides.</div>
+<div class="panel-box" v-click>
+  <div class="eyebrow">Watch Out</div>
+  <h2 class="panel-title">When composition does <em>not</em> simplify</h2>
+  <p style="font-size:0.88rem;">The shortcut arcsin(sin θ) = θ only works when θ is <strong>already in the principal range</strong>.</p>
+  <div style="margin-top:0.8rem;"><RevealCard>
+<template #prompt>What is arcsin(sin(2π/3))?</template>
+<template #answer>2π/3 is outside [−π/2, π/2], so the answer is NOT 2π/3. Since sin(2π/3) = √3/2 and arcsin(√3/2) = π/3, the answer is π/3.</template>
+</RevealCard>
   </div>
-
-  <div class="summary-card" style="margin-top: 0.75rem;" v-click>
-    <div class="label">Next Phase (Later)</div>
-    <p>Add Manim-generated assets/videos for graph animations and worked-example visuals.</p>
+  <div class="summary-card" style="margin-top:0.75rem;">
+    <div class="label">Rule</div>
+    <p>arcsin(sin θ) = θ <strong>if and only if</strong> θ ∈ [−π/2, π/2].</p>
   </div>
 </div>

@@ -518,6 +518,79 @@ html[data-precalc-theme='light'] {
   color: var(--deck-text-primary);
 }
 
+/* ===========================================
+   STEP LIST
+   Wraps <v-clicks> with markdown list items to give them the step-chip card look.
+   Use <div class="step-list"> around the <v-clicks> block.
+   =========================================== */
+.step-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.step-list li {
+  border: 1px solid var(--deck-line);
+  border-radius: 12px;
+  background: var(--deck-bg-elevated);
+  padding: 0.5rem 0.65rem;
+  color: var(--deck-text-primary);
+  line-height: 1.45;
+}
+
+.step-list li strong:first-child {
+  display: inline-block;
+  color: var(--deck-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  margin-right: 0.35rem;
+}
+
+/* Last list item in a step-list gets answer-banner styling */
+.step-list li:last-child {
+  border-color: color-mix(in srgb, var(--deck-accent) 40%, var(--deck-line));
+  background: color-mix(in srgb, var(--deck-accent) 10%, var(--deck-bg-elevated));
+  font-weight: 700;
+}
+
+/* ===========================================
+   REVEAL CARD LAYOUTS
+   Grid and column containers for RevealCard components.
+   To modify: adjust gap or column count for density.
+   =========================================== */
+.reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.reveal-col {
+  display: grid;
+  gap: 0.6rem;
+}
+
+/* ===========================================
+   EXPLORER PANEL
+   Makes the ArcsinGraphDemo slide fill the panel-box height.
+   =========================================== */
+.explorer-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-panel .arcsin-demo {
+  flex: 1;
+}
+
+@media (max-width: 900px) {
+  .reveal-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .tag-row {
   display: flex;
   flex-wrap: wrap;
