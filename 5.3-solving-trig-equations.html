@@ -113,13 +113,14 @@
         .strategy-note { font-size: 0.65em; color: #64748b; font-style: italic; margin-bottom: 0.8rem; flex-shrink: 0; }
 
         /* ===== STEP REVEALS ===== */
-        .steps-area { display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+        .steps-area { display: flex; flex-direction: column; overflow: hidden; }
 
         .step {
-            opacity: 0; transform: translateY(15px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
+            opacity: 0; max-height: 0; overflow: hidden; margin-bottom: 0;
+            transition: opacity 0.4s ease, max-height 0.45s ease, margin-bottom 0.3s ease;
         }
-        .step.visible { opacity: 1; transform: translateY(0); }
+        .step.visible { opacity: 1; max-height: 350px; margin-bottom: 0.5rem; }
+        .step.visible:last-child { margin-bottom: 0; }
 
         .step-label { font-size: 0.6em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 4px; }
 
@@ -691,17 +692,45 @@
                 curStep++;
                 slide.dataset.currentStep = curStep;
                 slide.querySelector(`#${slide.id}-step-${curStep}`)?.classList.add('visible');
-                this._sync();
+                this._sync(); this._fitContent(slide);
                 return true;
             }
             return false;
+        }
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync(); this._fitContent(slide); return true;
+        }
+        _fitContent(slide) {
+            if (!slide.dataset.steps) return;
+            const body = slide.querySelector('.slide-body');
+            if (!body) return;
+            slide.style.fontSize = '';
+            setTimeout(() => {
+                const padTop  = parseInt(getComputedStyle(slide).paddingTop)    || 80;
+                const padBot  = parseInt(getComputedStyle(slide).paddingBottom) || 48;
+                const header  = slide.querySelector('.slide-header');
+                const headerH = header
+                    ? header.offsetHeight + parseInt(getComputedStyle(header).marginBottom || 0)
+                    : 0;
+                const available = slide.clientHeight - padTop - padBot - headerH;
+                const actual    = body.scrollHeight;
+                if (available > 0 && actual > available) {
+                    const base  = parseFloat(getComputedStyle(document.body).fontSize);
+                    const scale = available / actual;
+                    slide.style.fontSize = Math.max(base * scale, 14).toFixed(1) + 'px';
+                }
+            }, 460);
         }
 
         _next() {
             if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1)
                 this._goTo(this.current + 1);
         }
-        _prev() { if (this.current > 0) this._goTo(this.current - 1); }
+        _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
 
         _bindEvents() {
             document.addEventListener('keydown', (e) => {

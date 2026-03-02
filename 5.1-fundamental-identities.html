@@ -244,13 +244,14 @@ body {
   max-width: 1060px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
 }
 
 .step {
   opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: 0;
+  transition: opacity 0.4s ease, max-height 0.45s ease, margin-bottom 0.3s ease;
   display: flex;
   align-items: flex-start;
   gap: 16px;
@@ -259,8 +260,10 @@ body {
 
 .step.visible {
   opacity: 1;
-  transform: translateY(0);
+  max-height: 350px;
+  margin-bottom: 0.5rem;
 }
+.step.visible:last-child { margin-bottom: 0; }
 
 /* Small all-caps label column */
 .step-label {
@@ -373,18 +376,6 @@ body {
 }
 
 /* ===========================================
-   COPYRIGHT
-   =========================================== */
-.copyright {
-  position: absolute;
-  bottom: 12px;
-  right: 24px;
-  font-size: 0.72em;
-  color: #94a3b8;
-  font-style: italic;
-}
-
-/* ===========================================
    KATEX — match surrounding font size
    =========================================== */
 .katex { font-size: 1em !important; }
@@ -395,7 +386,6 @@ body {
    =========================================== */
 @media (prefers-reduced-motion: reduce) {
   .slide, .step, .col-reveal { transition: opacity 0.15s ease !important; }
-  .step { transform: none !important; }
 }
 
 /* ===========================================
@@ -433,7 +423,7 @@ body {
     <span class="id-chip">$1 + \tan^2 x = \sec^2 x$</span>
     <span class="id-chip">$1 + \cot^2 x = \csc^2 x$</span>
   </div>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -468,7 +458,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -500,7 +490,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -531,7 +521,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -572,7 +562,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -604,7 +594,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -643,7 +633,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -678,7 +668,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 
@@ -724,7 +714,7 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
-  <p class="copyright">© Hoff Math. All Rights Reserved</p>
+
 </section>
 
 </div><!-- #slides-container -->
@@ -809,6 +799,43 @@ class Presentation {
     this._sync();
   }
 
+  /* ---- Backward: hide last revealed step or go to previous slide ---- */
+  _backward() {
+    const slide   = this.slides[this.current];
+    const curStep = parseInt(slide.dataset.currentStep || '0');
+    if (curStep > 0) {
+      const el = slide.querySelector(`[data-step="${curStep}"]`);
+      if (el) el.classList.remove('visible');
+      slide.dataset.currentStep = curStep - 1;
+      this._fitContent(slide);
+    } else {
+      this._goTo(this.current - 1);
+    }
+  }
+
+  /* ---- Dynamic font scaling — shrinks slide font if steps overflow ---- */
+  _fitContent(slide) {
+    if (!slide.dataset.steps) return;
+    const body = slide.querySelector('.steps-area');
+    if (!body) return;
+    slide.style.fontSize = '';
+    setTimeout(() => {
+      const padTop  = parseInt(getComputedStyle(slide).paddingTop)    || 80;
+      const padBot  = parseInt(getComputedStyle(slide).paddingBottom) || 48;
+      const header  = slide.querySelector('.slide-header, h2.slide-title');
+      const headerH = header
+        ? header.offsetHeight + parseInt(getComputedStyle(header).marginBottom || 0)
+        : 0;
+      const available = slide.clientHeight - padTop - padBot - headerH;
+      const actual    = body.scrollHeight;
+      if (available > 0 && actual > available) {
+        const base  = parseFloat(getComputedStyle(document.body).fontSize);
+        const scale = available / actual;
+        slide.style.fontSize = Math.max(base * scale, 14).toFixed(1) + 'px';
+      }
+    }, 460);
+  }
+
   /* ---- Forward: reveal next step or advance slide ---- */
   _forward() {
     const slide    = this.slides[this.current];
@@ -837,6 +864,7 @@ class Presentation {
         ? 'Press → or Space for next slide'
         : 'Click to reveal next step';
     }
+    this._fitContent(slide);
   }
 
   /* ---- Bind keyboard + click events ---- */
@@ -847,7 +875,7 @@ class Presentation {
         this._forward();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        this._goTo(this.current - 1);
+        this._backward();
       }
     });
 
