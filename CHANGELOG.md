@@ -7,6 +7,15 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ## Current Status (as of 2026-03-01)
 
+### Safety Fixes Applied to 5.1–5.4
+
+- **Max-height collapse** — hidden steps now take zero layout space (`max-height: 0`) so examples no longer overflow the slide
+- **Bidirectional step navigation** — left/up arrow retreats one step at a time before going to the previous slide
+- **Dynamic font scaling (`_fitContent`)** — measures available height after each reveal/retreat and reduces `font-size` if steps overflow; minimum 14px floor; KaTeX scales proportionally
+- **Copyright removed from 5.1** — all 9 `© Hoff Math. All Rights Reserved` lines and the `.copyright` CSS block removed
+
+---
+
 ### Recently Added
 
 **HTML Presentations:**
