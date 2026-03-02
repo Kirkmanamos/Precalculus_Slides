@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.2 Verifying Trigonometric Identities</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        /* ==============================================
+           THEME: HoffMath Classroom
+           Match 5.1-fundamental-identities.html exactly
+           ============================================== */
+        :root {
+            --dark-navy:    #1a365d;
+            --blue-accent:  #2563eb;
+            --green-accent: #16a34a;
+            --teal-accent:  #0891b2;
+            --red-accent:   #dc2626;
+            --grid-line:    #dbeafe;
+            --bg-white:     #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--dark-navy);
+        }
+
+        /* ===== SLIDE CONTAINER ===== */
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            /* 5rem top: clears the progress bar + browser chrome with breathing room.
+               Sides: center content within a ~1120px max column on wide screens,
+                      minimum 3rem on small screens. */
+            padding-top: 5rem;
+            padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        /* Wraps everything below the slide-header; centers content vertically
+           in the remaining space so slides don't feel top-heavy. */
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ===== BACKGROUNDS ===== */
+        .title-slide { background: var(--dark-navy); color: white; justify-content: center; }
+
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #1e293b;
+        }
+
+        /* ===== TITLE SLIDE ===== */
+        .title-section-label {
+            font-size: 0.7em; font-weight: 600; letter-spacing: 0.15em;
+            text-transform: uppercase; color: #93c5fd; margin-bottom: 0.8rem;
+        }
+        .title-main {
+            font-size: 2em; font-weight: 700; line-height: 1.2;
+            color: white; margin-bottom: 0.5rem;
+        }
+        .title-objective { font-size: 0.75em; color: #93c5fd; margin-top: 1.2rem; font-weight: 500; }
+
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+        .chip {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            padding: 0.25em 0.8em;
+            font-size: 0.6em;
+            color: #e2e8f0;
+        }
+
+        /* ===== CONTENT SLIDE HEADER ===== */
+        .slide-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.2rem; flex-shrink: 0;
+        }
+        .example-label {
+            background: var(--blue-accent); color: white;
+            font-size: 0.6em; font-weight: 700;
+            padding: 0.2em 0.75em; border-radius: 6px;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .another-way-badge {
+            background: var(--teal-accent); color: white;
+            font-size: 0.6em; font-weight: 700;
+            padding: 0.2em 0.75em; border-radius: 6px;
+            letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--dark-navy); }
+
+        /* ===== PROBLEM STATEMENT ===== */
+        .problem-statement {
+            background: #f8fafc;
+            border: 2px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.7em 1.2em;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+            text-align: center;
+        }
+        .problem-statement .katex-display { margin: 0; }
+
+        .strategy-note {
+            font-size: 0.65em; color: #64748b; font-style: italic;
+            margin-bottom: 0.8rem; flex-shrink: 0;
+        }
+
+        /* ===== STEP REVEALS ===== */
+        .steps-area { display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+
+        .step {
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .step.visible { opacity: 1; transform: translateY(0); }
+
+        .step-label {
+            font-size: 0.6em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: #64748b; margin-bottom: 4px;
+        }
+
+        /* Base step-math: equation centered by itself */
+        .step-math { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; }
+
+        /* When an annotation is present, JS adds .has-annotation and wraps the
+           equation in .step-eq — this switches to a side-by-side layout */
+        .step-math.has-annotation {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            text-align: left;
+        }
+
+        /* The equation half — centered within its column */
+        .step-eq {
+            flex: 1;
+            text-align: center;
+        }
+
+        .step.answer .step-math {
+            background: #f0fdf4;
+            border-left: 4px solid var(--green-accent);
+            padding: 10px 18px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        /* Annotation sits to the right of the equation, separated by a hairline */
+        .annotation {
+            flex: 0 0 36%;
+            color: var(--blue-accent);
+            font-size: 0.72em;
+            font-weight: 600;
+            line-height: 1.45;
+            text-align: left;
+            border-left: 3px solid #93c5fd;
+            padding-left: 1rem;
+        }
+
+        /* ===== GUIDELINES SLIDE ===== */
+        .guidelines-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            flex: 1;
+        }
+        .guideline-tip {
+            grid-column: 1 / -1;
+            background: #eff6ff;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            padding: 0.7em 1.2em;
+            font-size: 0.85em;
+            color: var(--dark-navy);
+            font-style: italic;
+        }
+        /* Guideline boxes use the shared .step reveal; override opacity default
+           so they participate in the click-to-advance system */
+        .guideline-box { border-radius: 10px; padding: 1.2rem 1.5rem; }
+        .guideline-box.do-box   { background: #f0fdf4; border: 2px solid var(--green-accent); }
+        .guideline-box.dont-box { background: #fef2f2; border: 2px solid var(--red-accent); }
+        .guideline-box h3 {
+            font-size: 1em; font-weight: 700; letter-spacing: 0.05em;
+            margin-bottom: 0.75rem; text-transform: uppercase;
+        }
+        .do-box h3   { color: var(--green-accent); }
+        .dont-box h3 { color: var(--red-accent); }
+        .guideline-box ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+        .guideline-box ul li {
+            font-size: 0.9em; line-height: 1.4;
+            padding-left: 1.4em; position: relative; color: #1e293b;
+        }
+        .do-box   ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green-accent); font-weight: 700; }
+        .dont-box ul li::before { content: '✗'; position: absolute; left: 0; color: var(--red-accent);   font-weight: 700; }
+
+        /* ===== CONCEPT SLIDE ===== */
+        .concept-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 0 10px 10px 0;
+            padding: 0.8em 1.2em;
+            margin-bottom: 1rem;
+        }
+        .concept-box.teal { border-color: var(--teal-accent); }
+        .concept-box p { font-size: 0.75em; color: #1e293b; line-height: 1.6; }
+
+        /* ===== NAV / PROGRESS ===== */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide, .step { transition: opacity 0.3s ease; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper" id="slidesWrapper">
+
+    <!-- ================================================
+         SLIDE 1 — TITLE
+         ================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.2 Verifying<br>Trigonometric Identities</div>
+        <div class="title-objective">Objective: Verify trigonometric identities</div>
+        <div class="identity-chips">
+            <span class="chip">Work one side only</span>
+            <span class="chip">Pythagorean Identities</span>
+            <span class="chip">Common denominator</span>
+            <span class="chip">Multiply by conjugate</span>
+            <span class="chip">Convert to sin &amp; cos</span>
+            <span class="chip">Factor</span>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 2 — CONCEPT
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <div class="example-label">Concept</div>
+            <div class="slide-title">What is an identity?</div>
+        </div>
+        <div class="slide-body" style="gap:1rem;">
+            <div class="concept-box">
+                <p>An <strong>identity</strong> is an equation that is <strong>true for all values</strong> in the domain of the variable.</p>
+                <p style="margin-top:0.5em">Verifying (also called "proving") an identity means showing that one side can be algebraically transformed into the other — using known identities and valid algebra steps.</p>
+            </div>
+            <div class="concept-box teal">
+                <p><strong>The cardinal rule:</strong> You work on <em>one side at a time</em>. You <strong>cannot cross the equal sign</strong> — do not add to both sides, multiply both sides, or square both sides. Each step transforms the same side.</p>
+            </div>
+            <div class="concept-box" style="border-color: var(--green-accent)">
+                <p><strong>Tip:</strong> When in doubt, start with the <em>more complicated</em> side, or convert everything to sine and cosine — then look for a path to the other side.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 3 — GUIDELINES
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Strategy</div>
+            <div class="slide-title">Guidelines for Verifying</div>
+        </div>
+        <div class="slide-body">
+        <div class="guidelines-grid">
+            <div class="guideline-tip">
+                💡 <strong>Tip:</strong> Try something! Even an attempt that leads to a dead end gives insight into what will work.
+            </div>
+            <div class="guideline-box do-box step" id="slide-2-step-0">
+                <h3>Do</h3>
+                <ul>
+                    <li>Work with the <strong>more complicated</strong> side</li>
+                    <li>Try a <strong>common denominator</strong></li>
+                    <li><strong>Factor</strong> expressions</li>
+                    <li>Convert all to <strong>sine and cosine</strong></li>
+                    <li>Multiply by the <strong>conjugate</strong></li>
+                    <li>Apply <strong>Pythagorean Identities</strong></li>
+                    <li>Work each side <strong>separately</strong> toward a common middle</li>
+                </ul>
+            </div>
+            <div class="guideline-box dont-box step" id="slide-2-step-1">
+                <h3>Do NOT</h3>
+                <ul>
+                    <li>Cross the equal sign</li>
+                    <li>Multiply <em>both</em> sides by anything</li>
+                    <li>Add to <em>both</em> sides</li>
+                    <li>Square <em>both</em> sides</li>
+                </ul>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 4 — EXAMPLE 1 (Method 1)
+         Verify: (sec²θ − 1)/sec²θ = sin²θ
+         Strategy: Pythagorean identity → convert to sin/cos
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\dfrac{\sec^2\theta - 1}{\sec^2\theta} = \sin^2\theta\]
+        </div>
+        <div class="strategy-note">Strategy: Use a Pythagorean identity, then convert to sine and cosine.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\dfrac{\sec^2\theta - 1}{\sec^2\theta}\)</div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-math">\(= \dfrac{\tan^2\theta}{\sec^2\theta}\)
+                    <span class="annotation">Pythagorean identity: \(\sec^2\theta - 1 = \tan^2\theta\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-math">\(= \tan^2\theta \cdot \cos^2\theta\)
+                    <span class="annotation">since \(\dfrac{1}{\sec^2\theta} = \cos^2\theta\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-math">\(= \dfrac{\sin^2\theta}{\cos^2\theta} \cdot \cos^2\theta\)
+                    <span class="annotation">substitute \(\tan^2\theta = \dfrac{\sin^2\theta}{\cos^2\theta}\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-3-step-4">
+                <div class="step-math">\(= \sin^2\theta \checkmark\)
+                    <span class="annotation">\(\cos^2\theta\) cancels</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 5 — EXAMPLE 1 (Another Way)
+         Strategy: Split the fraction
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="4" data-current-step="-1">
+        <div class="slide-header">
+            <div class="another-way-badge">Another Way</div>
+            <div class="slide-title">Example 1 — Split the fraction</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\dfrac{\sec^2\theta - 1}{\sec^2\theta} = \sin^2\theta\]
+        </div>
+        <div class="strategy-note">Strategy: Split the numerator into two separate fractions, then simplify each term.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\dfrac{\sec^2\theta - 1}{\sec^2\theta}\)</div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-math">\(= \dfrac{\sec^2\theta}{\sec^2\theta} - \dfrac{1}{\sec^2\theta}\)
+                    <span class="annotation">split into two fractions with the same denominator</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-math">\(= 1 - \cos^2\theta\)
+                    <span class="annotation">\(\dfrac{\sec^2\theta}{\sec^2\theta} = 1\) and \(\dfrac{1}{\sec^2\theta} = \cos^2\theta\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-4-step-3">
+                <div class="step-math">\(= \sin^2\theta \checkmark\)
+                    <span class="annotation">Pythagorean identity: \(1 - \cos^2\theta = \sin^2\theta\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 6 — EXAMPLE 2
+         Verify: 1/(1−sinα) + 1/(1+sinα) = 2sec²α
+         Strategy: Common denominator
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-5" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\dfrac{1}{1 - \sin\alpha} + \dfrac{1}{1 + \sin\alpha} = 2\sec^2\alpha\]
+        </div>
+        <div class="strategy-note">Strategy: Get a common denominator and add the fractions.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\dfrac{1}{1 - \sin\alpha} + \dfrac{1}{1 + \sin\alpha}\)</div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-math">\(= \dfrac{1 + \sin\alpha}{(1 - \sin\alpha)(1 + \sin\alpha)} + \dfrac{1 - \sin\alpha}{(1 - \sin\alpha)(1 + \sin\alpha)}\)
+                    <span class="annotation">multiply each fraction to build a common denominator</span>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-math">\(= \dfrac{(1 + \sin\alpha) + (1 - \sin\alpha)}{1 - \sin^2\alpha}\)
+                    <span class="annotation">add numerators; denominator is a difference of squares: \((1-\sin\alpha)(1+\sin\alpha) = 1 - \sin^2\alpha\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-math">\(= \dfrac{2}{\cos^2\alpha}\)
+                    <span class="annotation">numerator: \(1 + \sin\alpha + 1 - \sin\alpha = 2\); denominator: \(1 - \sin^2\alpha = \cos^2\alpha\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-5-step-4">
+                <div class="step-math">\(= 2\sec^2\alpha \checkmark\)
+                    <span class="annotation">since \(\dfrac{1}{\cos^2\alpha} = \sec^2\alpha\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 7 — EXAMPLE 3
+         Verify: tanx + cotx = secx·cscx
+         Strategy: Convert to sin/cos, add fractions
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-6" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\tan x + \cot x = \sec x \csc x\]
+        </div>
+        <div class="strategy-note">Strategy: Convert the left side to sine and cosine, then add the fractions.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\tan x + \cot x\)</div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-math">\(= \dfrac{\sin x}{\cos x} + \dfrac{\cos x}{\sin x}\)
+                    <span class="annotation">convert using \(\tan x = \dfrac{\sin x}{\cos x}\) and \(\cot x = \dfrac{\cos x}{\sin x}\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-math">\(= \dfrac{\sin^2 x + \cos^2 x}{\cos x \cdot \sin x}\)
+                    <span class="annotation">add with common denominator \(\cos x \sin x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-math">\(= \dfrac{1}{\cos x \cdot \sin x}\)
+                    <span class="annotation">Pythagorean identity: \(\sin^2 x + \cos^2 x = 1\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-6-step-4">
+                <div class="step-math">\(= \sec x \csc x \checkmark\)
+                    <span class="annotation">split: \(\dfrac{1}{\cos x} \cdot \dfrac{1}{\sin x} = \sec x \csc x\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 8 — EXAMPLE 4
+         Verify: secx + tanx = cosx/(1 − sinx)
+         Strategy: Right side — multiply by conjugate
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-7" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\sec x + \tan x = \dfrac{\cos x}{1 - \sin x}\]
+        </div>
+        <div class="strategy-note">Strategy: Work with the right side — multiply by the conjugate of the denominator.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-label">Right side</div>
+                <div class="step-math">\(\dfrac{\cos x}{1 - \sin x}\)</div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-math">\(= \dfrac{\cos x}{1 - \sin x} \cdot \dfrac{1 + \sin x}{1 + \sin x}\)
+                    <span class="annotation">multiply by the conjugate of the denominator</span>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-math">\(= \dfrac{\cos x(1 + \sin x)}{1 - \sin^2 x}\)
+                    <span class="annotation">denominator: \((1 - \sin x)(1 + \sin x) = 1 - \sin^2 x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-math">\(= \dfrac{\cos x(1 + \sin x)}{\cos^2 x} = \dfrac{1 + \sin x}{\cos x}\)
+                    <span class="annotation">replace \(1 - \sin^2 x = \cos^2 x\), then cancel one factor of \(\cos x\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-7-step-4">
+                <div class="step-math">\(= \dfrac{1}{\cos x} + \dfrac{\sin x}{\cos x} = \sec x + \tan x \checkmark\)
+                    <span class="annotation">split the fraction into two terms</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 9 — EXAMPLE 5 (Method 1)
+         Verify: cot²θ/(1+cscθ) = (1−sinθ)/sinθ
+         Strategy: Pythagorean identity + factor difference of squares
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-8" data-steps="6" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\dfrac{\cot^2\theta}{1 + \csc\theta} = \dfrac{1 - \sin\theta}{\sin\theta}\]
+        </div>
+        <div class="strategy-note">Strategy: Substitute a Pythagorean identity in the numerator, then factor as a difference of squares.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\dfrac{\cot^2\theta}{1 + \csc\theta}\)</div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-math">\(= \dfrac{\csc^2\theta - 1}{1 + \csc\theta}\)
+                    <span class="annotation">Pythagorean identity: \(\cot^2\theta = \csc^2\theta - 1\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-math">\(= \dfrac{(\csc\theta - 1)(\csc\theta + 1)}{1 + \csc\theta}\)
+                    <span class="annotation">factor numerator as a difference of squares</span>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-math">\(= \csc\theta - 1\)
+                    <span class="annotation">cancel \((\csc\theta + 1)\) from numerator and denominator</span>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-math">\(= \dfrac{1}{\sin\theta} - \dfrac{\sin\theta}{\sin\theta}\)
+                    <span class="annotation">replace \(\csc\theta = \dfrac{1}{\sin\theta}\) and rewrite \(1 = \dfrac{\sin\theta}{\sin\theta}\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-8-step-5">
+                <div class="step-math">\(= \dfrac{1 - \sin\theta}{\sin\theta} \checkmark\)</div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 10 — EXAMPLE 5 (Another Way)
+         Strategy: Multiply by conjugate (1 − cscθ)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-9" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="another-way-badge">Another Way</div>
+            <div class="slide-title">Example 5 — Multiply by conjugate</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\dfrac{\cot^2\theta}{1 + \csc\theta} = \dfrac{1 - \sin\theta}{\sin\theta}\]
+        </div>
+        <div class="strategy-note">Strategy: Multiply numerator and denominator by the conjugate \((1 - \csc\theta)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\dfrac{\cot^2\theta}{1 + \csc\theta}\)</div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-math">\(= \dfrac{\cot^2\theta}{1 + \csc\theta} \cdot \dfrac{1 - \csc\theta}{1 - \csc\theta}\)
+                    <span class="annotation">multiply by the conjugate of the denominator</span>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-math">\(= \dfrac{\cot^2\theta\,(1 - \csc\theta)}{1 - \csc^2\theta}\)
+                    <span class="annotation">denominator: \((1 + \csc\theta)(1 - \csc\theta) = 1 - \csc^2\theta\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-math">\(= \dfrac{\cot^2\theta\,(1 - \csc\theta)}{-\cot^2\theta} = -(1 - \csc\theta)\)
+                    <span class="annotation">since \(1 - \csc^2\theta = -\cot^2\theta\); cancel \(\cot^2\theta\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-9-step-4">
+                <div class="step-math">\(= \csc\theta - 1 = \dfrac{1}{\sin\theta} - 1 = \dfrac{1 - \sin\theta}{\sin\theta} \checkmark\)
+                    <span class="annotation">distribute the negative, then convert \(\csc\theta\) and combine over \(\sin\theta\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 11 — EXAMPLE 6 (Method 1)
+         Verify: sin³x·cos⁴x = (cos⁴x − cos⁶x)·sinx
+         Strategy: Work from right side — factor, then Pythagorean
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-10" data-steps="4" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Verify the identity</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\sin^3 x \cos^4 x = (\cos^4 x - \cos^6 x)\sin x\]
+        </div>
+        <div class="strategy-note">Strategy: Work with the right side — factor, then apply a Pythagorean identity.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-label">Right side</div>
+                <div class="step-math">\((\cos^4 x - \cos^6 x)\sin x\)</div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-math">\(= \cos^4 x(1 - \cos^2 x)\sin x\)
+                    <span class="annotation">factor out \(\cos^4 x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-math">\(= \cos^4 x \cdot \sin^2 x \cdot \sin x\)
+                    <span class="annotation">Pythagorean identity: \(1 - \cos^2 x = \sin^2 x\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-10-step-3">
+                <div class="step-math">\(= \sin^3 x \cos^4 x \checkmark\)
+                    <span class="annotation">combine: \(\sin^2 x \cdot \sin x = \sin^3 x\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+    <!-- ================================================
+         SLIDE 12 — EXAMPLE 6 (Another Way)
+         Strategy: Work from left side
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-11" data-steps="4" data-current-step="-1">
+        <div class="slide-header">
+            <div class="another-way-badge">Another Way</div>
+            <div class="slide-title">Example 6 — Work from the left side</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">
+            \[\sin^3 x \cos^4 x = (\cos^4 x - \cos^6 x)\sin x\]
+        </div>
+        <div class="strategy-note">Strategy: Rewrite \(\sin^3 x\) as \(\sin^2 x \cdot \sin x\), then substitute \(\sin^2 x = 1 - \cos^2 x\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-label">Left side</div>
+                <div class="step-math">\(\sin^3 x \cos^4 x\)</div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-math">\(= \sin^2 x \cdot \sin x \cdot \cos^4 x\)
+                    <span class="annotation">rewrite \(\sin^3 x = \sin^2 x \cdot \sin x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-math">\(= (1 - \cos^2 x) \cdot \sin x \cdot \cos^4 x\)
+                    <span class="annotation">Pythagorean identity: \(\sin^2 x = 1 - \cos^2 x\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-11-step-3">
+                <div class="step-math">\(= (\cos^4 x - \cos^6 x)\sin x \checkmark\)
+                    <span class="annotation">distribute \(\sin x \cdot \cos^4 x\): \(\cos^4 x \sin x - \cos^6 x \sin x\)</span>
+                </div>
+            </div>
+        </div>
+        </div><!-- end slide-body -->
+    </section>
+
+</div><!-- end slides-wrapper -->
+
+<!-- KaTeX loaded synchronously to ensure math renders before JS runs -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    /* Render all LaTeX in the document */
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* After KaTeX renders, restructure each .step-math that has an annotation
+       so the equation and annotation appear side-by-side instead of stacked.
+       Wraps all pre-annotation nodes in .step-eq, then marks .has-annotation. */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+
+        // Collect every node that comes before the annotation span
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    /* ==============================================
+       PRESENTATION CONTROLLER
+       Handles navigation, step reveals, progress bar
+       ============================================== */
+    class SlidePresentation {
+        constructor() {
+            this.slides       = Array.from(document.querySelectorAll('.slide'));
+            this.current      = 0;
+            this.total        = this.slides.length;
+            this.progressBar  = document.getElementById('progressBar');
+            this.navDotsEl    = document.getElementById('navDots');
+            this.clickHint    = document.getElementById('clickHint');
+
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        /* Build navigation dots */
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._goTo(i);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        /* Sync progress bar, dots, and click hint */
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+
+            const slide    = this.slides[this.current];
+            const maxSteps = parseInt(slide.dataset.steps || 0);
+            const curStep  = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent = (curStep < maxSteps - 1)
+                ? 'click to advance'
+                : (this.current < this.total - 1 ? 'click for next slide' : '');
+        }
+
+        /* Make slide at index visible */
+        _activate(index) {
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        /* Transition to a different slide */
+        _goTo(index) {
+            if (index === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = index;
+            this.slides[this.current].classList.add('active');
+            this._sync();
+        }
+
+        /* Reveal next step on the current slide. Returns true if a step was revealed. */
+        _advanceStep(slide) {
+            const maxSteps = parseInt(slide.dataset.steps || 0);
+            let   curStep  = parseInt(slide.dataset.currentStep ?? -1);
+            if (curStep < maxSteps - 1) {
+                curStep++;
+                slide.dataset.currentStep = curStep;
+                const el = slide.querySelector(`#${slide.id}-step-${curStep}`);
+                if (el) el.classList.add('visible');
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _next() {
+            const consumed = this._advanceStep(this.slides[this.current]);
+            if (!consumed && this.current < this.total - 1) this._goTo(this.current + 1);
+        }
+
+        _prev() {
+            if (this.current > 0) this._goTo(this.current - 1);
+        }
+
+        _bindEvents() {
+            /* Keyboard */
+            document.addEventListener('keydown', (e) => {
+                if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
+                    e.preventDefault(); this._next();
+                } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
+                    e.preventDefault(); this._prev();
+                }
+            });
+
+            /* Click anywhere (except nav dots, handled separately) */
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.nav-dot')) this._next();
+            });
+
+            /* Touch swipe */
+            let touchStartX = 0;
+            document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            document.addEventListener('touchend', (e) => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 50) { dx < 0 ? this._next() : this._prev(); }
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

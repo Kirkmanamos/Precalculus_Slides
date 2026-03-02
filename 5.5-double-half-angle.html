@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.5 — Double &amp; Half Angle Identities</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        /* ============================================================
+           THEME — HoffMath Classroom (matches 5.2–5.4)
+           ============================================================ */
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --grid-line:     #dbeafe;
+            --bg-white:      #ffffff;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+            --navy-light:    #e8edf5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--navy);
+        }
+
+        /* ============================================================
+           SLIDE SHELL — horizontal transition model (matches 5.2–5.4)
+           ============================================================ */
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding-top: 5rem; padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        /* ============================================================
+           BACKGROUNDS
+           ============================================================ */
+        .title-slide {
+            background: var(--navy);
+            color: white;
+            justify-content: center;
+        }
+
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
+        }
+
+        /* ============================================================
+           TITLE SLIDE TYPOGRAPHY
+           ============================================================ */
+        .title-section-label {
+            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
+        }
+        .title-main {
+            font-size: 2em; font-weight: 700; line-height: 1.2;
+            color: white; margin-bottom: 0.5rem;
+        }
+        .title-objective {
+            font-size: 0.72em; color: #93c5fd; font-weight: 400;
+            line-height: 1.6; margin-top: 0.75rem;
+        }
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+        .chip {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; padding: 0.2em 0.75em;
+            font-size: 0.58em; color: #e2e8f0;
+        }
+
+        /* ============================================================
+           SLIDE HEADER
+           ============================================================ */
+        .slide-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.2rem; flex-shrink: 0;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
+
+        /* Tags / labels */
+        .example-label, .concept-label, .ref-label {
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
+        }
+        .example-label { background: var(--green-accent); }
+        .concept-label { background: var(--teal-accent); }
+        .ref-label     { background: var(--navy); }
+
+        /* ============================================================
+           PROBLEM STATEMENT
+           ============================================================ */
+        .problem-statement {
+            background: var(--navy-light); border-left: 5px solid var(--navy);
+            border-radius: 10px; padding: 0.65em 1.2em;
+            margin-bottom: 0.9rem; flex-shrink: 0;
+            font-weight: 600; color: var(--navy); font-size: 0.9em;
+        }
+        .problem-statement .katex-display { margin: 0; }
+
+        /* ============================================================
+           FORMULA REFERENCE CARDS
+           ============================================================ */
+        .formula-grid { display: grid; grid-template-columns: 1fr; gap: 0.75rem; flex: 1; }
+
+        .formula-row {
+            background: var(--blue-light); border-radius: 10px;
+            padding: 0.5em 1.2em;
+            display: flex; align-items: center; gap: 1.2rem;
+            border-left: 5px solid var(--blue-accent);
+        }
+        .formula-row.sin-row { border-color: var(--green-accent); background: var(--green-light); }
+        .formula-row.cos-row { border-color: var(--blue-accent);  background: var(--blue-light); }
+        .formula-row.tan-row { border-color: var(--teal-accent);  background: var(--teal-light); }
+
+        .fn-label {
+            font-size: 0.65em; font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; color: var(--text-muted);
+            min-width: 2.5rem; padding-top: 0.5em; flex-shrink: 0;
+        }
+        .fn-eq-stack { display: flex; flex-direction: column; flex: 1; }
+        .fn-eq-stack .fn-alt { color: var(--text-muted); font-size: 0.9em; }
+        .fn-eq-stack .katex-display,
+        .formula-row .katex-display { margin: 0.08em 0; }
+
+        .formula-note {
+            font-size: 0.62em; color: var(--orange-accent); font-weight: 600;
+            margin-top: 0.8rem; padding: 0.45em 1em;
+            background: var(--orange-light); border-left: 4px solid var(--orange-accent);
+            border-radius: 6px; flex-shrink: 0;
+        }
+
+        /* ============================================================
+           STEP REVEALS — Step boxes with labeled subtitles (5.5 style)
+           Each step gets a colored background card + a descriptive label
+           ============================================================ */
+        .steps-area { display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Hidden steps collapse to zero height so they don't push content off-screen */
+        .step {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            margin-bottom: 0;
+            transition: opacity 0.4s ease, max-height 0.45s ease, margin-bottom 0.3s ease;
+        }
+        .step.visible {
+            opacity: 1;
+            max-height: 350px;
+            margin-bottom: 0.4rem;
+        }
+        .step.visible:last-child { margin-bottom: 0; }
+
+        /* Labeled step card */
+        .step-box {
+            background: var(--blue-light); border-left: 4px solid var(--blue-accent);
+            border-radius: 10px; padding: 0.45em 1.1em;
+        }
+        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
+        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
+        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+        .step-box.dark   { background: var(--navy); }
+
+        .step-label {
+            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.08em;
+        }
+        .step-box.dark .step-label { color: #93c5fd; }
+
+        .step-math {
+            font-size: 0.88em; line-height: 2; padding: 0.2em 0; text-align: center;
+        }
+        .step-box.dark .step-math { color: white; }
+        .step-box.dark .katex { color: white; }
+
+        /* Annotation beside equation — applied via JS after KaTeX renders */
+        .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
+        .step-eq { flex: 1; text-align: center; }
+        .annotation {
+            flex: 0 0 36%; color: var(--blue-accent);
+            font-size: 0.72em; font-weight: 600; line-height: 1.45;
+            text-align: left; border-left: 3px solid #93c5fd; padding-left: 1rem;
+        }
+
+        /* Three-part answer grid for Example 1 */
+        .three-answer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+        .mini-answer {
+            background: var(--navy); color: white; border-radius: 8px;
+            padding: 0.45em 0.8em; text-align: center;
+        }
+        .mini-answer .katex { color: white; }
+        .mini-answer .part-label {
+            font-size: 0.6em; font-weight: 700; letter-spacing: 0.08em;
+            text-transform: uppercase; color: #93c5fd; display: block; margin-bottom: 0.08em;
+        }
+
+        /* ============================================================
+           NAV / PROGRESS (matches 5.2–5.4 exactly)
+           ============================================================ */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide, .step { transition: opacity 0.3s ease; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper" id="slidesWrapper">
+
+    <!-- ================================================================
+         SLIDE 1 — TITLE
+         ================================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.5 Double Angle &amp;<br>Half Angle Identities</div>
+        <div class="title-objective">Objective: Use multiple-angle formulas to rewrite and evaluate trigonometric functions.</div>
+        <div class="identity-chips">
+            <span class="chip">sin(2α) / cos(2α) / tan(2α)</span>
+            <span class="chip">Three forms of cos(2α)</span>
+            <span class="chip">sin(θ/2) / cos(θ/2) / tan(θ/2)</span>
+            <span class="chip">Exact values</span>
+            <span class="chip">Quadrant analysis</span>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 2 — DOUBLE-ANGLE IDENTITIES REFERENCE
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Double-Angle Identities</div>
+        </div>
+        <div class="slide-body">
+            <div class="formula-grid">
+                <div class="formula-row sin-row">
+                    <span class="fn-label">sin</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\sin(2\alpha) = 2\sin\alpha\cos\alpha\]</div>
+                    </div>
+                </div>
+                <div class="formula-row cos-row">
+                    <span class="fn-label">cos</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\cos(2\alpha) = \cos^2\!\alpha - \sin^2\!\alpha\]</div>
+                        <div class="fn-alt">\[\phantom{\cos(2\alpha)} = 2\cos^2\!\alpha - 1\]</div>
+                        <div class="fn-alt">\[\phantom{\cos(2\alpha)} = 1 - 2\sin^2\!\alpha\]</div>
+                    </div>
+                </div>
+                <div class="formula-row tan-row">
+                    <span class="fn-label">tan</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\tan(2\alpha) = \dfrac{2\tan\alpha}{1 - \tan^2\!\alpha}\]</div>
+                    </div>
+                </div>
+            </div>
+            <p class="formula-note">Derived from the Sum Identities — let β = α in sin(α+β), cos(α+β), tan(α+β)</p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 3 — EXAMPLE 1: Find sin(2θ), cos(2θ), tan(2θ)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-2" data-steps="5">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Using Double-Angle Identities</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find \(\sin(2\theta)\), \(\cos(2\theta)\), and \(\tan(2\theta)\) given
+                \(\cos\theta = \dfrac{5}{13}\) where \(\dfrac{3\pi}{2} &lt; \theta &lt; 2\pi\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Setup — Find sinθ and tanθ first</div>
+                        <div class="step-math">
+                            \[\theta \text{ in QIV with } \cos\theta = \tfrac{5}{13} \;\Longrightarrow\; \text{5-12-13 triple} \;\Longrightarrow\; \sin\theta = -\tfrac{12}{13},\quad \tan\theta = -\tfrac{12}{5}\]
+                            <span class="annotation">QIV: cosine positive, sine negative</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box">
+                        <div class="step-label">sin(2θ)</div>
+                        <div class="step-math">
+                            \[\sin(2\theta) = 2\sin\theta\cos\theta = 2\!\left(-\tfrac{12}{13}\right)\!\left(\tfrac{5}{13}\right) = -\dfrac{120}{169}\]
+                            <span class="annotation">Apply \(\sin(2\theta) = 2\sin\theta\cos\theta\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-2">
+                    <div class="step-box">
+                        <div class="step-label">cos(2θ)</div>
+                        <div class="step-math">
+                            \[\cos(2\theta) = 2\cos^2\!\theta - 1 = 2\!\left(\tfrac{5}{13}\right)^{\!2} - 1 = \tfrac{50}{169} - \tfrac{169}{169} = -\dfrac{119}{169}\]
+                            <span class="annotation">Use \(2\cos^2\theta - 1\) since cosθ is given</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-3">
+                    <div class="step-box">
+                        <div class="step-label">tan(2θ)</div>
+                        <div class="step-math">
+                            \[\tan(2\theta) = \dfrac{2\tan\theta}{1 - \tan^2\!\theta} = \dfrac{2\!\left(-\tfrac{12}{5}\right)}{1 - \tfrac{144}{25}} = \dfrac{-\tfrac{24}{5}}{-\tfrac{119}{25}} = \dfrac{120}{119}\]
+                            <span class="annotation">Note: \(\tan\theta = \tfrac{\sin\theta}{\cos\theta} = -\tfrac{12}{5}\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-4">
+                    <div class="three-answer-grid">
+                        <div class="mini-answer">
+                            <span class="part-label">sin(2θ)</span>
+                            \[-\dfrac{120}{169}\]
+                        </div>
+                        <div class="mini-answer">
+                            <span class="part-label">cos(2θ)</span>
+                            \[-\dfrac{119}{169}\]
+                        </div>
+                        <div class="mini-answer">
+                            <span class="part-label">tan(2θ)</span>
+                            \[\dfrac{120}{119}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 4 — EXAMPLE 2: Solve 2cosx + sin(2x) = 0
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="5">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Solving an Equation with Double Angles</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Solve \(2\cos x + \sin(2x) = 0\) where \(0 \le x &lt; 2\pi\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Strategy</div>
+                        <div class="step-math">
+                            Rewrite \(\sin(2x)\) with the double-angle identity so every term involves \(x\) only, then factor.
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Step 1 — Substitute the double-angle identity</div>
+                        <div class="step-math">
+                            \[2\cos x + 2\sin x\cos x = 0\]
+                            <span class="annotation">Replace \(\sin(2x)\) with \(2\sin x\cos x\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Step 2 — Factor</div>
+                        <div class="step-math">
+                            \[2\cos x\,(1 + \sin x) = 0\]
+                            <span class="annotation">Factor out \(2\cos x\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Step 3 — Solve each factor</div>
+                        <div class="step-math">
+                            \[2\cos x = 0 \;\Rightarrow\; \cos x = 0 \;\Rightarrow\; x = \tfrac{\pi}{2},\;\tfrac{3\pi}{2}\]
+                        </div>
+                        <div class="step-math">
+                            \[1 + \sin x = 0 \;\Rightarrow\; \sin x = -1 \;\Rightarrow\; x = \tfrac{3\pi}{2}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[x = \dfrac{\pi}{2}, \quad \dfrac{3\pi}{2}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 5 — EXAMPLE 3: Rewrite cos²(5α) − sin²(5α)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="3">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Rewriting with a Double-Angle Identity</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Use a double-angle identity to rewrite \(\cos^2(5\alpha) - \sin^2(5\alpha)\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Recognize the Pattern</div>
+                        <div class="step-math">
+                            The expression matches \(\cos^2 u - \sin^2 u = \cos(2u)\).
+                            <span class="annotation">Let \(u = 5\alpha\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Apply and Back-Substitute</div>
+                        <div class="step-math">
+                            \[\cos^2(5\alpha) - \sin^2(5\alpha) = \cos(2 \cdot 5\alpha)\]
+                            <span class="annotation">Back-substitute \(u = 5\alpha\) into \(\cos(2u)\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\cos(10\alpha)\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 6 — HALF-ANGLE IDENTITIES REFERENCE
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-5">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Half-Angle Identities</div>
+        </div>
+        <div class="slide-body">
+            <div class="formula-grid">
+                <div class="formula-row sin-row">
+                    <span class="fn-label">sin</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\sin\dfrac{\theta}{2} = \pm\sqrt{\dfrac{1-\cos\theta}{2}}\]</div>
+                    </div>
+                </div>
+                <div class="formula-row cos-row">
+                    <span class="fn-label">cos</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\cos\dfrac{\theta}{2} = \pm\sqrt{\dfrac{1+\cos\theta}{2}}\]</div>
+                    </div>
+                </div>
+                <div class="formula-row tan-row">
+                    <span class="fn-label">tan</span>
+                    <div class="fn-eq-stack">
+                        <div>\[\tan\dfrac{\theta}{2} = \pm\sqrt{\dfrac{1-\cos\theta}{1+\cos\theta}} = \dfrac{1-\cos\theta}{\sin\theta} = \dfrac{\sin\theta}{1+\cos\theta}\]</div>
+                    </div>
+                </div>
+            </div>
+            <p class="formula-note">The ± sign is determined by the quadrant of <strong>θ/2</strong> — not θ. Always identify the quadrant of θ/2 first!</p>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 7 — EXAMPLE 4: Find exact value of cos(165°)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-6" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Exact Value with a Half-Angle Identity</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find the exact value of \(\cos 165°\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Recognize as a Half Angle &amp; Determine the Sign</div>
+                        <div class="step-math">
+                            \[\cos 165° = \cos\dfrac{330°}{2}\]
+                            <span class="annotation">165° is in QII → cosine is <strong>negative</strong> → use the − sign</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Apply the Half-Angle Formula</div>
+                        <div class="step-math">
+                            \[\cos 165° = -\sqrt{\dfrac{1 + \cos 330°}{2}}\]
+                            <span class="annotation">\(\cos 330° = \cos(-30°) = \cos 30° = \dfrac{\sqrt{3}}{2}\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Substitute and Simplify</div>
+                        <div class="step-math">
+                            \[-\sqrt{\dfrac{1 + \frac{\sqrt{3}}{2}}{2}} = -\sqrt{\dfrac{\frac{2+\sqrt{3}}{2}}{2}} = -\sqrt{\dfrac{2+\sqrt{3}}{4}}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\cos 165° = -\dfrac{\sqrt{2+\sqrt{3}}}{2}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 8 — EXAMPLE 5: cos(x/2) given sinx = 2/5 in QI
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-7" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Half-Angle from Given Information</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Given \(\sin x = \dfrac{2}{5}\) where \(0 &lt; x &lt; \dfrac{\pi}{2}\), find \(\cos\dfrac{x}{2}\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-7-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Find cos x &amp; Determine the Sign</div>
+                        <div class="step-math">
+                            \[\cos x = \dfrac{\sqrt{21}}{5}\]
+                            <span class="annotation">Right triangle: opp = 2, hyp = 5 → adj = \(\sqrt{21}\). x in QI → x/2 in QI → cosine <strong>positive</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Apply the Half-Angle Formula</div>
+                        <div class="step-math">
+                            \[\cos\dfrac{x}{2} = +\sqrt{\dfrac{1 + \cos x}{2}} = \sqrt{\dfrac{1 + \frac{\sqrt{21}}{5}}{2}}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Simplify</div>
+                        <div class="step-math">
+                            \[= \sqrt{\dfrac{\frac{5+\sqrt{21}}{5}}{2}} = \sqrt{\dfrac{5+\sqrt{21}}{10}}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\cos\dfrac{x}{2} = \sqrt{\dfrac{5+\sqrt{21}}{10}}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 9 — EXAMPLE 6: sin(θ/2) given cosθ = 5/13 in QIV
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-8" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Half-Angle — Quadrant Analysis</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Given \(\cos\theta = \dfrac{5}{13}\) where \(\dfrac{3\pi}{2} &lt; \theta &lt; 2\pi\), find \(\sin\dfrac{\theta}{2}\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Determine the Quadrant of θ/2</div>
+                        <div class="step-math">
+                            \[\dfrac{3\pi}{2} &lt; \theta &lt; 2\pi \;\Longrightarrow\; \dfrac{3\pi}{4} &lt; \dfrac{\theta}{2} &lt; \pi\]
+                            <span class="annotation">θ/2 is in <strong>QII</strong> → sine is positive → use the + sign</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Apply the Half-Angle Formula</div>
+                        <div class="step-math">
+                            \[\sin\dfrac{\theta}{2} = +\sqrt{\dfrac{1 - \cos\theta}{2}} = \sqrt{\dfrac{1 - \frac{5}{13}}{2}} = \sqrt{\dfrac{\frac{8}{13}}{2}}\]
+                            <span class="annotation">Substitute \(\cos\theta = \tfrac{5}{13}\)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Simplify</div>
+                        <div class="step-math">
+                            \[\sqrt{\dfrac{8}{26}} = \sqrt{\dfrac{4}{13}} = \dfrac{2}{\sqrt{13}} = \dfrac{2\sqrt{13}}{13}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\sin\dfrac{\theta}{2} = \dfrac{2\sqrt{13}}{13}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* Move each annotation beside its equation (same as 5.2–5.4) */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(n => eqDiv.appendChild(n));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    /* ===== PRESENTATION CONTROLLER (matches 5.2–5.4) ===== */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => { e.stopPropagation(); this._goTo(i); });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max   = parseInt(slide.dataset.steps || 0);
+            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent = cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+        }
+        _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
+        _goTo(i) {
+            if (i === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left'); out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i; this.slides[i].classList.add('active'); this._sync();
+        }
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++; slide.dataset.currentStep = cur;
+                slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.add('visible');
+                this._sync(); return true;
+            }
+            return false;
+        }
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false; // nothing visible to hide
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync(); return true;
+        }
+        _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
+        _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
+                else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
+            });
+            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
+            let tx = 0;
+            document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+            document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

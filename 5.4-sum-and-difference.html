@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.4 Sum and Difference Identities</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        /* ==============================================
+           THEME: HoffMath Classroom — identical to 5.2 / 5.3
+           ============================================== */
+        :root {
+            --dark-navy:    #1a365d;
+            --blue-accent:  #2563eb;
+            --green-accent: #16a34a;
+            --teal-accent:  #0891b2;
+            --red-accent:   #dc2626;
+            --orange-accent:#d97706;
+            --grid-line:    #dbeafe;
+            --bg-white:     #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--dark-navy);
+        }
+
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding-top: 5rem; padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        /* ===== BACKGROUNDS ===== */
+        .title-slide     { background: var(--dark-navy); color: white; justify-content: center; }
+        .section-divider { background: var(--dark-navy); color: white; justify-content: center; align-items: flex-start; }
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px; color: #1e293b;
+        }
+
+        /* ===== TITLE / SECTION ===== */
+        .title-section-label { font-size: 0.7em; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #93c5fd; margin-bottom: 0.8rem; }
+        .title-main          { font-size: 2em; font-weight: 700; line-height: 1.2; color: white; margin-bottom: 0.5rem; }
+        .title-objective     { font-size: 0.72em; color: #93c5fd; margin-top: 1rem; font-weight: 500; line-height: 1.6; }
+        .section-label       { font-size: 0.65em; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #93c5fd; margin-bottom: 0.6rem; }
+        .section-title       { font-size: 1.6em; font-weight: 700; color: white; line-height: 1.3; }
+
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+        .chip { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; padding: 0.25em 0.8em; font-size: 0.6em; color: #e2e8f0; }
+
+        /* ===== SLIDE HEADER ===== */
+        .slide-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; flex-shrink: 0; }
+        .example-label { background: var(--blue-accent); color: white; font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .concept-label { background: var(--teal-accent); color: white; font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .ref-label     { background: var(--dark-navy); color: white; font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em; border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .slide-title   { font-size: 1em; font-weight: 700; color: var(--dark-navy); }
+
+        /* ===== PROBLEM STATEMENT ===== */
+        .problem-statement { background: #f8fafc; border: 2px solid var(--blue-accent); border-radius: 10px; padding: 0.7em 1.2em; margin-bottom: 1rem; flex-shrink: 0; text-align: center; }
+        .problem-statement .katex-display { margin: 0; }
+        .strategy-note { font-size: 0.65em; color: #64748b; font-style: italic; margin-bottom: 0.8rem; flex-shrink: 0; }
+
+        /* ===== STEP REVEALS ===== */
+        .steps-area { display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+        .step { opacity: 0; transform: translateY(15px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .step.visible { opacity: 1; transform: translateY(0); }
+        .step-label { font-size: 0.6em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 4px; }
+        .step-math  { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; }
+        .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
+        .step-eq    { flex: 1; text-align: center; }
+        .step.answer .step-math { background: #f0fdf4; border-left: 4px solid var(--green-accent); padding: 10px 18px; border-radius: 0 6px 6px 0; }
+        .annotation { flex: 0 0 36%; color: var(--blue-accent); font-size: 0.72em; font-weight: 600; line-height: 1.45; text-align: left; border-left: 3px solid #93c5fd; padding-left: 1rem; }
+
+        /* ===== CONCEPT / FORMULA BOXES ===== */
+        .concept-box { background: #f8fafc; border-left: 4px solid var(--blue-accent); border-radius: 0 10px 10px 0; padding: 0.8em 1.2em; margin-bottom: 1rem; }
+        .concept-box.teal   { border-color: var(--teal-accent); }
+        .concept-box.green  { border-color: var(--green-accent); }
+        .concept-box.navy   { border-color: var(--dark-navy); }
+        .concept-box p  { font-size: 0.75em; color: #1e293b; line-height: 1.6; }
+        .concept-box p + p { margin-top: 0.5em; }
+
+        /* Identity formula card — three-row grid */
+        .formula-grid { display: grid; grid-template-columns: 1fr; gap: 0.8rem; flex: 1; }
+        .formula-row {
+            background: #f8fafc; border-radius: 10px;
+            padding: 0.6em 1.2em;
+            display: flex; align-items: center; gap: 1.5rem;
+            border-left: 5px solid var(--blue-accent);
+        }
+        .formula-row.sin-row { border-color: var(--green-accent); background: #f0fdf4; }
+        .formula-row.cos-row { border-color: var(--blue-accent);  background: #eff6ff; }
+        .formula-row.tan-row { border-color: var(--teal-accent);  background: #f0fdfa; }
+        .formula-func { font-size: 0.65em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; min-width: 2.5rem; }
+        .formula-row.sin-row .formula-func { color: var(--green-accent); }
+        .formula-row.cos-row .formula-func { color: var(--blue-accent);  }
+        .formula-row.tan-row .formula-func { color: var(--teal-accent);  }
+        .formula-eq { font-size: 0.85em; flex: 1; text-align: center; }
+
+        /* Two-problem layout */
+        .two-problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; flex-shrink: 0; }
+        .sub-problem { background: #f8fafc; border: 2px solid var(--blue-accent); border-radius: 10px; padding: 0.5em 1em; text-align: center; }
+        .sub-label { font-size: 0.55em; font-weight: 700; color: var(--blue-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.2em; }
+
+        /* Given info box for example 4 */
+        .given-box { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1rem; flex-shrink: 0; }
+        .given-item { background: #eff6ff; border: 1px solid #93c5fd; border-radius: 8px; padding: 0.4em 0.8em; text-align: center; font-size: 0.7em; }
+
+        /* ===== NAV / PROGRESS ===== */
+        .nav-dots { position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 100; }
+        .nav-dot  { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: all 0.3s; }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+        .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent)); transition: width 0.4s ease; z-index: 100; }
+        .click-hint { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.45em; color: rgba(100,116,139,0.6); letter-spacing: 0.1em; text-transform: uppercase; animation: pulse 2s ease-in-out infinite; z-index: 100; }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) { .slide, .step { transition: opacity 0.3s ease; transform: none !important; } }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper" id="slidesWrapper">
+
+    <!-- ================================================
+         SLIDE 1 — TITLE
+         ================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.4 Sum and Difference<br>Identities</div>
+        <div class="title-objective">Objective: Use sum and difference formulas to evaluate trigonometric functions and simplify trigonometric expressions.</div>
+        <div class="identity-chips">
+            <span class="chip">sin(α ± β)</span>
+            <span class="chip">cos(α ± β)</span>
+            <span class="chip">tan(α ± β)</span>
+            <span class="chip">Exact values</span>
+            <span class="chip">Simplify expressions</span>
+            <span class="chip">u-substitution setup</span>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 2 — MOTIVATION
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <div class="concept-label">Motivation</div>
+            <div class="slide-title">Why more identities?</div>
+        </div>
+        <div class="slide-body" style="gap:1rem;">
+            <div class="concept-box">
+                <p>You already know how to find the exact values of trig functions for special angles directly from the unit circle:</p>
+                <p>\(\sin 30° = \dfrac{1}{2}\) &ensp;✓ &emsp; \(\sin 45° = \dfrac{\sqrt{2}}{2}\) &ensp;✓</p>
+            </div>
+            <div class="concept-box teal">
+                <p><strong>But what about \(\sin 195°\)?</strong></p>
+                <p>That angle is not a special angle. However, we can write it as a sum or difference of angles we <em>do</em> know:</p>
+                <p>\(\sin 195° = \sin(150° + 45°)\)</p>
+                <p>The <strong>Sum and Difference Identities</strong> let us evaluate expressions like this exactly.</p>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Also useful for:</strong> simplifying expressions such as \(\cos(\theta - \tfrac{3\pi}{2})\) into a single trig function of \(\theta\).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 3 — IDENTITIES REFERENCE CARD
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Sum and Difference Identities</div>
+        </div>
+        <div class="slide-body">
+        <div class="formula-grid">
+            <div class="formula-row sin-row">
+                <div class="formula-func">Sin</div>
+                <div class="formula-eq">\(\sin(\alpha \pm \beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta\)</div>
+            </div>
+            <div class="formula-row cos-row">
+                <div class="formula-func">Cos</div>
+                <div class="formula-eq">\(\cos(\alpha \pm \beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta\)</div>
+            </div>
+            <div class="formula-row tan-row">
+                <div class="formula-func">Tan</div>
+                <div class="formula-eq">\(\tan(\alpha \pm \beta) = \dfrac{\tan\alpha \pm \tan\beta}{1 \mp \tan\alpha\tan\beta}\)</div>
+            </div>
+        </div>
+        <div style="margin-top:0.8rem; font-size:0.6em; color:#64748b; font-style:italic; text-align:center;">
+            Note: the ∓ in cos and tan means the sign is <em>opposite</em> to the ± in the argument.
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 4 — EXAMPLES 1 & 2
+         Find exact values of cos 15° and sin(π/12)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="2" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Examples 1 &amp; 2</div>
+            <div class="slide-title">Find the exact value</div>
+        </div>
+        <div class="slide-body">
+        <div class="two-problem-grid">
+            <div class="sub-problem">
+                <div class="sub-label">1)</div>
+                \(\cos 15°\)
+            </div>
+            <div class="sub-problem">
+                <div class="sub-label">2)</div>
+                \(\sin\!\dfrac{\pi}{12}\)
+            </div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-label">Example 1</div>
+                <div class="step-math">\(\cos 15° = \cos(45° - 30°)\)
+                    <span class="annotation">write 15° as a difference of special angles</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-3-step-1">
+                <div class="step-math">
+                    \(= \cos45°\cos30° + \sin45°\sin30° = \dfrac{\sqrt{2}}{2}\cdot\dfrac{\sqrt{3}}{2} + \dfrac{\sqrt{2}}{2}\cdot\dfrac{1}{2} = \dfrac{\sqrt{6}+\sqrt{2}}{4}\)
+                    <span class="annotation">cos(α−β) = cosα cosβ + sinα sinβ &nbsp;— note the sign flips</span>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2" style="margin-top:0.3rem;">
+                <div class="step-label">Example 2</div>
+                <div class="step-math">\(\sin\dfrac{\pi}{12} = \sin\!\left(\dfrac{\pi}{3} - \dfrac{\pi}{4}\right)\)
+                    <span class="annotation">write \(\tfrac{\pi}{12} = \tfrac{4\pi}{12} - \tfrac{3\pi}{12} = \tfrac{\pi}{3} - \tfrac{\pi}{4}\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-3-step-3">
+                <div class="step-math">
+                    \(= \sin\dfrac{\pi}{3}\cos\dfrac{\pi}{4} - \cos\dfrac{\pi}{3}\sin\dfrac{\pi}{4} = \dfrac{\sqrt{3}}{2}\cdot\dfrac{\sqrt{2}}{2} - \dfrac{1}{2}\cdot\dfrac{\sqrt{2}}{2} = \dfrac{\sqrt{6}-\sqrt{2}}{4}\)
+                    <span class="annotation">sin(α−β) = sinα cosβ − cosα sinβ</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 5 — EXAMPLE 3
+         Find the exact value of tan 15°
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Find the exact value</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[\tan 15°\]</div>
+        <div class="strategy-note">Strategy: Write 15° = 45° − 30°, apply the difference formula, then rationalize.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-math">\(\tan 15° = \tan(45° - 30°)\)
+                    <span class="annotation">15° = 45° − 30°</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-math">\(= \dfrac{\tan 45° - \tan 30°}{1 + \tan 45° \cdot \tan 30°}\)
+                    <span class="annotation">apply the tangent difference formula</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-math">\(= \dfrac{1 - \dfrac{\sqrt{3}}{3}}{1 + 1 \cdot \dfrac{\sqrt{3}}{3}}\)
+                    <span class="annotation">substitute \(\tan45° = 1\) and \(\tan30° = \dfrac{\sqrt{3}}{3}\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-math">\(= \dfrac{3 - \sqrt{3}}{3 + \sqrt{3}} \cdot \dfrac{3 - \sqrt{3}}{3 - \sqrt{3}} = \dfrac{(3-\sqrt{3})^2}{9 - 3}\)
+                    <span class="annotation">multiply by \(\tfrac{3}{3}\) first, then rationalize by multiplying by the conjugate</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-4-step-4">
+                <div class="step-math">\(= \dfrac{9 - 6\sqrt{3} + 3}{6} = \dfrac{12 - 6\sqrt{3}}{6} = 2 - \sqrt{3} \qquad \checkmark\)
+                    <span class="annotation">expand numerator, simplify</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 6 — EXAMPLE 4
+         Find sin(u+v) given sinu = 4/5 (QI), cosv = -12/13 (QII)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-5" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Find the exact value of \(\sin(u+v)\)</div>
+        </div>
+        <div class="slide-body">
+        <div class="given-box">
+            <div class="given-item">\(\sin u = \dfrac{4}{5},\quad 0 &lt; u &lt; \dfrac{\pi}{2}\)</div>
+            <div class="given-item">\(\cos v = -\dfrac{12}{13},\quad \dfrac{\pi}{2} &lt; v &lt; \pi\)</div>
+        </div>
+        <div class="strategy-note">Strategy: Find the missing values (cos u and sin v) using Pythagorean identities, then apply sin(u+v).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-label">Find cos u</div>
+                <div class="step-math">\(\cos u = \sqrt{1 - \sin^2 u} = \sqrt{1 - \tfrac{16}{25}} = \dfrac{3}{5}\)
+                    <span class="annotation">u is in QI, so cosine is positive</span>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-label">Find sin v</div>
+                <div class="step-math">\(\sin v = \sqrt{1 - \cos^2 v} = \sqrt{1 - \tfrac{144}{169}} = \dfrac{5}{13}\)
+                    <span class="annotation">v is in QII, so sine is positive</span>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-math">\(\sin(u+v) = \sin u \cos v + \cos u \sin v\)
+                    <span class="annotation">apply the sum formula</span>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-math">\(= \dfrac{4}{5}\!\cdot\!\left(-\dfrac{12}{13}\right) + \dfrac{3}{5}\!\cdot\!\dfrac{5}{13} = -\dfrac{48}{65} + \dfrac{15}{65}\)
+                    <span class="annotation">substitute the four values</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-5-step-4">
+                <div class="step-math">\(= -\dfrac{33}{65} \qquad \checkmark\)
+                    <span class="annotation">combine over common denominator</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 7 — EXAMPLE 5
+         Simplify: sin 220° cos 5° + cos 220° sin 5°
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-6" data-steps="4" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Simplify</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[\sin 220°\cos 5° + \cos 220°\sin 5°\]</div>
+        <div class="strategy-note">Strategy: Recognize the sum formula pattern — this is sin(α + β) in disguise.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-math">\(\sin 220°\cos 5° + \cos 220°\sin 5°\)</div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-math">\(= \sin(220° + 5°)\)
+                    <span class="annotation">this matches \(\sin\alpha\cos\beta + \cos\alpha\sin\beta = \sin(\alpha+\beta)\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-math">\(= \sin 225°\)
+                    <span class="annotation">add the angles</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-6-step-3">
+                <div class="step-math">\(= -\dfrac{\sqrt{2}}{2} \qquad \checkmark\)
+                    <span class="annotation">\(225° = 180° + 45°\), so \(\sin225° = -\sin45° = -\dfrac{\sqrt{2}}{2}\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 8 — EXAMPLES 6 & 7
+         Simplify: cos(θ − 3π/2) and tan(θ + 3π)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-7" data-steps="4" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Examples 6 &amp; 7</div>
+            <div class="slide-title">Simplify each expression</div>
+        </div>
+        <div class="slide-body">
+        <div class="two-problem-grid">
+            <div class="sub-problem">
+                <div class="sub-label">6)</div>
+                \(\cos\!\left(\theta - \dfrac{3\pi}{2}\right)\)
+            </div>
+            <div class="sub-problem">
+                <div class="sub-label">7)</div>
+                \(\tan(\theta + 3\pi)\)
+            </div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-label">Example 6</div>
+                <div class="step-math">\(\cos\!\left(\theta - \dfrac{3\pi}{2}\right) = \cos\theta\cos\dfrac{3\pi}{2} + \sin\theta\sin\dfrac{3\pi}{2}\)
+                    <span class="annotation">apply cos(α−β) = cosα cosβ + sinα sinβ</span>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-math">\(= \cos\theta\cdot(0) + \sin\theta\cdot(-1)\)
+                    <span class="annotation">\(\cos\tfrac{3\pi}{2} = 0\) and \(\sin\tfrac{3\pi}{2} = -1\) from the unit circle</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-7-step-2">
+                <div class="step-math">\(= -\sin\theta \qquad \checkmark\)</div>
+            </div>
+            <div class="step" id="slide-7-step-3" style="margin-top:0.3rem;">
+                <div class="step-label">Example 7</div>
+                <div class="step-math">\(\tan(\theta + 3\pi) = \dfrac{\tan\theta + \tan 3\pi}{1 - \tan\theta\cdot\tan 3\pi} = \dfrac{\tan\theta + 0}{1 - \tan\theta\cdot 0}\)
+                    <span class="annotation">\(\tan 3\pi = \tan\pi = 0\) since tangent has period \(\pi\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-7-step-4">
+                <div class="step-math">\(= \tan\theta \qquad \checkmark\)
+                    <span class="annotation">confirms the period property: \(\tan(\theta + n\pi) = \tan\theta\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+</div><!-- end slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* Move each annotation beside its equation */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(n => eqDiv.appendChild(n));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    /* ===== PRESENTATION CONTROLLER ===== */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => { e.stopPropagation(); this._goTo(i); });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max   = parseInt(slide.dataset.steps || 0);
+            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent = cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+        }
+        _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
+        _goTo(i) {
+            if (i === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left'); out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i; this.slides[i].classList.add('active'); this._sync();
+        }
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++; slide.dataset.currentStep = cur;
+                slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.add('visible');
+                this._sync(); return true;
+            }
+            return false;
+        }
+        _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
+        _prev() { if (this.current > 0) this._goTo(this.current - 1); }
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
+                else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
+            });
+            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
+            let tx = 0;
+            document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+            document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

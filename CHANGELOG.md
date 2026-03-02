@@ -5,6 +5,19 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## Current Status (as of 2026-03-01)
+
+### Recently Added
+
+**HTML Presentations:**
+- `5.1-fundamental-identities.html` — Using Fundamental Identities (7 examples, HoffMath Classroom style)
+- `5.2-verifying-trig-identities.html` — Verifying Trig Identities (6 examples + alternate methods, HoffMath Classroom style)
+- `5.3-solving-trig-equations.html` — Solving Trig Equations (7 examples, caution/exception slides, HoffMath Classroom style)
+- `5.4-sum-and-difference.html` — Sum and Difference Identities (7 examples, formula reference card, two-problem layouts, HoffMath Classroom style)
+- `5.5-double-half-angle.html` — Double &amp; Half Angle Identities (6 examples, two reference cards, three-part answer grid, quadrant analysis, HoffMath Classroom style)
+
+---
+
 ## Current Status (as of 2026-02-26)
 
 ### What's Done

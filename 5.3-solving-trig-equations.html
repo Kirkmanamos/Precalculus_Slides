@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.3 Solving Trigonometric Equations</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        /* ==============================================
+           THEME: HoffMath Classroom — identical to 5.2
+           ============================================== */
+        :root {
+            --dark-navy:    #1a365d;
+            --blue-accent:  #2563eb;
+            --green-accent: #16a34a;
+            --teal-accent:  #0891b2;
+            --red-accent:   #dc2626;
+            --orange-accent:#d97706;
+            --grid-line:    #dbeafe;
+            --bg-white:     #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--dark-navy);
+        }
+
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 5rem;
+            padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+        /* ===== BACKGROUNDS ===== */
+        .title-slide { background: var(--dark-navy); color: white; justify-content: center; }
+        .section-divider { background: var(--dark-navy); color: white; justify-content: center; align-items: flex-start; }
+
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: #1e293b;
+        }
+
+        /* ===== TITLE / SECTION SLIDES ===== */
+        .title-section-label {
+            font-size: 0.7em; font-weight: 600; letter-spacing: 0.15em;
+            text-transform: uppercase; color: #93c5fd; margin-bottom: 0.8rem;
+        }
+        .title-main { font-size: 2em; font-weight: 700; line-height: 1.2; color: white; margin-bottom: 0.5rem; }
+        .title-objective { font-size: 0.72em; color: #93c5fd; margin-top: 1rem; font-weight: 500; line-height: 1.6; }
+
+        .section-label { font-size: 0.65em; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #93c5fd; margin-bottom: 0.6rem; }
+        .section-title { font-size: 1.6em; font-weight: 700; color: white; line-height: 1.3; }
+
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+        .chip {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; padding: 0.25em 0.8em; font-size: 0.6em; color: #e2e8f0;
+        }
+
+        /* ===== SLIDE HEADER ===== */
+        .slide-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; flex-shrink: 0; }
+        .example-label {
+            background: var(--blue-accent); color: white;
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .concept-label {
+            background: var(--teal-accent); color: white;
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .caution-label {
+            background: var(--orange-accent); color: white;
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--dark-navy); }
+
+        /* ===== PROBLEM STATEMENT ===== */
+        .problem-statement {
+            background: #f8fafc; border: 2px solid var(--blue-accent);
+            border-radius: 10px; padding: 0.7em 1.2em;
+            margin-bottom: 1rem; flex-shrink: 0; text-align: center;
+        }
+        .problem-statement .katex-display { margin: 0; }
+
+        .strategy-note { font-size: 0.65em; color: #64748b; font-style: italic; margin-bottom: 0.8rem; flex-shrink: 0; }
+
+        /* ===== STEP REVEALS ===== */
+        .steps-area { display: flex; flex-direction: column; gap: 22px; overflow: hidden; }
+
+        .step {
+            opacity: 0; transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .step.visible { opacity: 1; transform: translateY(0); }
+
+        .step-label { font-size: 0.6em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #64748b; margin-bottom: 4px; }
+
+        .step-math { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; }
+
+        .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
+        .step-eq { flex: 1; text-align: center; }
+
+        .step.answer .step-math {
+            background: #f0fdf4; border-left: 4px solid var(--green-accent);
+            padding: 10px 18px; border-radius: 0 6px 6px 0;
+        }
+        .step.warning .step-math {
+            background: #fff7ed; border-left: 4px solid var(--orange-accent);
+            padding: 10px 18px; border-radius: 0 6px 6px 0;
+        }
+
+        .annotation {
+            flex: 0 0 36%; color: var(--blue-accent); font-size: 0.72em;
+            font-weight: 600; line-height: 1.45; text-align: left;
+            border-left: 3px solid #93c5fd; padding-left: 1rem;
+        }
+
+        /* ===== CONCEPT BOXES ===== */
+        .concept-box {
+            background: #f8fafc; border-left: 4px solid var(--blue-accent);
+            border-radius: 0 10px 10px 0; padding: 0.8em 1.2em; margin-bottom: 1rem;
+        }
+        .concept-box.teal    { border-color: var(--teal-accent); }
+        .concept-box.green   { border-color: var(--green-accent); }
+        .concept-box.orange  { border-color: var(--orange-accent); background: #fff7ed; }
+        .concept-box.red     { border-color: var(--red-accent); background: #fef2f2; }
+        .concept-box p { font-size: 0.75em; color: #1e293b; line-height: 1.6; }
+        .concept-box p + p { margin-top: 0.5em; }
+
+        /* ===== NAV / PROGRESS ===== */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide, .step { transition: opacity 0.3s ease; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper" id="slidesWrapper">
+
+    <!-- ================================================
+         SLIDE 1 — TITLE
+         ================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.3 Solving<br>Trigonometric Equations</div>
+        <div class="title-objective">
+            Objectives: Use standard algebraic techniques to solve trigonometric equations.<br>
+            Solve equations of quadratic type. Solve equations involving multiple angles.
+        </div>
+        <div class="identity-chips">
+            <span class="chip">Isolate the trig function</span>
+            <span class="chip">Factor — never divide</span>
+            <span class="chip">u-substitution</span>
+            <span class="chip">Pythagorean Identities</span>
+            <span class="chip">Unit Circle</span>
+            <span class="chip">Check for extraneous solutions</span>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 2 — INTRODUCTION
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Introduction</div>
+        </div>
+        <div class="slide-body" style="gap:1rem;">
+            <div class="concept-box">
+                <p>To solve a trigonometric equation, use standard algebraic techniques such as <strong>collecting like terms</strong> and <strong>factoring</strong>.</p>
+                <p>Your preliminary goal is to <strong>isolate the trigonometric function</strong> involved in the equation, then use the unit circle to identify all angles that satisfy it.</p>
+            </div>
+            <div class="concept-box teal">
+                <p><strong>Restricted vs. General Solutions:</strong><br>
+                   When a domain is given (e.g., \(0 \le \theta &lt; 2\pi\)), list only the angles in that interval.<br>
+                   When no domain is given, express <em>all solutions</em> using \(+ 2\pi n\) (or \(+ \pi n\) for tangent/cotangent), where \(n\) is any integer.</p>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Key reminder:</strong> After solving, always verify your answers by substituting back into the original equation — especially if you squared both sides, which can introduce extraneous solutions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 3 — CAUTION + EXCEPTION
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2" data-current-step="-1">
+        <div class="slide-header">
+            <div class="caution-label">Caution</div>
+            <div class="slide-title">Never divide both sides by a trig function</div>
+        </div>
+        <div class="slide-body" style="gap: 1rem;">
+            <div class="concept-box orange step" id="slide-2-step-0">
+                <p><strong>⚠️ Do NOT divide both sides by a trig function to cancel it.</strong> You may be dividing by zero, and you will eliminate solutions.</p>
+                <p>For example: \(\quad 2\cos\beta\sin\beta = \sin\beta\)<br>
+                   Dividing by \(\sin\beta\) gives \(2\cos\beta = 1\) — but you lost the solution \(\sin\beta = 0\).<br>
+                   <strong>Correct approach:</strong> Move everything to one side and factor.</p>
+            </div>
+            <div class="concept-box green step" id="slide-2-step-1">
+                <p><strong>Exception — dividing to convert to another function:</strong><br>
+                   You may divide when the goal is to change the form of an expression into another trig function, not to "cancel" a factor.</p>
+                <p>For example, dividing \(\sin x + \cos x = \tan x\) through by \(\sin x\) gives \(1 + \cot x = \sec x\) — a valid identity transformation, not solving.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 4 — EXAMPLE 1
+         Solve: tan²θ − 3 = 0, [0, 2π)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Solve where \(0 \le \theta &lt; 2\pi\)</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[\tan^2\theta - 3 = 0\]</div>
+        <div class="strategy-note">Strategy: Isolate tan²θ, take the square root, then use the unit circle.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-math">\(\tan^2\theta - 3 = 0\)</div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-math">\(\tan^2\theta = 3\)
+                    <span class="annotation">add 3 to both sides</span>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-math">\(\tan\theta = \pm\sqrt{3}\)
+                    <span class="annotation">take the square root of both sides — both \(+\) and \(-\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-math">\(\tan\theta = \sqrt{3} \;\Rightarrow\; \theta = \dfrac{\pi}{3},\, \dfrac{4\pi}{3}\)
+                    <span class="annotation">tangent is positive in QI and QIII</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-3-step-4">
+                <div class="step-math">\(\tan\theta = -\sqrt{3} \;\Rightarrow\; \theta = \dfrac{2\pi}{3},\, \dfrac{5\pi}{3} \qquad \checkmark\)
+                    <span class="annotation">tangent is negative in QII and QIV — solutions: \(\dfrac{\pi}{3}, \dfrac{2\pi}{3}, \dfrac{4\pi}{3}, \dfrac{5\pi}{3}\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 5 — EXAMPLE 2
+         Solve: cot x · cos²x = 2cot x  (all solutions)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Solve for all solutions</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[\cot x \cos^2 x = 2\cot x\]</div>
+        <div class="strategy-note">Strategy: Move everything to one side, factor — do not divide by cot x.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-math">\(\cot x \cos^2 x = 2\cot x\)</div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-math">\(\cot x \cos^2 x - 2\cot x = 0\)
+                    <span class="annotation">move everything to one side</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-math">\(\cot x\,(\cos^2 x - 2) = 0\)
+                    <span class="annotation">factor out \(\cot x\) (do NOT divide — that eliminates solutions)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-math">\(\cot x = 0 \quad \text{or} \quad \cos^2 x = 2\)
+                    <span class="annotation">\(\cos^2 x = 2 \Rightarrow \cos x = \pm\sqrt{2}\) — impossible since \(|\cos x| \le 1\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-4-step-4">
+                <div class="step-math">\(x = \dfrac{\pi}{2} + \pi n, \quad n \in \mathbb{Z} \qquad \checkmark\)
+                    <span class="annotation">cotangent equals 0 wherever tangent is undefined: \(x = \frac{\pi}{2}, \frac{3\pi}{2}, \ldots\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 6 — SECTION BREAK: QUADRATIC TYPE
+         ================================================ -->
+    <section class="slide section-divider" id="slide-5">
+        <div class="section-label">Unit 5 · Section 5.3</div>
+        <div class="section-title">Equations of<br>Quadratic Type</div>
+        <div style="margin-top:1.2rem; font-size:0.65em; color:#93c5fd; line-height:1.7; font-weight:500;">
+            When a trig equation has the form \(a[\,f(x)\,]^2 + b[\,f(x)\,] + c = 0\),<br>
+            substitute \(u = f(x)\) to turn it into a standard quadratic, factor, then back-substitute.
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 7 — EXAMPLE 3
+         Solve: 2cos²θ − 7cosθ + 3 = 0, [0, 2π)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-6" data-steps="6" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Solve where \(0 \le \theta &lt; 2\pi\)</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[2\cos^2\theta - 7\cos\theta + 3 = 0\]</div>
+        <div class="strategy-note">Strategy: Substitute \(u = \cos\theta\) to form a standard quadratic, then factor.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-math">\(2\cos^2\theta - 7\cos\theta + 3 = 0\)</div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-math">\(\text{Let } u = \cos\theta: \quad 2u^2 - 7u + 3 = 0\)
+                    <span class="annotation">u-substitution turns this into a standard quadratic</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-math">\((2u - 1)(u - 3) = 0\)
+                    <span class="annotation">factor the quadratic</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-math">\(2\cos\theta - 1 = 0 \quad \Rightarrow \quad \cos\theta = \tfrac{1}{2}\)
+                    <span class="annotation">back-substitute \(u = \cos\theta\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-math">\(\cos\theta - 3 = 0 \quad \Rightarrow \quad \cos\theta = 3\)
+                    <span class="annotation">impossible — range of cosine is \([-1, 1]\), so no solution from this factor</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-6-step-5">
+                <div class="step-math">\(\theta = \dfrac{\pi}{3},\; \dfrac{5\pi}{3} \qquad \checkmark\)
+                    <span class="annotation">\(\cos\theta = \tfrac{1}{2}\) in QI and QIV</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 8 — CONCEPT: RESTRICTED VS. ALL SOLUTIONS
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-7">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Restricted domain vs. all solutions</div>
+        </div>
+        <div class="slide-body" style="gap:1rem;">
+            <div class="concept-box">
+                <p>The previous example asked for solutions only in \(0 \le \theta &lt; 2\pi\) — one full cycle of the unit circle.</p>
+                <p>Sometimes you need <strong>all solutions</strong> over the entire domain of the function.</p>
+            </div>
+            <div class="concept-box teal">
+                <p><strong>General solution notation:</strong><br>
+                   For sine and cosine (period \(2\pi\)): add \(+\, 2\pi n\) to each solution.<br>
+                   For tangent and cotangent (period \(\pi\)): add \(+\, \pi n\) to each solution.<br>
+                   where \(n\) is any integer.
+                </p>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Example:</strong> \(\cos\theta = \tfrac{1}{2}\) has general solutions \(\theta = \dfrac{\pi}{3} + 2\pi n\) and \(\theta = \dfrac{5\pi}{3} + 2\pi n\).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 9 — EXAMPLE 4
+         Solve: 2sin²x + 3cosx − 3 = 0  (all solutions)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-8" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Solve for all solutions</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[2\sin^2 x + 3\cos x - 3 = 0\]</div>
+        <div class="strategy-note">Strategy: Substitute a Pythagorean identity to write the equation in terms of one function, then factor.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-math">\(2\sin^2 x + 3\cos x - 3 = 0\)</div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-math">\(2(1 - \cos^2 x) + 3\cos x - 3 = 0\)
+                    <span class="annotation">substitute \(\sin^2 x = 1 - \cos^2 x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-math">\(2\cos^2 x - 3\cos x + 1 = 0\)
+                    <span class="annotation">expand, collect like terms, and simplify</span>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-math">\((2\cos x - 1)(\cos x - 1) = 0\)
+                    <span class="annotation">factor: \(\cos x = \tfrac{1}{2}\) or \(\cos x = 1\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-8-step-4">
+                <div class="step-math">\(x = \dfrac{\pi}{3} + 2\pi n,\quad x = \dfrac{5\pi}{3} + 2\pi n,\quad x = 2\pi n \qquad \checkmark\)
+                    <span class="annotation">\(\cos x = \tfrac{1}{2}\) gives QI and QIV; \(\cos x = 1\) gives \(x = 0\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 10 — EXAMPLE 5
+         Solve: cosx + 1 = sinx, [0, 2π)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-9" data-steps="6" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Solve in \([0,\, 2\pi)\)</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[\cos x + 1 = \sin x\]</div>
+        <div class="strategy-note">Strategy: Square both sides to eliminate the radical — but check for extraneous solutions!</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-math">\(\cos x + 1 = \sin x\)</div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-math">\((\cos x + 1)^2 = \sin^2 x\)
+                    <span class="annotation">square both sides to get a common function</span>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-math">\(\cos^2 x + 2\cos x + 1 = 1 - \cos^2 x\)
+                    <span class="annotation">substitute \(\sin^2 x = 1 - \cos^2 x\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-math">\(2\cos^2 x + 2\cos x = 0 \;\Rightarrow\; 2\cos x(\cos x + 1) = 0\)
+                    <span class="annotation">collect and factor — giving \(\cos x = 0\) or \(\cos x = -1\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-4">
+                <div class="step-math">\(\cos x = 0 \Rightarrow x = \tfrac{\pi}{2}, \tfrac{3\pi}{2} \qquad \cos x = -1 \Rightarrow x = \pi\)
+                    <span class="annotation">check \(x = \tfrac{3\pi}{2}\): \(\cos\tfrac{3\pi}{2} + 1 = 1\) but \(\sin\tfrac{3\pi}{2} = -1\) — <strong>extraneous!</strong></span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-9-step-5">
+                <div class="step-math">\(x = \dfrac{\pi}{2},\quad x = \pi \qquad \checkmark\)
+                    <span class="annotation">squaring both sides can introduce extraneous solutions — always verify</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 11 — SECTION BREAK: MULTIPLE ANGLES
+         ================================================ -->
+    <section class="slide section-divider" id="slide-10">
+        <div class="section-label">Unit 5 · Section 5.3</div>
+        <div class="section-title">Functions Involving<br>Multiple Angles</div>
+        <div style="margin-top:1.2rem; font-size:0.65em; color:#93c5fd; line-height:1.7; font-weight:500;">
+            For equations of the form \(\sin(ku) = c\) or \(\cos(ku) = c\),<br>
+            first solve for \(ku\), then divide by \(k\) to get \(u\).
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 12 — EXAMPLE 6
+         Solve: 3 tan(x/2) + 3 = 0, [0, 2π)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-11" data-steps="5" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Solve in \([0,\, 2\pi)\)</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[3\tan\!\left(\dfrac{x}{2}\right) + 3 = 0\]</div>
+        <div class="strategy-note">Strategy: Isolate the trig function, solve for \(x/2\), then multiply by 2. Discard any result outside \([0,2\pi)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-math">\(3\tan\!\left(\dfrac{x}{2}\right) + 3 = 0\)</div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-math">\(\tan\!\left(\dfrac{x}{2}\right) = -1\)
+                    <span class="annotation">subtract 3, divide by 3</span>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-math">\(\dfrac{x}{2} = \dfrac{3\pi}{4}\)
+                    <span class="annotation">reference angle \(\tfrac{\pi}{4}\); tangent is negative in QII — \(\tfrac{x}{2} = \tfrac{3\pi}{4}\) is the solution in \([0,\pi)\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-math">\(\dfrac{x}{2} = \dfrac{7\pi}{4} \;\Rightarrow\; x = \dfrac{7\pi}{2}\)
+                    <span class="annotation">the other possibility — but \(\dfrac{7\pi}{2} &gt; 2\pi\), so it falls outside \([0, 2\pi)\)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-11-step-4">
+                <div class="step-math">\(x = \dfrac{3\pi}{2} \qquad \checkmark\)
+                    <span class="annotation">multiply the valid solution by 2: \(\dfrac{3\pi}{4} \times 2 = \dfrac{3\pi}{2}\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 13 — EXAMPLE 7
+         Solve: 5 sinθ cosθ + 4 cosθ = 0, [0, 2π)  (calculator)
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-12" data-steps="6" data-current-step="-1">
+        <div class="slide-header">
+            <div class="example-label">Example 7</div>
+            <div class="slide-title">Solve where \(0 \le \theta &lt; 2\pi\) &nbsp;— calculator required</div>
+        </div>
+        <div class="slide-body">
+        <div class="problem-statement">\[5\sin\theta\cos\theta + 4\cos\theta = 0\]</div>
+        <div class="strategy-note">Strategy: Factor out \(\cos\theta\), then solve each factor. Use inverse sine for the non-special value.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-math">\(5\sin\theta\cos\theta + 4\cos\theta = 0\)</div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-math">\(\cos\theta\,(5\sin\theta + 4) = 0\)
+                    <span class="annotation">factor out \(\cos\theta\)</span>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-math">\(\cos\theta = 0 \;\Rightarrow\; \theta = \dfrac{\pi}{2},\; \dfrac{3\pi}{2}\)
+                    <span class="annotation">cosine equals 0 at the top and bottom of the unit circle</span>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-math">\(5\sin\theta + 4 = 0 \;\Rightarrow\; \sin\theta = -\dfrac{4}{5}\)
+                    <span class="annotation">sine is negative — solutions are in QIII and QIV</span>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-4">
+                <div class="step-math">\(\theta_{\text{ref}} = \sin^{-1}\!\left(\dfrac{4}{5}\right) \approx 0.927\)
+                    <span class="annotation">find the reference angle using the calculator (positive value)</span>
+                </div>
+            </div>
+            <div class="step answer" id="slide-12-step-5">
+                <div class="step-math">\(\theta \approx \pi + 0.927 \approx 4.069, \quad \theta \approx 2\pi - 0.927 \approx 5.356 \qquad \checkmark\)
+                    <span class="annotation">QIII: \(\pi + \theta_{\text{ref}}\) &nbsp; QIV: \(2\pi - \theta_{\text{ref}}\) — all four solutions: \(\frac{\pi}{2},\; \frac{3\pi}{2},\; 4.069,\; 5.356\)</span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+</div><!-- end slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* After KaTeX renders, move each annotation beside its equation */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    /* ===== PRESENTATION CONTROLLER ===== */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', (e) => { e.stopPropagation(); this._goTo(i); });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide    = this.slides[this.current];
+            const maxSteps = parseInt(slide.dataset.steps || 0);
+            const curStep  = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent = (curStep < maxSteps - 1)
+                ? 'click to advance'
+                : (this.current < this.total - 1 ? 'click for next slide' : '');
+        }
+
+        _activate(index) { this.slides[index].classList.add('active'); this._sync(); }
+
+        _goTo(index) {
+            if (index === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = index;
+            this.slides[this.current].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const maxSteps = parseInt(slide.dataset.steps || 0);
+            let   curStep  = parseInt(slide.dataset.currentStep ?? -1);
+            if (curStep < maxSteps - 1) {
+                curStep++;
+                slide.dataset.currentStep = curStep;
+                slide.querySelector(`#${slide.id}-step-${curStep}`)?.classList.add('visible');
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1)
+                this._goTo(this.current + 1);
+        }
+        _prev() { if (this.current > 0) this._goTo(this.current - 1); }
+
+        _bindEvents() {
+            document.addEventListener('keydown', (e) => {
+                if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) { e.preventDefault(); this._next(); }
+                else if (['ArrowLeft', 'ArrowUp'].includes(e.key))    { e.preventDefault(); this._prev(); }
+            });
+            document.addEventListener('click', (e) => { if (!e.target.closest('.nav-dot')) this._next(); });
+            let tx = 0;
+            document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
+            document.addEventListener('touchend',   (e) => {
+                const dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 50) { dx < 0 ? this._next() : this._prev(); }
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

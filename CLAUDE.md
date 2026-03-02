@@ -91,8 +91,13 @@ precalculus_slides/
 | 4.7 | Modeling with Sine & Cosine | ✅ Complete | — |
 | 4.8 | Graphs of Other Trig Functions | ✅ Complete | — |
 | 4.9 | Inverse Trig Functions | ✅ Complete | 🔄 Prototype |
+| 5.1 | Using Fundamental Identities | ✅ Complete | — |
+| 5.2 | Verifying Trig Identities | ✅ Complete | — |
+| 5.3 | Solving Trig Equations | ✅ Complete | — |
+| 5.4 | Sum and Difference Identities | ✅ Complete | — |
+| 5.5 | Double &amp; Half Angle Identities | ✅ Complete | — |
 
-**Next up:** Convert prototypes to full Slidev decks; begin Manim pipeline.
+**Next up:** Continue Unit 5 HTML decks (5.6+); convert prototypes to full Slidev decks.
 
 ---
 
