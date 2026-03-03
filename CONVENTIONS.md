@@ -174,20 +174,47 @@ Display exact values where conventional:
 - Special angle trig values: `1/2`, `√3/2`, `√2/2`, `π/6`, `π/4`, `π/3`
 - Show decimals only when context explicitly requires approximation
 
-### KaTeX (Slidev)
+### KaTeX (All Formats)
 
-Use KaTeX for all inline and block math:
+**KaTeX is the standard math renderer for both HTML presentations and Slidev decks.**
+
+#### HTML Presentations (KaTeX CDN)
+
+```html
+<!-- In <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+<!-- Before </body> -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+</script>
+```
+
+- Display math: `\[ \sin(2\theta) = 2\sin\theta\cos\theta \]`
+- Inline math: `\( \theta \)` within text
+- Use `\dfrac{}{}` for display-size fractions, `\frac{}{}` for inline
+
+#### Slidev (Built-in KaTeX)
+
 ```md
 Inline: $\arcsin(x)$
 Block: $$y = A\sin(Bx + C) + D$$
 ```
 
-### HTML Presentations
+#### Deprecated (Do Not Use in New Work)
 
-Use Unicode and CSS monospace for math expressions:
-- theta: `θ`, pi: `π`, sqrt: `√`, infinity: `∞`
-- Fractions as text: `√3/2`, `1/2`
-- Use `font-family: 'SF Mono', 'Monaco', 'Consolas', monospace` for all math
+The following were used in legacy presentations and should be converted to KaTeX:
+- HTML entities for math: `&theta;`, `&pi;`, `&radic;`, `&infin;`
+- Unicode characters: `θ`, `π`, `√`
+- CSS monospace for math: `font-family: 'SF Mono', monospace`
 
 ---
 
@@ -208,14 +235,23 @@ Use `v-click` for single items or `<v-clicks>` for lists.
 </v-clicks>
 ```
 
-### In HTML
+### In HTML (HoffMath Classroom Standard)
+
+Steps use `display: none` → `display: block` with ID-based step finding.
+See `agents.md` for the full `SlidePresentation` controller.
+
+```css
+.step { display: none; }
+.step.visible { display: block; animation: stepReveal 0.4s ease both; }
+```
 
 ```javascript
-slide.addEventListener('click', () => {
-  currentStep++;
-  slide.querySelector(`.step-${currentStep}`)?.classList.add('active');
-});
+// Controller finds steps by ID: slide-{slideId}-step-{N}
+const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
 ```
+
+**Do not use** `opacity` transitions or `max-height` collapse — they clip KaTeX math.
 
 ---
 
@@ -242,7 +278,8 @@ Do not recalculate these. Copy from here.
 ## 9. Checklist Before Delivering Any Output
 
 - [ ] Quadrant / side colors match the table in Section 1
-- [ ] Fonts are Space Grotesk + IBM Plex (not Inter, Roboto, or Arial)
+- [ ] Fonts match the format (Source Sans 3 for HTML; Space Grotesk + IBM Plex for Slidev)
+- [ ] All math rendered via KaTeX (no HTML entities or Unicode math)
 - [ ] SVG y-axis inversion applied correctly
 - [ ] All plotted points verified by back-substitution
 - [ ] Slider ranges match Section 4

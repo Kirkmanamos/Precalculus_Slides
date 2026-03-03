@@ -1,1835 +1,1735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4.9 Inverse Trig Functions</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<style>
-/* ===========================================
-   CSS CUSTOM PROPERTIES (THEME)
-   Matches the existing Unit 4 presentation style
-   =========================================== */
-:root {
-  --dark-navy: #1a365d;
-  --blue-accent: #2563eb;
-  --red-accent: #dc2626;
-  --green-accent: #16a34a;
-  --grid-line: #dbeafe;
-  --dark-blue-curve: #1e40af;
-  --bg-white: #ffffff;
-  --light-grid-bg: #f8faff;
-  --teal-accent: #0891b2;
-  --orange-accent: #ea580c;
-  --purple-accent: #7c3aed;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.9 — Inverse Trig Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        /* ============================================================
+           THEME — HoffMath Classroom (matches 5.5)
+           ============================================================ */
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --purple-accent: #7c3aed;
+            --grid-line:     #dbeafe;
+            --bg-white:      #ffffff;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+            --red-light:     #fef2f2;
+            --navy-light:    #e8edf5;
+        }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
-  background: var(--bg-white);
-  color: var(--dark-navy);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-}
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--navy);
+        }
 
-.grid-bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 30px 30px;
-  z-index: 0;
-  pointer-events: none;
-}
+        /* ============================================================
+           SLIDE SHELL
+           ============================================================ */
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
 
-#progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
-  transition: width 0.4s ease;
-  z-index: 1000;
-}
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding-top: 5rem; padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
 
-#nav-dots {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 1000;
-}
+        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
 
-.nav-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 2px solid var(--blue-accent);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        /* ============================================================
+           BACKGROUNDS
+           ============================================================ */
+        .title-slide {
+            background: var(--navy);
+            color: white;
+            justify-content: center;
+        }
 
-.nav-dot.active {
-  background: var(--blue-accent);
-  transform: scale(1.3);
-}
+        .section-slide {
+            background: var(--navy);
+            color: white;
+            justify-content: center;
+        }
 
-.nav-dot:hover {
-  background: var(--blue-accent);
-  opacity: 0.7;
-}
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
+        }
 
-#slides-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-}
+        /* ============================================================
+           TITLE SLIDE TYPOGRAPHY
+           ============================================================ */
+        .title-section-label {
+            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
+        }
+        .title-main {
+            font-size: 2em; font-weight: 700; line-height: 1.2;
+            color: white; margin-bottom: 0.5rem;
+        }
+        .title-divider {
+            width: 80px; height: 4px; background: var(--teal-accent); margin: 1rem 0;
+        }
+        .title-objective {
+            font-size: 0.72em; color: #93c5fd; font-weight: 400;
+            line-height: 1.6; margin-top: 0.75rem;
+        }
 
-.slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 60px 40px 60px;
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-  overflow-y: auto;
-}
+        /* ============================================================
+           SLIDE HEADER
+           ============================================================ */
+        .slide-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.2rem; flex-shrink: 0;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
 
-.slide.active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-}
+        /* Tags / labels */
+        .example-label, .concept-label, .ref-label, .fyi-label, .advanced-label {
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
+        }
+        .example-label { background: var(--green-accent); }
+        .concept-label { background: var(--teal-accent); }
+        .ref-label     { background: var(--navy); }
+        .fyi-label     { background: var(--orange-accent); }
+        .advanced-label { background: var(--purple-accent); }
 
-.slide.exit-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
+        /* ============================================================
+           PROBLEM STATEMENT
+           ============================================================ */
+        .problem-statement {
+            background: var(--navy-light); border-left: 5px solid var(--navy);
+            border-radius: 10px; padding: 0.65em 1.2em;
+            margin-bottom: 0.9rem; flex-shrink: 0;
+            font-weight: 600; color: var(--navy); font-size: 0.9em;
+        }
+        .problem-statement .katex-display { margin: 0; }
 
-.slide.title-slide {
-  justify-content: center;
-  background: var(--dark-navy);
-}
+        /* ============================================================
+           STEP REVEALS
+           ============================================================ */
+        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
 
-.slide.section-slide {
-  justify-content: center;
-  background: var(--dark-navy);
-}
+        .step { display: none; }
+        .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.4rem; }
+        .step.visible:last-child { margin-bottom: 0; }
+        @keyframes stepReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.section-title {
-  font-size: 2.8em;
-  font-weight: 700;
-  color: white;
-  text-align: center;
-}
+        /* Labeled step card */
+        .step-box {
+            background: var(--blue-light); border-left: 4px solid var(--blue-accent);
+            border-radius: 10px; padding: 0.45em 1.1em;
+        }
+        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
+        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
+        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+        .step-box.red    { background: var(--red-light);    border-color: var(--red-accent); }
+        .step-box.dark   { background: var(--navy); }
 
-.section-subtitle {
-  font-size: 1.2em;
-  color: #93c5fd;
-  margin-top: 10px;
-  text-align: center;
-}
+        .step-label {
+            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.08em;
+        }
+        .step-box.dark .step-label { color: #93c5fd; }
 
-.slide-title {
-  font-size: 1.85em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  text-align: center;
-  margin-bottom: 10px;
-}
+        .step-math {
+            font-size: 0.88em; line-height: 2; padding: 0.2em 0; text-align: center;
+        }
+        .step-box.dark .step-math { color: white; }
+        .step-box.dark .katex { color: white; }
 
-.slide-subtitle {
-  font-size: 1.1em;
-  font-weight: 400;
-  color: var(--dark-navy);
-  text-align: center;
-  margin-bottom: 15px;
-  max-width: 900px;
-  line-height: 1.5;
-}
+        .step-content {
+            font-size: 0.88em; line-height: 1.7; padding: 0.15em 0;
+        }
+        .step-box.dark .step-content { color: white; }
 
-.example-label {
-  position: absolute;
-  top: 18px;
-  left: 30px;
-  background: var(--blue-accent);
-  color: white;
-  padding: 4px 18px;
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.95em;
-  letter-spacing: 1px;
-}
+        /* Annotation beside equation */
+        .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
+        .step-eq { flex: 1; text-align: center; }
+        .annotation {
+            flex: 0 0 36%; color: var(--blue-accent);
+            font-size: 0.72em; font-weight: 600; line-height: 1.45;
+            text-align: left; border-left: 3px solid #93c5fd; padding-left: 1rem;
+        }
 
-.copyright {
-  position: absolute;
-  bottom: 12px;
-  right: 24px;
-  font-size: 0.72em;
-  color: #94a3b8;
-  font-style: italic;
-}
+        /* Step row (text + figure side by side) */
+        .step-row {
+            display: flex; align-items: flex-start; gap: 1.5rem;
+        }
+        .step-row .step-text { flex: 1; }
+        .step-row .step-figure { flex: 0 0 auto; }
 
-.math {
-  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
-  font-style: italic;
-}
+        /* ============================================================
+           CONCEPT DIAGRAM (Slide 1)
+           ============================================================ */
+        .concept-diagram {
+            display: flex; flex-direction: column;
+            gap: 0.75rem; align-items: center; margin-top: 0.75rem;
+        }
+        .concept-row {
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .concept-box {
+            background: white; border: 2px solid var(--blue-accent);
+            border-radius: 8px; padding: 0.45em 1em;
+            font-size: 1em; font-weight: 600; text-align: center; min-width: 4rem;
+        }
+        .concept-box.label-box {
+            background: var(--navy); color: white; border-color: var(--navy);
+            font-size: 0.9em; min-width: 6rem;
+        }
+        .concept-arrow {
+            font-size: 1.2em; color: var(--blue-accent); font-weight: 700;
+        }
 
-.math-normal {
-  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
-  font-style: normal;
-}
+        /* ============================================================
+           TWO-COL / GRAPH LAYOUT
+           ============================================================ */
+        .two-col {
+            display: flex; gap: 1rem; align-items: flex-start;
+            justify-content: center; width: 100%;
+        }
+        .col {
+            flex: 1; min-width: 280px;
+            display: flex; flex-direction: column; align-items: center;
+        }
 
-.red { color: var(--red-accent); font-weight: 700; }
-.blue { color: var(--blue-accent); font-weight: 700; }
-.green { color: var(--green-accent); font-weight: 700; }
-.teal { color: var(--teal-accent); font-weight: 700; }
-.dark-blue { color: var(--dark-blue-curve); }
-.purple { color: var(--purple-accent); font-weight: 700; }
-.orange { color: var(--orange-accent); font-weight: 700; }
+        .graph-svg {
+            border: 1.5px solid #c7d2fe;
+            border-radius: 6px;
+            background: white;
+        }
 
-.step {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
+        /* ============================================================
+           EQUATION BOX
+           ============================================================ */
+        .equation-box {
+            background: white; border: 2px solid var(--blue-accent);
+            border-radius: 8px; padding: 0.3em 0.8em;
+            font-weight: 700; color: var(--navy);
+            display: inline-block;
+        }
 
-.step.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+        /* ============================================================
+           DEFINITION LIST
+           ============================================================ */
+        .def-list {
+            text-align: left; max-width: 700px;
+            display: flex; flex-direction: column; gap: 0.5rem;
+        }
+        .def-item {
+            font-size: 0.95em; line-height: 1.6;
+            padding-left: 1rem; position: relative;
+        }
+        .def-item::before {
+            content: '\2022'; position: absolute; left: 0;
+            color: var(--blue-accent); font-weight: 700;
+        }
 
-svg .step {
-  transform: none;
-  transition: opacity 0.5s ease;
-}
-svg .step.visible {
-  transform: none;
-}
+        /* ============================================================
+           SUMMARY TABLE
+           ============================================================ */
+        .summary-table {
+            border-collapse: collapse; font-size: 0.95em; margin-top: 0.5rem;
+        }
+        .summary-table th, .summary-table td {
+            border: 1.5px solid var(--navy);
+            padding: 0.35em 0.9em; text-align: center; min-width: 5rem;
+        }
+        .summary-table th {
+            background: var(--navy); color: white; font-weight: 700;
+        }
+        .summary-table td { background: white; }
+        .summary-table td:first-child { background: #f1f5f9; font-weight: 600; }
+        .summary-table .fill-blank {
+            background: var(--blue-light); cursor: pointer;
+            min-width: 140px; min-height: 36px;
+            transition: background 0.3s ease;
+        }
+        .summary-table .fill-blank.revealed {
+            background: #dcfce7; font-weight: 600;
+        }
 
-.click-hint {
-  position: absolute;
-  bottom: 38px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.85em;
-  color: #94a3b8;
-  animation: pulse 2s infinite;
-}
+        /* ============================================================
+           WARN BOX / TIP BOX
+           ============================================================ */
+        .warn-box {
+            background: var(--red-light); border-left: 4px solid var(--red-accent);
+            padding: 0.45em 0.9em; border-radius: 0 8px 8px 0;
+            margin: 0.3em 0; font-size: 0.9em;
+        }
+        .tip-box {
+            background: var(--green-light); border-left: 4px solid var(--green-accent);
+            padding: 0.45em 0.9em; border-radius: 0 8px 8px 0;
+            margin: 0.3em 0; font-size: 0.9em;
+        }
 
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
+        /* ============================================================
+           COMPOSITION GRID
+           ============================================================ */
+        .comp-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 1rem; width: 100%;
+        }
+        .comp-item {
+            display: flex; flex-direction: column;
+            align-items: center; gap: 0.2rem;
+        }
+        .comp-problem {
+            font-size: 1.05em; font-weight: 700; color: var(--navy);
+            margin-bottom: 0.15rem;
+        }
 
-.equation-box {
-  background: white;
-  border: 2px solid var(--blue-accent);
-  border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 1.5em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  margin: 8px 0;
-  display: inline-block;
-}
+        /* ============================================================
+           TRIANGLE SVG
+           ============================================================ */
+        .triangle-svg {
+            background: white; border: 1.5px solid #c7d2fe;
+            border-radius: 6px;
+        }
 
-.two-col {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  max-width: 1100px;
-  flex-wrap: wrap;
-}
+        /* ============================================================
+           COPYRIGHT
+           ============================================================ */
+        .copyright {
+            position: absolute; bottom: 0.75rem; right: 1.2rem;
+            font-size: 0.45em; color: #94a3b8; font-style: italic;
+        }
 
-.col {
-  flex: 1;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+        /* ============================================================
+           NAV / PROGRESS
+           ============================================================ */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-.graph-svg {
-  border: 1.5px solid #c7d2fe;
-  border-radius: 6px;
-  background: white;
-}
-
-.tip-box {
-  background: #f0fdf4;
-  border-left: 4px solid var(--green-accent);
-  padding: 12px 20px;
-  border-radius: 0 8px 8px 0;
-  margin: 8px 0;
-  font-size: 0.95em;
-  max-width: 700px;
-}
-
-.warn-box {
-  background: #fef2f2;
-  border-left: 4px solid var(--red-accent);
-  padding: 12px 20px;
-  border-radius: 0 8px 8px 0;
-  margin: 8px 0;
-  font-size: 0.95em;
-  max-width: 700px;
-}
-
-.annotation {
-  color: var(--blue-accent);
-  font-size: 0.88em;
-  font-weight: 600;
-}
-
-/* Definition list styling */
-.def-list {
-  text-align: left;
-  max-width: 650px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.def-item {
-  font-size: 1.05em;
-  line-height: 1.6;
-  padding-left: 20px;
-  position: relative;
-}
-
-.def-item::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: var(--blue-accent);
-  font-weight: 700;
-}
-
-/* Concept diagram (recall slide) */
-.concept-diagram {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.concept-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.concept-box {
-  background: white;
-  border: 2px solid var(--blue-accent);
-  border-radius: 8px;
-  padding: 14px 28px;
-  font-size: 1.15em;
-  font-weight: 600;
-  text-align: center;
-  min-width: 120px;
-}
-
-.concept-box.label-box {
-  background: var(--dark-navy);
-  color: white;
-  border-color: var(--dark-navy);
-  font-size: 1em;
-  min-width: 180px;
-}
-
-.concept-arrow {
-  font-size: 1.8em;
-  color: var(--blue-accent);
-  font-weight: 700;
-}
-
-/* Summary table */
-.summary-table {
-  border-collapse: collapse;
-  font-size: 1em;
-  margin-top: 10px;
-}
-
-.summary-table th, .summary-table td {
-  border: 1.5px solid var(--dark-navy);
-  padding: 10px 24px;
-  text-align: center;
-  min-width: 140px;
-}
-
-.summary-table th {
-  background: var(--dark-navy);
-  color: white;
-  font-weight: 700;
-  font-size: 1.05em;
-}
-
-.summary-table td {
-  background: white;
-}
-
-.summary-table td:first-child {
-  background: #f1f5f9;
-  font-weight: 600;
-  text-align: center;
-}
-
-.summary-table .fill-blank {
-  background: #eff6ff;
-  cursor: pointer;
-  min-width: 140px;
-  min-height: 36px;
-  transition: background 0.3s ease;
-}
-
-.summary-table .fill-blank.revealed {
-  background: #dcfce7;
-  font-weight: 600;
-}
-
-/* Worked example layout */
-.worked-example {
-  display: flex;
-  gap: 20px;
-  align-items: flex-start;
-  justify-content: center;
-  width: 100%;
-  max-width: 1100px;
-}
-
-.worked-left {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.worked-right {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Composition work columns */
-.comp-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  width: 100%;
-  max-width: 900px;
-  margin-top: 10px;
-}
-
-.comp-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-.comp-problem {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  margin-bottom: 4px;
-}
-
-.comp-step {
-  font-size: 1.15em;
-  color: var(--dark-navy);
-  line-height: 1.6;
-}
-
-/* Triangle SVG */
-.triangle-svg {
-  background: white;
-  border: 1.5px solid #c7d2fe;
-  border-radius: 6px;
-}
-
-.keyboard-hint {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-size: 0.8em;
-  color: #94a3b8;
-  z-index: 999;
-}
-
-.key-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 24px;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 4px;
-  font-size: 0.85em;
-  background: #f8fafc;
-}
-
-/* Advanced label */
-.advanced-label {
-  position: absolute;
-  top: 18px;
-  right: 30px;
-  background: var(--purple-accent);
-  color: white;
-  padding: 4px 14px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 0.82em;
-  letter-spacing: 0.5px;
-}
-
-@media (max-width: 768px) {
-  #nav-dots { display: none; }
-  .keyboard-hint { display: none; }
-  .slide { padding: 20px 24px; }
-  .slide-title { font-size: 1.4em; }
-  .two-col { flex-direction: column; }
-  .worked-example { flex-direction: column; }
-  .comp-grid { grid-template-columns: 1fr; }
-}
-</style>
+        @media (prefers-reduced-motion: reduce) {
+            .slide { transition: opacity 0.3s ease; transform: none !important; }
+            .step.visible { animation: none; opacity: 1; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
-<div id="progress-bar" style="width: 0%"></div>
-<nav id="nav-dots"></nav>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
 
-<div id="slides-container">
+<div class="slides-wrapper" id="slidesWrapper">
 
-<!-- ============================================================
-     SLIDE 0: TITLE SLIDE
-     ============================================================ -->
-<section class="slide title-slide" data-steps="0">
-  <div style="text-align:center;">
-    <div style="font-size:1.1em; color:#93c5fd; letter-spacing:3px; margin-bottom:12px; font-weight:600;">SECTION 4.9</div>
-    <h1 style="font-size:2.8em; color:white; font-weight:700; line-height:1.2;">Inverse Trig<br>Functions</h1>
-    <div style="width:80px; height:4px; background:var(--teal-accent); margin:24px auto;"></div>
-    <p style="color:#93c5fd; font-size:1.0em; margin-top:8px; max-width:560px; line-height:1.6;">
-      Evaluate and graph inverse sine functions.<br>
-      Evaluate and graph other inverse trigonometric functions.<br>
-      Evaluate compositions of trigonometric functions.
-    </p>
-  </div>
-</section>
-
-<!-- ============================================================
-     SLIDE 1: RECALL ABOUT INVERSES
-     ============================================================ -->
-<section class="slide" data-steps="1">
-  <h2 class="slide-title">Recall about inverses&hellip;</h2>
-  <div class="concept-diagram">
-    <div class="concept-row">
-      <div class="concept-box label-box">Trig Function</div>
-    </div>
-    <div class="concept-row">
-      <div class="concept-box"><span class="math">angle</span></div>
-      <div class="concept-arrow">&rarr;</div>
-      <div class="concept-box"><span class="math">ratio</span></div>
-    </div>
-    <div class="step" data-step="0" style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:16px;">
-      <div class="concept-row">
-        <div class="concept-box label-box" style="background:var(--teal-accent); border-color:var(--teal-accent);">Inverse Trig Function</div>
-      </div>
-      <div class="concept-row">
-        <div class="concept-box" style="border-color:var(--teal-accent);"><span class="math">ratio</span></div>
-        <div class="concept-arrow" style="color:var(--teal-accent);">&rarr;</div>
-        <div class="concept-box" style="border-color:var(--teal-accent);"><span class="math">angle</span></div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 2: INVERSE SINE FUNCTION - Graph with restricted domain
-     ============================================================ -->
-<section class="slide" data-steps="2">
-  <h2 class="slide-title">Inverse Sine Function</h2>
-  <p class="slide-subtitle"><span class="math">y</span> = sin <span class="math">x</span> does <strong>not</strong> pass the Horizontal Line Test</p>
-  <div class="two-col" style="margin-top:5px;">
-    <div class="col" style="align-items:flex-start; max-width:440px; gap:10px; padding-left:20px;">
-      <p style="font-size:1.0em; line-height:1.6;">
-        However, when you restrict the domain to the interval
-        [&minus;<span class="math">&pi;</span>/2, <span class="math">&pi;</span>/2], the following properties hold:
-      </p>
-      <div class="step" data-step="0" style="font-size:1.0em; line-height:1.8;">
-        <div>1. The function <span class="math">y</span> = sin <span class="math">x</span> is <strong>increasing</strong>.</div>
-        <div>2. <span class="math">y</span> = sin <span class="math">x</span> takes on its full range of values, &minus;1 &le; sin <span class="math">x</span> &le; 1.</div>
-        <div>3. <span class="math">y</span> = sin <span class="math">x</span> is <strong>one-to-one</strong>.</div>
-      </div>
-    </div>
-    <div class="col" style="align-items:center;">
-      <svg id="svg-sin-restricted" class="graph-svg" viewBox="0 0 420 260" width="400" height="245"></svg>
-      <div class="step" data-step="1" style="margin-top:8px; text-align:center;">
-        <div class="equation-box" style="font-size:1.1em; padding:8px 20px;">
-          <span class="math red">y</span> = <span class="red">arcsin</span>(<span class="math">x</span>)
-          &nbsp;or&nbsp;
-          <span class="math red">y</span> = sin<sup>&minus;1</sup>(<span class="math">x</span>)
+    <!-- ================================================================
+         SLIDE 0 — TITLE
+         ================================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Section 4.9</div>
+        <div class="title-main">Inverse Trig<br>Functions</div>
+        <div class="title-divider"></div>
+        <div class="title-objective">
+            Evaluate and graph inverse sine functions.<br>
+            Evaluate and graph other inverse trigonometric functions.<br>
+            Evaluate compositions of trigonometric functions.
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 3: INVERSE SINE DEFINITION
-     ============================================================ -->
-<section class="slide" data-steps="4">
-  <h2 class="slide-title">Inverse Sine Function</h2>
-  <div class="def-list" style="margin-top:20px;">
-    <div class="def-item step" data-step="0">
-      arcsin <span class="math">x</span> means the <strong>angle</strong> (or arc) whose sine is <span class="math">x</span>.
-    </div>
-    <div class="def-item step" data-step="1">
-      Both notations, arcsin(<span class="math">x</span>) and sin<sup>&minus;1</sup>(<span class="math">x</span>), are commonly used.
-    </div>
-    <div class="def-item step" data-step="2">
-      Remember that sin<sup>&minus;1</sup>(<span class="math">x</span>) denotes the <em>inverse</em> sine function; <strong class="red">not</strong>
-      <span style="font-size:1.1em;">
-        <sup>1</sup>&frasl;<sub>sin(<span class="math">x</span>)</sub>
-      </span>.
-    </div>
-    <div class="def-item step" data-step="3">
-      The values of arcsin(<span class="math">x</span>) lie in the interval
-      <strong>&minus;<span class="math">&pi;</span>/2 &le; arcsin(<span class="math">x</span>) &le; <span class="math">&pi;</span>/2</strong>.
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 4: EXAMPLE 1 - Sketch y = arcsin(x)
-     ============================================================ -->
-<section class="slide" data-steps="1">
-  <div class="example-label">EXAMPLE 1</div>
-  <h2 class="slide-title" style="margin-top:20px;">Sketch a graph of <span class="math">y</span> = arcsin(<span class="math">x</span>) by hand.</h2>
-  <div style="margin-top:10px;">
-    <svg id="svg-arcsin" class="graph-svg" viewBox="0 0 380 340" width="360" height="320"></svg>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 5: INVERSE COSINE
-     ============================================================ -->
-<section class="slide" data-steps="2">
-  <h2 class="slide-title">Inverse Cosine</h2>
-  <p class="slide-subtitle">
-    The cosine function has an inverse function on the restricted domain [0, <span class="math">&pi;</span>] called the <strong>inverse cosine function</strong>.
-  </p>
-  <div class="two-col" style="margin-top:5px;">
-    <div class="col" style="align-items:center;">
-      <svg id="svg-cos-restricted" class="graph-svg step" data-step="0" viewBox="0 0 380 240" width="360" height="225"></svg>
-    </div>
-    <div class="col" style="align-items:center;">
-      <svg id="svg-arccos" class="graph-svg step" data-step="1" viewBox="0 0 380 300" width="360" height="280"></svg>
-      <div class="step" data-step="1" style="margin-top:6px;">
-        <div class="equation-box" style="font-size:1.0em; padding:6px 16px;">
-          <span class="math teal">y</span> = <span class="teal">arccos</span>(<span class="math">x</span>)
-          &nbsp;or&nbsp;
-          <span class="math teal">y</span> = cos<sup>&minus;1</sup> <span class="math">x</span>
+    <!-- ================================================================
+         SLIDE 1 — RECALL ABOUT INVERSES
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-1" data-steps="1">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Recall about inverses&hellip;</div>
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 6: INVERSE TANGENT
-     ============================================================ -->
-<section class="slide" data-steps="2">
-  <h2 class="slide-title">Inverse Tangent</h2>
-  <p class="slide-subtitle">
-    The tangent function has an inverse function on the restricted domain &minus;<span class="math">&pi;</span>/2 &lt; <span class="math">x</span> &lt; <span class="math">&pi;</span>/2 called the <strong>inverse tangent function</strong>.
-  </p>
-  <div class="two-col" style="margin-top:5px;">
-    <div class="col" style="align-items:center;">
-      <svg id="svg-tan-restricted" class="graph-svg step" data-step="0" viewBox="0 0 380 260" width="360" height="245"></svg>
-    </div>
-    <div class="col" style="align-items:center;">
-      <svg id="svg-arctan" class="graph-svg step" data-step="1" viewBox="0 0 380 280" width="360" height="265"></svg>
-      <div class="step" data-step="1" style="margin-top:6px;">
-        <div class="equation-box" style="font-size:1.0em; padding:6px 16px;">
-          <span class="math purple">y</span> = <span class="purple">arctan</span>(<span class="math">x</span>)
-          &nbsp;or&nbsp;
-          <span class="math purple">y</span> = tan<sup>&minus;1</sup> <span class="math">x</span>
+        <div class="slide-body">
+            <div class="concept-diagram">
+                <div class="concept-row">
+                    <div class="concept-box label-box">Trig Function</div>
+                </div>
+                <div class="concept-row">
+                    <div class="concept-box">angle</div>
+                    <div class="concept-arrow">&rarr;</div>
+                    <div class="concept-box">ratio</div>
+                </div>
+                <div id="slide-1-step-0" class="step" style="display:none;">
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:16px;">
+                        <div class="concept-row">
+                            <div class="concept-box label-box" style="background:var(--teal-accent); border-color:var(--teal-accent);">Inverse Trig Function</div>
+                        </div>
+                        <div class="concept-row">
+                            <div class="concept-box" style="border-color:var(--teal-accent);">ratio</div>
+                            <div class="concept-arrow" style="color:var(--teal-accent);">&rarr;</div>
+                            <div class="concept-box" style="border-color:var(--teal-accent);">angle</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 7: INVERSE TRIG FUNCTIONS SUMMARY TABLE
-     ============================================================ -->
-<section class="slide" data-steps="3">
-  <h2 class="slide-title">Inverse Trigonometric Functions</h2>
-  <table class="summary-table" style="margin-top:20px;">
-    <tr>
-      <th>Function</th>
-      <th>Domain</th>
-      <th>Range</th>
-    </tr>
-    <tr>
-      <td><span class="math">y</span> = arcsin <span class="math">x</span></td>
-      <td class="fill-blank step" data-step="0">[&minus;1, 1]</td>
-      <td class="fill-blank step" data-step="0">[&minus;&pi;/2, &pi;/2]</td>
-    </tr>
-    <tr>
-      <td><span class="math">y</span> = arccos <span class="math">x</span></td>
-      <td class="fill-blank step" data-step="1">[&minus;1, 1]</td>
-      <td class="fill-blank step" data-step="1">[0, &pi;]</td>
-    </tr>
-    <tr>
-      <td><span class="math">y</span> = arctan <span class="math">x</span></td>
-      <td class="fill-blank step" data-step="2">(&minus;&infin;, &infin;)</td>
-      <td class="fill-blank step" data-step="2">(&minus;&pi;/2, &pi;/2)</td>
-    </tr>
-  </table>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 8: FYI - TRANSFORMATIONS
-     ============================================================ -->
-<section class="slide" data-steps="1">
-  <h2 class="slide-title">FYI</h2>
-  <p class="slide-subtitle">Just like with all functions, you can <strong>transform</strong> inverse trig functions, too!</p>
-  <div class="step" data-step="0" style="margin-top:10px;">
-    <svg id="svg-transform-compare" class="graph-svg" viewBox="0 0 380 320" width="360" height="300"></svg>
-    <div style="display:flex; gap:24px; justify-content:center; margin-top:8px; font-size:1.0em; font-weight:600;">
-      <span><span style="display:inline-block; width:30px; height:3px; background:var(--red-accent); vertical-align:middle; margin-right:6px;"></span><span class="math">y</span> = arcsin(2<span class="math">x</span>)</span>
-      <span><span style="display:inline-block; width:30px; height:3px; background:var(--blue-accent); vertical-align:middle; margin-right:6px;"></span><span class="math">y</span> = arcsin(<span class="math">x</span>)</span>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 9: EXAMPLES 2 & 3 - Exact Values
-     ============================================================ -->
-<section class="slide" data-steps="4">
-  <div class="example-label">EXAMPLES</div>
-  <h2 class="slide-title" style="margin-top:20px;">If possible, find the exact value.</h2>
-  <div class="comp-grid" style="margin-top:20px;">
-    <div class="comp-item">
-      <div class="comp-problem">2) arcsin(&minus;<sup>1</sup>&frasl;<sub>2</sub>)</div>
-      <div class="comp-step step" data-step="0" style="text-align:center;">
-        <div style="color:var(--blue-accent); font-size:0.95em; margin-bottom:4px; font-weight:600;">What angle gives a sine of &minus;1/2?</div>
-        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
-          The domain for inverse sine is <strong class="red">[&minus;&pi;/2, &pi;/2]</strong>.<br>
-          Sine is negative in Quadrant IV. The reference angle is &pi;/6.
+    <!-- ================================================================
+         SLIDE 2 — INVERSE SINE FUNCTION (restricted domain graph)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Inverse Sine Function</div>
         </div>
-      </div>
-      <div class="comp-step step" data-step="1" style="text-align:center;">
-        <div class="equation-box" style="font-size:1.2em; padding:8px 20px;">
-          = <span class="green">&minus;&pi;/6</span>
+        <div class="slide-body">
+            <p style="font-size:0.85em; margin-bottom:0.6rem; color:var(--text);">\(y = \sin x\) does <strong>not</strong> pass the Horizontal Line Test</p>
+            <div class="two-col">
+                <div class="col" style="align-items:flex-start; max-width:440px; gap:10px; padding-left:20px;">
+                    <p style="font-size:0.88em; line-height:1.6;">
+                        However, when you restrict the domain to the interval
+                        \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\), the following properties hold:
+                    </p>
+                    <div class="step" id="slide-2-step-0">
+                        <div style="font-size:0.88em; line-height:1.8;">
+                            <div>1. The function \(y = \sin x\) is <strong>increasing</strong>.</div>
+                            <div>2. \(y = \sin x\) takes on its full range of values, \(-1 \le \sin x \le 1\).</div>
+                            <div>3. \(y = \sin x\) is <strong>one-to-one</strong>.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="align-items:center;">
+                    <svg id="svg-sin-restricted" class="graph-svg" viewBox="0 0 420 260" width="400" height="245"></svg>
+                    <div class="step" id="slide-2-step-1">
+                        <div class="equation-box" style="font-size:0.88em; margin-top:8px;">
+                            \(y = \arcsin(x)\) &nbsp;or&nbsp; \(y = \sin^{-1}(x)\)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="comp-item">
-      <div class="comp-problem">3) sin<sup>&minus;1</sup>(2)</div>
-      <div class="comp-step step" data-step="2" style="text-align:center;">
-        <div style="color:var(--blue-accent); font-size:0.95em; margin-bottom:4px; font-weight:600;">What angle gives a sine of 2?</div>
-        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
-          The sine of any angle can never be greater than 1!
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 3 — INVERSE SINE DEFINITION
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="4">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Inverse Sine Function</div>
         </div>
-      </div>
-      <div class="comp-step step" data-step="3" style="text-align:center;">
-        <div class="warn-box" style="max-width:300px;">
-          <strong class="red">Not possible</strong><br>
-          because the domain of inverse sine is [&minus;1, 1]
+        <div class="slide-body">
+            <div class="def-list" style="margin-top:0.75rem;">
+                <div class="step" id="slide-3-step-0">
+                    <div class="def-item">
+                        \(\arcsin x\) means the <strong>angle</strong> (or arc) whose sine is \(x\).
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-1">
+                    <div class="def-item">
+                        Both notations, \(\arcsin(x)\) and \(\sin^{-1}(x)\), are commonly used.
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-2">
+                    <div class="def-item">
+                        Remember that \(\sin^{-1}(x)\) denotes the <em>inverse</em> sine function; <strong style="color:var(--red-accent);">not</strong>
+                        \(\dfrac{1}{\sin(x)}\).
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-3">
+                    <div class="def-item">
+                        The values of \(\arcsin(x)\) lie in the interval
+                        \(\displaystyle -\dfrac{\pi}{2} \le \arcsin(x) \le \dfrac{\pi}{2}\).
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 9B: GRAPHICAL VIEW OF EXAMPLE 2
-     ============================================================ -->
-<section class="slide" data-steps="2">
-  <h2 class="slide-title">Graphical View: arcsin(&minus;<sup>1</sup>&frasl;<sub>2</sub>) = &minus;<sup>&pi;</sup>&frasl;<sub>6</sub></h2>
-  <p class="slide-subtitle">We can see this exact answer dynamically on both the Sine graph and the Inverse Sine graph.</p>
-  <div class="two-col" style="margin-top:10px;">
-    <div class="col" style="align-items:center;">
-      <div style="font-weight:600; margin-bottom:8px; color:var(--dark-navy);">y = sin(x) on [&minus;&pi;/2, &pi;/2]</div>
-      <svg id="svg-sin-ex2" class="graph-svg step" data-step="0" viewBox="0 0 380 260" width="360" height="245"></svg>
-      <div class="step" data-step="0" style="margin-top:8px; font-size:0.95em; text-align:center; max-width:320px;">
-        Where does the graph of <span class="math">y</span> = sin(<span class="math">x</span>) cross the line <strong class="red">y = &minus;1/2</strong>?<br>
-        <span class="math blue">At x = &minus;&pi;/6</span>
-      </div>
-    </div>
-    <div class="col" style="align-items:center;">
-      <div style="font-weight:600; margin-bottom:8px; color:var(--dark-navy);">y = arcsin(x)</div>
-      <svg id="svg-arcsin-ex2" class="graph-svg step" data-step="1" viewBox="0 0 380 260" width="360" height="245"></svg>
-      <div class="step" data-step="1" style="margin-top:8px; font-size:0.95em; text-align:center; max-width:320px;">
-        What is the <span class="math">y</span>-value on the <span class="math">y</span> = arcsin(<span class="math">x</span>) graph when <strong class="red">x = &minus;1/2</strong>?<br>
-        <span class="math purple">y = &minus;&pi;/6</span>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 10: EXAMPLES 4-6 - Calculator Approximations
-     ============================================================ -->
-<section class="slide" data-steps="3">
-  <div class="example-label">EXAMPLES</div>
-  <h2 class="slide-title" style="margin-top:20px;">Use a calculator to approximate the value (if possible).</h2>
-  <div style="display:flex; gap:30px; flex-wrap:wrap; justify-content:center; margin-top:20px; max-width:1000px;">
-    <div class="comp-item" style="min-width:260px;">
-      <div class="comp-problem">4) arctan(&minus;8.45)</div>
-      <div class="comp-step step" data-step="0" style="text-align:center;">
-        <div style="color:var(--dark-navy); font-size:0.85em; margin-bottom:6px; font-weight:600;">Check: Is your calculator in <strong class="red">Radian</strong> mode?</div>
-        <div class="equation-box" style="font-size:1.1em; padding:8px 16px;">
-          &asymp; <span class="green">&minus;1.4530</span>
+    <!-- ================================================================
+         SLIDE 4 — EXAMPLE 1: Sketch y = arcsin(x)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Sketch a graph of \(y = \arcsin(x)\) by hand.</div>
         </div>
-        <div style="color:#64748b; font-size:0.88em; margin-top:4px;">or &asymp; &minus;83&deg;15&prime;</div>
-      </div>
-    </div>
-    <div class="comp-item" style="min-width:260px;">
-      <div class="comp-problem">5) arccos(2)</div>
-      <div class="comp-step step" data-step="1" style="text-align:center;">
-        <div style="color:var(--blue-accent); font-size:0.9em; margin-bottom:4px; font-weight:600;">Try it in your calculator. You will get an error!</div>
-        <div class="warn-box" style="margin:0 auto; max-width:280px;">
-          <strong class="red">Not possible</strong><br>
-          domain of inverse cosine is [&minus;1, 1]
+        <div class="slide-body" style="align-items:center;">
+            <svg id="svg-arcsin" class="graph-svg" viewBox="0 0 380 340" width="360" height="320"></svg>
         </div>
-      </div>
-    </div>
-    <div class="comp-item" style="min-width:260px;">
-      <div class="comp-problem">6) sec<sup>&minus;1</sup>(3.4)</div>
-      <div class="comp-step step" data-step="2" style="text-align:center;">
-        <div style="font-size:0.85em; margin-bottom:8px; line-height:1.4;">
-          Calculators don't have a sec<sup>&minus;1</sup> key.<br>
-          Use the reciprocal identity:<br>
-          sec &theta; = 3.4 &rarr; <strong class="blue">cos &theta; = 1/3.4</strong>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 5 — INVERSE COSINE
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-5" data-steps="2">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Inverse Cosine</div>
         </div>
-        <div style="color:var(--blue-accent); font-size:0.88em; margin-bottom:4px;">= cos<sup>&minus;1</sup>(1/3.4)</div>
-        <div class="equation-box" style="font-size:1.1em; padding:8px 16px;">
-          &asymp; <span class="green">1.2720</span>
+        <div class="slide-body">
+            <p style="font-size:0.85em; margin-bottom:0.6rem; color:var(--text);">
+                The cosine function has an inverse function on the restricted domain \([0, \pi]\) called the <strong>inverse cosine function</strong>.
+            </p>
+            <div class="two-col">
+                <div class="col" style="align-items:center;">
+                    <div class="step" id="slide-5-step-0">
+                        <svg id="svg-cos-restricted" class="graph-svg" viewBox="0 0 380 240" width="360" height="225"></svg>
+                    </div>
+                </div>
+                <div class="col" style="align-items:center;">
+                    <div class="step" id="slide-5-step-1">
+                        <svg id="svg-arccos" class="graph-svg" viewBox="0 0 380 300" width="360" height="280"></svg>
+                        <div class="equation-box" style="font-size:0.72em; margin-top:6px;">
+                            \(y = \arccos(x)\) &nbsp;or&nbsp; \(y = \cos^{-1}(x)\)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 11: COMPOSITIONS - INTRODUCTION + SIMPLE CASES
-     ============================================================ -->
-<section class="slide" data-steps="4">
-  <h2 class="slide-title">Compositions of Functions</h2>
-  <p class="slide-subtitle">
-    Inverse functions have the properties&hellip;
-    <span class="math" style="font-size:1.1em;"><strong>
-      <span class="math">f</span>(<span class="math">f</span><sup>&minus;1</sup>(<span class="math">x</span>)) = <span class="math">x</span>
-    </strong></span>
-    &nbsp;and&nbsp;
-    <span class="math" style="font-size:1.1em;"><strong>
-      <span class="math">f</span><sup>&minus;1</sup>(<span class="math">f</span>(<span class="math">x</span>)) = <span class="math">x</span>
-    </strong></span>
-  </p>
-  <div class="comp-grid" style="margin-top:16px;">
-    <div class="comp-item">
-      <div class="comp-problem">cos<sup>&minus;1</sup>(cos 30&deg;)</div>
-      <div class="comp-step step" data-step="0">= cos<sup>&minus;1</sup>(<sup>&radic;3</sup>&frasl;<sub>2</sub>)</div>
-      <div class="comp-step step" data-step="1">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">30&deg;</span></div>
-      </div>
-    </div>
-    <div class="comp-item">
-      <div class="comp-problem">cos(cos<sup>&minus;1</sup>(<sup>&radic;3</sup>&frasl;<sub>2</sub>))</div>
-      <div class="comp-step step" data-step="2">= cos(30&deg;)</div>
-      <div class="comp-step step" data-step="3">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green"><sup>&radic;3</sup>&frasl;<sub>2</sub></span></div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 12: COMPOSITIONS - TRICKY CASES
-     ============================================================ -->
-<section class="slide" data-steps="8">
-  <h2 class="slide-title" style="font-size:1.6em;">Compositions &mdash; Tricky Cases</h2>
-  <div class="warn-box" style="text-align:center; max-width:600px; margin-bottom:10px; font-size:0.92em;">
-    You can <strong>NOT</strong> always just &ldquo;cancel&rdquo; a function and its inverse!<br>
-    The answer must be in the restricted domain of the outer inverse function.
-  </div>
-  <div class="comp-grid" style="margin-top:5px;">
-    <div class="comp-item">
-      <div class="comp-problem">cos<sup>&minus;1</sup>(cos 210&deg;)</div>
-      <div class="comp-step step" data-step="0" style="font-size:0.9em; color:var(--blue-accent);">1. Evaluate the inner function first:</div>
-      <div class="comp-step step" data-step="1">= cos<sup>&minus;1</sup>(&minus;<sup>&radic;3</sup>&frasl;<sub>2</sub>)</div>
-      <div class="comp-step step" data-step="2" style="font-size:0.9em; color:var(--blue-accent); margin-top:4px; text-align:center;">
-        2. What angle in [0&deg;, 180&deg;] has a cosine of &minus;&radic;3/2?<br>It must be in Quadrant II.
-      </div>
-      <div class="comp-step step" data-step="3">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">150&deg;</span></div>
-        <div style="color:var(--red-accent); font-size:0.85em; font-weight:600; margin-top:4px;">NOT 210&deg;! (210&deg; is outside [0&deg;, 180&deg;])</div>
-      </div>
-    </div>
-    <div class="comp-item">
-      <div class="comp-problem">arcsin(sin(<sup>3&pi;</sup>&frasl;<sub>2</sub>))</div>
-      <div class="comp-step step" data-step="4" style="font-size:0.9em; color:var(--purple-accent);">1. Evaluate the inner function first:</div>
-      <div class="comp-step step" data-step="5">= arcsin(&minus;1)</div>
-      <div class="comp-step step" data-step="6" style="font-size:0.9em; color:var(--purple-accent); margin-top:4px; text-align:center;">
-        2. What angle in [&minus;&pi;/2, &pi;/2] has a sine of &minus;1?<br>It must be at the bottom of the unit circle.
-      </div>
-      <div class="comp-step step" data-step="7">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;&pi;/2</span></div>
-        <div style="color:var(--red-accent); font-size:0.85em; font-weight:600; margin-top:4px;">NOT 3&pi;/2! (3&pi;/2 is outside [&minus;&pi;/2, &pi;/2])</div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 13: TIPS ON COMPOSITION
-     ============================================================ -->
-<section class="slide" data-steps="0">
-  <h2 class="slide-title">Tips on working with Composition</h2>
-  <div class="def-list" style="margin-top:30px; gap:18px;">
-    <div class="def-item" style="font-size:1.1em;">
-      Always work from the <strong>inside out</strong>.
-    </div>
-    <div class="def-item" style="font-size:1.1em;">
-      Do <strong class="red">NOT</strong> just &ldquo;cancel out&rdquo; a function and its inverse.
-    </div>
-    <div class="def-item" style="font-size:1.1em;">
-      If the question gives an angle in <strong>radians</strong>, give the answer in radians.
-    </div>
-    <div class="def-item" style="font-size:1.1em;">
-      If the question gives an angle in <strong>degrees</strong>, give the answer in degrees.
-    </div>
-  </div>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 14: EXAMPLES 7 & 8 - Compositions
-     ============================================================ -->
-<section class="slide" data-steps="7">
-  <div class="example-label">EXAMPLES</div>
-  <h2 class="slide-title" style="margin-top:20px;">If possible, find the exact value.</h2>
-  <div class="comp-grid" style="margin-top:16px;">
-    <div class="comp-item">
-      <div class="comp-problem">7) arcsin(sin(<sup>5&pi;</sup>&frasl;<sub>3</sub>))</div>
-      <div class="comp-step step" data-step="0">
-        <span class="annotation">Step 1: sin(5&pi;/3) is &minus;&radic;3/2 (Quadrant IV)</span>
-      </div>
-      <div class="comp-step step" data-step="1">
-        = arcsin(&minus;<sup>&radic;3</sup>&frasl;<sub>2</sub>)
-      </div>
-      <div class="comp-step step" data-step="2">
-        <span class="annotation" style="color:#64748b;">Step 2: What angle in [&minus;&pi;/2, &pi;/2] gives a sine of &minus;&radic;3/2?</span>
-      </div>
-      <div class="comp-step step" data-step="3">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;&pi;/3</span></div>
-      </div>
-    </div>
-    <div class="comp-item">
-      <div class="comp-problem">8) tan[arctan(&minus;5)]</div>
-      <div class="comp-step step" data-step="4">
-        <span class="annotation" style="color:var(--dark-navy);">Step 1: Is &minus;5 in the domain of arctan?</span>
-      </div>
-      <div class="comp-step step" data-step="5" style="font-size:0.9em; text-align:center;">
-        Yes, domain of arctan is (&minus;&infin;, &infin;).<br>Therefore, the inverse properties apply perfectly here.
-      </div>
-      <div class="comp-step step" data-step="6">
-        <div class="equation-box" style="font-size:1.1em; padding:6px 16px;">= <span class="green">&minus;5</span></div>
-        <div style="font-size:0.88em; color:#64748b; margin-top:4px;">
-          tan and arctan cancel algebraically.
+    <!-- ================================================================
+         SLIDE 6 — INVERSE TANGENT
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-6" data-steps="2">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Inverse Tangent</div>
         </div>
-      </div>
-    </div>
-  </div>
-  <span class="click-hint">Click to reveal</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
-
-<!-- ============================================================
-     SLIDE 15: EXAMPLE 9 - tan(arccos(2/3)) with Triangle
-     ============================================================ -->
-<section class="slide" data-steps="4">
-  <div class="example-label">EXAMPLE 9</div>
-  <div class="advanced-label">HONORS</div>
-  <h2 class="slide-title" style="margin-top:20px;">
-    If possible, find the exact value of tan(arccos(<sup>2</sup>&frasl;<sub>3</sub>)).
-  </h2>
-  <div class="worked-example" style="margin-top:10px;">
-    <div class="worked-left" style="gap:10px;">
-      <div class="step" data-step="0" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 1: Set up the inner function as an angle</span><br>
-        <div>Let <span class="math">&theta;</span> = arccos(<sup>2</sup>&frasl;<sub>3</sub>)</div>
-        <div>Then cos <span class="math">&theta;</span> = <sup>2</sup>&frasl;<sub>3</sub> = <sup>adj</sup>&frasl;<sub>hyp</sub></div>
-      </div>
-      <div class="step" data-step="1" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 2: Find the missing side</span><br>
-        <div>By Pythagorean Theorem:</div>
-        <div>opp = &radic;(3&sup2; &minus; 2&sup2;) = <strong class="blue">&radic;5</strong></div>
-      </div>
-      <div class="step" data-step="2" style="font-size:1.0em; line-height:1.7; text-align:left; max-width:360px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 3: Evaluate the outer function</span><br>
-        We want tan(<span class="math">&theta;</span>).
-      </div>
-      <div class="step" data-step="3" style="text-align:left; max-width:360px;">
-        <div style="font-size:1.0em;">tan <span class="math">&theta;</span> = <sup>opp</sup>&frasl;<sub>adj</sub></div>
-        <div class="equation-box" style="font-size:1.3em; padding:8px 20px; margin-top:6px;">
-          = <span class="green"><sup>&radic;5</sup>&frasl;<sub>2</sub></span>
+        <div class="slide-body">
+            <p style="font-size:0.85em; margin-bottom:0.6rem; color:var(--text);">
+                The tangent function has an inverse function on the restricted domain \(\left(-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right)\) called the <strong>inverse tangent function</strong>.
+            </p>
+            <div class="two-col">
+                <div class="col" style="align-items:center;">
+                    <div class="step" id="slide-6-step-0">
+                        <svg id="svg-tan-restricted" class="graph-svg" viewBox="0 0 380 260" width="360" height="245"></svg>
+                    </div>
+                </div>
+                <div class="col" style="align-items:center;">
+                    <div class="step" id="slide-6-step-1">
+                        <svg id="svg-arctan" class="graph-svg" viewBox="0 0 380 280" width="360" height="265"></svg>
+                        <div class="equation-box" style="font-size:0.72em; margin-top:6px;">
+                            \(y = \arctan(x)\) &nbsp;or&nbsp; \(y = \tan^{-1}(x)\)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="worked-right">
-      <svg id="svg-triangle-9" class="triangle-svg step" data-step="0" viewBox="0 0 260 220" width="250" height="210"></svg>
-    </div>
-  </div>
-  <span class="click-hint">Click to advance</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 16: EXAMPLE 10 - cot(arccos(3x)) Algebraic Expression
-     ============================================================ -->
-<section class="slide" data-steps="4">
-  <div class="example-label">EXAMPLE 10</div>
-  <div class="advanced-label">HONORS</div>
-  <h2 class="slide-title" style="margin-top:20px;">
-    Write as an algebraic expression in <span class="math">x</span>:
-  </h2>
-  <p class="slide-subtitle" style="font-size:1.2em; font-weight:600;">
-    cot(arccos(3<span class="math">x</span>)), &nbsp; 0 &le; <span class="math">x</span> &le; <sup>1</sup>&frasl;<sub>3</sub>
-  </p>
-  <div class="worked-example" style="margin-top:8px;">
-    <div class="worked-left" style="gap:10px;">
-      <div class="step" data-step="0" style="font-size:0.95em; line-height:1.7; text-align:left; max-width:380px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 1: Set up the inner function as an angle</span><br>
-        <div>Let <span class="math">&theta;</span> = arccos(3<span class="math">x</span>)</div>
-        <div>Then cos <span class="math">&theta;</span> = 3<span class="math">x</span> = <sup>3<span class="math">x</span></sup>&frasl;<sub>1</sub> = <sup>adj</sup>&frasl;<sub>hyp</sub></div>
-      </div>
-      <div class="step" data-step="1" style="font-size:0.95em; line-height:1.7; text-align:left; max-width:380px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 2: Find the missing side</span><br>
-        <div>By Pythagorean Theorem:</div>
-        <div>opp = &radic;(1&sup2; &minus; (3<span class="math">x</span>)&sup2;) = <strong class="blue">&radic;(1 &minus; 9<span class="math">x</span>&sup2;)</strong></div>
-      </div>
-      <div class="step" data-step="2" style="text-align:left; max-width:380px;">
-        <span style="color:var(--dark-navy); font-weight:600; font-size:0.9em; text-transform:uppercase;">Step 3: Evaluate the outer function</span><br>
-        We want cot(<span class="math">&theta;</span>).
-      </div>
-      <div class="step" data-step="3" style="text-align:left; max-width:380px;">
-        <div style="font-size:0.95em;">cot <span class="math">&theta;</span> = <sup>adj</sup>&frasl;<sub>opp</sub></div>
-        <div class="equation-box" style="font-size:1.2em; padding:8px 20px; margin-top:6px;">
-          = <span class="green"><sup>3<span class="math">x</span></sup>&frasl;<sub>&radic;(1 &minus; 9<span class="math">x</span>&sup2;)</sub></span>
+    <!-- ================================================================
+         SLIDE 7 — SUMMARY TABLE (fill-blank reveal)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-7" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Inverse Trigonometric Functions</div>
         </div>
-      </div>
-    </div>
-    <div class="worked-right">
-      <svg id="svg-triangle-10" class="triangle-svg step" data-step="0" viewBox="0 0 260 220" width="250" height="210"></svg>
-    </div>
-  </div>
-  <span class="click-hint">Click to advance</span>
-  <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
-</section>
+        <div class="slide-body" style="align-items:center;">
+            <table class="summary-table">
+                <tr>
+                    <th>Function</th>
+                    <th>Domain</th>
+                    <th>Range</th>
+                </tr>
+                <tr>
+                    <td>\(y = \arcsin x\)</td>
+                    <td class="fill-blank" id="slide-7-step-0-a">\([-1,\;1]\)</td>
+                    <td class="fill-blank" id="slide-7-step-0-b">\(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\)</td>
+                </tr>
+                <tr>
+                    <td>\(y = \arccos x\)</td>
+                    <td class="fill-blank" id="slide-7-step-1-a">\([-1,\;1]\)</td>
+                    <td class="fill-blank" id="slide-7-step-1-b">\([0,\;\pi]\)</td>
+                </tr>
+                <tr>
+                    <td>\(y = \arctan x\)</td>
+                    <td class="fill-blank" id="slide-7-step-2-a">\((-\infty,\;\infty)\)</td>
+                    <td class="fill-blank" id="slide-7-step-2-b">\(\left(-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right)\)</td>
+                </tr>
+            </table>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<!-- ============================================================
-     SLIDE 17: QUESTIONS
-     ============================================================ -->
-<section class="slide section-slide" data-steps="0">
-  <div class="section-title">What are your questions?</div>
-</section>
+    <!-- ================================================================
+         SLIDE 8 — FYI TRANSFORMATIONS
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-8" data-steps="1">
+        <div class="slide-header">
+            <div class="fyi-label">FYI</div>
+            <div class="slide-title">Transformations of Inverse Trig Functions</div>
+        </div>
+        <div class="slide-body" style="align-items:center;">
+            <p style="font-size:0.85em; margin-bottom:0.6rem; color:var(--text);">Just like with all functions, you can <strong>transform</strong> inverse trig functions, too!</p>
+            <div class="step" id="slide-8-step-0">
+                <svg id="svg-transform-compare" class="graph-svg" viewBox="0 0 380 320" width="360" height="300"></svg>
+                <div style="display:flex; gap:24px; justify-content:center; margin-top:8px; font-size:0.72em; font-weight:600;">
+                    <span><span style="display:inline-block; width:30px; height:3px; background:var(--red-accent); vertical-align:middle; margin-right:6px;"></span>\(y = \arcsin(2x)\)</span>
+                    <span><span style="display:inline-block; width:30px; height:3px; background:var(--blue-accent); vertical-align:middle; margin-right:6px;"></span>\(y = \arcsin(x)\)</span>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
+    <!-- ================================================================
+         SLIDE 9 — EXAMPLES 2 & 3: Exact Values
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-9" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Examples 2 &amp; 3</div>
+            <div class="slide-title">If possible, find the exact value.</div>
+        </div>
+        <div class="slide-body">
+            <div class="comp-grid">
+                <div class="comp-item">
+                    <div class="comp-problem">\(\displaystyle \text{2) } \arcsin\!\left(-\tfrac{1}{2}\right)\)</div>
+                    <div class="step" id="slide-9-step-0">
+                        <div style="color:var(--blue-accent); font-size:0.85em; margin-bottom:0.15rem; font-weight:600; text-align:center;">What angle gives a sine of \(-\tfrac{1}{2}\)?</div>
+                        <div style="font-size:0.82em; line-height:1.4; text-align:center;">
+                            The range of inverse sine is \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\).<br>
+                            Sine is negative in QIV. The reference angle is \(\dfrac{\pi}{6}\).
+                        </div>
+                    </div>
+                    <div class="step" id="slide-9-step-1">
+                        <div class="equation-box" style="font-size:1.0em;">
+                            \(= \displaystyle -\dfrac{\pi}{6}\)
+                        </div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-problem">\(\text{3) } \sin^{-1}(2)\)</div>
+                    <div class="step" id="slide-9-step-2">
+                        <div style="color:var(--blue-accent); font-size:0.85em; margin-bottom:0.15rem; font-weight:600; text-align:center;">What angle gives a sine of 2?</div>
+                        <div style="font-size:0.82em; line-height:1.4; text-align:center;">
+                            The sine of any angle can never be greater than 1!
+                        </div>
+                    </div>
+                    <div class="step" id="slide-9-step-3">
+                        <div class="warn-box" style="max-width:300px; text-align:center;">
+                            <strong style="color:var(--red-accent);">Not possible</strong><br>
+                            because the domain of inverse sine is \([-1,\;1]\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
+    <!-- ================================================================
+         SLIDE 9B — GRAPHICAL VIEW OF EXAMPLE 2
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-9b" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Graphical View: \(\arcsin\!\left(-\tfrac{1}{2}\right) = -\dfrac{\pi}{6}\)</div>
+        </div>
+        <div class="slide-body">
+            <p style="font-size:0.82em; margin-bottom:0.5rem; color:var(--text);">We can see this exact answer dynamically on both the Sine graph and the Inverse Sine graph.</p>
+            <div class="two-col">
+                <div class="col" style="align-items:center;">
+                    <div style="font-weight:600; margin-bottom:8px; color:var(--navy); font-size:0.85em;">\(y = \sin(x)\) on \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\)</div>
+                    <div class="step" id="slide-9b-step-0">
+                        <svg id="svg-sin-ex2" class="graph-svg" viewBox="0 0 380 260" width="360" height="245"></svg>
+                        <div style="margin-top:8px; font-size:0.82em; text-align:center; max-width:320px;">
+                            Where does \(y = \sin(x)\) cross the line \(y = -\tfrac{1}{2}\)?<br>
+                            <strong style="color:var(--blue-accent);">At \(x = -\dfrac{\pi}{6}\)</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="align-items:center;">
+                    <div style="font-weight:600; margin-bottom:8px; color:var(--navy); font-size:0.85em;">\(y = \arcsin(x)\)</div>
+                    <div class="step" id="slide-9b-step-1">
+                        <svg id="svg-arcsin-ex2" class="graph-svg" viewBox="0 0 380 260" width="360" height="245"></svg>
+                        <div style="margin-top:8px; font-size:0.82em; text-align:center; max-width:320px;">
+                            What is the \(y\)-value on the \(y = \arcsin(x)\) graph when \(x = -\tfrac{1}{2}\)?<br>
+                            <strong style="color:var(--purple-accent);">\(y = -\dfrac{\pi}{6}\)</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-</div><!-- end slides-container -->
+    <!-- ================================================================
+         SLIDE 10 — EXAMPLES 4-6: Calculator Approximations
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-10" data-steps="3">
+        <div class="slide-header">
+            <div class="example-label">Examples 4&ndash;6</div>
+            <div class="slide-title">Use a calculator to approximate the value (if possible).</div>
+        </div>
+        <div class="slide-body">
+            <div class="steps-area">
+                <div class="step" id="slide-10-step-0">
+                    <div class="step-box">
+                        <div class="step-label">4) \(\arctan(-8.45)\)</div>
+                        <div class="step-content">
+                            Check: Is your calculator in <strong style="color:var(--red-accent);">Radian</strong> mode?
+                            <div style="margin-top:0.3em;">
+                                <div class="equation-box">\(\approx -1.4530\)</div>
+                                <span style="color:var(--text-muted); font-size:0.85em; margin-left:1rem;">or \(\approx -83°15'\)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-1">
+                    <div class="step-box red">
+                        <div class="step-label">5) \(\arccos(2)\)</div>
+                        <div class="step-content">
+                            Try it in your calculator &mdash; you will get an error!<br>
+                            <strong style="color:var(--red-accent);">Not possible:</strong> domain of inverse cosine is \([-1,\;1]\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-2">
+                    <div class="step-box teal">
+                        <div class="step-label">6) \(\sec^{-1}(3.4)\)</div>
+                        <div class="step-content">
+                            Calculators don't have a \(\sec^{-1}\) key. Use the reciprocal identity:<br>
+                            \(\sec\theta = 3.4\) &nbsp;\(\Rightarrow\)&nbsp; \(\cos\theta = \dfrac{1}{3.4}\)
+                            <div style="margin-top:0.3em;">
+                                \(= \cos^{-1}\!\left(\dfrac{1}{3.4}\right)\) &nbsp;
+                                <div class="equation-box">\(\approx 1.2720\)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
-<div class="keyboard-hint">
-  <span class="key-icon">&larr;</span>
-  <span class="key-icon">&rarr;</span>
-  <span style="margin-left:4px;">or click to navigate</span>
-</div>
+    <!-- ================================================================
+         SLIDE 11 — COMPOSITIONS INTRO (Simple Cases)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-11" data-steps="4">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Compositions of Functions</div>
+        </div>
+        <div class="slide-body">
+            <p style="font-size:0.85em; margin-bottom:0.7rem; color:var(--text);">
+                Inverse functions have the properties&hellip;
+                \(f(f^{-1}(x)) = x\) &nbsp;and&nbsp; \(f^{-1}(f(x)) = x\)
+            </p>
+            <div class="comp-grid">
+                <div class="comp-item">
+                    <div class="comp-problem">\(\cos^{-1}(\cos 30°)\)</div>
+                    <div class="step" id="slide-11-step-0">
+                        <div style="font-size:0.92em; text-align:center;">\(= \cos^{-1}\!\left(\dfrac{\sqrt{3}}{2}\right)\)</div>
+                    </div>
+                    <div class="step" id="slide-11-step-1">
+                        <div class="equation-box" style="font-size:1.0em;">\(= 30°\)</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-problem">\(\cos\!\left(\cos^{-1}\!\left(\dfrac{\sqrt{3}}{2}\right)\right)\)</div>
+                    <div class="step" id="slide-11-step-2">
+                        <div style="font-size:0.92em; text-align:center;">\(= \cos(30°)\)</div>
+                    </div>
+                    <div class="step" id="slide-11-step-3">
+                        <div class="equation-box" style="font-size:1.0em;">\(= \dfrac{\sqrt{3}}{2}\)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
 
+    <!-- ================================================================
+         SLIDE 12 — COMPOSITIONS TRICKY CASES
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-12" data-steps="8">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Compositions &mdash; Tricky Cases</div>
+        </div>
+        <div class="slide-body">
+            <div class="warn-box" style="text-align:center; margin-bottom:0.6rem; font-size:0.85em;">
+                You can <strong>NOT</strong> always just &ldquo;cancel&rdquo; a function and its inverse!<br>
+                The answer must be in the restricted range of the outer inverse function.
+            </div>
+            <div class="comp-grid">
+                <div class="comp-item">
+                    <div class="comp-problem">\(\cos^{-1}(\cos 210°)\)</div>
+                    <div class="step" id="slide-12-step-0">
+                        <div style="font-size:0.82em; color:var(--blue-accent);">1. Evaluate the inner function first:</div>
+                    </div>
+                    <div class="step" id="slide-12-step-1">
+                        <div style="font-size:0.92em; text-align:center;">\(= \cos^{-1}\!\left(-\dfrac{\sqrt{3}}{2}\right)\)</div>
+                    </div>
+                    <div class="step" id="slide-12-step-2">
+                        <div style="font-size:0.82em; color:var(--blue-accent); text-align:center;">
+                            2. What angle in \([0°,\;180°]\) has a cosine of \(-\dfrac{\sqrt{3}}{2}\)?<br>It must be in Quadrant II.
+                        </div>
+                    </div>
+                    <div class="step" id="slide-12-step-3">
+                        <div class="equation-box" style="font-size:1.0em;">\(= 150°\)</div>
+                        <div style="color:var(--red-accent); font-size:0.82em; font-weight:600; margin-top:4px;">NOT 210°! (210° is outside \([0°,\;180°]\))</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-problem">\(\arcsin\!\left(\sin\dfrac{3\pi}{2}\right)\)</div>
+                    <div class="step" id="slide-12-step-4">
+                        <div style="font-size:0.82em; color:var(--purple-accent);">1. Evaluate the inner function first:</div>
+                    </div>
+                    <div class="step" id="slide-12-step-5">
+                        <div style="font-size:0.92em; text-align:center;">\(= \arcsin(-1)\)</div>
+                    </div>
+                    <div class="step" id="slide-12-step-6">
+                        <div style="font-size:0.82em; color:var(--purple-accent); text-align:center;">
+                            2. What angle in \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\) has a sine of \(-1\)?<br>It must be at the bottom of the unit circle.
+                        </div>
+                    </div>
+                    <div class="step" id="slide-12-step-7">
+                        <div class="equation-box" style="font-size:1.0em;">\(= -\dfrac{\pi}{2}\)</div>
+                        <div style="color:var(--red-accent); font-size:0.82em; font-weight:600; margin-top:4px;">NOT \(\dfrac{3\pi}{2}\)! (\(\dfrac{3\pi}{2}\) is outside \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\))</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 13 — TIPS ON COMPOSITION
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-13">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Tips on working with Composition</div>
+        </div>
+        <div class="slide-body">
+            <div class="def-list" style="margin-top:30px; gap:18px;">
+                <div class="def-item" style="font-size:0.95em;">
+                    Always work from the <strong>inside out</strong>.
+                </div>
+                <div class="def-item" style="font-size:0.95em;">
+                    Do <strong style="color:var(--red-accent);">NOT</strong> just &ldquo;cancel out&rdquo; a function and its inverse.
+                </div>
+                <div class="def-item" style="font-size:0.95em;">
+                    If the question gives an angle in <strong>radians</strong>, give the answer in radians.
+                </div>
+                <div class="def-item" style="font-size:0.95em;">
+                    If the question gives an angle in <strong>degrees</strong>, give the answer in degrees.
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 14 — EXAMPLES 7 & 8: Compositions
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-14" data-steps="7">
+        <div class="slide-header">
+            <div class="example-label">Examples 7 &amp; 8</div>
+            <div class="slide-title">If possible, find the exact value.</div>
+        </div>
+        <div class="slide-body">
+            <div class="comp-grid">
+                <div class="comp-item">
+                    <div class="comp-problem">\(\displaystyle \text{7) } \arcsin\!\left(\sin\dfrac{5\pi}{3}\right)\)</div>
+                    <div class="step" id="slide-14-step-0">
+                        <div style="font-size:0.82em; color:var(--blue-accent); font-weight:600;">Step 1: \(\sin\!\left(\dfrac{5\pi}{3}\right) = -\dfrac{\sqrt{3}}{2}\) (Quadrant IV)</div>
+                    </div>
+                    <div class="step" id="slide-14-step-1">
+                        <div style="font-size:0.92em; text-align:center;">\(= \arcsin\!\left(-\dfrac{\sqrt{3}}{2}\right)\)</div>
+                    </div>
+                    <div class="step" id="slide-14-step-2">
+                        <div style="font-size:0.82em; color:var(--text-muted);">Step 2: What angle in \(\left[-\dfrac{\pi}{2},\;\dfrac{\pi}{2}\right]\) gives a sine of \(-\dfrac{\sqrt{3}}{2}\)?</div>
+                    </div>
+                    <div class="step" id="slide-14-step-3">
+                        <div class="equation-box" style="font-size:1.0em;">\(= -\dfrac{\pi}{3}\)</div>
+                    </div>
+                </div>
+                <div class="comp-item">
+                    <div class="comp-problem">\(\text{8) } \tan[\arctan(-5)]\)</div>
+                    <div class="step" id="slide-14-step-4">
+                        <div style="font-size:0.82em; color:var(--navy); font-weight:600;">Step 1: Is \(-5\) in the domain of arctan?</div>
+                    </div>
+                    <div class="step" id="slide-14-step-5">
+                        <div style="font-size:0.85em; text-align:center;">
+                            Yes, domain of arctan is \((-\infty,\;\infty)\).<br>Therefore, the inverse properties apply perfectly here.
+                        </div>
+                    </div>
+                    <div class="step" id="slide-14-step-6">
+                        <div class="equation-box" style="font-size:1.0em;">\(= -5\)</div>
+                        <div style="font-size:0.82em; color:var(--text-muted); margin-top:4px;">
+                            tan and arctan cancel algebraically.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 15 — EXAMPLE 9: tan(arccos(2/3)) with Triangle
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-15" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 9</div>
+            <div class="slide-title">Find the exact value of \(\tan\!\left(\arccos\dfrac{2}{3}\right)\).</div>
+            <div class="advanced-label">Honors</div>
+        </div>
+        <div class="slide-body">
+            <div class="steps-area">
+                <div class="step" id="slide-15-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Step 1 &mdash; Set up the inner function as an angle</div>
+                        <div class="step-row">
+                            <div class="step-text">
+                                <div class="step-content">
+                                    Let \(\theta = \arccos\!\left(\dfrac{2}{3}\right)\)<br>
+                                    Then \(\cos\theta = \dfrac{2}{3} = \dfrac{\text{adj}}{\text{hyp}}\)
+                                </div>
+                            </div>
+                            <div class="step-figure">
+                                <svg id="svg-triangle-9" class="triangle-svg" viewBox="0 0 300 240" width="280" height="220"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-15-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Step 2 &mdash; Find the missing side</div>
+                        <div class="step-content">
+                            By Pythagorean Theorem: \(\text{opp} = \sqrt{3^2 - 2^2} = \sqrt{5}\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-15-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Step 3 &mdash; Evaluate the outer function</div>
+                        <div class="step-content">
+                            We want \(\tan(\theta)\). &nbsp; \(\tan\theta = \dfrac{\text{opp}}{\text{adj}}\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-15-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\tan\!\left(\arccos\dfrac{2}{3}\right) = \dfrac{\sqrt{5}}{2}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 16 — EXAMPLE 10: cot(arccos(3x)) Algebraic
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-16" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 10</div>
+            <div class="slide-title">Write as an algebraic expression: \(\cot(\arccos(3x))\), &nbsp;\(0 \le x \le \tfrac{1}{3}\)</div>
+            <div class="advanced-label">Honors</div>
+        </div>
+        <div class="slide-body">
+            <div class="steps-area">
+                <div class="step" id="slide-16-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Step 1 &mdash; Set up the inner function as an angle</div>
+                        <div class="step-row">
+                            <div class="step-text">
+                                <div class="step-content">
+                                    Let \(\theta = \arccos(3x)\)<br>
+                                    Then \(\cos\theta = 3x = \dfrac{3x}{1} = \dfrac{\text{adj}}{\text{hyp}}\)
+                                </div>
+                            </div>
+                            <div class="step-figure">
+                                <svg id="svg-triangle-10" class="triangle-svg" viewBox="0 0 300 240" width="280" height="220"></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-16-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Step 2 &mdash; Find the missing side</div>
+                        <div class="step-content">
+                            By Pythagorean Theorem: \(\text{opp} = \sqrt{1^2 - (3x)^2} = \sqrt{1 - 9x^2}\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-16-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Step 3 &mdash; Evaluate the outer function</div>
+                        <div class="step-content">
+                            We want \(\cot(\theta)\). &nbsp; \(\cot\theta = \dfrac{\text{adj}}{\text{opp}}\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-16-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\cot(\arccos(3x)) = \dfrac{3x}{\sqrt{1 - 9x^2}}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+    <!-- ================================================================
+         SLIDE 17 — QUESTIONS
+         ================================================================ -->
+    <section class="slide section-slide" id="slide-17">
+        <div style="font-size:2em; font-weight:700; color:white; text-align:center;">What are your questions?</div>
+        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    </section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
-/* ===========================================
-   GRAPH BUILDER
-   Creates accurate SVG graphs using a consistent
-   coordinate mapping system. Reused from 4.8.
-   =========================================== */
-
-class GraphBuilder {
-  constructor(svgId, viewBox) {
-    this.svg = document.getElementById(svgId);
-    if (!this.svg) return;
-    this.ns = 'http://www.w3.org/2000/svg';
-    const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
-    this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
-  }
-
-  setCoords(mathXMin, mathXMax, mathYMin, mathYMax, svgPadLeft, svgPadRight, svgPadTop, svgPadBottom) {
-    this.mathXMin = mathXMin;
-    this.mathXMax = mathXMax;
-    this.mathYMin = mathYMin;
-    this.mathYMax = mathYMax;
-    this.svgXMin = svgPadLeft;
-    this.svgXMax = this.vbW - svgPadRight;
-    this.svgYMin = svgPadTop;
-    this.svgYMax = this.vbH - svgPadBottom;
-  }
-
-  mx(val) { return this.svgXMin + (val - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
-  my(val) { return this.svgYMax - (val - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
-
-  addGrid() {
-    const pat = document.createElementNS(this.ns, 'pattern');
-    const patId = 'grid-' + Math.random().toString(36).substr(2,5);
-    pat.setAttribute('id', patId);
-    pat.setAttribute('width', '40'); pat.setAttribute('height', '40');
-    pat.setAttribute('patternUnits', 'userSpaceOnUse');
-    const p = document.createElementNS(this.ns, 'path');
-    p.setAttribute('d', 'M 40 0 L 0 0 0 40');
-    p.setAttribute('fill', 'none'); p.setAttribute('stroke', '#e2e8f0'); p.setAttribute('stroke-width', '0.5');
-    pat.appendChild(p);
-    this.svg.appendChild(pat);
-    const r = document.createElementNS(this.ns, 'rect');
-    r.setAttribute('width', this.vbW); r.setAttribute('height', this.vbH);
-    r.setAttribute('fill', 'url(#' + patId + ')');
-    this.svg.appendChild(r);
-  }
-
-  addAxes() {
-    this.line(this.svgXMin - 10, this.my(0), this.svgXMax + 10, this.my(0), '#1a365d', 1.5);
-    const originX = this.mx(0);
-    this.line(originX, this.svgYMin - 5, originX, this.svgYMax + 5, '#1a365d', 1.5);
-  }
-
-  line(x1, y1, x2, y2, color, width, dasharray) {
-    const l = document.createElementNS(this.ns, 'line');
-    l.setAttribute('x1', x1); l.setAttribute('y1', y1);
-    l.setAttribute('x2', x2); l.setAttribute('y2', y2);
-    l.setAttribute('stroke', color || '#1a365d');
-    l.setAttribute('stroke-width', width || 1);
-    if (dasharray) l.setAttribute('stroke-dasharray', dasharray);
-    this.svg.appendChild(l);
-    return l;
-  }
-
-  label(x, y, text, opts) {
-    const t = document.createElementNS(this.ns, 'text');
-    t.setAttribute('x', x); t.setAttribute('y', y);
-    t.setAttribute('font-size', (opts && opts.size) || '11');
-    t.setAttribute('fill', (opts && opts.color) || '#64748b');
-    t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
-    if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
-    t.textContent = text;
-    this.svg.appendChild(t);
-    return t;
-  }
-
-  asymptote(mathX, cls) {
-    const svgX = this.mx(mathX);
-    const l = this.line(svgX, this.svgYMin - 5, svgX, this.svgYMax + 5, '#dc2626', 1.5, '6 4');
-    l.setAttribute('opacity', '0.7');
-    if (cls) l.setAttribute('class', cls);
-    return l;
-  }
-
-  hline(mathY, color, dasharray) {
-    const sy = this.my(mathY);
-    const l = this.line(this.svgXMin - 10, sy, this.svgXMax + 10, sy, color || '#16a34a', 1, dasharray || '4 3');
-    l.setAttribute('opacity', '0.5');
-    return l;
-  }
-
-  point(mathX, mathY, color, radius) {
-    const c = document.createElementNS(this.ns, 'circle');
-    c.setAttribute('cx', this.mx(mathX)); c.setAttribute('cy', this.my(mathY));
-    c.setAttribute('r', radius || 4.5);
-    c.setAttribute('fill', color || '#2563eb');
-    c.setAttribute('stroke', 'white'); c.setAttribute('stroke-width', '1.5');
-    this.svg.appendChild(c);
-    return c;
-  }
-
-  curve(f, xStart, xEnd, steps, color, width, dasharray, yClip) {
-    const segs = [];
-    let currentSeg = [];
-    const n = steps || 500;
-    const clip = yClip || (this.mathYMax - this.mathYMin) * 1.5;
-
-    for (let i = 0; i <= n; i++) {
-      const mathX = xStart + (i / n) * (xEnd - xStart);
-      const mathY = f(mathX);
-      if (isNaN(mathY) || !isFinite(mathY) || Math.abs(mathY) > clip) {
-        if (currentSeg.length >= 2) segs.push(currentSeg);
-        currentSeg = [];
-        continue;
-      }
-      currentSeg.push([this.mx(mathX), this.my(mathY)]);
-    }
-    if (currentSeg.length >= 2) segs.push(currentSeg);
-
-    const g = document.createElementNS(this.ns, 'g');
-
-    segs.forEach(seg => {
-      let d = 'M ' + seg[0][0].toFixed(1) + ' ' + seg[0][1].toFixed(1);
-      for (let i = 1; i < seg.length; i++) {
-        d += ' L ' + seg[i][0].toFixed(1) + ' ' + seg[i][1].toFixed(1);
-      }
-      const path = document.createElementNS(this.ns, 'path');
-      path.setAttribute('d', d);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', color || '#1e40af');
-      path.setAttribute('stroke-width', width || 2.5);
-      if (dasharray) path.setAttribute('stroke-dasharray', dasharray);
-      g.appendChild(path);
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
     });
 
-    this.svg.appendChild(g);
-    return g;
-  }
-
-  addXLabels(labels) {
-    labels.forEach(lb => {
-      this.label(this.mx(lb.val), this.my(0) + 16, lb.text, { size: '11', anchor: 'middle' });
-    });
-  }
-
-  addYLabels(labels) {
-    labels.forEach(lb => {
-      this.label(this.mx(0) - 14, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end' });
-    });
-  }
-
-  startStep(stepNum) {
-    const g = document.createElementNS(this.ns, 'g');
-    g.setAttribute('class', 'step');
-    g.setAttribute('data-step', stepNum);
-    this.svg.appendChild(g);
-    this._stepGroup = g;
-    this._origSvg = this.svg;
-    this.svg = g;
-  }
-
-  endStep() {
-    this.svg = this._origSvg;
-    this._stepGroup = null;
-  }
-}
-
-/* ===========================================
-   BUILD ALL GRAPHS
-   =========================================== */
-function buildAllGraphs() {
-  const PI = Math.PI;
-
-  // -----------------------------------------------
-  // SLIDE 2: sin(x) with restricted domain [-π/2, π/2]
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-sin-restricted');
-    if (g.svg) {
-      g.setCoords(-2*PI, 2*PI, -1.5, 1.5, 45, 15, 15, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([
-        {val: -PI, text: '−π'}, {val: -PI/2, text: '−π/2'},
-        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'}
-      ]);
-      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}]);
-      // Full sin curve (faded)
-      g.curve(x => Math.sin(x), -2*PI, 2*PI, 500, '#93c5fd', 2, null, null);
-      // Label
-      g.label(g.mx(PI) + 30, g.my(0.8), 'y=sin(x)', { color: '#93c5fd', size: '11', anchor: 'start', weight: '600' });
-      // Step 0: restricted portion highlighted + properties
-      g.startStep(0);
-      g.curve(x => Math.sin(x), -PI/2, PI/2, 200, '#1e40af', 3, null, null);
-      g.point(-PI/2, -1, '#1e40af');
-      g.point(0, 0, '#1e40af');
-      g.point(PI/2, 1, '#1e40af');
-      // Brace-like vertical lines showing restricted domain
-      g.line(g.mx(-PI/2), g.my(-1.3), g.mx(-PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
-      g.line(g.mx(PI/2), g.my(-1.3), g.mx(PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
-      g.endStep();
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 9B: Graphical View for arcsin(-1/2) = -π/6
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-sin-ex2');
-    if (g.svg) {
-      g.setCoords(-PI/2, PI/2, -1.2, 1.2, 45, 20, 20, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -PI/2, text: '−π/2'}, {val: PI/2, text: 'π/2'}]);
-      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}, {val: -0.5, text: '−½'}]);
-      
-      // y = sin(x) curve on [-π/2, π/2]
-      g.curve(x => Math.sin(x), -PI/2, PI/2, 200, '#1e40af', 2.5, null, null);
-      g.point(-PI/2, -1, '#1e40af', 3);
-      g.point(PI/2, 1, '#1e40af', 3);
-      
-      // Step 0: Draw y = -1/2 line and intersection
-      g.startStep(0);
-      g.hline(-0.5, '#dc2626', '4 4');
-      g.point(-PI/6, -0.5, '#dc2626', 5);
-      // Dotted line up to x-axis
-      g.line(g.mx(-PI/6), g.my(-0.5), g.mx(-PI/6), g.my(0), '#2563eb', 1.5, '3 3');
-      g.label(g.mx(-PI/6), g.my(0) - 8, '−π/6', { size: '12', color: '#2563eb', weight: '700' });
-      g.endStep();
-    }
-  }
-
-  {
-    const g = new GraphBuilder('svg-arcsin-ex2');
-    if (g.svg) {
-      g.setCoords(-1.2, 1.2, -PI/2, PI/2, 50, 20, 20, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -1, text: '−1'}, {val: 1, text: '1'}, {val: -0.5, text: '−½'}]);
-      g.addYLabels([{val: PI/2, text: 'π/2'}, {val: -PI/2, text: '−π/2'}]);
-      
-      // y = arcsin(x) curve
-      g.curve(x => Math.asin(x), -1, 1, 300, '#7c3aed', 2.5, null, null);
-      g.point(-1, -PI/2, '#7c3aed', 3);
-      g.point(1, PI/2, '#7c3aed', 3);
-      
-      // Step 1: Draw x = -1/2 line and intersection
-      g.startStep(1);
-      const mx = g.mx(-0.5);
-      g.line(mx, g.svgYMin, mx, g.svgYMax, '#dc2626', 1, '4 4');
-      g.point(-0.5, -PI/6, '#dc2626', 5);
-      // Dotted line to y-axis
-      g.line(g.mx(-0.5), g.my(-PI/6), g.mx(0), g.my(-PI/6), '#7c3aed', 1.5, '3 3');
-      g.label(g.mx(0) + 18, g.my(-PI/6) + 4, '−π/6', { size: '12', color: '#7c3aed', weight: '700' });
-      g.endStep();
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 4: y = arcsin(x) graph
-  // x from -1.5 to 1.5, y from -2.0 to 2.0
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-arcsin');
-    if (g.svg) {
-      g.setCoords(-1.5, 1.5, -2.0, 2.0, 55, 20, 20, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -1, text: '−1'}, {val: 1, text: '1'}]);
-      g.addYLabels([
-        {val: PI/2, text: 'π/2'}, {val: -PI/2, text: '−π/2'},
-        {val: PI/4, text: 'π/4'}, {val: -PI/4, text: '−π/4'}
-      ]);
-      // Step 0: the arcsin curve
-      g.startStep(0);
-      g.curve(x => Math.asin(x), -1, 1, 300, '#1e40af', 2.5, null, null);
-      g.point(-1, -PI/2, '#1e40af');
-      g.point(-0.5, -PI/6, '#1e40af');
-      g.point(0, 0, '#1e40af');
-      g.point(0.5, PI/6, '#1e40af');
-      g.point(1, PI/2, '#1e40af');
-      // Labels for endpoints
-      g.label(g.mx(-1) - 8, g.my(-PI/2) + 4, '(−1, −π/2)', { size: '10', anchor: 'end', color: '#1e40af', weight: '600' });
-      g.label(g.mx(1) + 8, g.my(PI/2) - 4, '(1, π/2)', { size: '10', anchor: 'start', color: '#1e40af', weight: '600' });
-      g.endStep();
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 5: cos(x) with restricted domain [0, π]
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-cos-restricted');
-    if (g.svg) {
-      g.setCoords(-PI, 2.5*PI, -1.5, 1.5, 40, 15, 15, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([
-        {val: -PI, text: '−π'}, {val: PI/2, text: 'π/2'},
-        {val: PI, text: 'π'}, {val: 2*PI, text: '2π'}
-      ]);
-      g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '−1'}]);
-      // Full cos curve (faded)
-      g.curve(x => Math.cos(x), -PI, 2.5*PI, 500, '#93c5fd', 2, null, null);
-      g.label(g.mx(2*PI) + 10, g.my(1), 'y=cos(x)', { color: '#93c5fd', size: '10', anchor: 'start', weight: '600' });
-      // Restricted portion [0, π] highlighted
-      g.curve(x => Math.cos(x), 0, PI, 200, '#0891b2', 3, null, null);
-      g.point(0, 1, '#0891b2');
-      g.point(PI/2, 0, '#0891b2');
-      g.point(PI, -1, '#0891b2');
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 5: y = arccos(x) graph
-  // x from -1.5 to 1.5, y from -0.5 to 3.5
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-arccos');
-    if (g.svg) {
-      g.setCoords(-1.5, 1.5, -0.5, 3.5, 55, 20, 15, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -1, text: '−1'}, {val: 1, text: '1'}]);
-      g.addYLabels([
-        {val: PI, text: 'π'}, {val: PI/2, text: 'π/2'},
-        {val: PI/4, text: 'π/4'}, {val: 3*PI/4, text: '3π/4'}
-      ]);
-      g.curve(x => Math.acos(x), -1, 1, 300, '#0891b2', 2.5, null, null);
-      g.point(-1, PI, '#0891b2');
-      g.point(0, PI/2, '#0891b2');
-      g.point(1, 0, '#0891b2');
-      // Labels
-      g.label(g.mx(-1) - 8, g.my(PI) - 6, '(−1, π)', { size: '10', anchor: 'end', color: '#0891b2', weight: '600' });
-      g.label(g.mx(1) + 8, g.my(0) + 4, '(1, 0)', { size: '10', anchor: 'start', color: '#0891b2', weight: '600' });
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 6: tan(x) with restricted domain (-π/2, π/2)
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-tan-restricted');
-    if (g.svg) {
-      g.setCoords(-3*PI/2, 3*PI/2, -4, 4, 45, 15, 15, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([
-        {val: -PI, text: '−π'}, {val: -PI/2, text: '−π/2'},
-        {val: PI/2, text: 'π/2'}, {val: PI, text: 'π'}
-      ]);
-      g.addYLabels([{val: 2, text: '2'}, {val: -2, text: '−2'}]);
-      // Asymptotes
-      g.asymptote(-3*PI/2); g.asymptote(-PI/2);
-      g.asymptote(PI/2); g.asymptote(3*PI/2);
-      // Full tan curve (faded)
-      g.curve(x => Math.tan(x), -3*PI/2, 3*PI/2, 800, '#93c5fd', 1.5, null, 10);
-      g.label(g.mx(PI) + 5, g.my(2), 'y=tan(x)', { color: '#93c5fd', size: '10', anchor: 'start', weight: '600' });
-      // Restricted portion (-π/2, π/2) highlighted
-      g.curve(x => Math.tan(x), -PI/2 + 0.01, PI/2 - 0.01, 300, '#7c3aed', 3, null, 10);
-      g.point(-PI/4, -1, '#7c3aed');
-      g.point(0, 0, '#7c3aed');
-      g.point(PI/4, 1, '#7c3aed');
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 6: y = arctan(x) graph
-  // x from -5 to 5, y from -2.0 to 2.0
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-arctan');
-    if (g.svg) {
-      g.setCoords(-5, 5, -2.0, 2.0, 50, 15, 15, 20);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -3, text: '−3'}, {val: -1, text: '−1'}, {val: 1, text: '1'}, {val: 3, text: '3'}]);
-      g.addYLabels([{val: PI/2, text: 'π/2'}, {val: -PI/2, text: '−π/2'}]);
-      // Horizontal asymptotes at ±π/2
-      g.hline(PI/2, '#dc2626', '6 4');
-      g.hline(-PI/2, '#dc2626', '6 4');
-      // arctan curve
-      g.curve(x => Math.atan(x), -5, 5, 400, '#7c3aed', 2.5, null, null);
-      g.point(-1, -PI/4, '#7c3aed');
-      g.point(0, 0, '#7c3aed');
-      g.point(1, PI/4, '#7c3aed');
-      // Labels
-      g.label(g.mx(4.2), g.my(PI/2) - 8, 'y = π/2', { size: '10', color: '#dc2626', anchor: 'middle', weight: '600' });
-      g.label(g.mx(4.2), g.my(-PI/2) + 14, 'y = −π/2', { size: '10', color: '#dc2626', anchor: 'middle', weight: '600' });
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 8: arcsin(x) vs arcsin(2x) comparison
-  // x from -1.2 to 1.2, y from -2.0 to 2.0
-  // -----------------------------------------------
-  {
-    const g = new GraphBuilder('svg-transform-compare');
-    if (g.svg) {
-      g.setCoords(-1.2, 1.2, -2.0, 2.0, 55, 20, 20, 25);
-      g.addGrid();
-      g.addAxes();
-      g.addXLabels([{val: -1, text: '−1'}, {val: -0.5, text: '−½'}, {val: 0.5, text: '½'}, {val: 1, text: '1'}]);
-      g.addYLabels([{val: PI/2, text: 'π/2'}, {val: -PI/2, text: '−π/2'}]);
-      // arcsin(x) in blue
-      g.curve(x => Math.asin(x), -1, 1, 300, '#2563eb', 2.5, null, null);
-      // arcsin(2x) in red (domain: -0.5 to 0.5)
-      g.curve(x => Math.asin(2*x), -0.5, 0.5, 200, '#dc2626', 2.5, null, null);
-      // Key points for arcsin(x)
-      g.point(-1, -PI/2, '#2563eb');
-      g.point(1, PI/2, '#2563eb');
-      // Key points for arcsin(2x)
-      g.point(-0.5, -PI/2, '#dc2626');
-      g.point(0.5, PI/2, '#dc2626');
-      // Labels
-      g.label(g.mx(1) + 8, g.my(PI/2) - 2, 'y = arcsin(x)', { size: '10', anchor: 'start', color: '#2563eb', weight: '600' });
-      g.label(g.mx(0.5) + 8, g.my(PI/2) - 2, 'y = arcsin(2x)', { size: '10', anchor: 'start', color: '#dc2626', weight: '600' });
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 15: Triangle for tan(arccos(2/3))
-  // Right triangle: adj=2, hyp=3, opp=√5
-  // -----------------------------------------------
-  {
-    const svg = document.getElementById('svg-triangle-9');
-    if (svg) {
-      const ns = 'http://www.w3.org/2000/svg';
-      // Triangle vertices
-      const ax = 40, ay = 180;  // bottom-left (right angle)
-      const bx = 200, by = 180; // bottom-right
-      const cx = 40, cy = 40;   // top-left
-
-      // Triangle sides
-      const tri = document.createElementNS(ns, 'polygon');
-      tri.setAttribute('points', `${ax},${ay} ${bx},${by} ${cx},${cy}`);
-      tri.setAttribute('fill', '#eff6ff');
-      tri.setAttribute('stroke', '#1a365d');
-      tri.setAttribute('stroke-width', '2.5');
-      svg.appendChild(tri);
-
-      // Right angle marker
-      const ra = document.createElementNS(ns, 'path');
-      ra.setAttribute('d', `M ${ax+18},${ay} L ${ax+18},${ay-18} L ${ax},${ay-18}`);
-      ra.setAttribute('fill', 'none');
-      ra.setAttribute('stroke', '#1a365d');
-      ra.setAttribute('stroke-width', '1.5');
-      svg.appendChild(ra);
-
-      // θ arc at bottom-right
-      const arcR = 30;
-      const arcPath = document.createElementNS(ns, 'path');
-      const arcAngle = Math.atan2(cy - by, cx - bx); // angle from bx,by to cx,cy
-      const endX = bx + arcR * Math.cos(Math.PI); // pointing left
-      const endY = by + arcR * Math.sin(Math.PI);
-      const arcEndX = bx + arcR * Math.cos(arcAngle);
-      const arcEndY = by + arcR * Math.sin(arcAngle);
-      arcPath.setAttribute('d', `M ${endX},${endY} A ${arcR},${arcR} 0 0 0 ${arcEndX},${arcEndY}`);
-      arcPath.setAttribute('fill', 'none');
-      arcPath.setAttribute('stroke', '#ea580c');
-      arcPath.setAttribute('stroke-width', '2');
-      svg.appendChild(arcPath);
-
-      // θ label
-      const thetaLabel = document.createElementNS(ns, 'text');
-      thetaLabel.setAttribute('x', bx - 45);
-      thetaLabel.setAttribute('y', by - 10);
-      thetaLabel.setAttribute('font-size', '16');
-      thetaLabel.setAttribute('fill', '#ea580c');
-      thetaLabel.setAttribute('font-weight', '700');
-      thetaLabel.setAttribute('font-style', 'italic');
-      thetaLabel.textContent = 'θ';
-      svg.appendChild(thetaLabel);
-
-      // Side labels
-      // Adjacent (bottom): 2
-      const adjLabel = document.createElementNS(ns, 'text');
-      adjLabel.setAttribute('x', (ax + bx) / 2);
-      adjLabel.setAttribute('y', ay + 20);
-      adjLabel.setAttribute('font-size', '16');
-      adjLabel.setAttribute('fill', '#2563eb');
-      adjLabel.setAttribute('font-weight', '700');
-      adjLabel.setAttribute('text-anchor', 'middle');
-      adjLabel.textContent = 'adj = 2';
-      svg.appendChild(adjLabel);
-
-      // Opposite (left): √5
-      const oppLabel = document.createElementNS(ns, 'text');
-      oppLabel.setAttribute('x', ax - 16);
-      oppLabel.setAttribute('y', (ay + cy) / 2 + 5);
-      oppLabel.setAttribute('font-size', '16');
-      oppLabel.setAttribute('fill', '#16a34a');
-      oppLabel.setAttribute('font-weight', '700');
-      oppLabel.setAttribute('text-anchor', 'end');
-      oppLabel.textContent = 'opp = √5';
-      svg.appendChild(oppLabel);
-
-      // Hypotenuse: 3
-      const hypLabel = document.createElementNS(ns, 'text');
-      const hx = (bx + cx) / 2 + 14;
-      const hy = (by + cy) / 2;
-      hypLabel.setAttribute('x', hx);
-      hypLabel.setAttribute('y', hy);
-      hypLabel.setAttribute('font-size', '16');
-      hypLabel.setAttribute('fill', '#dc2626');
-      hypLabel.setAttribute('font-weight', '700');
-      hypLabel.setAttribute('text-anchor', 'start');
-      hypLabel.textContent = 'hyp = 3';
-      svg.appendChild(hypLabel);
-    }
-  }
-
-  // -----------------------------------------------
-  // SLIDE 16: Triangle for cot(arccos(3x))
-  // Right triangle: adj=3x, hyp=1, opp=√(1-9x²)
-  // -----------------------------------------------
-  {
-    const svg = document.getElementById('svg-triangle-10');
-    if (svg) {
-      const ns = 'http://www.w3.org/2000/svg';
-      const ax = 40, ay = 180;
-      const bx = 200, by = 180;
-      const cx = 40, cy = 40;
-
-      const tri = document.createElementNS(ns, 'polygon');
-      tri.setAttribute('points', `${ax},${ay} ${bx},${by} ${cx},${cy}`);
-      tri.setAttribute('fill', '#eff6ff');
-      tri.setAttribute('stroke', '#1a365d');
-      tri.setAttribute('stroke-width', '2.5');
-      svg.appendChild(tri);
-
-      // Right angle marker
-      const ra = document.createElementNS(ns, 'path');
-      ra.setAttribute('d', `M ${ax+18},${ay} L ${ax+18},${ay-18} L ${ax},${ay-18}`);
-      ra.setAttribute('fill', 'none');
-      ra.setAttribute('stroke', '#1a365d');
-      ra.setAttribute('stroke-width', '1.5');
-      svg.appendChild(ra);
-
-      // θ arc
-      const arcR = 30;
-      const arcPath = document.createElementNS(ns, 'path');
-      const arcAngle = Math.atan2(cy - by, cx - bx);
-      const endX = bx + arcR * Math.cos(Math.PI);
-      const endY = by + arcR * Math.sin(Math.PI);
-      const arcEndX = bx + arcR * Math.cos(arcAngle);
-      const arcEndY = by + arcR * Math.sin(arcAngle);
-      arcPath.setAttribute('d', `M ${endX},${endY} A ${arcR},${arcR} 0 0 0 ${arcEndX},${arcEndY}`);
-      arcPath.setAttribute('fill', 'none');
-      arcPath.setAttribute('stroke', '#ea580c');
-      arcPath.setAttribute('stroke-width', '2');
-      svg.appendChild(arcPath);
-
-      const thetaLabel = document.createElementNS(ns, 'text');
-      thetaLabel.setAttribute('x', bx - 45);
-      thetaLabel.setAttribute('y', by - 10);
-      thetaLabel.setAttribute('font-size', '16');
-      thetaLabel.setAttribute('fill', '#ea580c');
-      thetaLabel.setAttribute('font-weight', '700');
-      thetaLabel.setAttribute('font-style', 'italic');
-      thetaLabel.textContent = 'θ';
-      svg.appendChild(thetaLabel);
-
-      // Side labels
-      const adjLabel = document.createElementNS(ns, 'text');
-      adjLabel.setAttribute('x', (ax + bx) / 2);
-      adjLabel.setAttribute('y', ay + 20);
-      adjLabel.setAttribute('font-size', '15');
-      adjLabel.setAttribute('fill', '#2563eb');
-      adjLabel.setAttribute('font-weight', '700');
-      adjLabel.setAttribute('text-anchor', 'middle');
-      adjLabel.textContent = 'adj = 3x';
-      svg.appendChild(adjLabel);
-
-      const oppLabel = document.createElementNS(ns, 'text');
-      oppLabel.setAttribute('x', ax - 10);
-      oppLabel.setAttribute('y', (ay + cy) / 2 + 5);
-      oppLabel.setAttribute('font-size', '13');
-      oppLabel.setAttribute('fill', '#16a34a');
-      oppLabel.setAttribute('font-weight', '700');
-      oppLabel.setAttribute('text-anchor', 'end');
-      oppLabel.textContent = 'opp = √(1−9x²)';
-      svg.appendChild(oppLabel);
-
-      const hypLabel = document.createElementNS(ns, 'text');
-      const hx = (bx + cx) / 2 + 14;
-      const hy = (by + cy) / 2;
-      hypLabel.setAttribute('x', hx);
-      hypLabel.setAttribute('y', hy);
-      hypLabel.setAttribute('font-size', '16');
-      hypLabel.setAttribute('fill', '#dc2626');
-      hypLabel.setAttribute('font-weight', '700');
-      hypLabel.setAttribute('text-anchor', 'start');
-      hypLabel.textContent = 'hyp = 1';
-      svg.appendChild(hypLabel);
-    }
-  }
-}
-
-
-/* ===========================================
-   SLIDE PRESENTATION CONTROLLER
-   Handles navigation, click-to-advance steps,
-   keyboard/touch input, progress bar, nav dots.
-   =========================================== */
-class SlidePresentation {
-  constructor() {
-    this.slides = document.querySelectorAll('.slide');
-    this.currentSlide = 0;
-    this.slideSteps = [];
-    this.maxSteps = [];
-    this.transitioning = false;
-
-    this.slides.forEach((slide) => {
-      const max = parseInt(slide.getAttribute('data-steps')) || 0;
-      this.maxSteps.push(max);
-      this.slideSteps.push(-1);
+    /* Move each annotation beside its equation (same as 5.5) */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(n => eqDiv.appendChild(n));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
     });
 
-    this.buildNavDots();
-    this.showSlide(0);
-    this.bindEvents();
-  }
+    /* ===========================================
+       GRAPH BUILDER
+       Creates accurate SVG graphs using a consistent
+       coordinate mapping system.
+       =========================================== */
+    class GraphBuilder {
+        constructor(svgId, viewBox) {
+            this.svg = document.getElementById(svgId);
+            if (!this.svg) return;
+            this.ns = 'http://www.w3.org/2000/svg';
+            const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+            this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+        }
 
-  buildNavDots() {
-    const nav = document.getElementById('nav-dots');
-    this.slides.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'nav-dot';
-      dot.addEventListener('click', () => this.goToSlide(i));
-      nav.appendChild(dot);
-    });
-    this.dots = document.querySelectorAll('.nav-dot');
-  }
+        setCoords(mathXMin, mathXMax, mathYMin, mathYMax, svgPadLeft, svgPadRight, svgPadTop, svgPadBottom) {
+            this.mathXMin = mathXMin;
+            this.mathXMax = mathXMax;
+            this.mathYMin = mathYMin;
+            this.mathYMax = mathYMax;
+            this.svgXMin = svgPadLeft;
+            this.svgXMax = this.vbW - svgPadRight;
+            this.svgYMin = svgPadTop;
+            this.svgYMax = this.vbH - svgPadBottom;
+        }
 
-  showSlide(index) {
-    this.slides.forEach((slide, i) => {
-      slide.classList.remove('active', 'exit-left');
-      if (i < index) slide.classList.add('exit-left');
-    });
-    this.slides[index].classList.add('active');
-    this.dots.forEach((d, i) => d.classList.toggle('active', i === index));
-    const pct = (index / (this.slides.length - 1)) * 100;
-    document.getElementById('progress-bar').style.width = pct + '%';
-  }
+        mx(val) { return this.svgXMin + (val - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+        my(val) { return this.svgYMax - (val - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
 
-  goToSlide(index) {
-    if (index < 0 || index >= this.slides.length || this.transitioning) return;
-    this.transitioning = true;
-    this.currentSlide = index;
-    this.showSlide(index);
-    setTimeout(() => { this.transitioning = false; }, 500);
-  }
+        addGrid() {
+            const pat = document.createElementNS(this.ns, 'pattern');
+            const patId = 'grid-' + Math.random().toString(36).substr(2,5);
+            pat.setAttribute('id', patId);
+            pat.setAttribute('width', '40'); pat.setAttribute('height', '40');
+            pat.setAttribute('patternUnits', 'userSpaceOnUse');
+            const p = document.createElementNS(this.ns, 'path');
+            p.setAttribute('d', 'M 40 0 L 0 0 0 40');
+            p.setAttribute('fill', 'none'); p.setAttribute('stroke', '#e2e8f0'); p.setAttribute('stroke-width', '0.5');
+            pat.appendChild(p);
+            this.svg.appendChild(pat);
+            const r = document.createElementNS(this.ns, 'rect');
+            r.setAttribute('width', this.vbW); r.setAttribute('height', this.vbH);
+            r.setAttribute('fill', 'url(#' + patId + ')');
+            this.svg.appendChild(r);
+        }
 
-  advance() {
-    const slide = this.slides[this.currentSlide];
-    const maxStep = this.maxSteps[this.currentSlide];
-    const currentStep = this.slideSteps[this.currentSlide];
+        addAxes() {
+            this.line(this.svgXMin - 10, this.my(0), this.svgXMax + 10, this.my(0), '#1a365d', 1.5);
+            const originX = this.mx(0);
+            this.line(originX, this.svgYMin - 5, originX, this.svgYMax + 5, '#1a365d', 1.5);
+        }
 
-    if (currentStep < maxStep - 1) {
-      this.slideSteps[this.currentSlide]++;
-      const nextStep = this.slideSteps[this.currentSlide];
-      const steps = slide.querySelectorAll('.step[data-step="' + nextStep + '"]');
-      steps.forEach(s => {
-        s.classList.add('visible');
-        if (s.classList.contains('fill-blank')) s.classList.add('revealed');
-      });
+        line(x1, y1, x2, y2, color, width, dasharray) {
+            const l = document.createElementNS(this.ns, 'line');
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', color || '#1a365d');
+            l.setAttribute('stroke-width', width || 1);
+            if (dasharray) l.setAttribute('stroke-dasharray', dasharray);
+            this.svg.appendChild(l);
+            return l;
+        }
 
-      if (nextStep >= maxStep - 1) {
-        const hint = slide.querySelector('.click-hint');
-        if (hint) hint.style.opacity = '0';
-      }
-    } else {
-      if (this.currentSlide < this.slides.length - 1) {
-        this.goToSlide(this.currentSlide + 1);
-      }
+        label(x, y, text, opts) {
+            const t = document.createElementNS(this.ns, 'text');
+            t.setAttribute('x', x); t.setAttribute('y', y);
+            t.setAttribute('font-size', (opts && opts.size) || '11');
+            t.setAttribute('fill', (opts && opts.color) || '#64748b');
+            t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+            if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+            t.textContent = text;
+            this.svg.appendChild(t);
+            return t;
+        }
+
+        asymptote(mathX, cls) {
+            const svgX = this.mx(mathX);
+            const l = this.line(svgX, this.svgYMin - 5, svgX, this.svgYMax + 5, '#dc2626', 1.5, '6 4');
+            l.setAttribute('opacity', '0.7');
+            if (cls) l.setAttribute('class', cls);
+            return l;
+        }
+
+        hline(mathY, color, dasharray) {
+            const sy = this.my(mathY);
+            const l = this.line(this.svgXMin - 10, sy, this.svgXMax + 10, sy, color || '#16a34a', 1, dasharray || '4 3');
+            l.setAttribute('opacity', '0.5');
+            return l;
+        }
+
+        point(mathX, mathY, color, radius) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mathX)); c.setAttribute('cy', this.my(mathY));
+            c.setAttribute('r', radius || 4.5);
+            c.setAttribute('fill', color || '#2563eb');
+            c.setAttribute('stroke', 'white'); c.setAttribute('stroke-width', '1.5');
+            this.svg.appendChild(c);
+            return c;
+        }
+
+        curve(f, xStart, xEnd, steps, color, width, dasharray, yClip) {
+            const segs = [];
+            let currentSeg = [];
+            const n = steps || 500;
+            const clip = yClip || (this.mathYMax - this.mathYMin) * 1.5;
+
+            for (let i = 0; i <= n; i++) {
+                const mathX = xStart + (i / n) * (xEnd - xStart);
+                const mathY = f(mathX);
+                if (isNaN(mathY) || !isFinite(mathY) || Math.abs(mathY) > clip) {
+                    if (currentSeg.length >= 2) segs.push(currentSeg);
+                    currentSeg = [];
+                    continue;
+                }
+                currentSeg.push([this.mx(mathX), this.my(mathY)]);
+            }
+            if (currentSeg.length >= 2) segs.push(currentSeg);
+
+            const g = document.createElementNS(this.ns, 'g');
+
+            segs.forEach(seg => {
+                let d = 'M ' + seg[0][0].toFixed(1) + ' ' + seg[0][1].toFixed(1);
+                for (let i = 1; i < seg.length; i++) {
+                    d += ' L ' + seg[i][0].toFixed(1) + ' ' + seg[i][1].toFixed(1);
+                }
+                const path = document.createElementNS(this.ns, 'path');
+                path.setAttribute('d', d);
+                path.setAttribute('fill', 'none');
+                path.setAttribute('stroke', color || '#1e40af');
+                path.setAttribute('stroke-width', width || 2.5);
+                if (dasharray) path.setAttribute('stroke-dasharray', dasharray);
+                g.appendChild(path);
+            });
+
+            this.svg.appendChild(g);
+            return g;
+        }
+
+        addXLabels(labels) {
+            labels.forEach(lb => {
+                this.label(this.mx(lb.val), this.my(0) + 16, lb.text, { size: '11', anchor: 'middle' });
+            });
+        }
+
+        addYLabels(labels) {
+            labels.forEach(lb => {
+                this.label(this.mx(0) - 14, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end' });
+            });
+        }
     }
-  }
 
-  goBack() {
-    const currentStep = this.slideSteps[this.currentSlide];
+    /* ===========================================
+       BUILD ALL GRAPHS
+       =========================================== */
+    function buildAllGraphs() {
+        const PI = Math.PI;
 
-    if (currentStep >= 0) {
-      const slide = this.slides[this.currentSlide];
-      const steps = slide.querySelectorAll('.step[data-step="' + currentStep + '"]');
-      steps.forEach(s => {
-        s.classList.remove('visible');
-        if (s.classList.contains('fill-blank')) s.classList.remove('revealed');
-      });
-      this.slideSteps[this.currentSlide]--;
-      const hint = slide.querySelector('.click-hint');
-      if (hint) hint.style.opacity = '';
-    } else {
-      if (this.currentSlide > 0) {
-        this.goToSlide(this.currentSlide - 1);
-      }
+        // -----------------------------------------------
+        // SLIDE 2: sin(x) with restricted domain [-pi/2, pi/2]
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-sin-restricted');
+            if (g.svg) {
+                g.setCoords(-2*PI, 2*PI, -1.5, 1.5, 45, 15, 15, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([
+                    {val: -PI, text: '\u2212\u03c0'}, {val: -PI/2, text: '\u2212\u03c0/2'},
+                    {val: PI/2, text: '\u03c0/2'}, {val: PI, text: '\u03c0'}
+                ]);
+                g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '\u22121'}]);
+                // Full sin curve (faded)
+                g.curve(x => Math.sin(x), -2*PI, 2*PI, 500, '#93c5fd', 2, null, null);
+                g.label(g.mx(PI) + 30, g.my(0.8), 'y=sin(x)', { color: '#93c5fd', size: '11', anchor: 'start', weight: '600' });
+                // Restricted portion highlighted
+                g.curve(x => Math.sin(x), -PI/2, PI/2, 200, '#1e40af', 3, null, null);
+                g.point(-PI/2, -1, '#1e40af');
+                g.point(0, 0, '#1e40af');
+                g.point(PI/2, 1, '#1e40af');
+                // Brace-like vertical lines showing restricted domain
+                g.line(g.mx(-PI/2), g.my(-1.3), g.mx(-PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
+                g.line(g.mx(PI/2), g.my(-1.3), g.mx(PI/2), g.my(1.3), '#dc2626', 1.5, '4 3');
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 9B: Graphical View for arcsin(-1/2) = -pi/6
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-sin-ex2');
+            if (g.svg) {
+                g.setCoords(-PI/2, PI/2, -1.2, 1.2, 45, 20, 20, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -PI/2, text: '\u2212\u03c0/2'}, {val: PI/2, text: '\u03c0/2'}]);
+                g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '\u22121'}, {val: -0.5, text: '\u2212\u00bd'}]);
+
+                // y = sin(x) curve on [-pi/2, pi/2]
+                g.curve(x => Math.sin(x), -PI/2, PI/2, 200, '#1e40af', 2.5, null, null);
+                g.point(-PI/2, -1, '#1e40af', 3);
+                g.point(PI/2, 1, '#1e40af', 3);
+
+                // Draw y = -1/2 line and intersection
+                g.hline(-0.5, '#dc2626', '4 4');
+                g.point(-PI/6, -0.5, '#dc2626', 5);
+                // Dotted line up to x-axis
+                g.line(g.mx(-PI/6), g.my(-0.5), g.mx(-PI/6), g.my(0), '#2563eb', 1.5, '3 3');
+                g.label(g.mx(-PI/6), g.my(0) - 8, '\u2212\u03c0/6', { size: '12', color: '#2563eb', weight: '700' });
+            }
+        }
+
+        {
+            const g = new GraphBuilder('svg-arcsin-ex2');
+            if (g.svg) {
+                g.setCoords(-1.2, 1.2, -PI/2, PI/2, 50, 20, 20, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -1, text: '\u22121'}, {val: 1, text: '1'}, {val: -0.5, text: '\u2212\u00bd'}]);
+                g.addYLabels([{val: PI/2, text: '\u03c0/2'}, {val: -PI/2, text: '\u2212\u03c0/2'}]);
+
+                // y = arcsin(x) curve
+                g.curve(x => Math.asin(x), -1, 1, 300, '#7c3aed', 2.5, null, null);
+                g.point(-1, -PI/2, '#7c3aed', 3);
+                g.point(1, PI/2, '#7c3aed', 3);
+
+                // Draw x = -1/2 line and intersection
+                const mx = g.mx(-0.5);
+                g.line(mx, g.svgYMin, mx, g.svgYMax, '#dc2626', 1, '4 4');
+                g.point(-0.5, -PI/6, '#dc2626', 5);
+                // Dotted line to y-axis
+                g.line(g.mx(-0.5), g.my(-PI/6), g.mx(0), g.my(-PI/6), '#7c3aed', 1.5, '3 3');
+                g.label(g.mx(0) + 18, g.my(-PI/6) + 4, '\u2212\u03c0/6', { size: '12', color: '#7c3aed', weight: '700' });
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 4: y = arcsin(x) graph
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-arcsin');
+            if (g.svg) {
+                g.setCoords(-1.5, 1.5, -2.0, 2.0, 55, 20, 20, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -1, text: '\u22121'}, {val: 1, text: '1'}]);
+                g.addYLabels([
+                    {val: PI/2, text: '\u03c0/2'}, {val: -PI/2, text: '\u2212\u03c0/2'},
+                    {val: PI/4, text: '\u03c0/4'}, {val: -PI/4, text: '\u2212\u03c0/4'}
+                ]);
+                // the arcsin curve
+                g.curve(x => Math.asin(x), -1, 1, 300, '#1e40af', 2.5, null, null);
+                g.point(-1, -PI/2, '#1e40af');
+                g.point(-0.5, -PI/6, '#1e40af');
+                g.point(0, 0, '#1e40af');
+                g.point(0.5, PI/6, '#1e40af');
+                g.point(1, PI/2, '#1e40af');
+                // Labels for endpoints
+                g.label(g.mx(-1) - 8, g.my(-PI/2) + 4, '(\u22121, \u2212\u03c0/2)', { size: '10', anchor: 'end', color: '#1e40af', weight: '600' });
+                g.label(g.mx(1) + 8, g.my(PI/2) - 4, '(1, \u03c0/2)', { size: '10', anchor: 'start', color: '#1e40af', weight: '600' });
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 5: cos(x) with restricted domain [0, pi]
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-cos-restricted');
+            if (g.svg) {
+                g.setCoords(-PI, 2.5*PI, -1.5, 1.5, 40, 15, 15, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([
+                    {val: -PI, text: '\u2212\u03c0'}, {val: PI/2, text: '\u03c0/2'},
+                    {val: PI, text: '\u03c0'}, {val: 2*PI, text: '2\u03c0'}
+                ]);
+                g.addYLabels([{val: 1, text: '1'}, {val: -1, text: '\u22121'}]);
+                // Full cos curve (faded)
+                g.curve(x => Math.cos(x), -PI, 2.5*PI, 500, '#93c5fd', 2, null, null);
+                g.label(g.mx(2*PI) + 10, g.my(1), 'y=cos(x)', { color: '#93c5fd', size: '10', anchor: 'start', weight: '600' });
+                // Restricted portion [0, pi] highlighted
+                g.curve(x => Math.cos(x), 0, PI, 200, '#0891b2', 3, null, null);
+                g.point(0, 1, '#0891b2');
+                g.point(PI/2, 0, '#0891b2');
+                g.point(PI, -1, '#0891b2');
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 5: y = arccos(x) graph
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-arccos');
+            if (g.svg) {
+                g.setCoords(-1.5, 1.5, -0.5, 3.5, 55, 20, 15, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -1, text: '\u22121'}, {val: 1, text: '1'}]);
+                g.addYLabels([
+                    {val: PI, text: '\u03c0'}, {val: PI/2, text: '\u03c0/2'},
+                    {val: PI/4, text: '\u03c0/4'}, {val: 3*PI/4, text: '3\u03c0/4'}
+                ]);
+                g.curve(x => Math.acos(x), -1, 1, 300, '#0891b2', 2.5, null, null);
+                g.point(-1, PI, '#0891b2');
+                g.point(0, PI/2, '#0891b2');
+                g.point(1, 0, '#0891b2');
+                // Labels
+                g.label(g.mx(-1) - 8, g.my(PI) - 6, '(\u22121, \u03c0)', { size: '10', anchor: 'end', color: '#0891b2', weight: '600' });
+                g.label(g.mx(1) + 8, g.my(0) + 4, '(1, 0)', { size: '10', anchor: 'start', color: '#0891b2', weight: '600' });
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 6: tan(x) with restricted domain (-pi/2, pi/2)
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-tan-restricted');
+            if (g.svg) {
+                g.setCoords(-3*PI/2, 3*PI/2, -4, 4, 45, 15, 15, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([
+                    {val: -PI, text: '\u2212\u03c0'}, {val: -PI/2, text: '\u2212\u03c0/2'},
+                    {val: PI/2, text: '\u03c0/2'}, {val: PI, text: '\u03c0'}
+                ]);
+                g.addYLabels([{val: 2, text: '2'}, {val: -2, text: '\u22122'}]);
+                // Asymptotes
+                g.asymptote(-3*PI/2); g.asymptote(-PI/2);
+                g.asymptote(PI/2); g.asymptote(3*PI/2);
+                // Full tan curve (faded)
+                g.curve(x => Math.tan(x), -3*PI/2, 3*PI/2, 800, '#93c5fd', 1.5, null, 10);
+                g.label(g.mx(PI) + 5, g.my(2), 'y=tan(x)', { color: '#93c5fd', size: '10', anchor: 'start', weight: '600' });
+                // Restricted portion (-pi/2, pi/2) highlighted
+                g.curve(x => Math.tan(x), -PI/2 + 0.01, PI/2 - 0.01, 300, '#7c3aed', 3, null, 10);
+                g.point(-PI/4, -1, '#7c3aed');
+                g.point(0, 0, '#7c3aed');
+                g.point(PI/4, 1, '#7c3aed');
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 6: y = arctan(x) graph
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-arctan');
+            if (g.svg) {
+                g.setCoords(-5, 5, -2.0, 2.0, 50, 15, 15, 20);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -3, text: '\u22123'}, {val: -1, text: '\u22121'}, {val: 1, text: '1'}, {val: 3, text: '3'}]);
+                g.addYLabels([{val: PI/2, text: '\u03c0/2'}, {val: -PI/2, text: '\u2212\u03c0/2'}]);
+                // Horizontal asymptotes at +/- pi/2
+                g.hline(PI/2, '#dc2626', '6 4');
+                g.hline(-PI/2, '#dc2626', '6 4');
+                // arctan curve
+                g.curve(x => Math.atan(x), -5, 5, 400, '#7c3aed', 2.5, null, null);
+                g.point(-1, -PI/4, '#7c3aed');
+                g.point(0, 0, '#7c3aed');
+                g.point(1, PI/4, '#7c3aed');
+                // Labels
+                g.label(g.mx(4.2), g.my(PI/2) - 8, 'y = \u03c0/2', { size: '10', color: '#dc2626', anchor: 'middle', weight: '600' });
+                g.label(g.mx(4.2), g.my(-PI/2) + 14, 'y = \u2212\u03c0/2', { size: '10', color: '#dc2626', anchor: 'middle', weight: '600' });
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 8: arcsin(x) vs arcsin(2x) comparison
+        // -----------------------------------------------
+        {
+            const g = new GraphBuilder('svg-transform-compare');
+            if (g.svg) {
+                g.setCoords(-1.2, 1.2, -2.0, 2.0, 55, 20, 20, 25);
+                g.addGrid();
+                g.addAxes();
+                g.addXLabels([{val: -1, text: '\u22121'}, {val: -0.5, text: '\u2212\u00bd'}, {val: 0.5, text: '\u00bd'}, {val: 1, text: '1'}]);
+                g.addYLabels([{val: PI/2, text: '\u03c0/2'}, {val: -PI/2, text: '\u2212\u03c0/2'}]);
+                // arcsin(x) in blue
+                g.curve(x => Math.asin(x), -1, 1, 300, '#2563eb', 2.5, null, null);
+                // arcsin(2x) in red (domain: -0.5 to 0.5)
+                g.curve(x => Math.asin(2*x), -0.5, 0.5, 200, '#dc2626', 2.5, null, null);
+                // Key points for arcsin(x)
+                g.point(-1, -PI/2, '#2563eb');
+                g.point(1, PI/2, '#2563eb');
+                // Key points for arcsin(2x)
+                g.point(-0.5, -PI/2, '#dc2626');
+                g.point(0.5, PI/2, '#dc2626');
+                // Labels
+                g.label(g.mx(1) + 8, g.my(PI/2) - 2, 'y = arcsin(x)', { size: '10', anchor: 'start', color: '#2563eb', weight: '600' });
+                g.label(g.mx(0.5) + 8, g.my(PI/2) - 2, 'y = arcsin(2x)', { size: '10', anchor: 'start', color: '#dc2626', weight: '600' });
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 15: Triangle for tan(arccos(2/3))
+        // Right triangle: adj=2, hyp=3, opp=sqrt(5)
+        // -----------------------------------------------
+        {
+            const svg = document.getElementById('svg-triangle-9');
+            if (svg) {
+                const ns = 'http://www.w3.org/2000/svg';
+                // Triangle vertices -- shifted right and down to leave room for labels
+                const ax = 80, ay = 200;  // bottom-left (right angle)
+                const bx = 250, by = 200; // bottom-right
+                const cx = 80, cy = 40;   // top-left
+
+                const tri = document.createElementNS(ns, 'polygon');
+                tri.setAttribute('points', `${ax},${ay} ${bx},${by} ${cx},${cy}`);
+                tri.setAttribute('fill', '#eff6ff');
+                tri.setAttribute('stroke', '#1a365d');
+                tri.setAttribute('stroke-width', '2.5');
+                svg.appendChild(tri);
+
+                // Right angle marker
+                const ra = document.createElementNS(ns, 'path');
+                ra.setAttribute('d', `M ${ax+18},${ay} L ${ax+18},${ay-18} L ${ax},${ay-18}`);
+                ra.setAttribute('fill', 'none');
+                ra.setAttribute('stroke', '#1a365d');
+                ra.setAttribute('stroke-width', '1.5');
+                svg.appendChild(ra);
+
+                // theta arc at bottom-right
+                const arcR = 30;
+                const arcPath = document.createElementNS(ns, 'path');
+                const arcAngle = Math.atan2(cy - by, cx - bx);
+                const endX = bx + arcR * Math.cos(Math.PI);
+                const endY = by + arcR * Math.sin(Math.PI);
+                const arcEndX = bx + arcR * Math.cos(arcAngle);
+                const arcEndY = by + arcR * Math.sin(arcAngle);
+                arcPath.setAttribute('d', `M ${endX},${endY} A ${arcR},${arcR} 0 0 0 ${arcEndX},${arcEndY}`);
+                arcPath.setAttribute('fill', 'none');
+                arcPath.setAttribute('stroke', '#ea580c');
+                arcPath.setAttribute('stroke-width', '2');
+                svg.appendChild(arcPath);
+
+                // theta label
+                const thetaLabel = document.createElementNS(ns, 'text');
+                thetaLabel.setAttribute('x', bx - 45);
+                thetaLabel.setAttribute('y', by - 10);
+                thetaLabel.setAttribute('font-size', '16');
+                thetaLabel.setAttribute('fill', '#ea580c');
+                thetaLabel.setAttribute('font-weight', '700');
+                thetaLabel.setAttribute('font-style', 'italic');
+                thetaLabel.textContent = '\u03b8';
+                svg.appendChild(thetaLabel);
+
+                // Adjacent (bottom): 2
+                const adjLabel = document.createElementNS(ns, 'text');
+                adjLabel.setAttribute('x', (ax + bx) / 2);
+                adjLabel.setAttribute('y', ay + 22);
+                adjLabel.setAttribute('font-size', '16');
+                adjLabel.setAttribute('fill', '#2563eb');
+                adjLabel.setAttribute('font-weight', '700');
+                adjLabel.setAttribute('text-anchor', 'middle');
+                adjLabel.textContent = 'adj = 2';
+                svg.appendChild(adjLabel);
+
+                // Opposite (left): sqrt(5)
+                const oppLabel = document.createElementNS(ns, 'text');
+                oppLabel.setAttribute('x', ax - 10);
+                oppLabel.setAttribute('y', (ay + cy) / 2 + 5);
+                oppLabel.setAttribute('font-size', '16');
+                oppLabel.setAttribute('fill', '#16a34a');
+                oppLabel.setAttribute('font-weight', '700');
+                oppLabel.setAttribute('text-anchor', 'end');
+                oppLabel.textContent = 'opp = \u221a5';
+                svg.appendChild(oppLabel);
+
+                // Hypotenuse: 3
+                const hypLabel = document.createElementNS(ns, 'text');
+                const hx = (bx + cx) / 2 + 14;
+                const hy = (by + cy) / 2;
+                hypLabel.setAttribute('x', hx);
+                hypLabel.setAttribute('y', hy);
+                hypLabel.setAttribute('font-size', '16');
+                hypLabel.setAttribute('fill', '#dc2626');
+                hypLabel.setAttribute('font-weight', '700');
+                hypLabel.setAttribute('text-anchor', 'start');
+                hypLabel.textContent = 'hyp = 3';
+                svg.appendChild(hypLabel);
+            }
+        }
+
+        // -----------------------------------------------
+        // SLIDE 16: Triangle for cot(arccos(3x))
+        // Right triangle: adj=3x, hyp=1, opp=sqrt(1-9x^2)
+        // -----------------------------------------------
+        {
+            const svg = document.getElementById('svg-triangle-10');
+            if (svg) {
+                const ns = 'http://www.w3.org/2000/svg';
+                // Shifted right to leave room for the long "opp = sqrt(1-9x^2)" label on the left
+                const ax = 100, ay = 200;
+                const bx = 260, by = 200;
+                const cx = 100, cy = 40;
+
+                const tri = document.createElementNS(ns, 'polygon');
+                tri.setAttribute('points', `${ax},${ay} ${bx},${by} ${cx},${cy}`);
+                tri.setAttribute('fill', '#eff6ff');
+                tri.setAttribute('stroke', '#1a365d');
+                tri.setAttribute('stroke-width', '2.5');
+                svg.appendChild(tri);
+
+                // Right angle marker
+                const ra = document.createElementNS(ns, 'path');
+                ra.setAttribute('d', `M ${ax+18},${ay} L ${ax+18},${ay-18} L ${ax},${ay-18}`);
+                ra.setAttribute('fill', 'none');
+                ra.setAttribute('stroke', '#1a365d');
+                ra.setAttribute('stroke-width', '1.5');
+                svg.appendChild(ra);
+
+                // theta arc
+                const arcR = 28;
+                const arcPath = document.createElementNS(ns, 'path');
+                const arcAngle = Math.atan2(cy - by, cx - bx);
+                const endX = bx + arcR * Math.cos(Math.PI);
+                const endY = by + arcR * Math.sin(Math.PI);
+                const arcEndX = bx + arcR * Math.cos(arcAngle);
+                const arcEndY = by + arcR * Math.sin(arcAngle);
+                arcPath.setAttribute('d', `M ${endX},${endY} A ${arcR},${arcR} 0 0 0 ${arcEndX},${arcEndY}`);
+                arcPath.setAttribute('fill', 'none');
+                arcPath.setAttribute('stroke', '#ea580c');
+                arcPath.setAttribute('stroke-width', '2');
+                svg.appendChild(arcPath);
+
+                const thetaLabel = document.createElementNS(ns, 'text');
+                thetaLabel.setAttribute('x', bx - 42);
+                thetaLabel.setAttribute('y', by - 10);
+                thetaLabel.setAttribute('font-size', '16');
+                thetaLabel.setAttribute('fill', '#ea580c');
+                thetaLabel.setAttribute('font-weight', '700');
+                thetaLabel.setAttribute('font-style', 'italic');
+                thetaLabel.textContent = '\u03b8';
+                svg.appendChild(thetaLabel);
+
+                // Adjacent (bottom): 3x
+                const adjLabel = document.createElementNS(ns, 'text');
+                adjLabel.setAttribute('x', (ax + bx) / 2);
+                adjLabel.setAttribute('y', ay + 22);
+                adjLabel.setAttribute('font-size', '15');
+                adjLabel.setAttribute('fill', '#2563eb');
+                adjLabel.setAttribute('font-weight', '700');
+                adjLabel.setAttribute('text-anchor', 'middle');
+                adjLabel.textContent = 'adj = 3x';
+                svg.appendChild(adjLabel);
+
+                // Opposite (left): sqrt(1-9x^2) -- use two lines for the long label
+                const oppLabel1 = document.createElementNS(ns, 'text');
+                oppLabel1.setAttribute('x', ax - 8);
+                oppLabel1.setAttribute('y', (ay + cy) / 2 - 2);
+                oppLabel1.setAttribute('font-size', '13');
+                oppLabel1.setAttribute('fill', '#16a34a');
+                oppLabel1.setAttribute('font-weight', '700');
+                oppLabel1.setAttribute('text-anchor', 'end');
+                oppLabel1.textContent = 'opp =';
+                svg.appendChild(oppLabel1);
+                const oppLabel2 = document.createElementNS(ns, 'text');
+                oppLabel2.setAttribute('x', ax - 8);
+                oppLabel2.setAttribute('y', (ay + cy) / 2 + 14);
+                oppLabel2.setAttribute('font-size', '13');
+                oppLabel2.setAttribute('fill', '#16a34a');
+                oppLabel2.setAttribute('font-weight', '700');
+                oppLabel2.setAttribute('text-anchor', 'end');
+                oppLabel2.textContent = '\u221a(1\u22129x\u00b2)';
+                svg.appendChild(oppLabel2);
+
+                // Hypotenuse: 1
+                const hypLabel = document.createElementNS(ns, 'text');
+                const hx = (bx + cx) / 2 + 14;
+                const hy = (by + cy) / 2;
+                hypLabel.setAttribute('x', hx);
+                hypLabel.setAttribute('y', hy);
+                hypLabel.setAttribute('font-size', '16');
+                hypLabel.setAttribute('fill', '#dc2626');
+                hypLabel.setAttribute('font-weight', '700');
+                hypLabel.setAttribute('text-anchor', 'start');
+                hypLabel.textContent = 'hyp = 1';
+                svg.appendChild(hypLabel);
+            }
+        }
     }
-  }
 
-  bindEvents() {
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
-        e.preventDefault(); this.advance();
-      } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
-        e.preventDefault(); this.goBack();
-      }
-    });
+    buildAllGraphs();
 
-    document.getElementById('slides-container').addEventListener('click', (e) => {
-      if (e.target.closest('.nav-dot') || e.target.closest('a')) return;
-      this.advance();
-    });
+    /* ===== PRESENTATION CONTROLLER (matches 5.5) ===== */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => { e.stopPropagation(); this._goTo(i); });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max   = parseInt(slide.dataset.steps || 0);
+            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent = cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+        }
+        _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
+        _goTo(i) {
+            if (i === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left'); out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i; this.slides[i].classList.add('active'); this._sync();
+        }
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++; slide.dataset.currentStep = cur;
+                /* ID-based step finding */
+                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+                /* Fill-blank table support (slide 7) */
+                const blankA = slide.querySelector(`#${slide.id}-step-${cur}-a`);
+                const blankB = slide.querySelector(`#${slide.id}-step-${cur}-b`);
+                if (blankA) { blankA.classList.add('revealed'); }
+                if (blankB) { blankB.classList.add('revealed'); }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false;
+            const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+            if (el) el.classList.remove('visible');
+            const blankA = slide.querySelector(`#${slide.id}-step-${cur}-a`);
+            const blankB = slide.querySelector(`#${slide.id}-step-${cur}-b`);
+            if (blankA) { blankA.classList.remove('revealed'); }
+            if (blankB) { blankB.classList.remove('revealed'); }
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+        _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
+        _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
+                else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
+            });
+            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
+            let tx = 0;
+            document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+            document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
+        }
+    }
 
-    let touchStartX = 0;
-    document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
-    document.addEventListener('touchend', (e) => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) { diff > 0 ? this.advance() : this.goBack(); }
-    });
-  }
-}
-
-/* Initialize on load */
-window.addEventListener('DOMContentLoaded', () => {
-  buildAllGraphs();
-  new SlidePresentation();
-});
+    new SlidePresentation();
 </script>
 </body>
 </html>

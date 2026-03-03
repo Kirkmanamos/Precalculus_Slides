@@ -54,14 +54,24 @@ precalculus_slides/
 3. **Check `CHANGELOG.md`** — understand current project status and what's in progress.
 4. **Read the relevant skill** — `SKILL.md` for Slidev, `agents.md` for HTML.
 
+### Updating an Older HTML Presentation?
+
+> **Stop. Check `agents.md` → "Rebuild Checklist" first.**
+
+Presentations built before the 5.5 standard use a legacy architecture (scroll-snap, opacity transitions, HTML-entity math) that is **incompatible with CSS patches**. Attempting to restyle legacy presentations by tweaking CSS on top of the old structure will fail — font sizes compound incorrectly, steps clip KaTeX math, and content overflows.
+
+**If the presentation doesn't match the 5.5 architecture → rebuild it from scratch** using the skeleton in `agents.md`. This means extracting all content (text, math, SVGs) and re-assembling it in the current template. See `agents.md` for the full rebuild checklist and lessons learned.
+
 ---
 
 ## Output Format Rules (Summary)
 
 ### HTML Presentations
 - Single self-contained `.html` file. No npm, no build step, no frameworks.
-- All CSS and JS inline. External fonts only (Google Fonts / Fontshare).
-- Follow the architecture in `agents.md` exactly.
+- All CSS and JS inline. External resources: Google Fonts + **KaTeX CDN** (math rendering).
+- All math rendered via KaTeX (`\[ \]` display, `\( \)` inline). No HTML entities or Unicode math.
+- Follow the HoffMath Classroom architecture in `agents.md` exactly.
+- Reference implementation: `5.5-double-half-angle.html`.
 
 ### Slidev / Vue Decks
 - Stack: Slidev v52.2.0, Vue 3, KaTeX for math, SVG for graphs.
@@ -90,7 +100,7 @@ precalculus_slides/
 | 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ Complete | — |
 | 4.7 | Modeling with Sine & Cosine | ✅ Complete | — |
 | 4.8 | Graphs of Other Trig Functions | ✅ Complete | — |
-| 4.9 | Inverse Trig Functions | ✅ Complete | 🔄 Prototype |
+| 4.9 | Inverse Trig Functions | ✅ Complete (rebuilt to 5.5 standard) | 🔄 Prototype |
 | 5.1 | Using Fundamental Identities | ✅ Complete | — |
 | 5.2 | Verifying Trig Identities | ✅ Complete | — |
 | 5.3 | Solving Trig Equations | ✅ Complete | — |

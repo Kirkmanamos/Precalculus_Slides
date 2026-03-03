@@ -5,7 +5,26 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
-## Current Status (as of 2026-03-01)
+## Current Status (as of 2026-03-02)
+
+### 4.9 Architectural Rebuild
+
+- **`4.9-inverse-trig-functions.html`** fully rebuilt from scratch to match the 5.5 HoffMath Classroom standard
+- Converted all math from HTML entities/Unicode to **KaTeX** via CDN
+- Replaced legacy `data-step` + opacity transitions with **ID-based step reveals** (`display: none/block`)
+- Added **flexbox autoscaling** (`.slide-body` + `.steps-area`) — content fills the screen on any display
+- Added **step-box cards** (`.step-box` with `.step-label` + `.step-math`) for all worked examples
+- Replaced legacy `#slides-container` with `.slides-wrapper` horizontal transition model
+- Preserved all 11 SVG graphs (`GraphBuilder` class) and interactive table behavior
+- Triangle SVGs (Examples 9/10) rebuilt with larger viewBox and repositioned labels
+
+### Documentation Overhaul
+
+- **`agents.md`** completely rewritten — now documents the 5.5 HoffMath Classroom architecture as the gold standard, including the full HTML skeleton, JS controller, step-box system, rebuild checklist, and lessons learned from failed approaches
+- **`CLAUDE.md`** updated with rebuild guidance: "If the presentation doesn't match 5.5 → rebuild from scratch"
+- **`CONVENTIONS.md`** updated: KaTeX is now the standard math renderer for HTML (deprecating Unicode/monospace), step reveal conventions updated to match `display: none/block` pattern
+
+---
 
 ### Step Reveal Overhaul (5.1–5.5)
 
