@@ -358,6 +358,136 @@ body {
 }
 
 /* ===========================================
+   TRIG IDENTITIES REFERENCE — 3-column layout
+   =========================================== */
+.ref-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.ref-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.ref-col-header {
+  background: var(--dark-navy);
+  color: white;
+  font-weight: 700;
+  font-size: 0.72em;
+  padding: 0.3em 0.7em;
+  text-align: center;
+  border-radius: 6px 6px 0 0;
+}
+
+.ref-cell {
+  background: #f1f5f9;
+  padding: 0.25em 0.6em;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.78em;
+  line-height: 1.8;
+  text-align: center;
+}
+.ref-cell:last-child { border-bottom: none; }
+
+.ref-cell.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3em;
+  text-align: center;
+}
+
+.ref-note {
+  font-size: 0.68em;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: left;
+  padding-left: 0.3em;
+}
+
+.ref-footer {
+  font-size: 0.62em;
+  color: #64748b;
+  text-align: center;
+  padding: 0.3em;
+}
+
+/* ===========================================
+   STRATEGY SUMMARY CARDS
+   =========================================== */
+.strategy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.strategy-card {
+  background: white;
+  border-left: 4px solid var(--blue-accent);
+  border-radius: 0 8px 8px 0;
+  padding: 0.4em 0.8em;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6em;
+}
+.strategy-card.green  { border-color: var(--green-accent); }
+.strategy-card.teal   { border-color: var(--teal-accent); }
+.strategy-card.orange { border-color: var(--orange-accent); }
+.strategy-card.purple { border-color: var(--purple-accent); }
+
+.strategy-num {
+  font-size: 0.7em;
+  font-weight: 700;
+  color: white;
+  background: var(--blue-accent);
+  min-width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.15em;
+}
+.strategy-card.green  .strategy-num { background: var(--green-accent); }
+.strategy-card.teal   .strategy-num { background: var(--teal-accent); }
+.strategy-card.orange .strategy-num { background: var(--orange-accent); }
+.strategy-card.purple .strategy-num { background: var(--purple-accent); }
+
+.strategy-content {
+  flex: 1;
+}
+
+.strategy-title {
+  font-size: 0.72em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  line-height: 1.3;
+}
+
+.strategy-desc {
+  font-size: 0.58em;
+  color: #64748b;
+  line-height: 1.4;
+  margin-top: 0.1em;
+}
+
+.strategy-footer {
+  font-size: 0.65em;
+  color: var(--blue-accent);
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.7rem;
+  max-width: 1100px;
+}
+
+/* ===========================================
    CLICK HINT — centered, pulsing (4.9 style)
    =========================================== */
 .click-hint {
@@ -430,11 +560,69 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 2 — EVEN / ODD IDENTITIES
+     SLIDE 2 — TRIGONOMETRIC IDENTITIES REFERENCE
+     Three-column layout: Reciprocal, Quotient+Pythagorean, Cofunction
+     ==================================================== -->
+<section class="slide" id="slide-2">
+  <span class="example-label">REFERENCE</span>
+  <h2 class="slide-title">Trigonometric Identities</h2>
+
+  <div class="ref-grid">
+
+    <!-- Column 1: Reciprocal Identities -->
+    <div class="ref-column">
+      <div class="ref-col-header">Reciprocal Identities</div>
+      <div class="ref-cell two-col">
+        <span>$\sin\theta = \dfrac{1}{\csc\theta}$</span>
+        <span>$\csc\theta = \dfrac{1}{\sin\theta}$</span>
+      </div>
+      <div class="ref-cell two-col">
+        <span>$\cos\theta = \dfrac{1}{\sec\theta}$</span>
+        <span>$\sec\theta = \dfrac{1}{\cos\theta}$</span>
+      </div>
+      <div class="ref-cell two-col">
+        <span>$\tan\theta = \dfrac{1}{\cot\theta}$</span>
+        <span>$\cot\theta = \dfrac{1}{\tan\theta}$</span>
+      </div>
+      <div class="ref-note">Also work with powers…</div>
+      <div class="ref-cell">$\sin^2\theta = \dfrac{1}{\csc^2\theta}$</div>
+    </div>
+
+    <!-- Column 2: Quotient + Pythagorean Identities -->
+    <div class="ref-column">
+      <div class="ref-col-header">Quotient Identities</div>
+      <div class="ref-cell two-col">
+        <span>$\tan\theta = \dfrac{\sin\theta}{\cos\theta}$</span>
+        <span>$\cot\theta = \dfrac{\cos\theta}{\sin\theta}$</span>
+      </div>
+      <div class="ref-col-header" style="margin-top: 0.4rem; border-radius: 6px 6px 0 0;">Pythagorean Identities</div>
+      <div class="ref-cell">$\cos^2\theta + \sin^2\theta = 1$</div>
+      <div class="ref-cell">$\tan^2\theta + 1 = \sec^2\theta$</div>
+      <div class="ref-cell">$\cot^2\theta + 1 = \csc^2\theta$</div>
+    </div>
+
+    <!-- Column 3: Cofunction Identities -->
+    <div class="ref-column">
+      <div class="ref-col-header">Cofunction Identities</div>
+      <div class="ref-cell">$\sin(\theta) = \cos(90° - \theta)$</div>
+      <div class="ref-cell">$\cos(\theta) = \sin(90° - \theta)$</div>
+      <div class="ref-cell">$\tan(\theta) = \cot(90° - \theta)$</div>
+      <div class="ref-cell">$\cot(\theta) = \tan(90° - \theta)$</div>
+      <div class="ref-cell">$\sec(\theta) = \csc(90° - \theta)$</div>
+      <div class="ref-cell">$\csc(\theta) = \sec(90° - \theta)$</div>
+      <div class="ref-footer">↑ $\theta$ is an acute angle ↑</div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ====================================================
+     SLIDE 3 — EVEN / ODD IDENTITIES
      Click 1 → reveal Even column
      Click 2 → reveal Odd column
      ==================================================== -->
-<section class="slide" id="slide-2" data-steps="2" data-current-step="0">
+<section class="slide" id="slide-3" data-steps="2" data-current-step="0">
   <span class="example-label">REFERENCE</span>
 
   <h2 class="slide-title">Even / Odd Identities</h2>
@@ -465,10 +653,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 3 — EXAMPLE 1
+     SLIDE 4 — EXAMPLE 1
      Simplify sin²x · sec x − sec x
      ==================================================== -->
-<section class="slide" id="slide-3" data-steps="3" data-current-step="0">
+<section class="slide" id="slide-4" data-steps="3" data-current-step="0">
   <span class="example-label">EXAMPLE 1 · SIMPLIFY</span>
 
   <p class="problem-statement">$\sin^2 x \sec x - \sec x$</p>
@@ -497,10 +685,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 4 — EXAMPLE 2
+     SLIDE 5 — EXAMPLE 2
      Simplify sin²x − cos²x
      ==================================================== -->
-<section class="slide" id="slide-4" data-steps="2" data-current-step="0">
+<section class="slide" id="slide-5" data-steps="2" data-current-step="0">
   <span class="example-label">EXAMPLE 2 · SIMPLIFY</span>
 
   <p class="problem-statement">$\sin^2 x - \cos^2 x$</p>
@@ -528,10 +716,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 5 — EXAMPLE 3
+     SLIDE 6 — EXAMPLE 3
      Factor 6cot²θ − 13cotθ + 5
      ==================================================== -->
-<section class="slide" id="slide-5" data-steps="6" data-current-step="0">
+<section class="slide" id="slide-6" data-steps="6" data-current-step="0">
   <span class="example-label">EXAMPLE 3 · FACTOR</span>
 
   <p class="problem-statement">$6\cot^2\!\theta - 13\cot\theta + 5$</p>
@@ -569,10 +757,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 6 — EXAMPLE 4
+     SLIDE 7 — EXAMPLE 4
      Factor cot²x − 2csc x − 7
      ==================================================== -->
-<section class="slide" id="slide-6" data-steps="3" data-current-step="0">
+<section class="slide" id="slide-7" data-steps="3" data-current-step="0">
   <span class="example-label">EXAMPLE 4 · FACTOR</span>
 
   <p class="problem-statement">$\cot^2 x - 2\csc x - 7$</p>
@@ -601,10 +789,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 7 — EXAMPLE 5
+     SLIDE 8 — EXAMPLE 5
      Simplify csc x · sec x − sin x · sec x
      ==================================================== -->
-<section class="slide" id="slide-7" data-steps="4" data-current-step="0">
+<section class="slide" id="slide-8" data-steps="4" data-current-step="0">
   <span class="example-label">EXAMPLE 5 · SIMPLIFY</span>
 
   <p class="problem-statement">$\csc x \sec x - \sin x \sec x$</p>
@@ -640,10 +828,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 8 — EXAMPLE 6
+     SLIDE 9 — EXAMPLE 6
      Rewrite sin²x / (1 + cos x) without fractions
      ==================================================== -->
-<section class="slide" id="slide-8" data-steps="3" data-current-step="0">
+<section class="slide" id="slide-9" data-steps="3" data-current-step="0">
   <span class="example-label">EXAMPLE 6 · REWRITE</span>
 
   <p class="problem-statement">
@@ -675,10 +863,10 @@ body {
 
 
 <!-- ====================================================
-     SLIDE 9 — EXAMPLE 7
+     SLIDE 10 — EXAMPLE 7
      Trig substitution: x = 9cosθ, write √(81−x²) as trig
      ==================================================== -->
-<section class="slide" id="slide-9" data-steps="4" data-current-step="0">
+<section class="slide" id="slide-10" data-steps="4" data-current-step="0">
   <span class="example-label">EXAMPLE 7 · SUBSTITUTION</span>
 
   <p class="problem-statement">
@@ -716,6 +904,69 @@ body {
   </div>
 
   <p class="click-hint">Click to reveal next step</p>
+
+</section>
+
+<!-- ====================================================
+     SLIDE 11 — STRATEGY SUMMARY
+     ==================================================== -->
+<section class="slide" id="slide-11">
+  <span class="example-label">SUMMARY</span>
+  <h2 class="slide-title">Strategies for Simplifying</h2>
+
+  <div class="strategy-grid">
+
+    <div class="strategy-card">
+      <span class="strategy-num">1</span>
+      <div class="strategy-content">
+        <div class="strategy-title">Factor out a common term</div>
+        <div class="strategy-desc">Look for a shared factor across all terms and pull it out front. <em>Ex 1, 5</em></div>
+      </div>
+    </div>
+
+    <div class="strategy-card green">
+      <span class="strategy-num">2</span>
+      <div class="strategy-content">
+        <div class="strategy-title">Apply a Pythagorean Identity</div>
+        <div class="strategy-desc">Swap $\sin^2 x + \cos^2 x = 1$ (or its rearrangements) to reduce terms. <em>Ex 1, 2, 4, 5, 6, 7</em></div>
+      </div>
+    </div>
+
+    <div class="strategy-card teal">
+      <span class="strategy-num">3</span>
+      <div class="strategy-content">
+        <div class="strategy-title">Rewrite in sine &amp; cosine</div>
+        <div class="strategy-desc">Convert $\sec$, $\csc$, $\tan$, $\cot$ to $\dfrac{1}{\cos}$, $\dfrac{1}{\sin}$, etc. to find cancellations. <em>Ex 1, 5</em></div>
+      </div>
+    </div>
+
+    <div class="strategy-card orange">
+      <span class="strategy-num">4</span>
+      <div class="strategy-content">
+        <div class="strategy-title">$u$-substitution for factoring</div>
+        <div class="strategy-desc">Replace a trig expression with $u$ to reveal a factorable polynomial. <em>Ex 3</em></div>
+      </div>
+    </div>
+
+    <div class="strategy-card purple">
+      <span class="strategy-num">5</span>
+      <div class="strategy-content">
+        <div class="strategy-title">Factor as difference of squares</div>
+        <div class="strategy-desc">Write $1 - \cos^2 x$ as $(1 - \cos x)(1 + \cos x)$ to cancel with the denominator. <em>Ex 6</em></div>
+      </div>
+    </div>
+
+    <div class="strategy-card">
+      <span class="strategy-num">6</span>
+      <div class="strategy-content">
+        <div class="strategy-title">Cancel common factors</div>
+        <div class="strategy-desc">After rewriting, look for matching factors in numerator and denominator to simplify. <em>Ex 1, 5, 6</em></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="strategy-footer">Most problems use more than one strategy — look for the first move that reduces complexity.</p>
 
 </section>
 
