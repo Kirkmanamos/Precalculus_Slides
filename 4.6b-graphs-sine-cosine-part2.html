@@ -1,1449 +1,1371 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4.6b Graphs of Sine and Cosine</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<style>
-:root {
-  --dark-navy: #1a365d;
-  --blue-accent: #2563eb;
-  --red-accent: #dc2626;
-  --grid-line: #dbeafe;
-  --dark-blue-curve: #1e40af;
-  --bg-white: #ffffff;
-  --light-grid-bg: #f8faff;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.6b — Graphs of Sine &amp; Cosine (Part 2)</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        /* ============================================================
+           THEME — HoffMath Classroom (matches 5.5)
+           ============================================================ */
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --grid-line:     #dbeafe;
+            --bg-white:      #ffffff;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+            --navy-light:    #e8edf5;
+            --dark-blue-curve: #1e40af;
+        }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
-  background: var(--bg-white);
-  color: var(--dark-navy);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-}
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--navy);
+        }
 
-/* Grid background */
-.grid-bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 30px 30px;
-  z-index: 0;
-  pointer-events: none;
-}
+        /* ============================================================
+           SLIDE SHELL — horizontal transition model (matches 5.5)
+           ============================================================ */
+        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
 
-/* Progress bar */
-#progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--blue-accent), var(--red-accent));
-  transition: width 0.4s ease;
-  z-index: 1000;
-}
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding-top: 5rem; padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
 
-/* Navigation dots */
-#nav-dots {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 1000;
-}
+        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
 
-.nav-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid var(--blue-accent);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+        /* ============================================================
+           BACKGROUNDS
+           ============================================================ */
+        .title-slide {
+            background: var(--navy);
+            color: white;
+            justify-content: center;
+        }
 
-.nav-dot.active {
-  background: var(--blue-accent);
-  transform: scale(1.3);
-}
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
+        }
 
-.nav-dot:hover {
-  background: var(--blue-accent);
-  opacity: 0.7;
-}
+        /* ============================================================
+           TITLE SLIDE TYPOGRAPHY
+           ============================================================ */
+        .title-section-label {
+            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
+        }
+        .title-main {
+            font-size: 2em; font-weight: 700; line-height: 1.2;
+            color: white; margin-bottom: 0.5rem;
+        }
+        .title-objective {
+            font-size: 0.72em; color: #93c5fd; font-weight: 400;
+            line-height: 1.6; margin-top: 0.75rem;
+        }
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+        .chip {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; padding: 0.2em 0.75em;
+            font-size: 0.58em; color: #e2e8f0;
+        }
 
-/* Slides container */
-#slides-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-}
+        /* ============================================================
+           SLIDE HEADER
+           ============================================================ */
+        .slide-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1.2rem; flex-shrink: 0;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
 
-.slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 40px 60px 40px 60px;
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-  overflow-y: auto;
-}
+        /* Tags / labels */
+        .example-label, .concept-label, .ref-label {
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
+        }
+        .example-label { background: var(--green-accent); }
+        .concept-label { background: var(--teal-accent); }
+        .ref-label     { background: var(--navy); }
 
-.slide.active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-}
+        /* ============================================================
+           PROBLEM STATEMENT
+           ============================================================ */
+        .problem-statement {
+            background: var(--navy-light); border-left: 5px solid var(--navy);
+            border-radius: 10px; padding: 0.65em 1.2em;
+            margin-bottom: 0.9rem; flex-shrink: 0;
+            font-weight: 600; color: var(--navy); font-size: 0.9em;
+        }
+        .problem-statement .katex-display { margin: 0; }
 
-.slide.exit-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
+        /* ============================================================
+           STEP REVEALS — display:none/block with keyframe animation
+           ============================================================ */
+        .steps-area {
+            display: flex; flex-direction: column;
+            overflow-y: auto; flex: 1;
+            min-height: 0; padding-bottom: 3.5rem;
+        }
 
-/* Slide titles */
-.slide-title {
-  font-size: 2em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  text-align: center;
-  margin-bottom: 10px;
-}
+        .step { display: none; }
+        .step.visible {
+            display: block;
+            animation: stepReveal 0.4s ease both;
+            margin-bottom: 0.4rem;
+        }
+        .step.visible:last-child { margin-bottom: 0; }
 
-.slide-subtitle {
-  font-size: 1.15em;
-  font-weight: 400;
-  color: var(--dark-navy);
-  text-align: center;
-  margin-bottom: 20px;
-  max-width: 900px;
-  line-height: 1.5;
-}
+        @keyframes stepReveal {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-/* Example label */
-.example-label {
-  position: absolute;
-  top: 18px;
-  left: 30px;
-  background: var(--blue-accent);
-  color: white;
-  padding: 4px 18px;
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.95em;
-  letter-spacing: 1px;
-}
+        /* ============================================================
+           STEP-BOX CARDS
+           ============================================================ */
+        .step-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px; padding: 0.45em 1.1em;
+        }
+        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
+        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
+        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+        .step-box.dark   { background: var(--navy); }
 
-/* Copyright */
-.copyright {
-  position: absolute;
-  bottom: 12px;
-  right: 24px;
-  font-size: 0.72em;
-  color: #94a3b8;
-  font-style: italic;
-}
+        .step-label {
+            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.08em;
+        }
+        .step-box.dark .step-label { color: #93c5fd; }
 
-/* T-table styles */
-.ttable-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin: 10px 0;
-  flex-wrap: wrap;
-}
+        .step-math {
+            font-size: 0.88em; line-height: 2;
+            padding: 0.2em 0; text-align: center;
+        }
+        .step-box.dark .step-math { color: white; }
+        .step-box.dark .katex { color: white; }
 
-.ttable {
-  border-collapse: collapse;
-  font-size: 1em;
-}
+        /* Annotation beside equation */
+        .step-math.has-annotation {
+            display: flex; align-items: center;
+            gap: 2.5rem; text-align: left;
+        }
+        .step-eq { flex: 1; text-align: center; }
+        .annotation {
+            flex: 0 0 36%; color: var(--blue-accent);
+            font-size: 0.72em; font-weight: 600; line-height: 1.45;
+            text-align: left; border-left: 3px solid #93c5fd;
+            padding-left: 1rem;
+        }
 
-.ttable th, .ttable td {
-  border: 1.5px solid var(--dark-navy);
-  padding: 6px 16px;
-  text-align: center;
-  min-width: 55px;
-}
+        /* ============================================================
+           PARENT-GRAPH LAYOUT (Slide 1)
+           ============================================================ */
+        .graphs-row {
+            display: flex; gap: 1.5rem; align-items: flex-start;
+            justify-content: center; flex-wrap: wrap;
+        }
+        .graph-col { display: flex; flex-direction: column; align-items: center; }
+        .graph-col-title {
+            font-size: 0.82em; font-weight: 700; color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+        .graph-svg {
+            border: 1.5px solid #c7d2fe; border-radius: 6px; background: white;
+        }
 
-.ttable th {
-  background: var(--grid-line);
-  font-weight: 700;
-  color: var(--dark-navy);
-}
+        /* T-tables */
+        .ttable {
+            border-collapse: collapse; font-size: 0.6em; margin-top: 0.3rem;
+        }
+        .ttable th, .ttable td {
+            border: 1.5px solid var(--navy);
+            padding: 0.15em 0.5em; text-align: center; min-width: 2.2em;
+        }
+        .ttable th { background: var(--grid-line); font-weight: 700; color: var(--navy); }
+        .ttable td { background: white; }
 
-.ttable td {
-  background: white;
-}
+        /* ============================================================
+           GRAPHING STEPS SLIDE (Slide 2)
+           ============================================================ */
+        .step-item {
+            display: flex; align-items: flex-start; gap: 0.5rem;
+            font-size: 0.82em; line-height: 1.5;
+        }
+        .step-number-badge {
+            background: var(--blue-accent); color: white;
+            width: 1.3em; height: 1.3em; min-width: 1.3em;
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-weight: 700; font-size: 0.85em;
+        }
+        .step-item-content { flex: 1; }
+        .step-item-content strong { color: var(--blue-accent); }
 
-.ttable-arrow {
-  font-size: 2.5em;
-  color: var(--blue-accent);
-  font-weight: 700;
-}
+        .transform-diagram {
+            display: flex; gap: 1rem; justify-content: center;
+            margin-top: 0.4rem; flex-wrap: wrap;
+        }
+        .transform-box {
+            border: 2px solid var(--blue-accent); border-radius: 8px;
+            padding: 0.3em 0.8em; text-align: center; background: white;
+            font-size: 0.9em;
+        }
+        .transform-box .label-text { font-weight: 600; color: var(--blue-accent); margin-bottom: 0.15em; }
+        .transform-box .items-text { color: var(--navy); }
 
-/* Math expressions */
-.math {
-  font-family: 'Times New Roman', 'Cambria Math', Georgia, serif;
-  font-style: italic;
-}
+        .note-red {
+            color: var(--red-accent); font-weight: 700; font-size: 0.82em;
+            text-align: center; margin-top: 0.5rem;
+        }
 
-.mono-math {
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
-}
+        /* ============================================================
+           EXAMPLE T-TABLE LAYOUT
+           ============================================================ */
+        .ttable-container {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.7rem; flex-wrap: wrap;
+        }
+        .ttable-label {
+            text-align: center; font-weight: 600; margin-bottom: 0.15em;
+            font-size: 0.62em;
+        }
+        .ttable-label.parent-label { color: var(--navy); }
+        .ttable-label.transformed-label { color: var(--red-accent); }
+        .ttable-arrow { font-size: 1.5em; color: var(--blue-accent); font-weight: 700; }
+        .ttable .red-val { color: var(--red-accent); font-weight: 700; }
+        .table-notes {
+            font-size: 0.6em; color: var(--text-muted);
+            margin-top: 0.15em; text-align: center;
+        }
+        .table-notes .red-val { color: var(--red-accent); font-weight: 700; }
 
-.red { color: var(--red-accent); font-weight: 700; }
-.blue { color: var(--blue-accent); font-weight: 700; }
-.dark-blue { color: var(--dark-blue-curve); }
+        /* ============================================================
+           GRAPH WRAPPER
+           ============================================================ */
+        .graph-wrapper {
+            display: flex; justify-content: center;
+            align-items: center; width: 100%;
+        }
 
-/* Step reveal */
-.step {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  margin: 6px 0;
-}
+        /* ============================================================
+           NAV / PROGRESS (matches 5.5)
+           ============================================================ */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3); border: none; cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-.step.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Click hint */
-.click-hint {
-  position: absolute;
-  bottom: 38px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.85em;
-  color: #94a3b8;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* Graphs side by side */
-.graphs-row {
-  display: flex;
-  gap: 30px;
-  align-items: flex-start;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 5px;
-}
-
-.graph-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.graph-col h3 {
-  font-size: 1.3em;
-  margin-bottom: 5px;
-  color: var(--dark-navy);
-}
-
-/* SVG graph styles */
-.graph-svg {
-  border: 1.5px solid #c7d2fe;
-  border-radius: 6px;
-  background: white;
-}
-
-/* Equation display */
-.equation-box {
-  background: white;
-  border: 2px solid var(--blue-accent);
-  border-radius: 8px;
-  padding: 12px 32px;
-  font-size: 1.5em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  margin: 8px 0;
-  display: inline-block;
-}
-
-/* Steps list */
-.steps-list {
-  text-align: left;
-  max-width: 850px;
-  width: 100%;
-}
-
-.step-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  margin: 10px 0;
-  font-size: 1.05em;
-  line-height: 1.5;
-}
-
-.step-number {
-  background: var(--blue-accent);
-  color: white;
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 0.95em;
-}
-
-.step-content {
-  flex: 1;
-}
-
-.step-content strong {
-  color: var(--blue-accent);
-}
-
-/* Transformation diagram */
-.transform-diagram {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  margin: 12px 0;
-  flex-wrap: wrap;
-}
-
-.transform-box {
-  border: 2px solid var(--blue-accent);
-  border-radius: 8px;
-  padding: 10px 20px;
-  text-align: center;
-  background: white;
-}
-
-.transform-box .label {
-  font-weight: 600;
-  color: var(--blue-accent);
-  margin-bottom: 4px;
-  font-size: 0.95em;
-}
-
-.transform-box .items {
-  color: var(--dark-navy);
-  font-size: 0.95em;
-}
-
-.note-red {
-  color: var(--red-accent);
-  font-weight: 700;
-  font-size: 0.95em;
-  margin-top: 14px;
-  text-align: center;
-}
-
-/* Annotation bracket */
-.annotation-text {
-  font-size: 0.8em;
-  fill: var(--red-accent);
-  font-weight: 600;
-  font-family: 'Source Sans 3', sans-serif;
-}
-
-/* Responsive */
-@media (max-width: 1100px) {
-  .slide { padding: 30px 30px; }
-  .slide-title { font-size: 1.6em; }
-  .graphs-row { gap: 15px; }
-}
-
-@media (max-width: 768px) {
-  .slide { padding: 20px 15px; }
-  .slide-title { font-size: 1.3em; }
-  .slide-subtitle { font-size: 1em; }
-  #nav-dots { right: 8px; gap: 8px; }
-  .nav-dot { width: 9px; height: 9px; }
-  .graphs-row { flex-direction: column; }
-}
-
-/* Example step info lines */
-.info-line {
-  font-size: 1.05em;
-  margin: 4px 0;
-  line-height: 1.5;
-}
-
-.info-line .label {
-  color: var(--blue-accent);
-  font-weight: 700;
-}
-
-/* Graph wrapper for centering */
-.graph-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-/* Note beneath tables */
-.table-notes {
-  font-size: 0.9em;
-  color: #64748b;
-  margin-top: 4px;
-  text-align: center;
-}
-
-.table-notes .red {
-  font-size: inherit;
-}
-
-/* Fraction display */
-.frac {
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-}
-.frac-num {
-  display: block;
-  border-bottom: 1.5px solid currentColor;
-  padding: 0 3px;
-  line-height: 1.2;
-}
-.frac-den {
-  display: block;
-  padding: 0 3px;
-  line-height: 1.2;
-}
-</style>
+        @media (prefers-reduced-motion: reduce) {
+            .slide { transition: opacity 0.3s ease; transform: none !important; }
+            .step.visible { animation: none; opacity: 1; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="grid-bg"></div>
-<div id="progress-bar" style="width: 20%;"></div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
 
-<div id="nav-dots">
-  <div class="nav-dot active" onclick="goToSlide(0)"></div>
-  <div class="nav-dot" onclick="goToSlide(1)"></div>
-  <div class="nav-dot" onclick="goToSlide(2)"></div>
-  <div class="nav-dot" onclick="goToSlide(3)"></div>
-  <div class="nav-dot" onclick="goToSlide(4)"></div>
-</div>
+<div class="slides-wrapper" id="slidesWrapper">
 
-<div id="slides-container">
-
-<!-- ==================== SLIDE 1 ==================== -->
-<div class="slide active" id="slide-0">
-  <div class="slide-title">5 Key Points from Parent Graphs</div>
-  <div class="slide-subtitle">The key to graphing any sine or cosine curve is to be familiar with the <span class="blue">5 key points</span> from their parent graphs.</div>
-
-  <div class="graphs-row">
-    <!-- SIN GRAPH -->
-    <div class="graph-col">
-      <h3><span class="math">y</span> = sin(<span class="math">x</span>)</h3>
-      <svg class="graph-svg" id="sin-graph" width="420" height="240" viewBox="0 0 420 240">
-        <!-- Grid -->
-        <defs>
-          <pattern id="sinGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="420" height="240" fill="white"/>
-        <rect width="420" height="240" fill="url(#sinGrid)"/>
-        <!-- Axes -->
-        <line x1="40" y1="120" x2="405" y2="120" stroke="#1a365d" stroke-width="1.5"/>
-        <line x1="40" y1="15" x2="40" y2="225" stroke="#1a365d" stroke-width="1.5"/>
-        <!-- Axis arrows -->
-        <polygon points="405,120 398,116 398,124" fill="#1a365d"/>
-        <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
-        <!-- Y-axis labels -->
-        <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;1</text>
-        <!-- tick marks y -->
-        <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
-        <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
-        <!-- X-axis labels -->
-        <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
-        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;/2</text>
-        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;</text>
-        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;/2</text>
-        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&pi;</text>
-        <!-- tick marks x -->
-        <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="390" y1="117" x2="390" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <!-- Sine curve -->
-        <path id="sin-curve" d="" fill="none" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Key points (hidden initially) -->
-        <g id="sin-points" opacity="0">
-          <circle cx="40" cy="120" r="5" fill="#1e40af"/>
-          <circle cx="130" cy="40" r="5" fill="#1e40af"/>
-          <circle cx="220" cy="120" r="5" fill="#1e40af"/>
-          <circle cx="310" cy="200" r="5" fill="#1e40af"/>
-          <circle cx="390" cy="120" r="5" fill="#1e40af"/>
-        </g>
-        <!-- Labels (hidden initially) -->
-        <g id="sin-labels" opacity="0">
-          <text x="40" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
-          <text x="130" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
-          <text x="220" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
-          <text x="310" y="218" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">low</text>
-          <text x="390" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
-          <!-- coordinate labels -->
-          <text x="52" y="128" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 0)</text>
-          <text x="130" y="55" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&pi;/2, 1)</text>
-          <text x="220" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&pi;, 0)</text>
-          <text x="310" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&pi;/2, &minus;1)</text>
-          <text x="375" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&pi;, 0)</text>
-        </g>
-      </svg>
-      <!-- T-table for sin -->
-      <table class="ttable" style="margin-top:8px;">
-        <tr><th><span class="math">x</span></th><td>0</td><td>&pi;/2</td><td>&pi;</td><td>3&pi;/2</td><td>2&pi;</td></tr>
-        <tr><th>sin(<span class="math">x</span>)</th><td>0</td><td>1</td><td>0</td><td>&minus;1</td><td>0</td></tr>
-      </table>
-    </div>
-
-    <!-- COS GRAPH -->
-    <div class="graph-col">
-      <h3><span class="math">y</span> = cos(<span class="math">x</span>)</h3>
-      <svg class="graph-svg" id="cos-graph" width="420" height="240" viewBox="0 0 420 240">
-        <defs>
-          <pattern id="cosGrid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="420" height="240" fill="white"/>
-        <rect width="420" height="240" fill="url(#cosGrid)"/>
-        <!-- Axes -->
-        <line x1="40" y1="120" x2="405" y2="120" stroke="#1a365d" stroke-width="1.5"/>
-        <line x1="40" y1="15" x2="40" y2="225" stroke="#1a365d" stroke-width="1.5"/>
-        <polygon points="405,120 398,116 398,124" fill="#1a365d"/>
-        <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
-        <!-- Y-axis labels -->
-        <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;1</text>
-        <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
-        <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
-        <!-- X-axis labels -->
-        <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
-        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;/2</text>
-        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;</text>
-        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;/2</text>
-        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&pi;</text>
-        <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="390" y1="117" x2="390" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <!-- Cosine curve -->
-        <path id="cos-curve" d="" fill="none" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Key points -->
-        <g id="cos-points" opacity="0">
-          <circle cx="40" cy="40" r="5" fill="#1e40af"/>
-          <circle cx="130" cy="120" r="5" fill="#1e40af"/>
-          <circle cx="220" cy="200" r="5" fill="#1e40af"/>
-          <circle cx="310" cy="120" r="5" fill="#1e40af"/>
-          <circle cx="390" cy="40" r="5" fill="#1e40af"/>
-        </g>
-        <!-- Labels -->
-        <g id="cos-labels" opacity="0">
-          <text x="40" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
-          <text x="130" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
-          <text x="220" y="218" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">low</text>
-          <text x="310" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
-          <text x="390" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
-          <!-- coordinate labels -->
-          <text x="52" y="50" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 1)</text>
-          <text x="130" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&pi;/2, 0)</text>
-          <text x="220" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&pi;, &minus;1)</text>
-          <text x="310" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&pi;/2, 0)</text>
-          <text x="375" y="50" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&pi;, 1)</text>
-        </g>
-      </svg>
-      <!-- T-table for cos -->
-      <table class="ttable" style="margin-top:8px;">
-        <tr><th><span class="math">x</span></th><td>0</td><td>&pi;/2</td><td>&pi;</td><td>3&pi;/2</td><td>2&pi;</td></tr>
-        <tr><th>cos(<span class="math">x</span>)</th><td>1</td><td>0</td><td>&minus;1</td><td>0</td><td>1</td></tr>
-      </table>
-    </div>
-  </div>
-
-  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
-</div>
-
-<!-- ==================== SLIDE 2 ==================== -->
-<div class="slide" id="slide-1">
-  <div class="slide-title">Steps for Graphing a Sine or Cosine Function</div>
-
-  <div class="steps-list" style="margin-top: 15px;">
-    <div class="step" data-slide="1" data-step="0">
-      <div class="step-item">
-        <div class="step-number">1</div>
-        <div class="step-content"><strong>T-TABLE.</strong> Write down a t-table with 5 points for the parent graph.</div>
-      </div>
-    </div>
-
-    <div class="step" data-slide="1" data-step="1">
-      <div class="step-item">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <strong>ANALYZE.</strong> Determine the transformations of the function.
-          <div class="transform-diagram" style="margin-top:10px;">
-            <div class="transform-box">
-              <div class="label">Affects the <span class="math">x</span>-coordinates</div>
-              <div class="items"><span class="blue">period</span> &bull; <span class="blue">phase shift</span></div>
-            </div>
-            <div class="transform-box">
-              <div class="label">Affects the <span class="math">y</span>-coordinates</div>
-              <div class="items"><span class="blue">amplitude</span> &bull; <span class="blue">vertical translation</span></div>
-            </div>
-          </div>
+    <!-- ================================================================
+         SLIDE 1 — TITLE: 5 Key Points from Parent Graphs
+         ================================================================ -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 4 &middot; Trigonometric Functions</div>
+        <h1 class="title-main">4.6b Graphs of Sine &amp;<br>Cosine (Part 2)</h1>
+        <p class="title-objective">Objective: Graph sine and cosine functions using the 5 key points, amplitude, period, phase shift, and vertical translation.</p>
+        <div class="identity-chips">
+            <span class="chip">5 Key Points</span>
+            <span class="chip">Amplitude</span>
+            <span class="chip">Period</span>
+            <span class="chip">Phase Shift</span>
+            <span class="chip">Vertical Translation</span>
         </div>
-      </div>
-    </div>
+    </section>
 
-    <div class="step" data-slide="1" data-step="2">
-      <div class="step-item">
-        <div class="step-number">3</div>
-        <div class="step-content"><strong>NEW X-COORDINATES.</strong> Use the <span class="blue">period</span>, then <span class="blue">phase shift</span> to adjust the x-coordinates from the parent graph&rsquo;s t-table.</div>
-      </div>
-    </div>
+    <!-- ================================================================
+         SLIDE 2 — CONCEPT: 5 Key Points from Parent Graphs
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">5 Key Points from Parent Graphs</h2>
+        </div>
+        <div class="slide-body">
+            <p style="font-size:0.78em; margin-bottom:0.6rem; text-align:center; color:var(--text-muted);">
+                The key to graphing any sine or cosine curve is to be familiar with the <strong style="color:var(--blue-accent);">5 key points</strong> from their parent graphs.
+            </p>
+            <div class="graphs-row">
+                <!-- SIN GRAPH -->
+                <div class="graph-col">
+                    <div class="graph-col-title">\(y = \sin(x)\)</div>
+                    <svg class="graph-svg" id="sin-graph" width="420" height="240" viewBox="0 0 420 240">
+                        <defs>
+                            <pattern id="sinGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="420" height="240" fill="white"/>
+                        <rect width="420" height="240" fill="url(#sinGrid)"/>
+                        <!-- Axes -->
+                        <line x1="40" y1="120" x2="405" y2="120" stroke="#1a365d" stroke-width="1.5"/>
+                        <line x1="40" y1="15" x2="40" y2="225" stroke="#1a365d" stroke-width="1.5"/>
+                        <polygon points="405,120 398,116 398,124" fill="#1a365d"/>
+                        <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
+                        <!-- Y-axis labels -->
+                        <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
+                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                        <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
+                        <!-- X-axis labels -->
+                        <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
+                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
+                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
+                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
+                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                        <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="390" y1="117" x2="390" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <!-- Sine curve -->
+                        <path id="sin-curve" d="" fill="none" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/>
+                        <!-- Key points -->
+                        <g id="sin-points" opacity="0">
+                            <circle cx="40" cy="120" r="5" fill="#1e40af"/>
+                            <circle cx="130" cy="40" r="5" fill="#1e40af"/>
+                            <circle cx="220" cy="120" r="5" fill="#1e40af"/>
+                            <circle cx="310" cy="200" r="5" fill="#1e40af"/>
+                            <circle cx="390" cy="120" r="5" fill="#1e40af"/>
+                        </g>
+                        <!-- Labels -->
+                        <g id="sin-labels" opacity="0">
+                            <text x="40" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
+                            <text x="130" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
+                            <text x="220" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
+                            <text x="310" y="218" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">low</text>
+                            <text x="390" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
+                            <text x="52" y="128" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 0)</text>
+                            <text x="130" y="55" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;/2, 1)</text>
+                            <text x="220" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;, 0)</text>
+                            <text x="310" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&#x03C0;/2, -1)</text>
+                            <text x="375" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&#x03C0;, 0)</text>
+                        </g>
+                    </svg>
+                    <table class="ttable">
+                        <tr><th>\(x\)</th><td>\(0\)</td><td>\(\frac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\frac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+                        <tr><th>\(\sin x\)</th><td>\(0\)</td><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td></tr>
+                    </table>
+                </div>
 
-    <div class="step" data-slide="1" data-step="3">
-      <div class="step-item">
-        <div class="step-number">4</div>
-        <div class="step-content"><strong>NEW Y-COORDINATES.</strong> Use the <span class="blue">amplitude</span>, then <span class="blue">vertical translation</span> to adjust the y-coordinates from the parent graph&rsquo;s t-table.</div>
-      </div>
-    </div>
+                <!-- COS GRAPH -->
+                <div class="graph-col">
+                    <div class="graph-col-title">\(y = \cos(x)\)</div>
+                    <svg class="graph-svg" id="cos-graph" width="420" height="240" viewBox="0 0 420 240">
+                        <defs>
+                            <pattern id="cosGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect width="420" height="240" fill="white"/>
+                        <rect width="420" height="240" fill="url(#cosGrid)"/>
+                        <line x1="40" y1="120" x2="405" y2="120" stroke="#1a365d" stroke-width="1.5"/>
+                        <line x1="40" y1="15" x2="40" y2="225" stroke="#1a365d" stroke-width="1.5"/>
+                        <polygon points="405,120 398,116 398,124" fill="#1a365d"/>
+                        <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
+                        <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
+                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                        <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
+                        <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
+                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
+                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
+                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
+                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                        <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <line x1="390" y1="117" x2="390" y2="123" stroke="#1a365d" stroke-width="1"/>
+                        <path id="cos-curve" d="" fill="none" stroke="#1e40af" stroke-width="2.5" stroke-linecap="round"/>
+                        <g id="cos-points" opacity="0">
+                            <circle cx="40" cy="40" r="5" fill="#1e40af"/>
+                            <circle cx="130" cy="120" r="5" fill="#1e40af"/>
+                            <circle cx="220" cy="200" r="5" fill="#1e40af"/>
+                            <circle cx="310" cy="120" r="5" fill="#1e40af"/>
+                            <circle cx="390" cy="40" r="5" fill="#1e40af"/>
+                        </g>
+                        <g id="cos-labels" opacity="0">
+                            <text x="40" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
+                            <text x="130" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
+                            <text x="220" y="218" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">low</text>
+                            <text x="310" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
+                            <text x="390" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
+                            <text x="52" y="50" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 1)</text>
+                            <text x="130" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;/2, 0)</text>
+                            <text x="220" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;, -1)</text>
+                            <text x="310" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&#x03C0;/2, 0)</text>
+                            <text x="375" y="50" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&#x03C0;, 1)</text>
+                        </g>
+                    </svg>
+                    <table class="ttable">
+                        <tr><th>\(x\)</th><td>\(0\)</td><td>\(\frac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\frac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+                        <tr><th>\(\cos x\)</th><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td><td>\(1\)</td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="step" data-slide="1" data-step="4">
-      <div class="step-item">
-        <div class="step-number">5</div>
-        <div class="step-content">Set up axes, scale, plot points, and <strong>draw the graph!</strong></div>
-      </div>
-    </div>
+    <!-- ================================================================
+         SLIDE 3 — CONCEPT: Steps for Graphing
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-2" data-steps="6">
+        <div class="slide-header">
+            <span class="ref-label">Reference</span>
+            <h2 class="slide-title">Steps for Graphing a Sine or Cosine Function</h2>
+        </div>
+        <div class="slide-body">
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box">
+                        <div class="step-item">
+                            <div class="step-number-badge">1</div>
+                            <div class="step-item-content"><strong>T-TABLE.</strong> Write down a t-table with 5 points for the parent graph.</div>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="step" data-slide="1" data-step="5">
-      <div class="note-red" style="margin-top:18px;">&#9888; The order matters: multiply before add/subtract!</div>
-    </div>
-  </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box teal">
+                        <div class="step-item">
+                            <div class="step-number-badge">2</div>
+                            <div class="step-item-content">
+                                <strong>ANALYZE.</strong> Determine the transformations of the function.
+                                <div class="transform-diagram">
+                                    <div class="transform-box">
+                                        <div class="label-text">Affects the \(x\)-coordinates</div>
+                                        <div class="items-text"><strong style="color:var(--blue-accent);">period</strong> &bull; <strong style="color:var(--blue-accent);">phase shift</strong></div>
+                                    </div>
+                                    <div class="transform-box">
+                                        <div class="label-text">Affects the \(y\)-coordinates</div>
+                                        <div class="items-text"><strong style="color:var(--blue-accent);">amplitude</strong> &bull; <strong style="color:var(--blue-accent);">vertical translation</strong></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="click-hint" id="hint-1">Click to reveal next step</div>
-  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
-</div>
+                <div class="step" id="slide-2-step-2">
+                    <div class="step-box">
+                        <div class="step-item">
+                            <div class="step-number-badge">3</div>
+                            <div class="step-item-content"><strong>NEW X-COORDINATES.</strong> Use the <strong style="color:var(--blue-accent);">period</strong>, then <strong style="color:var(--blue-accent);">phase shift</strong> to adjust the x-coordinates from the parent graph's t-table.</div>
+                        </div>
+                    </div>
+                </div>
 
-<!-- ==================== SLIDE 3 ==================== -->
-<div class="slide" id="slide-2">
-  <div class="example-label">EXAMPLE</div>
-  <div class="slide-title" style="margin-top: 10px;">Example 1</div>
+                <div class="step" id="slide-2-step-3">
+                    <div class="step-box">
+                        <div class="step-item">
+                            <div class="step-number-badge">4</div>
+                            <div class="step-item-content"><strong>NEW Y-COORDINATES.</strong> Use the <strong style="color:var(--blue-accent);">amplitude</strong>, then <strong style="color:var(--blue-accent);">vertical translation</strong> to adjust the y-coordinates from the parent graph's t-table.</div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 0: equation -->
-  <div class="step" data-slide="2" data-step="0">
-    <div class="equation-box"><span class="math">y</span> = 3 sin(<span class="math">x</span>/2)</div>
-  </div>
+                <div class="step" id="slide-2-step-4">
+                    <div class="step-box green">
+                        <div class="step-item">
+                            <div class="step-number-badge">5</div>
+                            <div class="step-item-content">Set up axes, scale, plot points, and <strong>draw the graph!</strong></div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 1: amplitude -->
-  <div class="step" data-slide="2" data-step="1">
-    <div class="info-line"><span class="label">Amplitude:</span> <span class="red">3</span> &mdash; &ldquo;multiply <span class="math">y</span>&rsquo;s by 3&rdquo;</div>
-  </div>
+                <div class="step" id="slide-2-step-5">
+                    <div class="step-box orange">
+                        <div class="step-label">Important</div>
+                        <div class="step-math" style="font-size:0.82em;">The order matters: multiply before add/subtract!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Step 2: period -->
-  <div class="step" data-slide="2" data-step="2">
-    <div class="info-line"><span class="label">Period:</span> 2&pi;/<span class="math">b</span> = 2&pi;/(1/2) = <span class="red">4&pi;</span> &mdash; &ldquo;multiply <span class="math">x</span>&rsquo;s by 2 because <span class="math">b</span> = 1/2&rdquo;</div>
-  </div>
+    <!-- ================================================================
+         SLIDE 4 — EXAMPLE 1: y = 3sin(x/2)
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-3" data-steps="6">
+        <div class="slide-header">
+            <span class="example-label">Example 1</span>
+            <h2 class="slide-title">Graphing a Sine Function</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Graph \(y = 3\sin\!\left(\dfrac{x}{2}\right)\).
+            </div>
+            <div class="steps-area">
+                <!-- Step 0: Amplitude -->
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Amplitude</div>
+                        <div class="step-math">
+                            \[|a| = 3\]
+                            <span class="annotation">Multiply \(y\)'s by 3</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 3: phase/vert -->
-  <div class="step" data-slide="2" data-step="3">
-    <div class="info-line"><span class="label">Phase shift:</span> none &nbsp;&nbsp; <span class="label">Vertical translation:</span> none</div>
-  </div>
+                <!-- Step 1: Period -->
+                <div class="step" id="slide-3-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Period</div>
+                        <div class="step-math">
+                            \[\frac{2\pi}{b} = \frac{2\pi}{1/2} = 4\pi\]
+                            <span class="annotation">Multiply \(x\)'s by 2 because \(b = \tfrac{1}{2}\)</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 4: t-tables -->
-  <div class="step" data-slide="2" data-step="4">
-    <div class="ttable-container">
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#1a365d;">Parent sin</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td>0</td><td>&pi;/2</td><td>&pi;</td><td>3&pi;/2</td><td>2&pi;</td></tr>
-          <tr><th>sin(<span class="math">x</span>)</th><td>0</td><td>1</td><td>0</td><td>&minus;1</td><td>0</td></tr>
-        </table>
-      </div>
-      <div class="ttable-arrow">&rarr;</div>
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#dc2626;">Transformed</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td><span class="red">0</span></td><td><span class="red">&pi;</span></td><td><span class="red">2&pi;</span></td><td><span class="red">3&pi;</span></td><td><span class="red">4&pi;</span></td></tr>
-          <tr><th><span class="math">y</span></th><td><span class="red">0</span></td><td><span class="red">3</span></td><td><span class="red">0</span></td><td><span class="red">&minus;3</span></td><td><span class="red">0</span></td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="table-notes"><span class="red">x&rsquo;s &times; 2</span> &nbsp;|&nbsp; <span class="red">y&rsquo;s &times; 3</span></div>
-  </div>
+                <!-- Step 2: Phase/Vert -->
+                <div class="step" id="slide-3-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Phase Shift &amp; Vertical Translation</div>
+                        <div class="step-math" style="font-size:0.82em;">
+                            Phase shift: none &nbsp;&nbsp;&nbsp; Vertical translation: none
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 5: graph -->
-  <div class="step" data-slide="2" data-step="5">
-    <div class="graph-wrapper">
-      <svg class="graph-svg" id="ex1-graph" width="780" height="240" viewBox="0 0 780 240">
-        <defs>
-          <pattern id="ex1Grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="780" height="240" fill="white"/>
-        <rect width="780" height="240" fill="url(#ex1Grid)"/>
-        <!-- Axes -->
-        <line x1="40" y1="120" x2="770" y2="120" stroke="#1a365d" stroke-width="1.5"/>
-        <line x1="40" y1="10" x2="40" y2="235" stroke="#1a365d" stroke-width="1.5"/>
-        <polygon points="770,120 763,116 763,124" fill="#1a365d"/>
-        <polygon points="40,10 36,17 44,17" fill="#1a365d"/>
-        <!-- Y labels -->
-        <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">3</text>
-        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;3</text>
-        <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
-        <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
-        <!-- X labels: π, 2π, 3π, 4π, 5π, 6π, 7π, 8π -->
-        <!-- Each π unit = (730-40)/(8π) * π ≈ 86.25 px per π. Let's use 86px spacing from x=40 -->
-        <text x="126" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;</text>
-        <text x="212" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&pi;</text>
-        <text x="299" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;</text>
-        <text x="385" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">4&pi;</text>
-        <text x="471" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&pi;</text>
-        <text x="558" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">6&pi;</text>
-        <text x="644" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&pi;</text>
-        <text x="730" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">8&pi;</text>
-        <!-- tick marks -->
-        <line x1="126" y1="117" x2="126" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="212" y1="117" x2="212" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="299" y1="117" x2="299" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="385" y1="117" x2="385" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="471" y1="117" x2="471" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="558" y1="117" x2="558" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="644" y1="117" x2="644" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <line x1="730" y1="117" x2="730" y2="123" stroke="#1a365d" stroke-width="1"/>
-        <!-- Curve: y = 3sin(x/2), two periods (0 to 8π) -->
-        <path id="ex1-curve" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Key points -->
-        <g id="ex1-points" opacity="0">
-          <!-- Period 1: (0,0),(π,3),(2π,0),(3π,-3),(4π,0) -->
-          <circle cx="40" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="126" cy="40" r="5" fill="#dc2626"/>
-          <circle cx="212" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="299" cy="200" r="5" fill="#dc2626"/>
-          <circle cx="385" cy="120" r="5" fill="#dc2626"/>
-          <!-- Period 2: (4π,0),(5π,3),(6π,0),(7π,-3),(8π,0) -->
-          <circle cx="471" cy="40" r="5" fill="#dc2626"/>
-          <circle cx="558" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="644" cy="200" r="5" fill="#dc2626"/>
-          <circle cx="730" cy="120" r="5" fill="#dc2626"/>
-        </g>
-        <!-- Annotation brackets -->
-        <g id="ex1-annotations" opacity="0">
-          <!-- "one period" bracket under first period -->
-          <line x1="40" y1="218" x2="385" y2="218" stroke="#dc2626" stroke-width="1.5"/>
-          <line x1="40" y1="214" x2="40" y2="222" stroke="#dc2626" stroke-width="1.5"/>
-          <line x1="385" y1="214" x2="385" y2="222" stroke="#dc2626" stroke-width="1.5"/>
-          <text x="212" y="232" font-size="11" fill="#dc2626" text-anchor="middle" font-weight="600" font-family="Source Sans 3, sans-serif">one period</text>
-          <!-- "Repeat" text over second period -->
-          <text x="558" y="232" font-size="10" fill="#dc2626" text-anchor="middle" font-weight="600" font-family="Source Sans 3, sans-serif">Repeat the pattern for another period</text>
-        </g>
-      </svg>
-    </div>
-  </div>
+                <!-- Step 3: T-tables -->
+                <div class="step" id="slide-3-step-3">
+                    <div class="step-box">
+                        <div class="step-label">T-Tables</div>
+                        <div style="padding:0.3em 0;">
+                            <div class="ttable-container">
+                                <div>
+                                    <div class="ttable-label parent-label">Parent sin</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td>\(0\)</td><td>\(\frac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\frac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+                                        <tr><th>\(\sin x\)</th><td>\(0\)</td><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td></tr>
+                                    </table>
+                                </div>
+                                <div class="ttable-arrow">&rarr;</div>
+                                <div>
+                                    <div class="ttable-label transformed-label">Transformed</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td class="red-val">\(0\)</td><td class="red-val">\(\pi\)</td><td class="red-val">\(2\pi\)</td><td class="red-val">\(3\pi\)</td><td class="red-val">\(4\pi\)</td></tr>
+                                        <tr><th>\(y\)</th><td class="red-val">\(0\)</td><td class="red-val">\(3\)</td><td class="red-val">\(0\)</td><td class="red-val">\(-3\)</td><td class="red-val">\(0\)</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="table-notes"><span class="red-val">\(x\)'s &times; 2</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s &times; 3</span></div>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="click-hint" id="hint-2">Click to reveal next step</div>
-  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
-</div>
+                <!-- Step 4: Graph -->
+                <div class="step" id="slide-3-step-4">
+                    <div class="step-box" style="padding:0.3em 0.5em;">
+                        <div class="step-label">Graph</div>
+                        <div class="graph-wrapper">
+                            <svg class="graph-svg" id="ex1-graph" width="780" height="240" viewBox="0 0 780 240">
+                                <defs>
+                                    <pattern id="ex1Grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="780" height="240" fill="white"/>
+                                <rect width="780" height="240" fill="url(#ex1Grid)"/>
+                                <line x1="40" y1="120" x2="770" y2="120" stroke="#1a365d" stroke-width="1.5"/>
+                                <line x1="40" y1="10" x2="40" y2="235" stroke="#1a365d" stroke-width="1.5"/>
+                                <polygon points="770,120 763,116 763,124" fill="#1a365d"/>
+                                <polygon points="40,10 36,17 44,17" fill="#1a365d"/>
+                                <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">3</text>
+                                <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-3</text>
+                                <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
+                                <text x="126" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
+                                <text x="212" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                                <text x="299" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
+                                <text x="385" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">4&#x03C0;</text>
+                                <text x="471" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;</text>
+                                <text x="558" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">6&#x03C0;</text>
+                                <text x="644" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;</text>
+                                <text x="730" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">8&#x03C0;</text>
+                                <line x1="126" y1="117" x2="126" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="212" y1="117" x2="212" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="299" y1="117" x2="299" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="385" y1="117" x2="385" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="471" y1="117" x2="471" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="558" y1="117" x2="558" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="644" y1="117" x2="644" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="730" y1="117" x2="730" y2="123" stroke="#1a365d" stroke-width="1"/>
+                                <!-- Curve: y = 3sin(x/2), two periods (0 to 8pi) -->
+                                <path id="ex1-curve" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Key points -->
+                                <g id="ex1-points" opacity="0">
+                                    <circle cx="40" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="126" cy="40" r="5" fill="#dc2626"/>
+                                    <circle cx="212" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="299" cy="200" r="5" fill="#dc2626"/>
+                                    <circle cx="385" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="471" cy="40" r="5" fill="#dc2626"/>
+                                    <circle cx="558" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="644" cy="200" r="5" fill="#dc2626"/>
+                                    <circle cx="730" cy="120" r="5" fill="#dc2626"/>
+                                </g>
+                                <!-- Annotation brackets -->
+                                <g id="ex1-annotations" opacity="0">
+                                    <line x1="40" y1="218" x2="385" y2="218" stroke="#dc2626" stroke-width="1.5"/>
+                                    <line x1="40" y1="214" x2="40" y2="222" stroke="#dc2626" stroke-width="1.5"/>
+                                    <line x1="385" y1="214" x2="385" y2="222" stroke="#dc2626" stroke-width="1.5"/>
+                                    <text x="212" y="232" font-size="11" fill="#dc2626" text-anchor="middle" font-weight="600" font-family="Source Sans 3, sans-serif">one period</text>
+                                    <text x="558" y="232" font-size="10" fill="#dc2626" text-anchor="middle" font-weight="600" font-family="Source Sans 3, sans-serif">Repeat the pattern for another period</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-<!-- ==================== SLIDE 4 ==================== -->
-<div class="slide" id="slide-3">
-  <div class="example-label">EXAMPLE</div>
-  <div class="slide-title" style="margin-top: 10px;">Example 2</div>
+                <!-- Step 5: Summary answer -->
+                <div class="step" id="slide-3-step-5">
+                    <div class="step-box dark">
+                        <div class="step-label">Summary</div>
+                        <div class="step-math">
+                            \[y = 3\sin\!\left(\tfrac{x}{2}\right)\quad\text{Amplitude } 3,\;\text{Period } 4\pi\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Step 0: equation -->
-  <div class="step" data-slide="3" data-step="0">
-    <div class="equation-box"><span class="math">y</span> = &minus;sin(<span class="math">x</span> + &pi;/2) + 1</div>
-  </div>
+    <!-- ================================================================
+         SLIDE 5 — EXAMPLE 2: y = -sin(x + pi/2) + 1
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-4" data-steps="7">
+        <div class="slide-header">
+            <span class="example-label">Example 2</span>
+            <h2 class="slide-title">Graphing with Phase Shift &amp; Reflection</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Graph \(y = -\sin\!\left(x + \dfrac{\pi}{2}\right) + 1\).
+            </div>
+            <div class="steps-area">
+                <!-- Step 0: Amplitude -->
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Amplitude</div>
+                        <div class="step-math">
+                            \[|a| = 1,\;\text{reflection in }x\text{-axis}\]
+                            <span class="annotation">Multiply \(y\)'s by \(-1\)</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 1: amplitude -->
-  <div class="step" data-slide="3" data-step="1">
-    <div class="info-line"><span class="label">Amplitude:</span> <span class="red">1</span>, reflection in <span class="math">x</span>-axis &mdash; &ldquo;multiply <span class="math">y</span>&rsquo;s by &minus;1&rdquo;</div>
-  </div>
+                <!-- Step 1: Period -->
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Period</div>
+                        <div class="step-math">
+                            \[\frac{2\pi}{b} = \frac{2\pi}{1} = 2\pi\]
+                            <span class="annotation">No horizontal stretch/shrink</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 2: period -->
-  <div class="step" data-slide="3" data-step="2">
-    <div class="info-line"><span class="label">Period:</span> <span class="red">2&pi;</span> &mdash; &ldquo;no horizontal stretch/shrink&rdquo;</div>
-  </div>
+                <!-- Step 2: Phase shift -->
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Phase Shift</div>
+                        <div class="step-math">
+                            \[\frac{\pi}{2}\text{ to the left}\]
+                            <span class="annotation">Subtract \(\frac{\pi}{2}\) from \(x\)'s</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 3: phase shift -->
-  <div class="step" data-slide="3" data-step="3">
-    <div class="info-line"><span class="label">Phase shift:</span> <span class="red">&pi;/2 to the left</span> &mdash; &ldquo;subtract &pi;/2 from <span class="math">x</span>&rsquo;s&rdquo;</div>
-  </div>
+                <!-- Step 3: Vertical translation -->
+                <div class="step" id="slide-4-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Vertical Translation</div>
+                        <div class="step-math">
+                            \[\text{Up } 1\]
+                            <span class="annotation">Add 1 to \(y\)'s</span>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 4: vertical translation -->
-  <div class="step" data-slide="3" data-step="4">
-    <div class="info-line"><span class="label">Vertical translation:</span> <span class="red">up 1</span> &mdash; &ldquo;add 1 to <span class="math">y</span>&rsquo;s&rdquo;</div>
-  </div>
+                <!-- Step 4: T-tables -->
+                <div class="step" id="slide-4-step-4">
+                    <div class="step-box">
+                        <div class="step-label">T-Tables</div>
+                        <div style="padding:0.3em 0;">
+                            <div class="ttable-container">
+                                <div>
+                                    <div class="ttable-label parent-label">Parent sin</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td>\(0\)</td><td>\(\frac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\frac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+                                        <tr><th>\(\sin x\)</th><td>\(0\)</td><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td></tr>
+                                    </table>
+                                </div>
+                                <div class="ttable-arrow">&rarr;</div>
+                                <div>
+                                    <div class="ttable-label transformed-label">Transformed</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td class="red-val">\(-\frac{\pi}{2}\)</td><td class="red-val">\(0\)</td><td class="red-val">\(\frac{\pi}{2}\)</td><td class="red-val">\(\pi\)</td><td class="red-val">\(\frac{3\pi}{2}\)</td></tr>
+                                        <tr><th>\(y\)</th><td class="red-val">\(1\)</td><td class="red-val">\(0\)</td><td class="red-val">\(1\)</td><td class="red-val">\(2\)</td><td class="red-val">\(1\)</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="table-notes"><span class="red-val">\(y\)'s &times; (\(-1\)), then + 1</span> &nbsp;|&nbsp; <span class="red-val">\(x\)'s \(-\) \(\frac{\pi}{2}\)</span></div>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 5: t-tables -->
-  <div class="step" data-slide="3" data-step="5">
-    <div class="ttable-container">
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#1a365d;">Parent sin</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td>0</td><td>&pi;/2</td><td>&pi;</td><td>3&pi;/2</td><td>2&pi;</td></tr>
-          <tr><th>sin(<span class="math">x</span>)</th><td>0</td><td>1</td><td>0</td><td>&minus;1</td><td>0</td></tr>
-        </table>
-      </div>
-      <div class="ttable-arrow">&rarr;</div>
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#dc2626;">Transformed</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td><span class="red">&minus;&pi;/2</span></td><td><span class="red">0</span></td><td><span class="red">&pi;/2</span></td><td><span class="red">&pi;</span></td><td><span class="red">3&pi;/2</span></td></tr>
-          <tr><th><span class="math">y</span></th><td><span class="red">1</span></td><td><span class="red">0</span></td><td><span class="red">1</span></td><td><span class="red">2</span></td><td><span class="red">1</span></td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="table-notes"><span class="red">y&rsquo;s &times; (&minus;1), then + 1</span> &nbsp;|&nbsp; <span class="red">x&rsquo;s &minus; &pi;/2</span></div>
-  </div>
+                <!-- Step 5: Graph -->
+                <div class="step" id="slide-4-step-5">
+                    <div class="step-box" style="padding:0.3em 0.5em;">
+                        <div class="step-label">Graph</div>
+                        <div class="graph-wrapper">
+                            <svg class="graph-svg" id="ex2-graph" width="700" height="240" viewBox="0 0 700 240">
+                                <defs>
+                                    <pattern id="ex2Grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="700" height="240" fill="white"/>
+                                <rect width="700" height="240" fill="url(#ex2Grid)"/>
+                                <!-- x-axis (y=0) -->
+                                <line x1="40" y1="165" x2="690" y2="165" stroke="#1a365d" stroke-width="1.5"/>
+                                <!-- y-axis (x=0) -->
+                                <line x1="129" y1="20" x2="129" y2="220" stroke="#1a365d" stroke-width="1.5"/>
+                                <polygon points="690,165 683,161 683,169" fill="#1a365d"/>
+                                <polygon points="129,20 125,27 133,27" fill="#1a365d"/>
+                                <!-- Midline y=1 dashed -->
+                                <line x1="40" y1="120" x2="680" y2="120" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
+                                <text x="685" y="123" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=1</text>
+                                <!-- Y-axis labels -->
+                                <text x="120" y="170" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
+                                <text x="120" y="124" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
+                                <text x="120" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">2</text>
+                                <text x="120" y="214" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                                <line x1="126" y1="120" x2="132" y2="120" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="126" y1="75" x2="132" y2="75" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="126" y1="210" x2="132" y2="210" stroke="#1a365d" stroke-width="1"/>
+                                <!-- X-axis labels -->
+                                <text x="50" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">-&#x03C0;/2</text>
+                                <text x="208" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
+                                <text x="286" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
+                                <text x="365" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
+                                <text x="444" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                                <text x="523" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/2</text>
+                                <text x="601" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
+                                <text x="680" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;/2</text>
+                                <line x1="50" y1="162" x2="50" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="208" y1="162" x2="208" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="286" y1="162" x2="286" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="365" y1="162" x2="365" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="444" y1="162" x2="444" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="523" y1="162" x2="523" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="601" y1="162" x2="601" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="680" y1="162" x2="680" y2="168" stroke="#1a365d" stroke-width="1"/>
+                                <!-- Curve -->
+                                <path id="ex2-curve" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Key points -->
+                                <g id="ex2-points" opacity="0">
+                                    <circle cx="50" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="129" cy="165" r="5" fill="#dc2626"/>
+                                    <circle cx="208" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="286" cy="75" r="5" fill="#dc2626"/>
+                                    <circle cx="365" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="444" cy="165" r="5" fill="#dc2626"/>
+                                    <circle cx="523" cy="120" r="5" fill="#dc2626"/>
+                                    <circle cx="601" cy="75" r="5" fill="#dc2626"/>
+                                    <circle cx="680" cy="120" r="5" fill="#dc2626"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-  <!-- Step 6: graph -->
-  <div class="step" data-slide="3" data-step="6">
-    <div class="graph-wrapper">
-      <svg class="graph-svg" id="ex2-graph" width="700" height="240" viewBox="0 0 700 240">
-        <defs>
-          <pattern id="ex2Grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="700" height="240" fill="white"/>
-        <rect width="700" height="240" fill="url(#ex2Grid)"/>
-        <!-- Axes: x range ~ -π/2 to 7π/2, y range -1 to 3 -->
-        <!-- px: left=50, right=680; xRange= -π/2 to 7π/2 = 4π; so pxPerPi=(680-50)/(4)=157.5 -->
-        <!-- y: top=20(y=3), mid_1=75(y=2), mid_2=130(y=1), axis=185(y=0), bot=240 would be below but we use bottom=220(y=-1) -->
-        <!-- Actually let's center: y=0 at 165, y=1 at 120, y=2 at 75, y=-1 at 210, y=3 at 30 -->
-        <!-- midline y=1 at py=120 -->
+                <!-- Step 6: Summary answer -->
+                <div class="step" id="slide-4-step-6">
+                    <div class="step-box dark">
+                        <div class="step-label">Summary</div>
+                        <div class="step-math">
+                            \[y = -\sin\!\left(x + \tfrac{\pi}{2}\right) + 1\quad\text{Amp } 1,\;\text{Period } 2\pi,\;\text{Shift } \tfrac{\pi}{2}\text{ left},\;\text{Up } 1\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- y axis at x=0: x=0 maps to px = 50 + (0-(-π/2))/4π * 630 = 50 + 0.5/4 * 630 = 50+78.75 ≈ 129 -->
-        <!-- Let me recalculate. xMin = -π/2, xMax = 7π/2. range = 4π. -->
-        <!-- pxPerUnit = 630/4π. For each π: pxPerPi = 630/4 = 157.5 -->
-        <!-- x=0 → px = 50 + (0+π/2)/(4π) * 630 = 50 + (0.5/4)*630 = 50 + 78.75 = 128.75 ≈ 129 -->
-        <!-- x=π/2 → px = 50 + (π)/(4π)*630 = 50 + 157.5 = 207.5 -->
-        <!-- x=π → px = 50 + (1.5π)/(4π)*630 = 50 + 236.25 = 286.25 -->
-        <!-- x=3π/2 → px = 50 + 2π/(4π)*630 = 50+315 = 365 -->
-        <!-- x=2π → px = 50 + 2.5π/(4π)*630 = 50+393.75 = 443.75 -->
-        <!-- x=5π/2 → 50 + 3π/(4π)*630 = 50+472.5 = 522.5 -->
-        <!-- x=3π → 50+3.5/4*630 = 50+551.25 = 601.25 -->
-        <!-- x=7π/2 → 50+4/4*630 = 680 -->
-        <!-- x=-π/2 → 50 -->
+    <!-- ================================================================
+         SLIDE 6 — EXAMPLE 3: y = (1/2)cos(2x - 2pi) - 1
+         ================================================================ -->
+    <section class="slide grid-bg" id="slide-5" data-steps="7">
+        <div class="slide-header">
+            <span class="example-label">Example 3</span>
+            <h2 class="slide-title">Graphing with All Transformations</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Graph \(y = \dfrac{1}{2}\cos(2x - 2\pi) - 1\). &nbsp; Rewrite: \(y = \dfrac{1}{2}\cos\!\bigl(2(x - \pi)\bigr) - 1\)
+            </div>
+            <div class="steps-area">
+                <!-- Step 0: Amplitude -->
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Amplitude</div>
+                        <div class="step-math">
+                            \[|a| = \tfrac{1}{2}\]
+                            <span class="annotation">Multiply \(y\)'s by \(\frac{1}{2}\)</span>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- y: yMin=-1, yMax=3. range=4. pixelRange=180 (top=30, bottom=210) -->
-        <!-- y=0 → py = 210 - (0+1)/4*180 = 210-45 = 165 -->
-        <!-- y=1 → py = 210 - 2/4*180 = 210-90 = 120 -->
-        <!-- y=2 → py = 210 - 3/4*180 = 210-135 = 75 -->
-        <!-- y=-1 → py = 210 -->
-        <!-- y=3 → py = 30 -->
+                <!-- Step 1: Period -->
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Period</div>
+                        <div class="step-math">
+                            \[\frac{2\pi}{b} = \frac{2\pi}{2} = \pi\]
+                            <span class="annotation">Multiply \(x\)'s by \(\frac{1}{2}\) because \(b = 2\)</span>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- x-axis (y=0) -->
-        <line x1="40" y1="165" x2="690" y2="165" stroke="#1a365d" stroke-width="1.5"/>
-        <!-- y-axis (x=0) -->
-        <line x1="129" y1="20" x2="129" y2="220" stroke="#1a365d" stroke-width="1.5"/>
-        <polygon points="690,165 683,161 683,169" fill="#1a365d"/>
-        <polygon points="129,20 125,27 133,27" fill="#1a365d"/>
+                <!-- Step 2: Phase shift -->
+                <div class="step" id="slide-5-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Phase Shift</div>
+                        <div class="step-math">
+                            \[\pi\text{ to the right}\]
+                            <span class="annotation">Add \(\pi\) to \(x\)'s</span>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Midline y=1 dashed -->
-        <line x1="40" y1="120" x2="680" y2="120" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
-        <text x="685" y="123" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=1</text>
+                <!-- Step 3: Vertical translation -->
+                <div class="step" id="slide-5-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Vertical Translation</div>
+                        <div class="step-math">
+                            \[\text{Down } 1\]
+                            <span class="annotation">Subtract 1 from \(y\)'s</span>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Y-axis labels -->
-        <text x="120" y="170" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
-        <text x="120" y="124" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-        <text x="120" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">2</text>
-        <text x="120" y="214" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;1</text>
-        <line x1="126" y1="120" x2="132" y2="120" stroke="#1a365d" stroke-width="1"/>
-        <line x1="126" y1="75" x2="132" y2="75" stroke="#1a365d" stroke-width="1"/>
-        <line x1="126" y1="210" x2="132" y2="210" stroke="#1a365d" stroke-width="1"/>
+                <!-- Step 4: T-tables -->
+                <div class="step" id="slide-5-step-4">
+                    <div class="step-box">
+                        <div class="step-label">T-Tables</div>
+                        <div style="padding:0.3em 0;">
+                            <div class="ttable-container">
+                                <div>
+                                    <div class="ttable-label parent-label">Parent cos</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td>\(0\)</td><td>\(\frac{\pi}{2}\)</td><td>\(\pi\)</td><td>\(\frac{3\pi}{2}\)</td><td>\(2\pi\)</td></tr>
+                                        <tr><th>\(\cos x\)</th><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td><td>\(1\)</td></tr>
+                                    </table>
+                                </div>
+                                <div class="ttable-arrow">&rarr;</div>
+                                <div>
+                                    <div class="ttable-label transformed-label">Transformed</div>
+                                    <table class="ttable">
+                                        <tr><th>\(x\)</th><td class="red-val">\(\pi\)</td><td class="red-val">\(\frac{5\pi}{4}\)</td><td class="red-val">\(\frac{3\pi}{2}\)</td><td class="red-val">\(\frac{7\pi}{4}\)</td><td class="red-val">\(2\pi\)</td></tr>
+                                        <tr><th>\(y\)</th><td class="red-val">\(-\frac{1}{2}\)</td><td class="red-val">\(-1\)</td><td class="red-val">\(-\frac{3}{2}\)</td><td class="red-val">\(-1\)</td><td class="red-val">\(-\frac{1}{2}\)</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="table-notes"><span class="red-val">\(x\)'s &times; \(\frac{1}{2}\), then + \(\pi\)</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s &times; \(\frac{1}{2}\), then \(-\) 1</span></div>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- X-axis labels -->
-        <text x="50" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&minus;&pi;/2</text>
-        <text x="208" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;/2</text>
-        <text x="286" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;</text>
-        <text x="365" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;/2</text>
-        <text x="444" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&pi;</text>
-        <text x="523" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&pi;/2</text>
-        <text x="601" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;</text>
-        <text x="680" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&pi;/2</text>
-        <!-- tick marks -->
-        <line x1="50" y1="162" x2="50" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="208" y1="162" x2="208" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="286" y1="162" x2="286" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="365" y1="162" x2="365" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="444" y1="162" x2="444" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="523" y1="162" x2="523" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="601" y1="162" x2="601" y2="168" stroke="#1a365d" stroke-width="1"/>
-        <line x1="680" y1="162" x2="680" y2="168" stroke="#1a365d" stroke-width="1"/>
+                <!-- Step 5: Graph -->
+                <div class="step" id="slide-5-step-5">
+                    <div class="step-box" style="padding:0.3em 0.5em;">
+                        <div class="step-label">Graph</div>
+                        <div class="graph-wrapper">
+                            <svg class="graph-svg" id="ex3-graph" width="700" height="240" viewBox="0 0 700 240">
+                                <defs>
+                                    <pattern id="ex3Grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="700" height="240" fill="white"/>
+                                <rect width="700" height="240" fill="url(#ex3Grid)"/>
+                                <!-- x-axis (y=0) -->
+                                <line x1="40" y1="75" x2="680" y2="75" stroke="#1a365d" stroke-width="1.5"/>
+                                <!-- y-axis -->
+                                <line x1="60" y1="15" x2="60" y2="225" stroke="#1a365d" stroke-width="1.5"/>
+                                <polygon points="680,75 673,71 673,79" fill="#1a365d"/>
+                                <polygon points="60,15 56,22 64,22" fill="#1a365d"/>
+                                <!-- Midline y=-1 dashed -->
+                                <line x1="40" y1="150" x2="670" y2="150" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
+                                <text x="675" y="153" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=-1</text>
+                                <!-- Y labels -->
+                                <text x="50" y="30" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
+                                <text x="50" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
+                                <text x="50" y="117" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1/2</text>
+                                <text x="50" y="154" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                                <text x="50" y="192" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-3/2</text>
+                                <line x1="57" y1="25" x2="63" y2="25" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="57" y1="112.5" x2="63" y2="112.5" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="57" y1="150" x2="63" y2="150" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="57" y1="187.5" x2="63" y2="187.5" stroke="#1a365d" stroke-width="1"/>
+                                <!-- X labels -->
+                                <text x="60" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
+                                <text x="135" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/4</text>
+                                <text x="210" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
+                                <text x="285" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;/4</text>
+                                <text x="360" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                                <text x="435" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">9&#x03C0;/4</text>
+                                <text x="510" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/2</text>
+                                <text x="585" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">11&#x03C0;/4</text>
+                                <text x="660" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
+                                <line x1="60" y1="72" x2="60" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="135" y1="72" x2="135" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="210" y1="72" x2="210" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="285" y1="72" x2="285" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="360" y1="72" x2="360" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="435" y1="72" x2="435" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="510" y1="72" x2="510" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="585" y1="72" x2="585" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <line x1="660" y1="72" x2="660" y2="78" stroke="#1a365d" stroke-width="1"/>
+                                <!-- Period 1 in green -->
+                                <path id="ex3-curve1" d="" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Period 2 in red -->
+                                <path id="ex3-curve2" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+                                <!-- Key points -->
+                                <g id="ex3-points" opacity="0">
+                                    <circle cx="60" cy="112.5" r="5" fill="#16a34a"/>
+                                    <circle cx="135" cy="150" r="5" fill="#16a34a"/>
+                                    <circle cx="210" cy="187.5" r="5" fill="#16a34a"/>
+                                    <circle cx="285" cy="150" r="5" fill="#16a34a"/>
+                                    <circle cx="360" cy="112.5" r="5" fill="#16a34a"/>
+                                    <circle cx="360" cy="112.5" r="5" fill="#dc2626"/>
+                                    <circle cx="435" cy="150" r="5" fill="#dc2626"/>
+                                    <circle cx="510" cy="187.5" r="5" fill="#dc2626"/>
+                                    <circle cx="585" cy="150" r="5" fill="#dc2626"/>
+                                    <circle cx="660" cy="112.5" r="5" fill="#dc2626"/>
+                                </g>
+                                <!-- Legend -->
+                                <g id="ex3-legend" opacity="0">
+                                    <line x1="80" y1="215" x2="100" y2="215" stroke="#16a34a" stroke-width="2.5"/>
+                                    <text x="105" y="219" font-size="10" fill="#16a34a" font-family="Source Sans 3, sans-serif" font-weight="600">Period 1</text>
+                                    <line x1="175" y1="215" x2="195" y2="215" stroke="#dc2626" stroke-width="2.5"/>
+                                    <text x="200" y="219" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif" font-weight="600">Period 2</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Curve: y = -sin(x+π/2)+1, two periods from x=-π/2 to 7π/2 -->
-        <path id="ex2-curve" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Step 6: Summary answer -->
+                <div class="step" id="slide-5-step-6">
+                    <div class="step-box dark">
+                        <div class="step-label">Summary</div>
+                        <div class="step-math">
+                            \[y = \tfrac{1}{2}\cos\!\bigl(2(x-\pi)\bigr) - 1\quad\text{Amp } \tfrac{1}{2},\;\text{Period } \pi,\;\text{Shift } \pi\text{ right},\;\text{Down } 1\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Key points -->
-        <g id="ex2-points" opacity="0">
-          <!-- Period 1: (-π/2,1),(0,0),(π/2,1),(π,2),(3π/2,1) -->
-          <circle cx="50" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="129" cy="165" r="5" fill="#dc2626"/>
-          <circle cx="208" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="286" cy="75" r="5" fill="#dc2626"/>
-          <circle cx="365" cy="120" r="5" fill="#dc2626"/>
-          <!-- Period 2: (3π/2,1),(2π,0),(5π/2,1),(3π,2),(7π/2,1) -->
-          <circle cx="444" cy="165" r="5" fill="#dc2626"/>
-          <circle cx="523" cy="120" r="5" fill="#dc2626"/>
-          <circle cx="601" cy="75" r="5" fill="#dc2626"/>
-          <circle cx="680" cy="120" r="5" fill="#dc2626"/>
-        </g>
-      </svg>
-    </div>
-  </div>
+</div><!-- end .slides-wrapper -->
 
-  <div class="click-hint" id="hint-3">Click to reveal next step</div>
-  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
-</div>
-
-<!-- ==================== SLIDE 5 ==================== -->
-<div class="slide" id="slide-4">
-  <div class="example-label">EXAMPLE</div>
-  <div class="slide-title" style="margin-top: 10px;">Example 3</div>
-
-  <!-- Step 0: equation + rewrite -->
-  <div class="step" data-slide="4" data-step="0">
-    <div class="equation-box"><span class="math">y</span> = <span class="frac"><span class="frac-num">1</span><span class="frac-den">2</span></span> cos(2<span class="math">x</span> &minus; 2&pi;) &minus; 1</div>
-    <div style="margin-top:8px; font-size:1.1em;">
-      Rewrite: &nbsp; <span class="math" style="font-size:1.2em;font-weight:700;">y</span> = <span class="frac"><span class="frac-num">1</span><span class="frac-den">2</span></span> cos(2(<span class="math">x</span> &minus; &pi;)) &minus; 1
-    </div>
-  </div>
-
-  <!-- Step 1: amplitude -->
-  <div class="step" data-slide="4" data-step="1">
-    <div class="info-line"><span class="label">Amplitude:</span> <span class="red">1/2</span> &mdash; &ldquo;multiply <span class="math">y</span>&rsquo;s by 1/2&rdquo;</div>
-  </div>
-
-  <!-- Step 2: period -->
-  <div class="step" data-slide="4" data-step="2">
-    <div class="info-line"><span class="label">Period:</span> 2&pi;/<span class="math">b</span> = 2&pi;/2 = <span class="red">&pi;</span> &mdash; &ldquo;multiply <span class="math">x</span>&rsquo;s by 1/2 because <span class="math">b</span> = 2&rdquo;</div>
-  </div>
-
-  <!-- Step 3: phase shift -->
-  <div class="step" data-slide="4" data-step="3">
-    <div class="info-line"><span class="label">Phase shift:</span> <span class="red">&pi; to the right</span> &mdash; &ldquo;add &pi; to <span class="math">x</span>&rsquo;s&rdquo;</div>
-  </div>
-
-  <!-- Step 4: vertical translation -->
-  <div class="step" data-slide="4" data-step="4">
-    <div class="info-line"><span class="label">Vertical translation:</span> <span class="red">down 1</span> &mdash; &ldquo;subtract 1 from <span class="math">y</span>&rsquo;s&rdquo;</div>
-  </div>
-
-  <!-- Step 5: t-tables -->
-  <div class="step" data-slide="4" data-step="5">
-    <div class="ttable-container">
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#1a365d;">Parent cos</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td>0</td><td>&pi;/2</td><td>&pi;</td><td>3&pi;/2</td><td>2&pi;</td></tr>
-          <tr><th>cos(<span class="math">x</span>)</th><td>1</td><td>0</td><td>&minus;1</td><td>0</td><td>1</td></tr>
-        </table>
-      </div>
-      <div class="ttable-arrow">&rarr;</div>
-      <div>
-        <div style="text-align:center;font-weight:600;margin-bottom:4px;color:#dc2626;">Transformed</div>
-        <table class="ttable">
-          <tr><th><span class="math">x</span></th><td><span class="red">&pi;</span></td><td><span class="red">5&pi;/4</span></td><td><span class="red">3&pi;/2</span></td><td><span class="red">7&pi;/4</span></td><td><span class="red">2&pi;</span></td></tr>
-          <tr><th><span class="math">y</span></th><td><span class="red">&minus;1/2</span></td><td><span class="red">&minus;1</span></td><td><span class="red">&minus;3/2</span></td><td><span class="red">&minus;1</span></td><td><span class="red">&minus;1/2</span></td></tr>
-        </table>
-      </div>
-    </div>
-    <div class="table-notes"><span class="red">x&rsquo;s &times; 1/2, then + &pi;</span> &nbsp;|&nbsp; <span class="red">y&rsquo;s &times; 1/2, then &minus; 1</span></div>
-  </div>
-
-  <!-- Step 6: graph -->
-  <div class="step" data-slide="4" data-step="6">
-    <div class="graph-wrapper">
-      <svg class="graph-svg" id="ex3-graph" width="700" height="240" viewBox="0 0 700 240">
-        <defs>
-          <pattern id="ex3Grid" width="20" height="20" patternUnits="userSpaceOnUse">
-            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#dbeafe" stroke-width="0.5"/>
-          </pattern>
-        </defs>
-        <rect width="700" height="240" fill="white"/>
-        <rect width="700" height="240" fill="url(#ex3Grid)"/>
-
-        <!-- x range: π to 4π (two periods of π each). px: left=50, right=670 -->
-        <!-- pxPerPi = (670-50)/3 = 206.67 -->
-        <!-- x=π → 50, x=2π → 256.67, x=3π → 463.33, x=4π → 670 -->
-        <!-- Actually let me use a wider range to show two full periods nicely -->
-        <!-- Period 1: π to 2π. Period 2: 2π to 3π. -->
-        <!-- Let's map x from 0.5π to 3.5π to give some padding -->
-        <!-- Better: x from π to 3π, with some margin. Let's do x from 0.75π to 3.25π -->
-        <!-- Or simpler: xMin=π, xMax=3π. range=2π. px: 60 to 660. pxPerPi=300 -->
-        <!-- x=π → 60, x=5π/4 → 60+75=135, x=3π/2 → 60+150=210, x=7π/4 → 60+225=285, x=2π → 60+300=360 -->
-        <!-- x=9π/4 → 435, x=5π/2 → 510, x=11π/4 → 585, x=3π → 660 -->
-
-        <!-- y range: -3/2 to 0 (roughly). Let's say -2 to 1 for breathing room -->
-        <!-- y=0 → py=60, y=-1/2 → py=105, y=-1 → py=150, y=-3/2 → py=195 -->
-        <!-- pxPerYUnit = 90 (1 unit = 90px) -->
-        <!-- Actually let's set: y=1 at top=25, y=0 at 75, y=-1/2 at 112.5, y=-1 at 150, y=-3/2 at 187.5, y=-2 at 225 -->
-        <!-- pxPerY = 75 px per unit. y → py = 75 - y*75 -->
-
-        <!-- y-axis at x=π: px=60 -->
-        <!-- x-axis (y=0) -->
-        <line x1="40" y1="75" x2="680" y2="75" stroke="#1a365d" stroke-width="1.5"/>
-        <!-- y-axis at left edge -->
-        <line x1="60" y1="15" x2="60" y2="225" stroke="#1a365d" stroke-width="1.5"/>
-        <polygon points="680,75 673,71 673,79" fill="#1a365d"/>
-        <polygon points="60,15 56,22 64,22" fill="#1a365d"/>
-
-        <!-- Midline y=-1 dashed -->
-        <line x1="40" y1="150" x2="670" y2="150" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
-        <text x="675" y="153" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=&minus;1</text>
-
-        <!-- Y labels -->
-        <text x="50" y="30" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-        <text x="50" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
-        <text x="50" y="117" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;1/2</text>
-        <text x="50" y="154" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;1</text>
-        <text x="50" y="192" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">&minus;3/2</text>
-        <line x1="57" y1="25" x2="63" y2="25" stroke="#1a365d" stroke-width="1"/>
-        <line x1="57" y1="112.5" x2="63" y2="112.5" stroke="#1a365d" stroke-width="1"/>
-        <line x1="57" y1="150" x2="63" y2="150" stroke="#1a365d" stroke-width="1"/>
-        <line x1="57" y1="187.5" x2="63" y2="187.5" stroke="#1a365d" stroke-width="1"/>
-
-        <!-- X labels -->
-        <text x="60" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&pi;</text>
-        <text x="135" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&pi;/4</text>
-        <text x="210" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;/2</text>
-        <text x="285" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&pi;/4</text>
-        <text x="360" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&pi;</text>
-        <text x="435" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">9&pi;/4</text>
-        <text x="510" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&pi;/2</text>
-        <text x="585" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">11&pi;/4</text>
-        <text x="660" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&pi;</text>
-        <!-- tick marks -->
-        <line x1="60" y1="72" x2="60" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="135" y1="72" x2="135" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="210" y1="72" x2="210" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="285" y1="72" x2="285" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="360" y1="72" x2="360" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="435" y1="72" x2="435" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="510" y1="72" x2="510" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="585" y1="72" x2="585" y2="78" stroke="#1a365d" stroke-width="1"/>
-        <line x1="660" y1="72" x2="660" y2="78" stroke="#1a365d" stroke-width="1"/>
-
-        <!-- Curves -->
-        <!-- Period 1 in green -->
-        <path id="ex3-curve1" d="" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Period 2 in red -->
-        <path id="ex3-curve2" d="" fill="none" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round"/>
-
-        <!-- Key points -->
-        <g id="ex3-points" opacity="0">
-          <!-- Period 1: (π,-1/2),(5π/4,-1),(3π/2,-3/2),(7π/4,-1),(2π,-1/2) -->
-          <circle cx="60" cy="112.5" r="5" fill="#16a34a"/>
-          <circle cx="135" cy="150" r="5" fill="#16a34a"/>
-          <circle cx="210" cy="187.5" r="5" fill="#16a34a"/>
-          <circle cx="285" cy="150" r="5" fill="#16a34a"/>
-          <circle cx="360" cy="112.5" r="5" fill="#16a34a"/>
-          <!-- Period 2: (2π,-1/2),(9π/4,-1),(5π/2,-3/2),(11π/4,-1),(3π,-1/2) -->
-          <circle cx="360" cy="112.5" r="5" fill="#dc2626"/>
-          <circle cx="435" cy="150" r="5" fill="#dc2626"/>
-          <circle cx="510" cy="187.5" r="5" fill="#dc2626"/>
-          <circle cx="585" cy="150" r="5" fill="#dc2626"/>
-          <circle cx="660" cy="112.5" r="5" fill="#dc2626"/>
-        </g>
-
-        <!-- Legend -->
-        <g id="ex3-legend" opacity="0">
-          <line x1="80" y1="215" x2="100" y2="215" stroke="#16a34a" stroke-width="2.5"/>
-          <text x="105" y="219" font-size="10" fill="#16a34a" font-family="Source Sans 3, sans-serif" font-weight="600">Period 1</text>
-          <line x1="175" y1="215" x2="195" y2="215" stroke="#dc2626" stroke-width="2.5"/>
-          <text x="200" y="219" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif" font-weight="600">Period 2</text>
-        </g>
-      </svg>
-    </div>
-  </div>
-
-  <div class="click-hint" id="hint-4">Click to reveal next step</div>
-  <div class="copyright">&copy; Hoff Math. All Rights Reserved</div>
-</div>
-
-</div><!-- end slides-container -->
-
+<!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
-// ===================== PRESENTATION ENGINE =====================
+    /* Render all LaTeX in the document */
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
 
-let currentSlide = 0;
-const totalSlides = 5;
+    /* Move each annotation beside its equation (same as 5.5) */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(n => eqDiv.appendChild(n));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
 
-// Steps per slide: slide 0 has 0 click steps, slide 1 has 6, slide 2 has 6, slide 3 has 7, slide 4 has 7
-const stepsPerSlide = [0, 6, 6, 7, 7];
-let currentStep = [-1, -1, -1, -1, -1]; // -1 = no steps revealed yet
-let slideAnimated = [false, false, false, false, false];
-
-function updateProgressBar() {
-  const pct = ((currentSlide + 1) / totalSlides) * 100;
-  document.getElementById('progress-bar').style.width = pct + '%';
-}
-
-function updateNavDots() {
-  const dots = document.querySelectorAll('.nav-dot');
-  dots.forEach((d, i) => {
-    d.classList.toggle('active', i === currentSlide);
-  });
-}
-
-function showSlide(index, direction) {
-  const slides = document.querySelectorAll('.slide');
-  slides.forEach((s, i) => {
-    if (i === index) {
-      s.className = 'slide active';
-    } else {
-      s.className = 'slide';
+    /* ============================================================
+       SVG CURVE GENERATION
+       ============================================================ */
+    function generateSinePath(xStart, xEnd, yFunc, xToPx, yToPx, numPoints) {
+        let d = '';
+        for (let i = 0; i <= numPoints; i++) {
+            const x = xStart + (xEnd - xStart) * i / numPoints;
+            const y = yFunc(x);
+            const px = xToPx(x);
+            const py = yToPx(y);
+            if (i === 0) d += `M ${px} ${py}`;
+            else d += ` L ${px} ${py}`;
+        }
+        return d;
     }
-  });
-  updateProgressBar();
-  updateNavDots();
-  updateHints();
 
-  // Trigger animations for this slide
-  if (!slideAnimated[index]) {
-    slideAnimated[index] = true;
-    setTimeout(() => animateSlide(index), 300);
-  }
-}
+    /* ============================================================
+       PARENT GRAPH ANIMATIONS (Slide 1)
+       ============================================================ */
+    function animateParentGraphs() {
+        const sinXStart = 0, sinXEnd = 2 * Math.PI;
+        const sinXToPx = (x) => 40 + (x / (2 * Math.PI)) * 350;
+        const sinYToPx = (y) => 120 - y * 80;
+        const sinPath = generateSinePath(sinXStart, sinXEnd, Math.sin, sinXToPx, sinYToPx, 200);
+        const sinCurve = document.getElementById('sin-curve');
+        sinCurve.setAttribute('d', sinPath);
 
-function goToSlide(index) {
-  if (index < 0 || index >= totalSlides || index === currentSlide) return;
-  const dir = index > currentSlide ? 1 : -1;
-  currentSlide = index;
-  showSlide(currentSlide, dir);
-}
+        const sinLen = sinCurve.getTotalLength();
+        sinCurve.style.strokeDasharray = sinLen;
+        sinCurve.style.strokeDashoffset = sinLen;
+        sinCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+        setTimeout(() => { sinCurve.style.strokeDashoffset = '0'; }, 100);
 
-function nextAction() {
-  const maxSteps = stepsPerSlide[currentSlide];
-  if (maxSteps > 0 && currentStep[currentSlide] < maxSteps - 1) {
-    // Reveal next step
-    currentStep[currentSlide]++;
-    revealStep(currentSlide, currentStep[currentSlide]);
-    updateHints();
-  } else {
-    // Go to next slide
-    if (currentSlide < totalSlides - 1) {
-      currentSlide++;
-      showSlide(currentSlide, 1);
+        setTimeout(() => {
+            document.getElementById('sin-points').style.transition = 'opacity 0.5s ease';
+            document.getElementById('sin-points').style.opacity = '1';
+        }, 1700);
+
+        setTimeout(() => {
+            document.getElementById('sin-labels').style.transition = 'opacity 0.8s ease';
+            document.getElementById('sin-labels').style.opacity = '1';
+        }, 2200);
+
+        const cosPath = generateSinePath(sinXStart, sinXEnd, Math.cos, sinXToPx, sinYToPx, 200);
+        const cosCurve = document.getElementById('cos-curve');
+        cosCurve.setAttribute('d', cosPath);
+
+        const cosLen = cosCurve.getTotalLength();
+        cosCurve.style.strokeDasharray = cosLen;
+        cosCurve.style.strokeDashoffset = cosLen;
+        cosCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+        setTimeout(() => { cosCurve.style.strokeDashoffset = '0'; }, 100);
+
+        setTimeout(() => {
+            document.getElementById('cos-points').style.transition = 'opacity 0.5s ease';
+            document.getElementById('cos-points').style.opacity = '1';
+        }, 1700);
+
+        setTimeout(() => {
+            document.getElementById('cos-labels').style.transition = 'opacity 0.8s ease';
+            document.getElementById('cos-labels').style.opacity = '1';
+        }, 2200);
     }
-  }
-}
 
-function prevAction() {
-  const maxSteps = stepsPerSlide[currentSlide];
-  if (maxSteps > 0 && currentStep[currentSlide] >= 0) {
-    // Hide current step
-    hideStep(currentSlide, currentStep[currentSlide]);
-    currentStep[currentSlide]--;
-    updateHints();
-  } else {
-    // Go to prev slide
-    if (currentSlide > 0) {
-      currentSlide--;
-      showSlide(currentSlide, -1);
+    /* ============================================================
+       EXAMPLE 1 GRAPH ANIMATION
+       ============================================================ */
+    function animateEx1Graph() {
+        const xToPx = (x) => 40 + (x / (8 * Math.PI)) * 690;
+        const yToPx = (y) => 120 - (y / 3) * 80;
+        const yFunc = (x) => 3 * Math.sin(x / 2);
+
+        const path = generateSinePath(0, 8 * Math.PI, yFunc, xToPx, yToPx, 400);
+        const curve = document.getElementById('ex1-curve');
+        curve.setAttribute('d', path);
+
+        const len = curve.getTotalLength();
+        curve.style.strokeDasharray = len;
+        curve.style.strokeDashoffset = len;
+        curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
+        setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
+
+        setTimeout(() => {
+            document.getElementById('ex1-points').style.transition = 'opacity 0.5s ease';
+            document.getElementById('ex1-points').style.opacity = '1';
+        }, 2200);
+
+        setTimeout(() => {
+            document.getElementById('ex1-annotations').style.transition = 'opacity 0.6s ease';
+            document.getElementById('ex1-annotations').style.opacity = '1';
+        }, 2700);
     }
-  }
-}
 
-function revealStep(slideIdx, stepIdx) {
-  const steps = document.querySelectorAll(`.step[data-slide="${slideIdx}"][data-step="${stepIdx}"]`);
-  steps.forEach(s => s.classList.add('visible'));
+    /* ============================================================
+       EXAMPLE 2 GRAPH ANIMATION
+       ============================================================ */
+    function animateEx2Graph() {
+        const xToPx = (x) => 50 + ((x + Math.PI / 2) / (4 * Math.PI)) * 630;
+        const yToPxCorrected = (y) => 210 - (y + 1) * 45;
+        const yFunc = (x) => -Math.sin(x + Math.PI / 2) + 1;
 
-  // Trigger graph animations for graph steps
-  if (slideIdx === 2 && stepIdx === 5) {
-    setTimeout(() => animateEx1Graph(), 200);
-  }
-  if (slideIdx === 3 && stepIdx === 6) {
-    setTimeout(() => animateEx2Graph(), 200);
-  }
-  if (slideIdx === 4 && stepIdx === 6) {
-    setTimeout(() => animateEx3Graph(), 200);
-  }
-}
+        const path = generateSinePath(-Math.PI / 2, 7 * Math.PI / 2, yFunc, xToPx, yToPxCorrected, 400);
+        const curve = document.getElementById('ex2-curve');
+        curve.setAttribute('d', path);
 
-function hideStep(slideIdx, stepIdx) {
-  const steps = document.querySelectorAll(`.step[data-slide="${slideIdx}"][data-step="${stepIdx}"]`);
-  steps.forEach(s => s.classList.remove('visible'));
-}
+        const len = curve.getTotalLength();
+        curve.style.strokeDasharray = len;
+        curve.style.strokeDashoffset = len;
+        curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
+        setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
 
-function updateHints() {
-  for (let i = 1; i <= 4; i++) {
-    const hint = document.getElementById('hint-' + i);
-    if (!hint) continue;
-    const slideIdx = i; // hint-1 is for slide 1, etc.
-    const maxSteps = stepsPerSlide[slideIdx];
-    if (currentSlide === slideIdx && currentStep[slideIdx] < maxSteps - 1) {
-      hint.style.display = 'block';
-    } else {
-      hint.style.display = 'none';
+        setTimeout(() => {
+            document.getElementById('ex2-points').style.transition = 'opacity 0.5s ease';
+            document.getElementById('ex2-points').style.opacity = '1';
+        }, 2200);
     }
-  }
-}
 
-// ===================== KEYBOARD & TOUCH =====================
+    /* ============================================================
+       EXAMPLE 3 GRAPH ANIMATION
+       ============================================================ */
+    function animateEx3Graph() {
+        const xToPx = (x) => 60 + ((x - Math.PI) / (2 * Math.PI)) * 600;
+        const yToPx = (y) => 75 - y * 75;
+        const yFunc = (x) => 0.5 * Math.cos(2 * (x - Math.PI)) - 1;
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'ArrowRight' || e.key === ' ') {
-    e.preventDefault();
-    nextAction();
-  } else if (e.key === 'ArrowLeft') {
-    e.preventDefault();
-    prevAction();
-  }
-});
+        /* Period 1 (green) */
+        const path1 = generateSinePath(Math.PI, 2 * Math.PI, yFunc, xToPx, yToPx, 200);
+        const curve1 = document.getElementById('ex3-curve1');
+        curve1.setAttribute('d', path1);
 
-// Click to advance on example slides (slides 1-4)
-document.addEventListener('click', function(e) {
-  // Don't advance if clicking nav dots
-  if (e.target.classList.contains('nav-dot')) return;
-  if (currentSlide >= 1) {
-    nextAction();
-  }
-});
+        const len1 = curve1.getTotalLength();
+        curve1.style.strokeDasharray = len1;
+        curve1.style.strokeDashoffset = len1;
+        curve1.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+        setTimeout(() => { curve1.style.strokeDashoffset = '0'; }, 100);
 
-// Touch/swipe support
-let touchStartX = 0;
-let touchStartY = 0;
-document.addEventListener('touchstart', function(e) {
-  touchStartX = e.changedTouches[0].screenX;
-  touchStartY = e.changedTouches[0].screenY;
-});
+        /* Period 2 (red) */
+        const curve2 = document.getElementById('ex3-curve2');
+        setTimeout(() => {
+            const path2 = generateSinePath(2 * Math.PI, 3 * Math.PI, yFunc, xToPx, yToPx, 200);
+            curve2.setAttribute('d', path2);
+            const len2 = curve2.getTotalLength();
+            curve2.style.strokeDasharray = len2;
+            curve2.style.strokeDashoffset = len2;
+            curve2.getBoundingClientRect();
+            curve2.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
+            curve2.style.strokeDashoffset = '0';
+        }, 1700);
 
-document.addEventListener('touchend', function(e) {
-  const dx = e.changedTouches[0].screenX - touchStartX;
-  const dy = e.changedTouches[0].screenY - touchStartY;
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-    if (dx < 0) nextAction();
-    else prevAction();
-  }
-});
+        /* Points */
+        setTimeout(() => {
+            document.getElementById('ex3-points').style.transition = 'opacity 0.5s ease';
+            document.getElementById('ex3-points').style.opacity = '1';
+        }, 3200);
 
-// ===================== SVG CURVE GENERATION =====================
+        /* Legend */
+        setTimeout(() => {
+            document.getElementById('ex3-legend').style.transition = 'opacity 0.5s ease';
+            document.getElementById('ex3-legend').style.opacity = '1';
+        }, 3500);
+    }
 
-function generateSinePath(xStart, xEnd, yFunc, xToPx, yToPx, numPoints) {
-  let d = '';
-  for (let i = 0; i <= numPoints; i++) {
-    const x = xStart + (xEnd - xStart) * i / numPoints;
-    const y = yFunc(x);
-    const px = xToPx(x);
-    const py = yToPx(y);
-    if (i === 0) d += `M ${px} ${py}`;
-    else d += ` L ${px} ${py}`;
-  }
-  return d;
-}
+    /* ============================================================
+       PRESENTATION CONTROLLER (matches 5.5)
+       ============================================================ */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this.animated    = new Set();
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
 
-// ===================== SLIDE 1 ANIMATIONS =====================
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => {
+                    e.stopPropagation(); this._goTo(i);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
 
-function animateSlide(slideIdx) {
-  if (slideIdx === 0) {
-    animateParentGraphs();
-  }
-}
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width =
+                ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max   = parseInt(slide.dataset.steps || 0);
+            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+        }
 
-function animateParentGraphs() {
-  // Sin curve
-  const sinXStart = 0, sinXEnd = 2 * Math.PI;
-  const sinXToPx = (x) => 40 + (x / (2 * Math.PI)) * 350;
-  const sinYToPx = (y) => 120 - y * 80;
-  const sinPath = generateSinePath(sinXStart, sinXEnd, Math.sin, sinXToPx, sinYToPx, 200);
-  const sinCurve = document.getElementById('sin-curve');
-  sinCurve.setAttribute('d', sinPath);
+        _activate(i) {
+            this.slides[i].classList.add('active');
+            this._sync();
+            this._triggerSlideAnimation(i);
+        }
 
-  // Animate via stroke-dasharray
-  const sinLen = sinCurve.getTotalLength();
-  sinCurve.style.strokeDasharray = sinLen;
-  sinCurve.style.strokeDashoffset = sinLen;
-  sinCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-  setTimeout(() => {
-    sinCurve.style.strokeDashoffset = '0';
-  }, 100);
+        _goTo(i) {
+            if (i === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i;
+            this.slides[i].classList.add('active');
+            this._sync();
+            this._triggerSlideAnimation(i);
+        }
 
-  // Show points after curve draws
-  setTimeout(() => {
-    document.getElementById('sin-points').style.transition = 'opacity 0.5s ease';
-    document.getElementById('sin-points').style.opacity = '1';
-  }, 1700);
+        _triggerSlideAnimation(i) {
+            if (this.animated.has(i)) return;
+            this.animated.add(i);
+            /* Slide 1 (parent graphs) animates on enter */
+            if (i === 1) {
+                setTimeout(() => animateParentGraphs(), 300);
+            }
+        }
 
-  // Show labels
-  setTimeout(() => {
-    document.getElementById('sin-labels').style.transition = 'opacity 0.8s ease';
-    document.getElementById('sin-labels').style.opacity = '1';
-  }, 2200);
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (el) {
+                    el.classList.add('visible');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                /* Trigger graph animations on the graph step */
+                if (slide.id === 'slide-3' && cur === 4) {
+                    setTimeout(() => animateEx1Graph(), 200);
+                }
+                if (slide.id === 'slide-4' && cur === 5) {
+                    setTimeout(() => animateEx2Graph(), 200);
+                }
+                if (slide.id === 'slide-5' && cur === 5) {
+                    setTimeout(() => animateEx3Graph(), 200);
+                }
+                return true;
+            }
+            return false;
+        }
 
-  // Cos curve
-  const cosPath = generateSinePath(sinXStart, sinXEnd, Math.cos, sinXToPx, sinYToPx, 200);
-  const cosCurve = document.getElementById('cos-curve');
-  cosCurve.setAttribute('d', cosPath);
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
 
-  const cosLen = cosCurve.getTotalLength();
-  cosCurve.style.strokeDasharray = cosLen;
-  cosCurve.style.strokeDashoffset = cosLen;
-  cosCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-  setTimeout(() => {
-    cosCurve.style.strokeDashoffset = '0';
-  }, 100);
+        _next() {
+            if (!this._advanceStep(this.slides[this.current])
+                && this.current < this.total - 1)
+                this._goTo(this.current + 1);
+        }
 
-  setTimeout(() => {
-    document.getElementById('cos-points').style.transition = 'opacity 0.5s ease';
-    document.getElementById('cos-points').style.opacity = '1';
-  }, 1700);
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current])
+                && this.current > 0)
+                this._goTo(this.current - 1);
+        }
 
-  setTimeout(() => {
-    document.getElementById('cos-labels').style.transition = 'opacity 0.8s ease';
-    document.getElementById('cos-labels').style.opacity = '1';
-  }, 2200);
-}
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (['ArrowRight','ArrowDown',' '].includes(e.key)) {
+                    e.preventDefault(); this._next();
+                } else if (['ArrowLeft','ArrowUp'].includes(e.key)) {
+                    e.preventDefault(); this._prev();
+                }
+            });
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.nav-dot')) this._next();
+            });
+            let tx = 0;
+            document.addEventListener('touchstart', e => {
+                tx = e.touches[0].clientX;
+            }, { passive: true });
+            document.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev();
+            }, { passive: true });
+        }
+    }
 
-// ===================== EXAMPLE 1 GRAPH ANIMATION =====================
-
-function animateEx1Graph() {
-  // y = 3sin(x/2), x from 0 to 8π
-  // px: x=0 → 40, x=8π → 730
-  // pxPerPi = (730-40)/8 = 86.25
-  const xToPx = (x) => 40 + (x / (8 * Math.PI)) * 690;
-  const yToPx = (y) => 120 - (y / 3) * 80;
-  const yFunc = (x) => 3 * Math.sin(x / 2);
-
-  const path = generateSinePath(0, 8 * Math.PI, yFunc, xToPx, yToPx, 400);
-  const curve = document.getElementById('ex1-curve');
-  curve.setAttribute('d', path);
-
-  const len = curve.getTotalLength();
-  curve.style.strokeDasharray = len;
-  curve.style.strokeDashoffset = len;
-  curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
-  setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
-
-  setTimeout(() => {
-    document.getElementById('ex1-points').style.transition = 'opacity 0.5s ease';
-    document.getElementById('ex1-points').style.opacity = '1';
-  }, 2200);
-
-  setTimeout(() => {
-    document.getElementById('ex1-annotations').style.transition = 'opacity 0.6s ease';
-    document.getElementById('ex1-annotations').style.opacity = '1';
-  }, 2700);
-}
-
-// ===================== EXAMPLE 2 GRAPH ANIMATION =====================
-
-function animateEx2Graph() {
-  // y = -sin(x+π/2)+1, x from -π/2 to 7π/2
-  // pxPerPi = 157.5, xMin = -π/2
-  const xToPx = (x) => 50 + ((x + Math.PI / 2) / (4 * Math.PI)) * 630;
-  const yToPx = (y) => 165 - y * 45; // y=0→165, y=1→120, y=2→75, y=-1→210
-  // Actually: y range is -1 to 3, pixel range 210 to 30. pxPerUnit = (210-30)/4 = 45
-  // py = 210 - (y+1)/4 * 180 = 210 - (y+1)*45
-  // Let me recalculate: y=-1 → 210, y=0 → 165, y=1 → 120, y=2 → 75, y=3 → 30. That's 45 per unit.
-  const yToPxCorrected = (y) => 210 - (y + 1) * 45;
-  const yFunc = (x) => -Math.sin(x + Math.PI / 2) + 1;
-
-  const path = generateSinePath(-Math.PI / 2, 7 * Math.PI / 2, yFunc, xToPx, yToPxCorrected, 400);
-  const curve = document.getElementById('ex2-curve');
-  curve.setAttribute('d', path);
-
-  const len = curve.getTotalLength();
-  curve.style.strokeDasharray = len;
-  curve.style.strokeDashoffset = len;
-  curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
-  setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
-
-  setTimeout(() => {
-    document.getElementById('ex2-points').style.transition = 'opacity 0.5s ease';
-    document.getElementById('ex2-points').style.opacity = '1';
-  }, 2200);
-}
-
-// ===================== EXAMPLE 3 GRAPH ANIMATION =====================
-
-function animateEx3Graph() {
-  // y = (1/2)cos(2(x-π))-1, two periods from x=π to x=3π
-  // Period 1: π to 2π (green), Period 2: 2π to 3π (red)
-  // px mapping: xMin=π, xMax=3π, range=2π
-  // px: 60 to 660. pxPerPi = 300
-  const xToPx = (x) => 60 + ((x - Math.PI) / (2 * Math.PI)) * 600;
-  // y mapping: y → py = 75 - y*75 (y=0→75, y=-1→150, y=-1/2→112.5, y=-3/2→187.5, y=1→0)
-  // Actually: y=0→75, y=1→0... that's too high. Let me use: py = 75 - y*75
-  // y=-3/2 → 75+112.5 = 187.5. y=-1 → 150. y=-1/2 → 112.5. y=0 → 75. Good.
-  const yToPx = (y) => 75 - y * 75;
-  const yFunc = (x) => 0.5 * Math.cos(2 * (x - Math.PI)) - 1;
-
-  // Period 1 (green)
-  const path1 = generateSinePath(Math.PI, 2 * Math.PI, yFunc, xToPx, yToPx, 200);
-  const curve1 = document.getElementById('ex3-curve1');
-  curve1.setAttribute('d', path1);
-
-  const len1 = curve1.getTotalLength();
-  curve1.style.strokeDasharray = len1;
-  curve1.style.strokeDashoffset = len1;
-  curve1.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-  setTimeout(() => { curve1.style.strokeDashoffset = '0'; }, 100);
-
-  // Period 2 (red) — defer path data until draw time to avoid flash
-  const curve2 = document.getElementById('ex3-curve2');
-  setTimeout(() => {
-    const path2 = generateSinePath(2 * Math.PI, 3 * Math.PI, yFunc, xToPx, yToPx, 200);
-    curve2.setAttribute('d', path2);
-    const len2 = curve2.getTotalLength();
-    curve2.style.strokeDasharray = len2;
-    curve2.style.strokeDashoffset = len2;
-    // Force a reflow before starting the transition
-    curve2.getBoundingClientRect();
-    curve2.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-    curve2.style.strokeDashoffset = '0';
-  }, 1700);
-
-  // Points
-  setTimeout(() => {
-    document.getElementById('ex3-points').style.transition = 'opacity 0.5s ease';
-    document.getElementById('ex3-points').style.opacity = '1';
-  }, 3200);
-
-  // Legend
-  setTimeout(() => {
-    document.getElementById('ex3-legend').style.transition = 'opacity 0.5s ease';
-    document.getElementById('ex3-legend').style.opacity = '1';
-  }, 3500);
-}
-
-// ===================== INITIALIZATION =====================
-
-window.addEventListener('load', function() {
-  showSlide(0, 0);
-  updateHints();
-});
+    new SlidePresentation();
 </script>
-
 </body>
 </html>
