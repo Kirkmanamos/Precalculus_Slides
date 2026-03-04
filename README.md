@@ -4,6 +4,10 @@
 
 [Precalculus Slides (GitHub Pages)](https://kirkmanamos.github.io/Precalculus_Slides/)
 
+## Status
+- Unit 4 and Unit 5 HTML slide decks now include a first-pass mobile phone layout patch.
+- Desktop and projector presentation behavior remains intact.
+
 ## Unit 3: Rational Functions
 - [Rational Features](RationalFeatures.html)
 - [Rational Graphing](RationalGraphing.html)
@@ -16,3 +20,10 @@
 - [4.7 Modeling with Sine and Cosine](4.7-modeling-sine-cosine.html)
 - [4.8 Graphs of Other Trig Functions](4.8-graphs-other-trig-functions.html)
 - [4.9 Inverse Trig Functions](4.9-inverse-trig-functions.html)
+
+## Unit 5: Analytic Trigonometry
+- [5.1 Using Fundamental Identities](5.1-fundamental-identities.html)
+- [5.2 Verifying Trig Identities](5.2-verifying-trig-identities.html)
+- [5.3 Solving Trig Equations](5.3-solving-trig-equations.html)
+- [5.4 Sum and Difference Identities](5.4-sum-and-difference.html)
+- [5.5 Double & Half Angle Identities](5.5-double-half-angle.html)
