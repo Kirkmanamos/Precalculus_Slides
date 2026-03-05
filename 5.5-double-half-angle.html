@@ -215,6 +215,281 @@
         }
 
         /* ============================================================
+           STUDENT Q&A DOCK + STAGE
+           ============================================================ */
+        .qa-controls {
+            position: fixed;
+            left: 1.2rem;
+            bottom: 1.1rem;
+            z-index: 110;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            max-width: min(92vw, 15.5rem);
+        }
+        .qa-row {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .qa-btn {
+            border: none;
+            border-radius: 8px;
+            font-size: 0.54em;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            padding: 0.55em 1em;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+        }
+        .qa-btn.primary { background: #2563eb; color: white; }
+        .qa-btn.teal    { background: #0891b2; color: white; }
+        .qa-btn.orange  { background: #d97706; color: white; }
+        .qa-btn.gray    { background: #e2e8f0; color: #334155; }
+        .qa-btn:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
+        .qa-meta {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            padding: 0.45rem 0.55rem;
+            font-size: 0.5em;
+            color: #475569;
+            line-height: 1.45;
+        }
+        .qa-meta strong { color: #1e3a8a; }
+        .qa-mode-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35em;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            padding: 0.2em 0.6em;
+            font-size: 0.82em;
+            font-weight: 700;
+        }
+        .qa-teacher-panel {
+            display: none;
+            flex-direction: column;
+            gap: 0.35rem;
+            background: rgba(255,255,255,0.96);
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+        .qa-teacher-panel.visible { display: flex; }
+        .qa-passcode-row {
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .qa-input {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.56em;
+            padding: 0.45em 0.65em;
+            min-width: 6rem;
+            color: #1e293b;
+        }
+        .qa-status {
+            font-size: 0.48em;
+            color: #475569;
+            min-height: 1.3em;
+        }
+        .qa-status.error { color: #dc2626; }
+        .qa-status.success { color: #16a34a; }
+        .qa-modal,
+        .qa-focus-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 140;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.56);
+            padding: 1rem;
+        }
+        .qa-modal.visible,
+        .qa-focus-modal.visible { display: flex; }
+        .qa-modal-card,
+        .qa-focus-card {
+            width: min(720px, 100%);
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 25px 45px rgba(15, 23, 42, 0.22);
+            padding: 1rem;
+        }
+        .qa-modal-title,
+        .qa-focus-title {
+            font-size: 0.88em;
+            font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 0.35rem;
+        }
+        .qa-modal-subtitle,
+        .qa-focus-kicker {
+            font-size: 0.56em;
+            color: #64748b;
+            margin-bottom: 0.65rem;
+        }
+        .qa-modal-context,
+        .qa-focus-meta {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 0.45rem 0.6rem;
+            font-size: 0.54em;
+            color: #1e3a8a;
+            margin-bottom: 0.75rem;
+        }
+        .qa-textarea {
+            width: 100%;
+            min-height: 130px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            padding: 0.75em;
+            font-size: 0.6em;
+            resize: vertical;
+            color: #1e293b;
+        }
+        .qa-modal-footer {
+            margin-top: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .qa-char-count {
+            font-size: 0.5em;
+            color: #64748b;
+        }
+        .qa-slide-layout {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .qa-stage-note {
+            font-size: 0.6em;
+            color: #64748b;
+        }
+        .qa-list-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .qa-card {
+            background: white;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            padding: 0.75rem;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+        .qa-card h3 {
+            font-size: 0.72em;
+            color: #1a365d;
+            margin-bottom: 0.45rem;
+        }
+        .qa-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .qa-item {
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            padding: 0.5rem 0.55rem;
+            background: #f8fbff;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
+        }
+        .qa-item.clickable { cursor: pointer; }
+        .qa-item.clickable:hover,
+        .qa-item.clickable:focus {
+            border-color: #60a5fa;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
+        }
+        .qa-item-context {
+            font-size: 0.46em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #2563eb;
+            margin-bottom: 0.3rem;
+        }
+        .qa-item p {
+            margin: 0;
+            font-size: 0.58em;
+            line-height: 1.5;
+            color: #1e293b;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .qa-item-meta {
+            margin-top: 0.35rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.48em;
+            color: #64748b;
+        }
+        .qa-item-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .qa-item-actions .qa-btn {
+            font-size: 0.9em;
+            padding: 0.3em 0.6em;
+            box-shadow: none;
+        }
+        .qa-empty {
+            font-size: 0.58em;
+            color: #64748b;
+        }
+        .qa-badge-hidden {
+            color: #991b1b;
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            border-radius: 999px;
+            padding: 0.12em 0.5em;
+            font-size: 0.92em;
+        }
+        .qa-focus-card {
+            width: min(900px, 100%);
+            min-height: min(70vh, 540px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .qa-focus-question {
+            font-size: 1.15em;
+            line-height: 1.35;
+            color: #0f172a;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .qa-focus-actions {
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+
+        /* ============================================================
            NAV / PROGRESS (matches 5.2–5.4 exactly)
            ============================================================ */
         .nav-dots {
@@ -244,6 +519,16 @@
             .slide { transition: opacity 0.3s ease; transform: none !important; }
             .step.visible { animation: none; opacity: 1; }
         }
+
+        @media (max-width: 768px) {
+            .qa-controls { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; max-width: none; }
+            .qa-list-grid { grid-template-columns: 1fr; }
+            .qa-modal-card,
+            .qa-focus-card { padding: 0.85rem; }
+            .qa-passcode-row { flex-direction: column; align-items: stretch; }
+            .qa-input { min-width: 0; width: 100%; }
+            .qa-focus-question { font-size: 0.84em; }
+        }
     </style>
 </head>
 <body>
@@ -251,6 +536,52 @@
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
+
+<aside class="qa-controls" aria-label="Question controls">
+    <div class="qa-row">
+        <button type="button" class="qa-btn primary" id="qaAskBtn">Ask a Question</button>
+        <button type="button" class="qa-btn teal" id="qaToggleFinalBtn" style="display:none;">Show Q&amp;A Slide</button>
+        <span class="qa-mode-tag" id="qaModeTag" style="display:none;">Teacher Mode</span>
+    </div>
+    <div class="qa-meta" id="qaMetaText">Session not connected. Add <strong>?session=your-code</strong> to enable live questions.</div>
+    <div class="qa-teacher-panel" id="qaTeacherPanel">
+        <div class="qa-passcode-row">
+            <input class="qa-input" id="qaPasscodeInput" type="password" placeholder="Teacher passcode" autocomplete="off">
+            <button type="button" class="qa-btn orange" id="qaUnlockBtn">Unlock Moderation</button>
+            <button type="button" class="qa-btn gray" id="qaClearAllBtn">Clear All</button>
+        </div>
+        <div class="qa-status" id="qaTeacherStatus"></div>
+    </div>
+</aside>
+
+<div class="qa-modal" id="qaModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="qa-modal-card">
+        <h3 class="qa-modal-title">Submit a Question</h3>
+        <p class="qa-modal-subtitle">Questions are tagged with the slide you are viewing, then queued for teacher approval before they appear on the class Q&amp;A stage.</p>
+        <div class="qa-modal-context" id="qaCurrentSlideMeta"></div>
+        <textarea id="qaQuestionInput" class="qa-textarea" maxlength="280" placeholder="Type your question here..."></textarea>
+        <div class="qa-modal-footer">
+            <span class="qa-char-count" id="qaCharCount">0 / 280</span>
+            <div class="qa-row">
+                <button type="button" class="qa-btn gray" id="qaCancelBtn">Cancel</button>
+                <button type="button" class="qa-btn primary" id="qaSubmitBtn">Send Question</button>
+            </div>
+        </div>
+        <div class="qa-status" id="qaSubmitStatus"></div>
+    </div>
+</div>
+
+<div class="qa-focus-modal" id="qaFocusModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="qa-focus-card">
+        <div class="qa-focus-title">Question Spotlight</div>
+        <div class="qa-focus-kicker">Use this as the full-screen discussion view. Later builds can sync the same action across devices.</div>
+        <div class="qa-focus-meta" id="qaFocusMeta"></div>
+        <div class="qa-focus-question" id="qaFocusText"></div>
+        <div class="qa-row qa-focus-actions">
+            <button type="button" class="qa-btn gray" id="qaFocusCloseBtn">Back to Q&amp;A</button>
+        </div>
+    </div>
+</div>
 
 <div class="slides-wrapper" id="slidesWrapper">
 
@@ -655,6 +986,30 @@
         </div>
     </section>
 
+    <section class="slide grid-bg" id="slide-qa" data-optional="qa-final">
+        <div class="slide-header">
+            <div class="example-label">Class Q&amp;A</div>
+            <div class="slide-title">Student Questions</div>
+        </div>
+        <div class="slide-body">
+            <div class="qa-slide-layout">
+                <p class="qa-stage-note">Approved questions appear here for class discussion. Click any question card to put it into the full-screen spotlight view.</p>
+                <div class="qa-list-grid">
+                    <div class="qa-card">
+                        <h3>Approved Questions</h3>
+                        <ul class="qa-list" id="qaApprovedList"></ul>
+                        <p class="qa-empty" id="qaApprovedEmpty">No approved questions yet.</p>
+                    </div>
+                    <div class="qa-card" id="qaPendingCard" style="display:none;">
+                        <h3>Pending Questions (Teacher)</h3>
+                        <ul class="qa-list" id="qaPendingList"></ul>
+                        <p class="qa-empty" id="qaPendingEmpty">No pending questions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div><!-- end .slides-wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -684,21 +1039,219 @@
         stepMath.classList.add('has-annotation');
     });
 
-    /* ===== PRESENTATION CONTROLLER (matches 5.2–5.4) ===== */
+    const QA_CONFIG = {
+        SUPABASE_URL: 'https://YOUR_PROJECT_REF.supabase.co',
+        SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY',
+        EDGE_BASE_URL: 'https://YOUR_PROJECT_REF.supabase.co/functions/v1',
+        DECK_SLUG: '5.5-double-half-angle',
+        STUDENT_MAX_LEN: 280,
+        POLL_INTERVAL_MS: 3000,
+        SHOW_SLIDE_KEY: 'precalc:5.5:qa:showFinalSlide:v1',
+        TEACHER_TOKEN_KEY: 'precalc:5.5:qa:teacherToken:v1',
+    };
+
+    const qs = new URLSearchParams(window.location.search);
+    const QA_RUNTIME = {
+        sessionCode: (qs.get('session') || '').trim(),
+        isTeacherMode: (qs.get('mode') || '').toLowerCase() === 'teacher',
+    };
+
+    function parseJsonSafe(raw, fallback) {
+        try { return JSON.parse(raw); } catch (_) { return fallback; }
+    }
+
+    function formatTime(iso) {
+        if (!iso) return '';
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return '';
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    }
+
+    function buildQuestionContext(question) {
+        const parts = [];
+        if (question.slide_index) parts.push(`Slide ${question.slide_index}`);
+        if (question.slide_title) parts.push(question.slide_title);
+        return parts.join(' · ');
+    }
+
     class SlidePresentation {
         constructor() {
-            this.slides      = Array.from(document.querySelectorAll('.slide'));
-            this.current     = 0;
-            this.total       = this.slides.length;
+            this.allSlides = Array.from(document.querySelectorAll('.slide'));
+            this.visibleSlides = [];
+            this.current = 0;
+            this.dots = [];
             this.progressBar = document.getElementById('progressBar');
-            this.navDotsEl   = document.getElementById('navDots');
-            this.clickHint   = document.getElementById('clickHint');
-            this._buildNav();
-            this._activate(0);
-            this._bindEvents();
+            this.navDotsEl = document.getElementById('navDots');
+            this.clickHint = document.getElementById('clickHint');
+            this.finalSlide = document.getElementById('slide-qa');
+
+            this.questions = [];
+            this.ws = null;
+            this.wsHeartbeat = null;
+            this.pollTimer = null;
+            this.teacherToken = this._loadTeacherToken();
+            this.qaFinalVisible = this._loadFinalSlidePreference();
+
+            this._bindQaRefs();
+            this._init();
         }
+
+        _bindQaRefs() {
+            this.qaAskBtn = document.getElementById('qaAskBtn');
+            this.qaToggleFinalBtn = document.getElementById('qaToggleFinalBtn');
+            this.qaModeTag = document.getElementById('qaModeTag');
+            this.qaMetaText = document.getElementById('qaMetaText');
+            this.qaTeacherPanel = document.getElementById('qaTeacherPanel');
+            this.qaPasscodeInput = document.getElementById('qaPasscodeInput');
+            this.qaUnlockBtn = document.getElementById('qaUnlockBtn');
+            this.qaClearAllBtn = document.getElementById('qaClearAllBtn');
+            this.qaTeacherStatus = document.getElementById('qaTeacherStatus');
+            this.qaModal = document.getElementById('qaModal');
+            this.qaCurrentSlideMeta = document.getElementById('qaCurrentSlideMeta');
+            this.qaQuestionInput = document.getElementById('qaQuestionInput');
+            this.qaSubmitBtn = document.getElementById('qaSubmitBtn');
+            this.qaCancelBtn = document.getElementById('qaCancelBtn');
+            this.qaSubmitStatus = document.getElementById('qaSubmitStatus');
+            this.qaCharCount = document.getElementById('qaCharCount');
+            this.qaFocusModal = document.getElementById('qaFocusModal');
+            this.qaFocusMeta = document.getElementById('qaFocusMeta');
+            this.qaFocusText = document.getElementById('qaFocusText');
+            this.qaFocusCloseBtn = document.getElementById('qaFocusCloseBtn');
+            this.qaApprovedList = document.getElementById('qaApprovedList');
+            this.qaApprovedEmpty = document.getElementById('qaApprovedEmpty');
+            this.qaPendingList = document.getElementById('qaPendingList');
+            this.qaPendingEmpty = document.getElementById('qaPendingEmpty');
+            this.qaPendingCard = document.getElementById('qaPendingCard');
+        }
+
+        _init() {
+            this.allSlides.forEach(slide => slide.classList.remove('active', 'exit-left'));
+            this._applyQaUiMode();
+            this._refreshVisibleSlides('slide-0');
+            this._buildNav();
+            this._sync();
+            this._bindEvents();
+            this._bindQaEvents();
+            this._hydrateQuestions();
+            this._connectRealtime();
+        }
+
+        _isQaConfigured() {
+            return !(
+                !QA_CONFIG.SUPABASE_URL ||
+                !QA_CONFIG.SUPABASE_ANON_KEY ||
+                QA_CONFIG.SUPABASE_URL.includes('YOUR_PROJECT_REF') ||
+                QA_CONFIG.SUPABASE_ANON_KEY.includes('YOUR_SUPABASE_ANON_KEY')
+            );
+        }
+
+        _isTeacherUnlocked() {
+            return Boolean(
+                this.teacherToken &&
+                this.teacherToken.token &&
+                this.teacherToken.expiresAt &&
+                new Date(this.teacherToken.expiresAt).getTime() > Date.now()
+            );
+        }
+
+        _loadTeacherToken() {
+            const raw = sessionStorage.getItem(QA_CONFIG.TEACHER_TOKEN_KEY);
+            if (!raw) return null;
+            const parsed = parseJsonSafe(raw, null);
+            if (!parsed || !parsed.token || !parsed.expiresAt) return null;
+            if (new Date(parsed.expiresAt).getTime() <= Date.now()) {
+                sessionStorage.removeItem(QA_CONFIG.TEACHER_TOKEN_KEY);
+                return null;
+            }
+            return parsed;
+        }
+
+        _storeTeacherToken(token, expiresAt) {
+            const payload = { token, expiresAt };
+            sessionStorage.setItem(QA_CONFIG.TEACHER_TOKEN_KEY, JSON.stringify(payload));
+            this.teacherToken = payload;
+        }
+
+        _loadFinalSlidePreference() {
+            if (!QA_RUNTIME.isTeacherMode) return false;
+            return localStorage.getItem(QA_CONFIG.SHOW_SLIDE_KEY) === 'true';
+        }
+
+        _saveFinalSlidePreference(value) {
+            localStorage.setItem(QA_CONFIG.SHOW_SLIDE_KEY, value ? 'true' : 'false');
+        }
+
+        _applyQaUiMode() {
+            if (QA_RUNTIME.isTeacherMode) {
+                this.qaModeTag.style.display = 'inline-flex';
+                this.qaTeacherPanel.classList.add('visible');
+                this.qaToggleFinalBtn.style.display = 'inline-block';
+                this.qaPendingCard.style.display = '';
+            } else {
+                this.qaModeTag.style.display = 'none';
+                this.qaTeacherPanel.classList.remove('visible');
+                this.qaToggleFinalBtn.style.display = 'none';
+                this.qaPendingCard.style.display = 'none';
+            }
+
+            if (!QA_RUNTIME.sessionCode) {
+                this.qaMetaText.innerHTML = 'Session not connected. Add <strong>?session=your-code</strong> to enable live questions.';
+                this.qaAskBtn.disabled = true;
+                this.qaSubmitBtn.disabled = true;
+                this.qaToggleFinalBtn.disabled = true;
+                return;
+            }
+
+            this.qaMetaText.innerHTML = `Session: <strong>${QA_RUNTIME.sessionCode}</strong> · Deck: <strong>${QA_CONFIG.DECK_SLUG}</strong>`;
+            this.qaAskBtn.disabled = false;
+            this.qaSubmitBtn.disabled = false;
+            this.qaToggleFinalBtn.disabled = !QA_RUNTIME.isTeacherMode;
+            this._syncTeacherStatus();
+            this._syncFinalSlideToggleButton();
+        }
+
+        _syncTeacherStatus(message, kind) {
+            if (!QA_RUNTIME.isTeacherMode) return;
+            this.qaTeacherStatus.className = 'qa-status';
+            if (kind === 'error') this.qaTeacherStatus.classList.add('error');
+            if (kind === 'success') this.qaTeacherStatus.classList.add('success');
+
+            if (message) {
+                this.qaTeacherStatus.textContent = message;
+                return;
+            }
+
+            if (!QA_RUNTIME.sessionCode) {
+                this.qaTeacherStatus.textContent = 'Add ?session=<code> to unlock moderation.';
+            } else if (this._isTeacherUnlocked()) {
+                this.qaTeacherStatus.textContent = `Moderation unlocked until ${new Date(this.teacherToken.expiresAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}.`;
+                this.qaTeacherStatus.classList.add('success');
+            } else {
+                this.qaTeacherStatus.textContent = 'Locked. Enter passcode to approve or hide questions.';
+            }
+        }
+
+        _syncFinalSlideToggleButton() {
+            if (!QA_RUNTIME.isTeacherMode) return;
+            this.qaToggleFinalBtn.textContent = this.qaFinalVisible ? 'Hide Q&A Slide' : 'Show Q&A Slide';
+        }
+
+        _refreshVisibleSlides(preferredSlideId) {
+            const optionalHidden = this.finalSlide && !this.qaFinalVisible;
+            this.visibleSlides = this.allSlides.filter(slide => !(optionalHidden && slide === this.finalSlide));
+            if (!this.visibleSlides.length) return;
+
+            let newSlide = this.visibleSlides.find(slide => slide.id === preferredSlideId);
+            if (!newSlide && this.current >= 0 && this.current < this.visibleSlides.length) newSlide = this.visibleSlides[this.current];
+            if (!newSlide) newSlide = this.visibleSlides[0];
+
+            this.current = this.visibleSlides.indexOf(newSlide);
+            this.visibleSlides[this.current].classList.add('active');
+        }
+
         _buildNav() {
-            this.slides.forEach((_, i) => {
+            this.navDotsEl.innerHTML = '';
+            this.visibleSlides.forEach((_, i) => {
                 const dot = document.createElement('button');
                 dot.className = 'nav-dot';
                 dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
@@ -707,35 +1260,50 @@
             });
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
+
         _sync() {
             this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
-            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
-            const slide = this.slides[this.current];
-            const max   = parseInt(slide.dataset.steps || 0);
-            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.progressBar.style.width = ((this.current + 1) / Math.max(this.visibleSlides.length, 1) * 100) + '%';
+            const slide = this._currentSlide();
+            const max = parseInt(slide.dataset.steps || 0);
+            const cur = parseInt(slide.dataset.currentStep ?? -1);
             this.clickHint.textContent = cur < max - 1 ? 'click to advance'
-                : this.current < this.total - 1 ? 'click for next slide' : '';
+                : this.current < this.visibleSlides.length - 1 ? 'click for next slide' : '';
+            this._updateQuestionModalMeta();
         }
-        _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
+
+        _currentSlide() {
+            return this.visibleSlides[this.current];
+        }
+
         _goTo(i) {
-            if (i === this.current) return;
-            const out = this.slides[this.current];
-            out.classList.add('exit-left'); out.classList.remove('active');
+            if (i < 0 || i >= this.visibleSlides.length || i === this.current) return;
+            const out = this._currentSlide();
+            out.classList.add('exit-left');
+            out.classList.remove('active');
             setTimeout(() => out.classList.remove('exit-left'), 500);
-            this.current = i; this.slides[i].classList.add('active'); this._sync();
+            this.current = i;
+            this._currentSlide().classList.add('active');
+            this._sync();
         }
+
         _advanceStep(slide) {
             const max = parseInt(slide.dataset.steps || 0);
-            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
             if (cur < max - 1) {
-                cur++; slide.dataset.currentStep = cur;
+                cur++;
+                slide.dataset.currentStep = cur;
                 const el = slide.querySelector(`#${slide.id}-step-${cur}`);
-                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+                if (el) {
+                    el.classList.add('visible');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
                 this._sync();
                 return true;
             }
             return false;
         }
+
         _retreatStep(slide) {
             let cur = parseInt(slide.dataset.currentStep ?? -1);
             if (cur < 0) return false;
@@ -744,17 +1312,496 @@
             this._sync();
             return true;
         }
-        _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
-        _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
+
+        _next() {
+            if (!this._advanceStep(this._currentSlide()) && this.current < this.visibleSlides.length - 1) this._goTo(this.current + 1);
+        }
+
+        _prev() {
+            if (!this._retreatStep(this._currentSlide()) && this.current > 0) this._goTo(this.current - 1);
+        }
+
+        _getSlideMeta() {
+            const slide = this._currentSlide();
+            if (!slide) return { slideId: '', slideIndex: null, slideTitle: '' };
+            const slideIndex = this.current + 1;
+            const titleEl = slide.querySelector('.slide-title, .title-main, .section-title');
+            const slideTitle = titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : `Slide ${slideIndex}`;
+            return { slideId: slide.id || '', slideIndex, slideTitle };
+        }
+
+        _updateQuestionModalMeta() {
+            if (!this.qaCurrentSlideMeta) return;
+            const meta = this._getSlideMeta();
+            this.qaCurrentSlideMeta.textContent = meta.slideTitle ? `Submitting from Slide ${meta.slideIndex} · ${meta.slideTitle}` : `Submitting from Slide ${meta.slideIndex}`;
+        }
+
         _bindEvents() {
             document.addEventListener('keydown', e => {
+                const target = e.target;
+                const inInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable);
+                if (e.key === 'Escape') {
+                    this._closeQuestionFocus();
+                    this._closeQuestionModal();
+                    return;
+                }
+                if (inInput) return;
+                if (this.qaModal.classList.contains('visible') || this.qaFocusModal.classList.contains('visible')) return;
+                if (e.key.toLowerCase() === 'q') {
+                    e.preventDefault();
+                    if (e.shiftKey && QA_RUNTIME.isTeacherMode) this._toggleFinalSlide();
+                    else this._openQuestionModal();
+                    return;
+                }
                 if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
-                else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
+                else if (['ArrowLeft','ArrowUp'].includes(e.key)) { e.preventDefault(); this._prev(); }
             });
-            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
+
+            document.addEventListener('click', e => {
+                if (
+                    e.target.closest('.nav-dot') ||
+                    e.target.closest('.qa-controls') ||
+                    e.target.closest('.qa-modal') ||
+                    e.target.closest('.qa-focus-modal') ||
+                    e.target.closest('.qa-card')
+                ) return;
+                this._next();
+            });
+
             let tx = 0;
             document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-            document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
+            document.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev();
+            }, { passive: true });
+        }
+
+        _bindQaEvents() {
+            this.qaAskBtn.addEventListener('click', () => this._openQuestionModal());
+            this.qaCancelBtn.addEventListener('click', () => this._closeQuestionModal());
+            this.qaSubmitBtn.addEventListener('click', () => this._submitQuestion());
+            this.qaQuestionInput.addEventListener('input', () => {
+                this.qaCharCount.textContent = `${this.qaQuestionInput.value.length} / ${QA_CONFIG.STUDENT_MAX_LEN}`;
+            });
+            this.qaModal.addEventListener('click', e => {
+                if (e.target === this.qaModal) this._closeQuestionModal();
+            });
+            this.qaFocusModal.addEventListener('click', e => {
+                if (e.target === this.qaFocusModal) this._closeQuestionFocus();
+            });
+            this.qaFocusCloseBtn.addEventListener('click', () => this._closeQuestionFocus());
+            this.qaApprovedList.addEventListener('click', e => this._handleQuestionListInteraction(e));
+            this.qaPendingList.addEventListener('click', e => this._handleQuestionListInteraction(e));
+            this.qaApprovedList.addEventListener('keydown', e => this._handleQuestionListKeydown(e));
+            this.qaPendingList.addEventListener('keydown', e => this._handleQuestionListKeydown(e));
+
+            if (QA_RUNTIME.isTeacherMode) {
+                this.qaToggleFinalBtn.addEventListener('click', () => this._toggleFinalSlide());
+                this.qaUnlockBtn.addEventListener('click', () => this._unlockTeacher());
+                this.qaClearAllBtn.addEventListener('click', () => this._moderate('clear_all'));
+            }
+        }
+
+        _openQuestionModal() {
+            if (!QA_RUNTIME.sessionCode) {
+                this._setSubmitStatus('Session code missing. Add ?session=<code> to the URL.', 'error');
+                return;
+            }
+            this._updateQuestionModalMeta();
+            this.qaModal.classList.add('visible');
+            this.qaModal.setAttribute('aria-hidden', 'false');
+            this.qaQuestionInput.focus();
+        }
+
+        _closeQuestionModal() {
+            this.qaModal.classList.remove('visible');
+            this.qaModal.setAttribute('aria-hidden', 'true');
+            this.qaQuestionInput.value = '';
+            this.qaCharCount.textContent = `0 / ${QA_CONFIG.STUDENT_MAX_LEN}`;
+            this._setSubmitStatus('', '');
+        }
+
+        _openQuestionFocus(question) {
+            this.qaFocusMeta.textContent = [buildQuestionContext(question), formatTime(question.created_at)].filter(Boolean).join(' · ');
+            this.qaFocusText.textContent = question.question_text || '';
+            this.qaFocusModal.classList.add('visible');
+            this.qaFocusModal.setAttribute('aria-hidden', 'false');
+        }
+
+        _closeQuestionFocus() {
+            this.qaFocusModal.classList.remove('visible');
+            this.qaFocusModal.setAttribute('aria-hidden', 'true');
+        }
+
+        _setSubmitStatus(message, kind) {
+            this.qaSubmitStatus.className = 'qa-status';
+            if (kind === 'error') this.qaSubmitStatus.classList.add('error');
+            if (kind === 'success') this.qaSubmitStatus.classList.add('success');
+            this.qaSubmitStatus.textContent = message || '';
+        }
+
+        _apiHeaders() {
+            return {
+                apikey: QA_CONFIG.SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${QA_CONFIG.SUPABASE_ANON_KEY}`,
+                'Content-Type': 'application/json',
+            };
+        }
+
+        async _submitQuestion() {
+            const questionText = this.qaQuestionInput.value.trim();
+            if (!questionText) {
+                this._setSubmitStatus('Please type a question before sending.', 'error');
+                return;
+            }
+            if (questionText.length > QA_CONFIG.STUDENT_MAX_LEN) {
+                this._setSubmitStatus(`Question must be ${QA_CONFIG.STUDENT_MAX_LEN} characters or fewer.`, 'error');
+                return;
+            }
+            if (!this._isQaConfigured()) {
+                this._setSubmitStatus('Supabase config placeholders are still active. Update QA_CONFIG first.', 'error');
+                return;
+            }
+
+            const slideMeta = this._getSlideMeta();
+            this.qaSubmitBtn.disabled = true;
+            this._setSubmitStatus('Sending question...', '');
+            try {
+                const res = await fetch(`${QA_CONFIG.EDGE_BASE_URL}/qa-submit`, {
+                    method: 'POST',
+                    headers: this._apiHeaders(),
+                    body: JSON.stringify({
+                        sessionCode: QA_RUNTIME.sessionCode,
+                        deckSlug: QA_CONFIG.DECK_SLUG,
+                        questionText,
+                        slideId: slideMeta.slideId,
+                        slideIndex: slideMeta.slideIndex,
+                        slideTitle: slideMeta.slideTitle,
+                    }),
+                });
+                const body = await res.json().catch(() => ({}));
+                if (!res.ok || !body.ok) throw new Error(body.error || `Submit failed (${res.status})`);
+                this._setSubmitStatus('Question sent. The teacher can approve it for the Q&A stage.', 'success');
+                this.qaQuestionInput.value = '';
+                this.qaCharCount.textContent = `0 / ${QA_CONFIG.STUDENT_MAX_LEN}`;
+                this._hydrateQuestions();
+            } catch (err) {
+                this._setSubmitStatus(err.message || 'Failed to submit question.', 'error');
+            } finally {
+                this.qaSubmitBtn.disabled = false;
+            }
+        }
+
+        async _unlockTeacher() {
+            const passcode = this.qaPasscodeInput.value;
+            if (!QA_RUNTIME.sessionCode) {
+                this._syncTeacherStatus('Add ?session=<code> before unlocking.', 'error');
+                return;
+            }
+            if (!passcode) {
+                this._syncTeacherStatus('Enter the teacher passcode first.', 'error');
+                return;
+            }
+            if (!this._isQaConfigured()) {
+                this._syncTeacherStatus('Supabase config placeholders are still active. Update QA_CONFIG first.', 'error');
+                return;
+            }
+
+            this.qaUnlockBtn.disabled = true;
+            this._syncTeacherStatus('Unlocking moderation...', '');
+            try {
+                const res = await fetch(`${QA_CONFIG.EDGE_BASE_URL}/qa-teacher-login`, {
+                    method: 'POST',
+                    headers: this._apiHeaders(),
+                    body: JSON.stringify({
+                        sessionCode: QA_RUNTIME.sessionCode,
+                        passcode,
+                    }),
+                });
+                const body = await res.json().catch(() => ({}));
+                if (!res.ok || !body.ok || !body.token || !body.expiresAt) throw new Error(body.error || `Unlock failed (${res.status})`);
+                this._storeTeacherToken(body.token, body.expiresAt);
+                this.qaPasscodeInput.value = '';
+                this._syncTeacherStatus();
+                await this._hydrateQuestions();
+            } catch (err) {
+                this._syncTeacherStatus(err.message || 'Unable to unlock moderation.', 'error');
+            } finally {
+                this.qaUnlockBtn.disabled = false;
+            }
+        }
+
+        async _moderate(action, questionId) {
+            if (!this._isTeacherUnlocked()) {
+                this._syncTeacherStatus('Moderation is locked. Unlock with passcode first.', 'error');
+                return;
+            }
+            if (!this._isQaConfigured()) {
+                this._syncTeacherStatus('Supabase config placeholders are still active. Update QA_CONFIG first.', 'error');
+                return;
+            }
+            if (action === 'clear_all') {
+                const confirmed = window.confirm('Clear all questions in this session? This cannot be undone.');
+                if (!confirmed) return;
+            }
+
+            this._syncTeacherStatus('Applying moderation action...', '');
+            try {
+                const res = await fetch(`${QA_CONFIG.EDGE_BASE_URL}/qa-moderate`, {
+                    method: 'POST',
+                    headers: this._apiHeaders(),
+                    body: JSON.stringify({
+                        token: this.teacherToken.token,
+                        sessionCode: QA_RUNTIME.sessionCode,
+                        deckSlug: QA_CONFIG.DECK_SLUG,
+                        action,
+                        questionId,
+                    }),
+                });
+                const body = await res.json().catch(() => ({}));
+                if (!res.ok || !body.ok) throw new Error(body.error || `Moderation failed (${res.status})`);
+                this._syncTeacherStatus('Moderation update applied.', 'success');
+                await this._hydrateQuestions();
+            } catch (err) {
+                this._syncTeacherStatus(err.message || 'Moderation request failed.', 'error');
+            }
+        }
+
+        _handleQuestionListKeydown(e) {
+            if (!['Enter', ' '].includes(e.key)) return;
+            if (e.target.closest('button[data-action]')) return;
+            const item = e.target.closest('.qa-item[data-question-id]');
+            if (!item) return;
+            e.preventDefault();
+            const question = this.questions.find(q => q.id === item.dataset.questionId);
+            if (question) this._openQuestionFocus(question);
+        }
+
+        _handleQuestionListInteraction(e) {
+            const btn = e.target.closest('button[data-action]');
+            if (btn) {
+                e.stopPropagation();
+                this._moderate(btn.dataset.action, btn.dataset.qid || null);
+                return;
+            }
+            const item = e.target.closest('.qa-item[data-question-id]');
+            if (!item) return;
+            const question = this.questions.find(q => q.id === item.dataset.questionId);
+            if (question) this._openQuestionFocus(question);
+        }
+
+        _toggleFinalSlide() {
+            if (!QA_RUNTIME.isTeacherMode) return;
+            const currentSlide = this._currentSlide();
+            let preferredId = currentSlide ? currentSlide.id : 'slide-0';
+            this.qaFinalVisible = !this.qaFinalVisible;
+            if (!this.qaFinalVisible && preferredId === 'slide-qa') {
+                const fallback = this.visibleSlides[Math.max(0, this.current - 1)];
+                preferredId = fallback ? fallback.id : 'slide-0';
+            }
+            this._saveFinalSlidePreference(this.qaFinalVisible);
+            this._syncFinalSlideToggleButton();
+
+            this.allSlides.forEach(slide => slide.classList.remove('active', 'exit-left'));
+            this._refreshVisibleSlides(preferredId);
+            this._buildNav();
+            this._sync();
+        }
+
+        async _hydrateQuestions() {
+            if (!QA_RUNTIME.sessionCode || !this._isQaConfigured()) {
+                this.questions = [];
+                this._renderQuestions();
+                return;
+            }
+
+            try {
+                if (QA_RUNTIME.isTeacherMode && this._isTeacherUnlocked()) {
+                    const res = await fetch(`${QA_CONFIG.EDGE_BASE_URL}/qa-moderate`, {
+                        method: 'POST',
+                        headers: this._apiHeaders(),
+                        body: JSON.stringify({
+                            token: this.teacherToken.token,
+                            sessionCode: QA_RUNTIME.sessionCode,
+                            deckSlug: QA_CONFIG.DECK_SLUG,
+                            action: 'list',
+                        }),
+                    });
+                    const body = await res.json().catch(() => ({}));
+                    if (!res.ok || !body.ok || !Array.isArray(body.questions)) throw new Error(body.error || `Load failed (${res.status})`);
+                    this.questions = body.questions;
+                } else {
+                    const query = new URLSearchParams();
+                    query.set('select', 'id,session_code,deck_slug,question_text,slide_id,slide_index,slide_title,status,created_at,updated_at,approved_at');
+                    query.set('session_code', `eq.${QA_RUNTIME.sessionCode}`);
+                    query.set('deck_slug', `eq.${QA_CONFIG.DECK_SLUG}`);
+                    query.set('status', 'eq.approved');
+                    query.set('order', 'created_at.desc');
+
+                    const res = await fetch(`${QA_CONFIG.SUPABASE_URL}/rest/v1/qa_questions?${query.toString()}`, {
+                        headers: this._apiHeaders(),
+                    });
+                    const data = await res.json().catch(() => []);
+                    if (!res.ok || !Array.isArray(data)) throw new Error(`Load failed (${res.status})`);
+                    this.questions = data;
+                }
+                this._renderQuestions();
+            } catch (_) {
+                // Keep prior question state if request fails.
+            }
+        }
+
+        _renderQuestions() {
+            this.qaApprovedList.innerHTML = '';
+            this.qaPendingList.innerHTML = '';
+
+            const approved = this.questions.filter(q => q.status === 'approved');
+            const pending = this.questions.filter(q => q.status === 'pending');
+            const hidden = this.questions.filter(q => q.status === 'hidden');
+
+            approved.forEach(q => this.qaApprovedList.appendChild(this._buildQuestionItem(q, 'approved')));
+            pending.forEach(q => this.qaPendingList.appendChild(this._buildQuestionItem(q, 'pending')));
+            if (QA_RUNTIME.isTeacherMode && this._isTeacherUnlocked()) hidden.forEach(q => this.qaPendingList.appendChild(this._buildQuestionItem(q, 'hidden')));
+
+            this.qaApprovedEmpty.style.display = approved.length ? 'none' : '';
+            if (QA_RUNTIME.isTeacherMode) {
+                const pendingCount = pending.length + (this._isTeacherUnlocked() ? hidden.length : 0);
+                this.qaPendingEmpty.style.display = pendingCount ? 'none' : '';
+            }
+        }
+
+        _buildQuestionItem(question, type) {
+            const item = document.createElement('li');
+            item.className = 'qa-item clickable';
+            item.dataset.questionId = question.id;
+            item.tabIndex = 0;
+
+            const context = buildQuestionContext(question);
+            if (context) {
+                const contextEl = document.createElement('div');
+                contextEl.className = 'qa-item-context';
+                contextEl.textContent = context;
+                item.appendChild(contextEl);
+            }
+
+            const body = document.createElement('p');
+            body.textContent = question.question_text || '';
+            item.appendChild(body);
+
+            const meta = document.createElement('div');
+            meta.className = 'qa-item-meta';
+
+            const left = document.createElement('span');
+            left.textContent = formatTime(question.created_at);
+            meta.appendChild(left);
+
+            if (type === 'hidden') {
+                const tag = document.createElement('span');
+                tag.className = 'qa-badge-hidden';
+                tag.textContent = 'hidden';
+                meta.appendChild(tag);
+            }
+
+            if (QA_RUNTIME.isTeacherMode && this._isTeacherUnlocked()) {
+                const actions = document.createElement('div');
+                actions.className = 'qa-item-actions';
+                if (type === 'pending') {
+                    actions.appendChild(this._actionButton('Approve', 'approve', question.id, 'teal'));
+                    actions.appendChild(this._actionButton('Hide', 'hide', question.id, 'gray'));
+                } else if (type === 'approved') {
+                    actions.appendChild(this._actionButton('Reopen', 'reopen', question.id, 'gray'));
+                    actions.appendChild(this._actionButton('Hide', 'hide', question.id, 'gray'));
+                } else if (type === 'hidden') {
+                    actions.appendChild(this._actionButton('Reopen', 'reopen', question.id, 'gray'));
+                }
+                meta.appendChild(actions);
+            }
+
+            item.appendChild(meta);
+            return item;
+        }
+
+        _actionButton(label, action, qid, variant) {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = `qa-btn ${variant || 'gray'}`;
+            btn.textContent = label;
+            btn.dataset.action = action;
+            btn.dataset.qid = qid;
+            return btn;
+        }
+
+        _realtimeSocketUrl() {
+            const url = new URL(QA_CONFIG.SUPABASE_URL);
+            const protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
+            return `${protocol}//${url.host}/realtime/v1/websocket?apikey=${encodeURIComponent(QA_CONFIG.SUPABASE_ANON_KEY)}&vsn=1.0.0`;
+        }
+
+        _connectRealtime() {
+            if (!QA_RUNTIME.sessionCode || !this._isQaConfigured()) {
+                this._startPolling();
+                return;
+            }
+            try {
+                const ws = new WebSocket(this._realtimeSocketUrl());
+                this.ws = ws;
+                let ref = 1;
+                const nextRef = () => String(ref++);
+
+                ws.addEventListener('open', () => {
+                    ws.send(JSON.stringify({
+                        topic: 'realtime:public:qa_questions',
+                        event: 'phx_join',
+                        payload: {
+                            config: {
+                                broadcast: { self: false, ack: false },
+                                presence: { key: '' },
+                                postgres_changes: [{
+                                    event: '*',
+                                    schema: 'public',
+                                    table: 'qa_questions',
+                                    filter: `session_code=eq.${QA_RUNTIME.sessionCode}`,
+                                }],
+                            },
+                        },
+                        ref: nextRef(),
+                    }));
+                    this.wsHeartbeat = setInterval(() => {
+                        if (ws.readyState === WebSocket.OPEN) {
+                            ws.send(JSON.stringify({ topic: 'phoenix', event: 'heartbeat', payload: {}, ref: nextRef() }));
+                        }
+                    }, 25000);
+                });
+
+                ws.addEventListener('message', event => {
+                    const msg = parseJsonSafe(event.data, {});
+                    if (msg && typeof msg === 'object' && msg.event === 'postgres_changes') this._hydrateQuestions();
+                });
+                ws.addEventListener('close', () => {
+                    this._cleanupSocket();
+                    this._startPolling();
+                });
+                ws.addEventListener('error', () => {
+                    this._cleanupSocket();
+                    this._startPolling();
+                });
+            } catch (_) {
+                this._startPolling();
+            }
+        }
+
+        _cleanupSocket() {
+            if (this.wsHeartbeat) clearInterval(this.wsHeartbeat);
+            this.wsHeartbeat = null;
+            if (this.ws) {
+                try { this.ws.close(); } catch (_) {}
+            }
+            this.ws = null;
+        }
+
+        _startPolling() {
+            if (this.pollTimer || !QA_RUNTIME.sessionCode) return;
+            this.pollTimer = setInterval(() => this._hydrateQuestions(), QA_CONFIG.POLL_INTERVAL_MS);
         }
     }
 

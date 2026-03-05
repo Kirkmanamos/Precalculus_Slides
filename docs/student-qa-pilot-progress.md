@@ -1,7 +1,7 @@
 # Student Q&A Pilot Progress Log
 
 Date: 2026-03-04  
-Status: Paused after pilot implementation on feature branch
+Status: Live 5.1 test completed on hosted Supabase; next iteration identified
 
 ## Branch and Commit
 - Branch: `codex/student-qa-pilot`
@@ -50,39 +50,51 @@ Includes:
 - Session creation SQL
 - Teacher/student URL patterns
 
+### 4. Live hosted test run
+Completed against hosted Supabase project on March 5, 2026.
+
+Verified:
+- hosted schema applied successfully
+- Edge Functions deployed successfully
+- teacher unlock flow works with passcode
+- student question submission works from the deck
+- submitted questions store slide context (`slide_id`, `slide_index`, `slide_title`)
+- teacher approval flow works
+- approved questions appear on the class Q&A slide
+- spotlight/full-screen question view works from approved question cards
+
 ## Validation Completed
 - Inline JS syntax check passed for updated 5.1 script.
 - Syntax checks passed for all three function files.
 - Branch committed and pushed successfully.
 
 ## Current Configuration Notes
-- `QA_CONFIG` in `5.1-fundamental-identities.html` still uses placeholders:
-  - `SUPABASE_URL`
-  - `SUPABASE_ANON_KEY`
-  - `EDGE_BASE_URL`
-- No production credentials have been committed.
+- `QA_CONFIG` in `5.1-fundamental-identities.html` is now wired to the hosted Supabase project used for live testing.
+- `5.5-double-half-angle.html` still uses placeholders and has not been pointed at the hosted project yet.
+- Hosted function CORS now includes local preview origins:
+  - `http://localhost:8000`
+  - `http://127.0.0.1:8000`
+- The live test session used:
+  - `session_code = u5-1-live-2026-03-05`
 
 ## Next Steps (When Resuming)
-1. Create/configure Supabase project and run `supabase/sql/qa_schema.sql`.
-2. Set function secrets:
-   - `SUPABASE_URL`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `QA_TEACHER_JWT_SECRET`
-3. Deploy Edge Functions:
-   - `qa-submit`
-   - `qa-teacher-login`
-   - `qa-moderate`
-4. Replace `QA_CONFIG` placeholders in `5.1-fundamental-identities.html`.
-5. Create a test class session row in `qa_sessions`.
-6. Test live classroom flow:
-   - student submit URL: `...?session=<code>`
-   - teacher moderation URL: `...?session=<code>&mode=teacher`
-7. Validate in-browser behaviors:
-   - pending/approved visibility
-   - approve/hide/reopen/clear actions
-   - optional final slide toggling
-   - websocket fallback to polling
-8. After classroom validation, decide whether to roll this module to other decks.
+1. Add a dedicated projector-friendly `display` mode for the Q&A slide.
+   - Goal: show only approved questions on the projected student-facing screen while moderation happens on a separate teacher device.
+   - Expected URL shape: `...?session=<code>&mode=display`
+   - Requirements:
+     - no teacher controls
+     - no pending questions
+     - approved questions only
+     - keep spotlight/full-screen question expansion
+2. Port the mature Q&A system from 5.1/5.5 into 5.2, 5.3, and 5.4.
+3. Decide whether to wire 5.5 to the same hosted Supabase project for live classroom use.
+4. Add a small operational guide for rotating service-role credentials after setup/testing.
+5. Decide whether the Q&A stage should support teacher-triggered auto-jump into spotlight mode on the display screen.
 
 ## Pause Checkpoint
-Project is in a good paused state on `codex/student-qa-pilot` with implementation committed and pushed. `main` remains unchanged.
+Project is in a good continuation state on `codex/student-qa-pilot`.
+
+State at pause:
+- hosted Supabase integration for 5.1 is working
+- live end-to-end test passed
+- next concrete feature is a separate `display` mode for projector use

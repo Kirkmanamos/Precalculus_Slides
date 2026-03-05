@@ -4,6 +4,8 @@ const ALLOWED_ORIGINS = new Set([
   "https://kirkmanamos.github.io",
   "http://localhost:4173",
   "http://localhost:5500",
+  "http://localhost:8000",
+  "http://127.0.0.1:8000",
 ]);
 
 const TOKEN_TTL_SECONDS = 60 * 60 * 8;
@@ -94,8 +96,8 @@ Deno.serve(async (req) => {
     return jsonResponse(origin, 405, { ok: false, error: "Method not allowed." });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseUrl = Deno.env.get("QA_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("QA_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const jwtSecret = Deno.env.get("QA_TEACHER_JWT_SECRET");
   if (!supabaseUrl || !serviceRoleKey || !jwtSecret) {
     return jsonResponse(origin, 500, { ok: false, error: "Server is missing required env vars." });

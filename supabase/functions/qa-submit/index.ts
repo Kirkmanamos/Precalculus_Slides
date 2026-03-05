@@ -4,9 +4,12 @@ const ALLOWED_ORIGINS = new Set([
   "https://kirkmanamos.github.io",
   "http://localhost:4173",
   "http://localhost:5500",
+  "http://localhost:8000",
+  "http://127.0.0.1:8000",
 ]);
 
 const MAX_QUESTION_LENGTH = 280;
+const MAX_SLIDE_TITLE_LENGTH = 160;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_SUBMITS = 3;
 
@@ -58,8 +61,8 @@ Deno.serve(async (req) => {
     return jsonResponse(origin, 405, { ok: false, error: "Method not allowed." });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseUrl = Deno.env.get("QA_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("QA_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!supabaseUrl || !serviceRoleKey) {
     return jsonResponse(origin, 500, { ok: false, error: "Server is missing Supabase env vars." });
   }
@@ -68,12 +71,19 @@ Deno.serve(async (req) => {
   const sessionCode = typeof body?.sessionCode === "string" ? body.sessionCode.trim() : "";
   const deckSlug = typeof body?.deckSlug === "string" ? body.deckSlug.trim() : "";
   const questionText = typeof body?.questionText === "string" ? body.questionText.trim() : "";
+  const slideId = typeof body?.slideId === "string" ? body.slideId.trim() : "";
+  const slideTitle = typeof body?.slideTitle === "string" ? body.slideTitle.trim() : "";
+  const rawSlideIndex = body?.slideIndex;
+  const slideIndex = Number.isInteger(rawSlideIndex) && rawSlideIndex >= 0 ? rawSlideIndex : null;
 
   if (!sessionCode || !deckSlug || !questionText) {
     return jsonResponse(origin, 400, { ok: false, error: "sessionCode, deckSlug, and questionText are required." });
   }
   if (questionText.length > MAX_QUESTION_LENGTH) {
     return jsonResponse(origin, 400, { ok: false, error: `questionText must be ${MAX_QUESTION_LENGTH} characters or fewer.` });
+  }
+  if (slideTitle.length > MAX_SLIDE_TITLE_LENGTH) {
+    return jsonResponse(origin, 400, { ok: false, error: `slideTitle must be ${MAX_SLIDE_TITLE_LENGTH} characters or fewer.` });
   }
 
   const admin = createClient(supabaseUrl, serviceRoleKey, {
@@ -132,6 +142,9 @@ Deno.serve(async (req) => {
       session_code: sessionCode,
       deck_slug: deckSlug,
       question_text: questionText,
+      slide_id: slideId || null,
+      slide_index: slideIndex,
+      slide_title: slideTitle || null,
       status: "pending",
     })
     .select("id")

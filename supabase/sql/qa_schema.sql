@@ -17,11 +17,19 @@ create table if not exists public.qa_questions (
   session_code text not null references public.qa_sessions(session_code) on delete cascade,
   deck_slug text not null,
   question_text text not null check (char_length(question_text) between 1 and 280),
+  slide_id text,
+  slide_index integer,
+  slide_title text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'hidden')),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   approved_at timestamptz
 );
+
+alter table public.qa_questions
+  add column if not exists slide_id text,
+  add column if not exists slide_index integer,
+  add column if not exists slide_title text;
 
 create table if not exists public.qa_rate_limit (
   id bigint generated always as identity primary key,

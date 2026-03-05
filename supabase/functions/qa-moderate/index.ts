@@ -4,6 +4,8 @@ const ALLOWED_ORIGINS = new Set([
   "https://kirkmanamos.github.io",
   "http://localhost:4173",
   "http://localhost:5500",
+  "http://localhost:8000",
+  "http://127.0.0.1:8000",
 ]);
 
 const VALID_ACTIONS = new Set(["approve", "reopen", "hide", "clear_hidden", "clear_all", "list"]);
@@ -88,8 +90,8 @@ Deno.serve(async (req) => {
     return jsonResponse(origin, 405, { ok: false, error: "Method not allowed." });
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const supabaseUrl = Deno.env.get("QA_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+  const serviceRoleKey = Deno.env.get("QA_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const jwtSecret = Deno.env.get("QA_TEACHER_JWT_SECRET");
   if (!supabaseUrl || !serviceRoleKey || !jwtSecret) {
     return jsonResponse(origin, 500, { ok: false, error: "Server is missing required env vars." });
@@ -128,7 +130,7 @@ Deno.serve(async (req) => {
   if (action === "list") {
     const { data, error } = await admin
       .from("qa_questions")
-      .select("id, session_code, deck_slug, question_text, status, created_at, updated_at, approved_at")
+      .select("id, session_code, deck_slug, question_text, slide_id, slide_index, slide_title, status, created_at, updated_at, approved_at")
       .eq("session_code", sessionCode)
       .eq("deck_slug", deckSlug)
       .order("created_at", { ascending: false });

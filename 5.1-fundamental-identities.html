@@ -671,6 +671,17 @@ body {
   margin-bottom: 0.8em;
 }
 
+.qa-modal-context,
+.qa-focus-meta {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.54em;
+  color: #1e3a8a;
+  margin-bottom: 0.75rem;
+}
+
 .qa-textarea {
   width: 100%;
   min-height: 130px;
@@ -743,6 +754,26 @@ body {
   border-radius: 8px;
   padding: 0.4em 0.5em;
   background: #f8fbff;
+  outline: none;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qa-item.clickable { cursor: pointer; }
+
+.qa-item.clickable:hover,
+.qa-item.clickable:focus {
+  border-color: #60a5fa;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.08);
+}
+
+.qa-item-context {
+  font-size: 0.46em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #2563eb;
+  margin-bottom: 0.3rem;
 }
 
 .qa-item p {
@@ -789,6 +820,60 @@ body {
   font-size: 0.92em;
 }
 
+.qa-focus-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1350;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.56);
+  padding: 20px;
+}
+
+.qa-focus-modal.visible {
+  display: flex;
+}
+
+.qa-focus-card {
+  width: min(900px, 100%);
+  min-height: min(70vh, 540px);
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 25px 45px rgba(15, 23, 42, 0.22);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.qa-focus-title {
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--dark-navy);
+  margin-bottom: 0.35em;
+}
+
+.qa-focus-kicker {
+  font-size: 0.58em;
+  color: #64748b;
+  margin-bottom: 0.8em;
+}
+
+.qa-focus-question {
+  font-size: 1.12em;
+  line-height: 1.35;
+  color: #0f172a;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.qa-focus-actions {
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
 /* ===========================================
    KATEX — match surrounding font size
    =========================================== */
@@ -814,8 +899,10 @@ body {
   .qa-controls   { left: 12px; right: 12px; bottom: 10px; max-width: none; }
   .qa-list-grid  { grid-template-columns: 1fr; }
   .qa-modal-card { padding: 14px; }
+  .qa-focus-card { padding: 14px; min-height: auto; }
   .qa-passcode-row { flex-direction: column; align-items: stretch; }
   .qa-input { min-width: 0; width: 100%; }
+  .qa-focus-question { font-size: 0.84em; }
 }
 </style>
 </head>
@@ -850,7 +937,8 @@ body {
 <div class="qa-modal" id="qaModal" aria-hidden="true" role="dialog" aria-modal="true">
   <div class="qa-modal-card">
     <h3 class="qa-modal-title">Submit a Question</h3>
-    <p class="qa-modal-subtitle">Questions are queued for the teacher to approve before they appear on the final class Q&amp;A slide.</p>
+    <p class="qa-modal-subtitle">Questions are tagged with the slide you are viewing, then queued for the teacher to approve before they appear on the final class Q&amp;A slide.</p>
+    <div class="qa-modal-context" id="qaCurrentSlideMeta"></div>
     <textarea id="qaQuestionInput" class="qa-textarea" maxlength="280" placeholder="Type your question here..."></textarea>
     <div class="qa-modal-footer">
       <span class="qa-char-count" id="qaCharCount">0 / 280</span>
@@ -860,6 +948,18 @@ body {
       </div>
     </div>
     <div class="qa-status" id="qaSubmitStatus"></div>
+  </div>
+</div>
+
+<div class="qa-focus-modal" id="qaFocusModal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="qa-focus-card">
+    <div class="qa-focus-title">Question Spotlight</div>
+    <div class="qa-focus-kicker">Use this as the full-screen discussion view. Later builds can sync the same action across devices.</div>
+    <div class="qa-focus-meta" id="qaFocusMeta"></div>
+    <div class="qa-focus-question" id="qaFocusText"></div>
+    <div class="qa-row qa-focus-actions">
+      <button type="button" class="qa-btn gray" id="qaFocusCloseBtn">Back to Q&amp;A</button>
+    </div>
   </div>
 </div>
 
@@ -1298,7 +1398,7 @@ body {
 <section class="slide" id="slide-12" data-optional="qa-final">
   <span class="example-label">CLASS Q&amp;A</span>
   <h2 class="slide-title">Student Questions</h2>
-  <p class="slide-subtitle">Only approved questions appear here for whole-class discussion.</p>
+  <p class="slide-subtitle">Only approved questions appear here for whole-class discussion. Click a question card to spotlight it full-screen.</p>
 
   <div class="qa-slide-layout">
     <div class="qa-list-grid">
@@ -1327,9 +1427,9 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
 const QA_CONFIG = {
-  SUPABASE_URL: 'https://YOUR_PROJECT_REF.supabase.co',
-  SUPABASE_ANON_KEY: 'YOUR_SUPABASE_ANON_KEY',
-  EDGE_BASE_URL: 'https://YOUR_PROJECT_REF.supabase.co/functions/v1',
+  SUPABASE_URL: 'https://xhwnregnlxlfyizmloph.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhod25yZWdubHhsZnlpem1sb3BoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NDQ4MjksImV4cCI6MjA4ODMyMDgyOX0.O0JUdXeTSsqEnXY50YVkvOk2l0rq4ZFE071LkICl_Ck',
+  EDGE_BASE_URL: 'https://xhwnregnlxlfyizmloph.supabase.co/functions/v1',
   DECK_SLUG: '5.1-fundamental-identities',
   STUDENT_MAX_LEN: 280,
   POLL_INTERVAL_MS: 3000,
@@ -1352,6 +1452,13 @@ function formatTime(iso) {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
   return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+}
+
+function buildQuestionContext(question) {
+  const parts = [];
+  if (question.slide_index) parts.push(`Slide ${question.slide_index}`);
+  if (question.slide_title) parts.push(question.slide_title);
+  return parts.join(' · ');
 }
 
 /* =====================================================
@@ -1401,11 +1508,16 @@ class Presentation {
     this.qaClearAllBtn = document.getElementById('qaClearAllBtn');
     this.qaTeacherStatus = document.getElementById('qaTeacherStatus');
     this.qaModal = document.getElementById('qaModal');
+    this.qaCurrentSlideMeta = document.getElementById('qaCurrentSlideMeta');
     this.qaQuestionInput = document.getElementById('qaQuestionInput');
     this.qaSubmitBtn = document.getElementById('qaSubmitBtn');
     this.qaCancelBtn = document.getElementById('qaCancelBtn');
     this.qaSubmitStatus = document.getElementById('qaSubmitStatus');
     this.qaCharCount = document.getElementById('qaCharCount');
+    this.qaFocusModal = document.getElementById('qaFocusModal');
+    this.qaFocusMeta = document.getElementById('qaFocusMeta');
+    this.qaFocusText = document.getElementById('qaFocusText');
+    this.qaFocusCloseBtn = document.getElementById('qaFocusCloseBtn');
     this.qaApprovedList = document.getElementById('qaApprovedList');
     this.qaApprovedEmpty = document.getElementById('qaApprovedEmpty');
     this.qaPendingList = document.getElementById('qaPendingList');
@@ -1555,10 +1667,32 @@ class Presentation {
   _sync() {
     this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
     this.progressBar.style.width = `${((this.current + 1) / Math.max(this.visibleSlides.length, 1)) * 100}%`;
+    this._updateQuestionModalMeta();
   }
 
   _currentSlide() {
     return this.visibleSlides[this.current];
+  }
+
+  _getSlideMeta() {
+    const slide = this._currentSlide();
+    if (!slide) return { slideId: '', slideIndex: null, slideTitle: '' };
+    const slideIndex = this.current + 1;
+    const titleEl = slide.querySelector('.slide-title, .title-main, .section-title');
+    const slideTitle = titleEl ? titleEl.textContent.replace(/\s+/g, ' ').trim() : `Slide ${slideIndex}`;
+    return {
+      slideId: slide.id || '',
+      slideIndex,
+      slideTitle,
+    };
+  }
+
+  _updateQuestionModalMeta() {
+    if (!this.qaCurrentSlideMeta) return;
+    const meta = this._getSlideMeta();
+    this.qaCurrentSlideMeta.textContent = meta.slideTitle
+      ? `Submitting from Slide ${meta.slideIndex} · ${meta.slideTitle}`
+      : `Submitting from Slide ${meta.slideIndex}`;
   }
 
   _goTo(index) {
@@ -1618,7 +1752,13 @@ class Presentation {
         target.tagName === 'TEXTAREA' ||
         target.isContentEditable
       );
+      if (e.key === 'Escape') {
+        this._closeQuestionFocus();
+        this._closeQuestionModal();
+        return;
+      }
       if (inInput) return;
+      if (this.qaModal.classList.contains('visible') || this.qaFocusModal.classList.contains('visible')) return;
 
       if (e.key === 'ArrowRight' || e.key === ' ') {
         e.preventDefault();
@@ -1633,15 +1773,19 @@ class Presentation {
         } else {
           this._openQuestionModal();
         }
-      } else if (e.key === 'Escape') {
-        this._closeQuestionModal();
       }
     });
 
     this.allSlides.forEach(slide => {
       if (!slide.dataset.steps) return;
       slide.addEventListener('click', e => {
-        if (e.target.closest('#nav-dots') || e.target.closest('.qa-controls') || e.target.closest('.qa-modal')) return;
+        if (
+          e.target.closest('#nav-dots') ||
+          e.target.closest('.qa-controls') ||
+          e.target.closest('.qa-modal') ||
+          e.target.closest('.qa-focus-modal') ||
+          e.target.closest('.qa-card')
+        ) return;
         const curStep = parseInt(slide.dataset.currentStep || '0', 10);
         const maxSteps = parseInt(slide.dataset.steps || '0', 10);
         if (curStep < maxSteps) this._revealStep(slide, curStep + 1);
@@ -1660,13 +1804,19 @@ class Presentation {
     this.qaModal.addEventListener('click', e => {
       if (e.target === this.qaModal) this._closeQuestionModal();
     });
+    this.qaFocusModal.addEventListener('click', e => {
+      if (e.target === this.qaFocusModal) this._closeQuestionFocus();
+    });
+    this.qaFocusCloseBtn.addEventListener('click', () => this._closeQuestionFocus());
+    this.qaApprovedList.addEventListener('click', e => this._handleQuestionListInteraction(e));
+    this.qaPendingList.addEventListener('click', e => this._handleQuestionListInteraction(e));
+    this.qaApprovedList.addEventListener('keydown', e => this._handleQuestionListKeydown(e));
+    this.qaPendingList.addEventListener('keydown', e => this._handleQuestionListKeydown(e));
 
     if (QA_RUNTIME.isTeacherMode) {
       this.qaToggleFinalBtn.addEventListener('click', () => this._toggleFinalSlide());
       this.qaUnlockBtn.addEventListener('click', () => this._unlockTeacher());
       this.qaClearAllBtn.addEventListener('click', () => this._moderate('clear_all'));
-      this.qaPendingList.addEventListener('click', e => this._handleQuestionActionClick(e));
-      this.qaApprovedList.addEventListener('click', e => this._handleQuestionActionClick(e));
     }
   }
 
@@ -1675,6 +1825,7 @@ class Presentation {
       this._setSubmitStatus('Session code missing. Add ?session=<code> to the URL.', 'error');
       return;
     }
+    this._updateQuestionModalMeta();
     this.qaModal.classList.add('visible');
     this.qaModal.setAttribute('aria-hidden', 'false');
     this.qaQuestionInput.focus();
@@ -1685,6 +1836,19 @@ class Presentation {
     this.qaModal.setAttribute('aria-hidden', 'true');
     this.qaQuestionInput.value = '';
     this.qaCharCount.textContent = `0 / ${QA_CONFIG.STUDENT_MAX_LEN}`;
+    this._setSubmitStatus('', '');
+  }
+
+  _openQuestionFocus(question) {
+    this.qaFocusMeta.textContent = [buildQuestionContext(question), formatTime(question.created_at)].filter(Boolean).join(' · ');
+    this.qaFocusText.textContent = question.question_text || '';
+    this.qaFocusModal.classList.add('visible');
+    this.qaFocusModal.setAttribute('aria-hidden', 'false');
+  }
+
+  _closeQuestionFocus() {
+    this.qaFocusModal.classList.remove('visible');
+    this.qaFocusModal.setAttribute('aria-hidden', 'true');
   }
 
   _setSubmitStatus(message, kind) {
@@ -1720,6 +1884,7 @@ class Presentation {
     this.qaSubmitBtn.disabled = true;
     this._setSubmitStatus('Sending question...', '');
     try {
+      const slideMeta = this._getSlideMeta();
       const res = await fetch(`${QA_CONFIG.EDGE_BASE_URL}/qa-submit`, {
         method: 'POST',
         headers: this._apiHeaders(),
@@ -1727,6 +1892,9 @@ class Presentation {
           sessionCode: QA_RUNTIME.sessionCode,
           deckSlug: QA_CONFIG.DECK_SLUG,
           questionText,
+          slideId: slideMeta.slideId,
+          slideIndex: slideMeta.slideIndex,
+          slideTitle: slideMeta.slideTitle,
         }),
       });
       const body = await res.json().catch(() => ({}));
@@ -1824,12 +1992,28 @@ class Presentation {
     }
   }
 
-  _handleQuestionActionClick(e) {
+  _handleQuestionListKeydown(e) {
+    if (!['Enter', ' '].includes(e.key)) return;
+    if (e.target.closest('button[data-action]')) return;
+    const item = e.target.closest('.qa-item[data-question-id]');
+    if (!item) return;
+    e.preventDefault();
+    const question = this.questions.find(q => q.id === item.dataset.questionId);
+    if (question) this._openQuestionFocus(question);
+  }
+
+  _handleQuestionListInteraction(e) {
     const btn = e.target.closest('button[data-action]');
-    if (!btn) return;
-    const action = btn.dataset.action;
-    const qid = btn.dataset.qid || null;
-    this._moderate(action, qid);
+    if (btn) {
+      const action = btn.dataset.action;
+      const qid = btn.dataset.qid || null;
+      this._moderate(action, qid);
+      return;
+    }
+    const item = e.target.closest('.qa-item[data-question-id]');
+    if (!item) return;
+    const question = this.questions.find(q => q.id === item.dataset.questionId);
+    if (question) this._openQuestionFocus(question);
   }
 
   _toggleFinalSlide() {
@@ -1876,7 +2060,7 @@ class Presentation {
         this.questions = body.questions;
       } else {
         const query = new URLSearchParams();
-        query.set('select', 'id,session_code,deck_slug,question_text,status,created_at,updated_at,approved_at');
+        query.set('select', 'id,session_code,deck_slug,question_text,slide_id,slide_index,slide_title,status,created_at,updated_at,approved_at');
         query.set('session_code', `eq.${QA_RUNTIME.sessionCode}`);
         query.set('deck_slug', `eq.${QA_CONFIG.DECK_SLUG}`);
         query.set('status', 'eq.approved');
@@ -1921,7 +2105,17 @@ class Presentation {
 
   _buildQuestionItem(q, type) {
     const item = document.createElement('li');
-    item.className = 'qa-item';
+    item.className = 'qa-item clickable';
+    item.dataset.questionId = q.id;
+    item.tabIndex = 0;
+
+    const context = buildQuestionContext(q);
+    if (context) {
+      const contextEl = document.createElement('div');
+      contextEl.className = 'qa-item-context';
+      contextEl.textContent = context;
+      item.appendChild(contextEl);
+    }
 
     const p = document.createElement('p');
     p.textContent = q.question_text || '';
