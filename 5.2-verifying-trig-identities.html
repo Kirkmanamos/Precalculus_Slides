@@ -220,6 +220,11 @@
         .do-box   ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green-accent); font-weight: 700; }
         .dont-box ul li::before { content: '✗'; position: absolute; left: 0; color: var(--red-accent);   font-weight: 700; }
 
+        @media (max-width: 900px) {
+            .guidelines-grid { grid-template-columns: 1fr; }
+            .guideline-tip { grid-column: auto; }
+        }
+
         /* ===== CONCEPT SLIDE ===== */
         .concept-box {
             background: #f8fafc;
@@ -259,9 +264,121 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
+        /* ===== FLOATING STRATEGY DOCK ===== */
+        .strategy-dock {
+            position: fixed;
+            left: 1.25rem;
+            bottom: 1.1rem;
+            display: flex;
+            gap: 0.65rem;
+            z-index: 110;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .strategy-dock.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+        .strategy-widget {
+            position: relative;
+        }
+        .strategy-toggle {
+            border: none;
+            border-radius: 12px;
+            padding: 0.5rem 0.75rem;
+            min-width: 4.8rem;
+            color: white;
+            font: inherit;
+            font-size: 0.52em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .strategy-toggle:hover,
+        .strategy-toggle:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 28px rgba(15, 23, 42, 0.22);
+            outline: none;
+        }
+        .strategy-widget.do .strategy-toggle { background: var(--green-accent); }
+        .strategy-widget.dont .strategy-toggle { background: var(--red-accent); }
+
+        .strategy-panel {
+            position: absolute;
+            left: 0;
+            bottom: calc(100% + 0.55rem);
+            width: min(18rem, calc(100vw - 2.5rem));
+            background: white;
+            border-radius: 14px;
+            padding: 0.95rem 1rem 1rem;
+            box-shadow: 0 22px 44px rgba(15, 23, 42, 0.18);
+            border: 2px solid transparent;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px) scale(0.98);
+            transform-origin: bottom left;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .strategy-widget.is-open .strategy-panel {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .strategy-widget.do .strategy-panel {
+            background: #f0fdf4;
+            border-color: var(--green-accent);
+        }
+        .strategy-widget.dont .strategy-panel {
+            background: #fef2f2;
+            border-color: var(--red-accent);
+        }
+        .strategy-panel-title {
+            font-size: 0.68em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 0.55rem;
+        }
+        .strategy-widget.do .strategy-panel-title { color: var(--green-accent); }
+        .strategy-widget.dont .strategy-panel-title { color: var(--red-accent); }
+        .strategy-panel ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            margin: 0;
+        }
+        .strategy-panel li {
+            position: relative;
+            padding-left: 1.1em;
+            font-size: 0.64em;
+            line-height: 1.35;
+            color: #1e293b;
+        }
+        .strategy-widget.do .strategy-panel li::before,
+        .strategy-widget.dont .strategy-panel li::before {
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+        .strategy-widget.do .strategy-panel li::before {
+            content: '✓';
+            color: var(--green-accent);
+        }
+        .strategy-widget.dont .strategy-panel li::before {
+            content: '✗';
+            color: var(--red-accent);
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .slide { transition: opacity 0.3s ease; transform: none !important; }
             .step.visible { animation: none; opacity: 1; }
+            .strategy-dock,
+            .strategy-toggle,
+            .strategy-panel { transition: none; }
         }
 /* ===========================================
    MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
@@ -333,6 +450,28 @@
     text-align: center;
   }
 
+  .strategy-dock {
+    left: 12px !important;
+    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .strategy-toggle {
+    min-width: 4.2rem !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.5em !important;
+  }
+
+  .strategy-panel {
+    width: min(16rem, calc(100vw - 24px)) !important;
+    padding: 0.8rem 0.85rem 0.85rem !important;
+  }
+
+  .strategy-panel li {
+    font-size: 0.66em !important;
+  }
+
   .ref-grid,
   .strategy-grid,
   .identities-grid,
@@ -374,6 +513,39 @@
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
+<div class="strategy-dock is-hidden" id="strategyDock" aria-label="Verification strategies">
+    <div class="strategy-widget do" data-strategy-widget>
+        <button class="strategy-toggle" type="button" data-strategy-toggle aria-expanded="false" aria-controls="strategy-panel-do">
+            Do
+        </button>
+        <div class="strategy-panel" id="strategy-panel-do">
+            <div class="strategy-panel-title">Do</div>
+            <ul>
+                <li>Work with the more complicated side.</li>
+                <li>Try a common denominator.</li>
+                <li>Factor expressions.</li>
+                <li>Convert all to sine and cosine.</li>
+                <li>Multiply by the conjugate.</li>
+                <li>Apply Pythagorean identities.</li>
+                <li>Work each side separately toward a common middle.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="strategy-widget dont" data-strategy-widget>
+        <button class="strategy-toggle" type="button" data-strategy-toggle aria-expanded="false" aria-controls="strategy-panel-dont">
+            Do Not
+        </button>
+        <div class="strategy-panel" id="strategy-panel-dont">
+            <div class="strategy-panel-title">Do Not</div>
+            <ul>
+                <li>Cross the equal sign.</li>
+                <li>Multiply both sides by anything.</li>
+                <li>Add to both sides.</li>
+                <li>Square both sides.</li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="slides-wrapper" id="slidesWrapper">
 
@@ -883,8 +1055,11 @@
             this.progressBar  = document.getElementById('progressBar');
             this.navDotsEl    = document.getElementById('navDots');
             this.clickHint    = document.getElementById('clickHint');
+            this.strategyDock = document.getElementById('strategyDock');
+            this.strategyWidgets = Array.from(document.querySelectorAll('[data-strategy-widget]'));
 
             this._buildNav();
+            this._bindStrategyDock();
             this._activate(0);
             this._bindEvents();
         }
@@ -915,6 +1090,9 @@
             this.clickHint.textContent = (curStep < maxSteps - 1)
                 ? 'click to advance'
                 : (this.current < this.total - 1 ? 'click for next slide' : '');
+            const showStrategyDock = this.current >= 3;
+            if (!showStrategyDock) this._closeStrategyPanels();
+            this.strategyDock.classList.toggle('is-hidden', !showStrategyDock);
         }
 
         /* Make slide at index visible */
@@ -966,9 +1144,36 @@
             if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1);
         }
 
+        _bindStrategyDock() {
+            this.strategyWidgets.forEach((widget) => {
+                const toggle = widget.querySelector('[data-strategy-toggle]');
+                toggle.addEventListener('click', () => {
+                    const willOpen = !widget.classList.contains('is-open');
+                    this._closeStrategyPanels();
+                    widget.classList.toggle('is-open', willOpen);
+                    toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                });
+            });
+        }
+
+        _closeStrategyPanels() {
+            this.strategyWidgets.forEach((widget) => {
+                widget.classList.remove('is-open');
+                widget.querySelector('[data-strategy-toggle]')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        _hasOpenStrategyPanel() {
+            return this.strategyWidgets.some((widget) => widget.classList.contains('is-open'));
+        }
+
         _bindEvents() {
             /* Keyboard */
             document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this._hasOpenStrategyPanel()) {
+                    this._closeStrategyPanels();
+                    return;
+                }
                 if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
                     e.preventDefault(); this._next();
                 } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
@@ -978,7 +1183,12 @@
 
             /* Click anywhere (except nav dots, handled separately) */
             document.addEventListener('click', (e) => {
-                if (!e.target.closest('.nav-dot')) this._next();
+                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock')) return;
+                if (this._hasOpenStrategyPanel()) {
+                    this._closeStrategyPanels();
+                    return;
+                }
+                this._next();
             });
 
             /* Touch swipe */
