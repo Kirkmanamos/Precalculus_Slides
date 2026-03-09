@@ -20,6 +20,26 @@
             --red-accent:   #dc2626;
             --grid-line:    #dbeafe;
             --bg-white:     #ffffff;
+            --base-font-size: 28px;
+            --content-max-width: 1120px;
+            --slide-pad-top: 5rem;
+            --slide-pad-bottom: 3rem;
+            --slide-pad-inline: max(3rem, calc((100% - var(--content-max-width)) / 2));
+            --steps-pad-bottom: 3.5rem;
+            --problem-pad-inline: 1.2em;
+            --problem-pad-block: 0.7em;
+            --annotation-gap: 2.5rem;
+            --annotation-basis: 36%;
+            --annotation-divider: #93c5fd;
+            --dock-left: 1.25rem;
+            --dock-bottom: 1.1rem;
+            --dock-direction: row;
+            --dock-gap: 0.65rem;
+            --dock-panel-width: min(18rem, calc(100vw - 2.5rem));
+            --click-hint-left: 50%;
+            --click-hint-right: auto;
+            --click-hint-transform: translateX(-50%);
+            --click-hint-align: center;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,7 +48,7 @@
             width: 100%; height: 100%;
             overflow: hidden;
             font-family: 'Source Sans 3', sans-serif;
-            font-size: 28px;
+            font-size: var(--base-font-size);
             background: var(--dark-navy);
         }
 
@@ -43,10 +63,10 @@
             /* 5rem top: clears the progress bar + browser chrome with breathing room.
                Sides: center content within a ~1120px max column on wide screens,
                       minimum 3rem on small screens. */
-            padding-top: 5rem;
-            padding-bottom: 3rem;
-            padding-left:  max(3rem, calc((100% - 1120px) / 2));
-            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            padding-top: var(--slide-pad-top);
+            padding-bottom: calc(var(--slide-pad-bottom) + env(safe-area-inset-bottom));
+            padding-left: var(--slide-pad-inline);
+            padding-right: var(--slide-pad-inline);
             opacity: 0;
             transform: translateX(60px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -62,6 +82,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-height: 0;
         }
         .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
 
@@ -122,7 +143,7 @@
             background: #f8fafc;
             border: 2px solid var(--blue-accent);
             border-radius: 10px;
-            padding: 0.7em 1.2em;
+            padding: var(--problem-pad-block) var(--problem-pad-inline);
             margin-bottom: 1rem;
             flex-shrink: 0;
             text-align: center;
@@ -135,9 +156,9 @@
         }
 
         /* ===== STEP REVEALS ===== */
-        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
+        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: calc(var(--steps-pad-bottom) + env(safe-area-inset-bottom)); }
 
-        .step { display: none; }
+        .step { display: none; min-width: 0; }
         .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.5rem; }
         .step.visible:last-child { margin-bottom: 0; }
         @keyframes stepReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -148,14 +169,14 @@
         }
 
         /* Base step-math: equation centered by itself */
-        .step-math { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; }
+        .step-math { font-size: 0.9em; line-height: 2; padding: 0.3em 0; text-align: center; min-width: 0; }
 
         /* When an annotation is present, JS adds .has-annotation and wraps the
            equation in .step-eq — this switches to a side-by-side layout */
         .step-math.has-annotation {
             display: flex;
-            align-items: center;
-            gap: 2.5rem;
+            align-items: flex-start;
+            gap: var(--annotation-gap);
             text-align: left;
         }
 
@@ -163,6 +184,7 @@
         .step-eq {
             flex: 1;
             text-align: center;
+            min-width: 0;
         }
 
         .step.answer .step-math {
@@ -174,14 +196,15 @@
 
         /* Annotation sits to the right of the equation, separated by a hairline */
         .annotation {
-            flex: 0 0 36%;
+            flex: 0 1 var(--annotation-basis);
             color: var(--blue-accent);
             font-size: 0.72em;
             font-weight: 600;
             line-height: 1.45;
             text-align: left;
-            border-left: 3px solid #93c5fd;
+            border-left: 3px solid var(--annotation-divider);
             padding-left: 1rem;
+            min-width: 0;
         }
 
         /* ===== GUIDELINES SLIDE ===== */
@@ -220,11 +243,6 @@
         .do-box   ul li::before { content: '✓'; position: absolute; left: 0; color: var(--green-accent); font-weight: 700; }
         .dont-box ul li::before { content: '✗'; position: absolute; left: 0; color: var(--red-accent);   font-weight: 700; }
 
-        @media (max-width: 900px) {
-            .guidelines-grid { grid-template-columns: 1fr; }
-            .guideline-tip { grid-column: auto; }
-        }
-
         /* ===== CONCEPT SLIDE ===== */
         .concept-box {
             background: #f8fafc;
@@ -256,23 +274,28 @@
         }
 
         .click-hint {
-            position: fixed; bottom: 1.5rem; left: 50%;
-            transform: translateX(-50%);
+            position: fixed; bottom: calc(1.5rem + env(safe-area-inset-bottom)); left: var(--click-hint-left);
+            right: var(--click-hint-right);
+            transform: var(--click-hint-transform);
             font-size: 0.45em; color: rgba(100,116,139,0.6);
             letter-spacing: 0.1em; text-transform: uppercase;
             animation: pulse 2s ease-in-out infinite; z-index: 100;
+            max-width: min(16rem, calc(100vw - 2rem));
+            text-align: var(--click-hint-align);
         }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
         /* ===== FLOATING STRATEGY DOCK ===== */
         .strategy-dock {
             position: fixed;
-            left: 1.25rem;
-            bottom: 1.1rem;
+            left: var(--dock-left);
+            bottom: calc(var(--dock-bottom) + env(safe-area-inset-bottom));
             display: flex;
-            gap: 0.65rem;
+            flex-direction: var(--dock-direction);
+            gap: var(--dock-gap);
             z-index: 110;
             transition: opacity 0.25s ease, transform 0.25s ease;
+            max-width: calc(100vw - 2rem);
         }
         .strategy-dock.is-hidden {
             opacity: 0;
@@ -310,7 +333,7 @@
             position: absolute;
             left: 0;
             bottom: calc(100% + 0.55rem);
-            width: min(18rem, calc(100vw - 2.5rem));
+            width: var(--dock-panel-width);
             background: white;
             border-radius: 14px;
             padding: 0.95rem 1rem 1rem;
@@ -358,6 +381,17 @@
             line-height: 1.35;
             color: #1e293b;
         }
+        .concept-box p,
+        .guideline-box ul li,
+        .strategy-panel li,
+        .annotation,
+        .slide-title { overflow-wrap: anywhere; }
+        .step-math .katex-display,
+        .problem-statement .katex-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.12em 0;
+        }
         .strategy-widget.do .strategy-panel li::before,
         .strategy-widget.dont .strategy-panel li::before {
             position: absolute;
@@ -380,132 +414,121 @@
             .strategy-toggle,
             .strategy-panel { transition: none; }
         }
-/* ===========================================
-   MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
-   =========================================== */
-@media (max-width: 768px) {
-  html, body {
-    font-size: 18px !important;
-    width: 100%;
-    height: 100%;
-  }
+        /* ===========================================
+           RESPONSIVE LAYOUT TOKENS
+           =========================================== */
+        @media (max-width: 1180px) {
+            :root {
+                --base-font-size: 25px;
+                --slide-pad-inline: 2.25rem;
+                --annotation-gap: 1.5rem;
+                --annotation-basis: 32%;
+            }
+        }
 
-  .slide {
-    padding-top: max(16px, env(safe-area-inset-top)) !important;
-    padding-right: 12px !important;
-    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
-    padding-left: 12px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
+        @media (max-width: 900px) {
+            :root {
+                --base-font-size: 22px;
+                --slide-pad-top: 4.25rem;
+                --slide-pad-inline: 1.5rem;
+                --slide-pad-bottom: 4rem;
+                --steps-pad-bottom: 4.5rem;
+                --problem-pad-inline: 0.95em;
+                --problem-pad-block: 0.58em;
+                --dock-left: 1rem;
+                --dock-bottom: 0.9rem;
+                --dock-gap: 0.5rem;
+            }
 
-  .slide-title,
-  .section-title {
-    line-height: 1.14;
-  }
+            .slide-header {
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 0.55rem;
+            }
 
-  .slide-subtitle {
-    font-size: 0.9em !important;
-  }
+            .guidelines-grid { grid-template-columns: 1fr; }
+            .guideline-tip { grid-column: auto; }
+            .nav-dots { display: none; }
+        }
 
-  .problem-statement {
-    font-size: 0.95em !important;
-    padding: 0.48em 0.66em !important;
-    margin-bottom: 0.55rem !important;
-  }
+        @media (max-width: 768px) {
+            :root {
+                --base-font-size: 19px;
+                --slide-pad-top: max(1.4rem, env(safe-area-inset-top));
+                --slide-pad-inline: 0.95rem;
+                --slide-pad-bottom: 4.9rem;
+                --steps-pad-bottom: 5.4rem;
+                --annotation-gap: 0.8rem;
+                --annotation-basis: 100%;
+                --dock-direction: column;
+                --dock-gap: 0.45rem;
+                --dock-panel-width: min(16rem, calc(100vw - 1.9rem));
+                --click-hint-left: auto;
+                --click-hint-right: 0.9rem;
+                --click-hint-transform: none;
+                --click-hint-align: right;
+            }
 
-  .steps-area {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
-  }
+            .slide {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
 
-  .step {
-    gap: 8px !important;
-  }
+            .title-main { font-size: 1.72em; }
+            .title-objective { margin-top: 0.85rem; }
+            .identity-chips { margin-top: 1rem; gap: 0.45rem; }
+            .chip { font-size: 0.55em; }
 
-  .step-label {
-    min-width: 0 !important;
-    font-size: 0.6em !important;
-  }
+            .problem-statement { margin-bottom: 0.65rem; }
+            .strategy-note { margin-bottom: 0.6rem; }
+            .step-label { font-size: 0.58em; }
+            .step-math { font-size: 0.92em; line-height: 1.65; }
 
-  .step-math,
-  .step-text {
-    font-size: 0.92em !important;
-    line-height: 1.6 !important;
-  }
+            .step-math.has-annotation {
+                flex-direction: column;
+                align-items: stretch;
+            }
 
-  .example-label,
-  .concept-label,
-  .ref-label {
-    top: 10px !important;
-    left: 12px !important;
-    font-size: 0.52em !important;
-    padding: 0.22em 0.6em !important;
-    letter-spacing: 0.04em !important;
-  }
+            .annotation {
+                border-left: none;
+                border-top: 3px solid var(--annotation-divider);
+                padding-left: 0;
+                padding-top: 0.7rem;
+            }
 
-  .click-hint {
-    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-    font-size: 0.5em !important;
-    max-width: 92vw;
-    text-align: center;
-  }
+            .strategy-dock { width: calc(100vw - 1.9rem); }
+            .strategy-widget { width: 100%; }
+            .strategy-panel {
+                left: auto;
+                right: 0;
+                transform-origin: bottom right;
+                padding: 0.8rem 0.85rem 0.85rem;
+            }
+        }
 
-  .strategy-dock {
-    left: 12px !important;
-    bottom: calc(12px + env(safe-area-inset-bottom)) !important;
-    flex-direction: column !important;
-    gap: 8px !important;
-  }
+        @media (max-width: 480px) {
+            :root {
+                --base-font-size: 17px;
+                --slide-pad-inline: 0.75rem;
+                --slide-pad-bottom: 5.2rem;
+                --steps-pad-bottom: 5.7rem;
+                --dock-left: 0.75rem;
+                --dock-bottom: 0.7rem;
+                --dock-panel-width: calc(100vw - 1.5rem);
+            }
 
-  .strategy-toggle {
-    min-width: 4.2rem !important;
-    padding: 0.45rem 0.65rem !important;
-    font-size: 0.5em !important;
-  }
-
-  .strategy-panel {
-    width: min(16rem, calc(100vw - 24px)) !important;
-    padding: 0.8rem 0.85rem 0.85rem !important;
-  }
-
-  .strategy-panel li {
-    font-size: 0.66em !important;
-  }
-
-  .ref-grid,
-  .strategy-grid,
-  .identities-grid,
-  .qa-list-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .nav-dots,
-  #nav-dots,
-  #navDots {
-    display: none !important;
-  }
-
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 420px) {
-  html, body {
-    font-size: 16px !important;
-  }
-
-  .slide {
-    padding-right: 10px !important;
-    padding-left: 10px !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.88em !important;
-  }
-}
+            .title-main { font-size: 1.58em; }
+            .example-label,
+            .another-way-badge { font-size: 0.54em; }
+            .slide-title { line-height: 1.15; }
+            .guideline-box { padding: 1rem 1.1rem; }
+            .strategy-toggle {
+                min-width: 0;
+                width: 100%;
+                padding: 0.42rem 0.6rem;
+                font-size: 0.5em;
+            }
+        }
     </style>
 </head>
 <body>
