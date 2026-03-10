@@ -5,6 +5,37 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-03-09 (session 2)
+
+### `CotFactoringGraphicalAnalysis` — v2 rebuild
+
+Rebuilt `manim/scenes/5_3_cot_factoring_graphical.py` to fix 4 issues from v1:
+
+1. **Longer intro + "All Solutions" statement** — title and subtitle now hold for
+   1.5 s before advancing; subtitle reads "Find: **all solutions** — no domain
+   restriction on x" in a styled box.
+
+2. **Cot curve clipping** — replaced raw `np.cos(x)/np.sin(x)` with
+   `_cot_clipped(x) = np.clip(cos/sin, -3.75, 3.75)` and reduced plot step to
+   `0.005`. Curve now stays entirely within the panel border.
+   (`SurroundingRectangle` is visual-only and does not clip rendered content —
+   clamping the function value is the only reliable fix.)
+
+3. **Algebra steps phase** (`_phase_math_steps()`) — new phase between intro and
+   panels. Shows 3 numbered steps: original → subtract 2cot x → factor. Then the
+   zero-product-property split with Case 1 (green) and Case 2 (red) color-coded.
+   Warning box: "Do NOT divide by cot x — that erases Case 1!" Bridge line fades
+   algebra before panels appear.
+
+4. **Better in-panel annotations** — Panel A now includes a `cot x = cos x/sin x = 0
+   ⟹ cos x = 0` annotation explaining the connection to the zeros, plus a general
+   solution box `x = π/2 + πn, n ∈ ℤ` inside the panel before it shrinks. Panel B
+   adds a gap arrow pointing into the shaded region with label "cos²x never reaches 2".
+
+Rendered: 59 animations, no errors.
+
+---
+
 ## Current Status (as of 2026-03-02)
 
 ### 4.9 Architectural Rebuild
@@ -37,6 +68,20 @@ Update this file whenever a new presentation, component, scene, or major feature
 ---
 
 ### Recently Added
+
+#### 2026-03-09 — First Manim Scene + manim_skill
+
+- **`manim/scenes/5_3_solving_trig_graphical.py`** — `TanEquationGraphicalAnalysis`
+  - First working ManimCE scene in the project (rendered v0.19.2)
+  - Graphical solution of `tan²θ − 3 = 0` on `[0, 2π)`: builds axes + `y = tan θ` (3 branches), drops `y = ±√3` reference lines, marks all four intersections with drop-lines, quadrant tags, and θ-labels, closes with a solution banner
+  - Uses full project color palette from `shared/colors.py`
+  - Modular phase structure (`_phase_*` methods) + reusable `_mark_solution()` helper
+- **`manim/scenes/5_3_cot_factoring_graphical.py`** — `CotFactoringGraphicalAnalysis`
+  - Graphical solution of `cot x · cos²x = 2cot x` for **all** solutions
+  - 3-period `y = cot x` plot with zeros marked at π/2, 3π/2, 5π/2 + n-tags
+  - Inset panel (DR corner): `y = cos²x` vs `y = 2` — shaded red gap proves no intersection
+  - Factor-not-divide warning; general solution banner `x = π/2 + πn, n ∈ ℤ`
+- **`npx skills add adithya-s-k/manim_skill`** — installed `manim-composer`, `manimce-best-practices`, `manimgl-best-practices` skills
 
 **HTML Presentations:**
 - `5.1-fundamental-identities.html` — Using Fundamental Identities (7 examples, HoffMath Classroom style)

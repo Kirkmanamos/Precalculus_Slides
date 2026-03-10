@@ -168,8 +168,114 @@ primitives.
 
 ## Manim Scenes
 
-> No scenes built yet. The `manim/shared/colors.py` constants file is ready.
-> First scenes to build:
+### `TanEquationGraphicalAnalysis`
+
+**File:** `manim/scenes/5_3_solving_trig_graphical.py`
+**Class:** `TanEquationGraphicalAnalysis`
+**Status:** ✅ Working (rendered 2026-03-09, ManimCE v0.19.2)
+**Covers:** Section 5.3 — Solving Trig Equations
+
+**What it does:**
+Animated graphical solution of `tan²θ − 3 = 0` on `[0, 2π)`.
+
+1. Title + algebraic bridge `tan²θ = 3 → tanθ = ±√3`
+2. Builds axes and draws `y = tan θ` in three branches (with asymptote dashes at π/2, 3π/2)
+3. Drops horizontal reference line `y = √3` (green) → reveals π/3 (QI) and 4π/3 (QIII) with vertical drop-lines and quadrant tags
+4. Drops horizontal reference line `y = −√3` (pink) → reveals 2π/3 (QII) and 5π/3 (QIV)
+5. Solution banner: `θ = π/3, 2π/3, 4π/3, 5π/3` (gold on dark card)
+
+**Color coding (project palette):**
+- `y = tan θ` curve → `ACCENT_TEAL` (`#5eead4`)
+- `y = √3` line + QI/QIII labels → `Q1_COLOR` (`#4ade80`, green)
+- `y = −√3` line + QII/QIV labels → `Q3_COLOR` (`#f472b6`, pink)
+- Solution dots + θ-labels → `HIGHLIGHT` (`#fbbf24`, gold)
+
+**Private helpers:**
+- `_phase_intro()` — title and algebraic bridge
+- `_phase_axes()` — axes, tick labels, ±√3 y-labels
+- `_phase_curve()` — asymptotes + three-branch tan curve
+- `_phase_positive_root()` — y=√3 line + π/3, 4π/3 markers
+- `_phase_negative_root()` — y=−√3 line + 2π/3, 5π/3 markers
+- `_phase_solution_banner()` — final solution card
+- `_mark_solution(axes, theta, y_val, color, theta_str, quad, q_dir)` — reusable intersection marker
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_3_solving_trig_graphical.py TanEquationGraphicalAnalysis  # preview
+manim -pqh scenes/5_3_solving_trig_graphical.py TanEquationGraphicalAnalysis  # final
+```
+
+---
+
+### `CotFactoringGraphicalAnalysis`
+
+**File:** `manim/scenes/5_3_cot_factoring_graphical.py`
+**Class:** `CotFactoringGraphicalAnalysis`
+**Status:** ✅ Working (rendered 2026-03-09, ManimCE v0.19.2) — v2 rebuild
+**Covers:** Section 5.3 — Solving Trig Equations
+
+**What it does:**
+Full narrative animation for `cot x · cos²x = 2cot x` — **all solutions**.
+Includes an algebra-steps phase before the graphical verification, ensuring viewers
+understand the algebraic motivation. Two-panel modular layout: each panel fills the
+scene during its annotation phase, then shrinks to a thumbnail.
+
+1. Title + "All Solutions — no domain restriction" statement (held on screen)
+2. **Algebra steps phase** — original equation → subtract → factor → zero product
+   property; Case 1 (green) vs Case 2 (red) color-coded; warning box: don't divide by cot x
+3. **Panel A** (green border, full scene) — `y = cot x` over `[0, 3π]` (curve
+   **clipped** with `np.clip` to stay inside panel border); asymptotes at π, 2π;
+   `cot x = cos x/sin x = 0 ⟹ cos x = 0` annotation; gold zeros at π/2, 3π/2, 5π/2
+   with n=0,1,2 tags; general solution box `x = π/2 + πn, n ∈ ℤ` inside panel
+4. Panel A shrinks to left thumbnail
+5. **Panel B** (red border, full scene) — `y = cos²x` vs dashed ceiling `y=1` vs
+   target `y=2`; red-shaded gap; gap arrow annotation; "No intersection!" + proof stamp
+6. Panel B shrinks to right thumbnail — both visible simultaneously with ✓/✗ labels
+7. General solution banner: `x = π/2 + πn, n ∈ ℤ`
+
+**Key implementation detail — curve clipping:**
+```python
+Y_CLIP = 3.75
+def _cot_clipped(x):
+    s = np.sin(x)
+    if abs(s) < 1e-9:
+        return float(np.sign(np.cos(x)) * Y_CLIP)
+    return float(np.clip(np.cos(x) / s, -Y_CLIP, Y_CLIP))
+# Plot with step=0.005 for smooth clip boundary:
+b1 = axes.plot(_cot_clipped, x_range=[0+EPS, PI-EPS, 0.005], ...)
+```
+`SurroundingRectangle` does not clip rendered content — clamping the function value
+is the only reliable way to keep discontinuous curves inside a panel border.
+
+**Panel mechanics:**
+- Both panels built at full-size (`x_length≈9.6/8.5`), content created at correct `c2p()` positions
+- Each panel is a `VGroup(border, label, axes, all_content)`
+- Thumbnail transition: `vg.animate.scale(0.47).move_to(thumb_pos)` — all content scales uniformly
+
+**Color coding (project palette):**
+- Panel A border + Case 1 elements → `Q1_COLOR` (`#4ade80`, green)
+- Panel B border + impossible case elements → `ACCENT_RED` (`#fca5a5`)
+- `y = cot x` / `y = cos²x` curves → `ACCENT_TEAL` / `ACCENT_BLUE`
+- Zero dots + x-labels + solution box → `HIGHLIGHT` (`#fbbf24`, gold)
+
+**Private helpers:**
+- `_phase_intro()` — title + "All Solutions" subtitle box
+- `_phase_math_steps()` — 3 algebra steps with annotations, ZPP split, warning, bridge
+- `_phase_cot_panel()` — builds + annotates Panel A (with general solution box), shrinks to `COT_THUMB`
+- `_phase_cos2_panel()` — builds + annotates Panel B (with gap arrow), shrinks to `COS_THUMB`
+- `_phase_banner()` — ✓/✗ thumbnail labels + solution card
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_3_cot_factoring_graphical.py CotFactoringGraphicalAnalysis  # preview
+manim -pqh scenes/5_3_cot_factoring_graphical.py CotFactoringGraphicalAnalysis  # final
+```
+
+---
+
+### Planned Scenes
 
 | Planned scene | File | Covers |
 |---|---|---|
