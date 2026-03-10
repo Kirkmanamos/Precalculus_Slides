@@ -1,1230 +1,1553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5.1 Using Fundamental Identities — Precalculus</title>
-
-<!-- Font: Source Sans 3 — matches 4.9 presentation -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-
-<!-- KaTeX -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-
-<style>
-/* ===========================================
-   COLOR PALETTE
-   Identical to 4.9 Inverse Trig presentation.
-   =========================================== */
-:root {
-  --dark-navy:       #1a365d;
-  --blue-accent:     #2563eb;
-  --red-accent:      #dc2626;
-  --green-accent:    #16a34a;
-  --grid-line:       #dbeafe;
-  --dark-blue-curve: #1e40af;
-  --bg-white:        #ffffff;
-  --light-grid-bg:   #f8faff;
-  --teal-accent:     #0891b2;
-  --orange-accent:   #ea580c;
-  --purple-accent:   #7c3aed;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Source Sans 3', 'Segoe UI', sans-serif;
-  font-size: 28px; /* Base size — all em values scale from here */
-  background: var(--bg-white);
-  color: var(--dark-navy);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-}
-
-/* ===========================================
-   GRID BACKGROUND — blue #dbeafe lines, 30px
-   =========================================== */
-.grid-bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-image:
-    linear-gradient(var(--grid-line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-  background-size: 30px 30px;
-  z-index: 0;
-  pointer-events: none;
-}
-
-/* ===========================================
-   PROGRESS BAR — blue → teal gradient
-   =========================================== */
-#progress-bar {
-  position: fixed;
-  top: 0; left: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
-  transition: width 0.4s ease;
-  z-index: 1000;
-}
-
-/* ===========================================
-   NAV DOTS — hollow border circles
-   =========================================== */
-#nav-dots {
-  position: fixed;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 1000;
-}
-
-.nav-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  border: 2px solid var(--blue-accent);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.nav-dot.active {
-  background: var(--blue-accent);
-  transform: scale(1.3);
-}
-.nav-dot:hover {
-  background: var(--blue-accent);
-  opacity: 0.7;
-}
-
-/* ===========================================
-   SLIDES CONTAINER
-   =========================================== */
-#slides-container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1;
-}
-
-/* ===========================================
-   SLIDE BASE
-   Inactive: invisible + shifted right.
-   Active:   visible at origin.
-   Exiting:  invisible + shifted left.
-   =========================================== */
-.slide {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 60px 80px;
-  scroll-padding-bottom: 80px;
-  opacity: 0;
-  transform: translateX(60px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-  overflow-y: auto;
-}
-.slide.active {
-  opacity: 1;
-  transform: translateX(0);
-  pointer-events: auto;
-}
-.slide.exit-left {
-  opacity: 0;
-  transform: translateX(-60px);
-}
-
-/* ===========================================
-   TITLE SLIDE — dark navy background
-   =========================================== */
-.title-slide {
-  background: var(--dark-navy);
-  justify-content: center;
-}
-
-.section-title {
-  font-size: 2.8em;
-  font-weight: 700;
-  color: white;
-  text-align: center;
-}
-
-.section-subtitle {
-  font-size: 1.2em;
-  color: #93c5fd;
-  margin-top: 10px;
-  text-align: center;
-}
-
-/* Pythagorean identity chips on title slide */
-.id-chips {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.id-chip {
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(147, 197, 253, 0.35);
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 1.05em;
-  color: #dbeafe;
-}
-
-/* ===========================================
-   EXAMPLE / REFERENCE LABEL
-   Blue badge, top-left of slide — matches 4.9
-   =========================================== */
-.example-label {
-  position: absolute;
-  top: 18px;
-  left: 30px;
-  background: var(--blue-accent);
-  color: white;
-  padding: 4px 18px;
-  border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.95em;
-  letter-spacing: 1px;
-}
-
-/* ===========================================
-   CONTENT SLIDE TYPOGRAPHY
-   =========================================== */
-.slide-title {
-  font-size: 1.85em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-.slide-subtitle {
-  font-size: 1em;
-  color: #475569;
-  text-align: center;
-  margin-bottom: 18px;
-}
-
-/* ===========================================
-   PROBLEM STATEMENT — bordered equation box
-   =========================================== */
-.problem-statement {
-  background: white;
-  border: 2px solid var(--blue-accent);
-  border-radius: 8px;
-  padding: 14px 32px;
-  font-size: 1.4em;
-  font-weight: 600;
-  color: var(--dark-navy);
-  margin-bottom: 30px;
-  display: inline-block;
-  align-self: center;
-  line-height: 1.7;
-  text-align: center;
-}
-
-/* ===========================================
-   STEPS — click-to-advance reveals
-   =========================================== */
-.steps-area {
-  width: 100%;
-  max-width: 1060px;
-  display: flex;
-  flex-direction: column;
-}
-
-.step {
-  display: none;
-  align-items: flex-start;
-  gap: 16px;
-  width: 100%;
-}
-
-.step.visible {
-  display: flex;
-  animation: stepReveal 0.4s ease both;
-  margin-bottom: 0.5rem;
-}
-.step.visible:last-child { margin-bottom: 0; }
-
-@keyframes stepReveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Small all-caps label column */
-.step-label {
-  font-size: 0.78em;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #64748b;
-  min-width: 140px;
-  flex-shrink: 0;
-  padding-top: 5px;
-}
-
-/* Math content */
-.step-math {
-  font-size: 1.1em;
-  line-height: 2;
-  flex: 1;
-  color: var(--dark-navy);
-}
-
-/* Annotation — blue, bold, always on its own line below the equation */
-.annotation {
-  color: var(--blue-accent);
-  font-size: 0.82em;
-  font-weight: 600;
-  display: block;
-  margin-top: 12px;
-}
-
-/* Final answer step — green left-border highlight */
-.step.answer .step-math {
-  background: #f0fdf4;
-  border-left: 4px solid var(--green-accent);
-  padding: 10px 18px;
-  border-radius: 0 6px 6px 0;
-}
-
-/* ===========================================
-   EVEN/ODD IDENTITIES TABLE
-   Dark navy headers matching 4.9 tables
-   =========================================== */
-.identities-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border: 2px solid var(--dark-navy);
-  border-radius: 6px;
-  overflow: hidden;
-  width: 100%;
-  max-width: 1000px;
-}
-
-.id-col {
-  padding: 0 0 22px;
-  background: white;
-}
-.id-col:first-child {
-  border-right: 2px solid var(--dark-navy);
-}
-
-/* Dark navy column header — matches .summary-table th */
-.id-col-header {
-  background: var(--dark-navy);
-  color: white;
-  font-weight: 700;
-  font-size: 1.05em;
-  padding: 10px 24px;
-  margin-bottom: 16px;
-}
-
-.id-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0 24px;
-}
-
-.id-list li {
-  font-size: 1.05em;
-  line-height: 1.6;
-}
-
-/* Hidden until revealed by click */
-.col-reveal {
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.col-reveal.visible {
-  opacity: 1;
-}
-
-/* ===========================================
-   TRIG IDENTITIES REFERENCE — 3-column layout
-   =========================================== */
-.ref-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  width: 100%;
-  max-width: 1100px;
-}
-
-.ref-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.ref-col-header {
-  background: var(--dark-navy);
-  color: white;
-  font-weight: 700;
-  font-size: 0.72em;
-  padding: 0.3em 0.7em;
-  text-align: center;
-  border-radius: 6px 6px 0 0;
-}
-
-.ref-cell {
-  background: #f1f5f9;
-  padding: 0.25em 0.6em;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.78em;
-  line-height: 1.8;
-  text-align: center;
-}
-.ref-cell:last-child { border-bottom: none; }
-
-.ref-cell.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.3em;
-  text-align: center;
-}
-
-.ref-note {
-  font-size: 0.68em;
-  color: #64748b;
-  font-weight: 600;
-  margin-top: 0.5rem;
-  text-align: left;
-  padding-left: 0.3em;
-}
-
-.ref-footer {
-  font-size: 0.62em;
-  color: #64748b;
-  text-align: center;
-  padding: 0.3em;
-}
-
-/* ===========================================
-   STRATEGY SUMMARY CARDS
-   =========================================== */
-.strategy-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.6rem;
-  width: 100%;
-  max-width: 1100px;
-}
-
-.strategy-card {
-  background: white;
-  border-left: 4px solid var(--blue-accent);
-  border-radius: 0 8px 8px 0;
-  padding: 0.4em 0.8em;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.6em;
-}
-.strategy-card.green  { border-color: var(--green-accent); }
-.strategy-card.teal   { border-color: var(--teal-accent); }
-.strategy-card.orange { border-color: var(--orange-accent); }
-.strategy-card.purple { border-color: var(--purple-accent); }
-
-.strategy-num {
-  font-size: 0.7em;
-  font-weight: 700;
-  color: white;
-  background: var(--blue-accent);
-  min-width: 1.6em;
-  height: 1.6em;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 0.15em;
-}
-.strategy-card.green  .strategy-num { background: var(--green-accent); }
-.strategy-card.teal   .strategy-num { background: var(--teal-accent); }
-.strategy-card.orange .strategy-num { background: var(--orange-accent); }
-.strategy-card.purple .strategy-num { background: var(--purple-accent); }
-
-.strategy-content {
-  flex: 1;
-}
-
-.strategy-title {
-  font-size: 0.72em;
-  font-weight: 700;
-  color: var(--dark-navy);
-  line-height: 1.3;
-}
-
-.strategy-desc {
-  font-size: 0.58em;
-  color: #64748b;
-  line-height: 1.4;
-  margin-top: 0.1em;
-}
-
-.strategy-footer {
-  font-size: 0.65em;
-  color: var(--blue-accent);
-  font-weight: 600;
-  text-align: center;
-  margin-top: 0.7rem;
-  max-width: 1100px;
-}
-
-/* ===========================================
-   CLICK HINT — centered, pulsing (4.9 style)
-   =========================================== */
-.click-hint {
-  position: absolute;
-  bottom: 38px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.85em;
-  color: #94a3b8;
-  animation: pulse 2s infinite;
-  white-space: nowrap;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50%       { opacity: 1;   }
-}
-
-/* ===========================================
-   KATEX — match surrounding font size
-   =========================================== */
-.katex { font-size: 1em !important; }
-.katex-display { margin: 0 !important; text-align: left !important; }
-
-/* ===========================================
-   REDUCED MOTION
-   =========================================== */
-@media (prefers-reduced-motion: reduce) {
-  .slide, .col-reveal { transition: opacity 0.15s ease !important; }
-  .step.visible { animation: none; opacity: 1; }
-}
-
-/* ===========================================
-   RESPONSIVE
-   =========================================== */
-@media (max-width: 768px) {
-  .slide         { padding: 40px 24px; }
-  .slide-title   { font-size: 1.4em; }
-  #nav-dots      { display: none; }
-  .step-label    { display: none; }
-}
-/* ===========================================
-   MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
-   =========================================== */
-@media (max-width: 768px) {
-  html, body {
-    font-size: 18px !important;
-    width: 100%;
-    height: 100%;
-  }
-
-  .slide {
-    padding-top: max(16px, env(safe-area-inset-top)) !important;
-    padding-right: 12px !important;
-    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
-    padding-left: 12px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .slide-title,
-  .section-title {
-    line-height: 1.14;
-  }
-
-  .slide-subtitle {
-    font-size: 0.9em !important;
-  }
-
-  .problem-statement {
-    font-size: 0.95em !important;
-    padding: 0.48em 0.66em !important;
-    margin-bottom: 0.55rem !important;
-  }
-
-  .steps-area {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
-  }
-
-  .step {
-    gap: 8px !important;
-  }
-
-  .step-label {
-    min-width: 0 !important;
-    font-size: 0.6em !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.92em !important;
-    line-height: 1.6 !important;
-  }
-
-  .example-label,
-  .concept-label,
-  .ref-label {
-    top: 10px !important;
-    left: 12px !important;
-    font-size: 0.52em !important;
-    padding: 0.22em 0.6em !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  .click-hint {
-    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-    font-size: 0.5em !important;
-    max-width: 92vw;
-    text-align: center;
-  }
-
-  .ref-grid,
-  .strategy-grid,
-  .identities-grid,
-  .qa-list-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .nav-dots,
-  #nav-dots,
-  #navDots {
-    display: none !important;
-  }
-
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 420px) {
-  html, body {
-    font-size: 16px !important;
-  }
-
-  .slide {
-    padding-right: 10px !important;
-    padding-left: 10px !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.88em !important;
-  }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.1 — Using Fundamental Identities</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --purple-accent: #7c3aed;
+            --grid-line:     #dbeafe;
+            --bg-white:      #ffffff;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+            --navy-light:    #e8edf5;
+            --bottom-ui-stack-height: 7.6rem;
+            --identity-dock-left: 1rem;
+            --identity-dock-bottom: 0.9rem;
+            --identity-dock-gap: 0.5rem;
+            --identity-panel-width: min(18rem, calc(100vw - 2rem));
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;
+            background: var(--navy);
+        }
+
+        .slides-wrapper {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 5rem;
+            padding-bottom: 3rem;
+            padding-left: max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        .slide-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+        }
+        .slide-body:has(.steps-area) {
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+        .slide-body.ref-layout,
+        .slide-body.launch-stack,
+        .slide-body:has(.strategy-grid) {
+            padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+        }
+
+        .title-slide {
+            background: var(--navy);
+            color: white;
+            justify-content: center;
+        }
+
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
+        }
+
+        .title-section-label {
+            font-size: 0.62em;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #60a5fa;
+            margin-bottom: 0.75rem;
+        }
+        .title-main {
+            font-size: 2em;
+            font-weight: 700;
+            line-height: 1.2;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        .title-objective {
+            font-size: 0.72em;
+            color: #93c5fd;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-top: 0.75rem;
+        }
+        .identity-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.2rem;
+        }
+        .chip {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px;
+            padding: 0.2em 0.75em;
+            font-size: 0.58em;
+            color: #e2e8f0;
+        }
+
+        .slide-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+        .slide-title {
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .example-label, .concept-label, .ref-label {
+            font-size: 0.6em;
+            font-weight: 700;
+            padding: 0.2em 0.75em;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: white;
+        }
+        .example-label { background: var(--green-accent); }
+        .concept-label { background: var(--teal-accent); }
+        .ref-label { background: var(--navy); }
+
+        .problem-statement {
+            background: var(--navy-light);
+            border-left: 5px solid var(--navy);
+            border-radius: 10px;
+            padding: 0.65em 1.2em;
+            margin-bottom: 0.9rem;
+            flex-shrink: 0;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 0.9em;
+        }
+        .problem-statement .katex-display { margin: 0; }
+
+        .strategy-note {
+            font-size: 0.64em;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .concept-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 0 10px 10px 0;
+            padding: 0.8em 1.2em;
+        }
+        .concept-box.teal { border-color: var(--teal-accent); }
+        .concept-box.green { border-color: var(--green-accent); }
+        .concept-box.orange { border-color: var(--orange-accent); background: #fff7ed; }
+        .concept-box p {
+            font-size: 0.75em;
+            line-height: 1.6;
+            color: var(--text);
+        }
+        .concept-box p + p { margin-top: 0.45em; }
+        .concept-box ul {
+            margin: 0;
+            padding-left: 1.2em;
+            display: grid;
+            gap: 0.45em;
+        }
+        .concept-box li {
+            font-size: 0.75em;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .steps-area {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            padding-bottom: calc(max(3.5rem, var(--bottom-ui-stack-height)) + env(safe-area-inset-bottom));
+            scroll-padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+        }
+
+        .step { display: none; }
+        .step.visible {
+            display: block;
+            animation: stepReveal 0.4s ease both;
+            margin-bottom: 0.4rem;
+        }
+        .step.visible:last-child { margin-bottom: 0; }
+
+        @keyframes stepReveal {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.45em 1.1em;
+        }
+        .step-box.teal { background: var(--teal-light); border-color: var(--teal-accent); }
+        .step-box.green { background: var(--green-light); border-color: var(--green-accent); }
+        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+
+        .step-label {
+            font-size: 0.58em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.08em;
+        }
+        .step-math {
+            font-size: 0.88em;
+            line-height: 2;
+            padding: 0.2em 0;
+            text-align: center;
+        }
+        .step-math.has-annotation {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            text-align: left;
+        }
+        .step-eq {
+            flex: 1;
+            text-align: center;
+        }
+        .annotation {
+            flex: 0 0 36%;
+            color: var(--blue-accent);
+            font-size: 0.72em;
+            font-weight: 600;
+            line-height: 1.45;
+            text-align: left;
+            border-left: 3px solid #93c5fd;
+            padding-left: 1rem;
+        }
+
+        .launch-stack {
+            justify-content: flex-start;
+            gap: 0.75rem;
+        }
+        .task-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+        }
+        .task-pill {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: var(--navy);
+            border-radius: 999px;
+            padding: 0.28em 0.8em;
+            font-size: 0.58em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.65rem;
+        }
+        .activity-card {
+            background: white;
+            border: 2px solid #dbeafe;
+            border-left: 5px solid var(--teal-accent);
+            border-radius: 12px;
+            padding: 0.52em 0.8em;
+        }
+        .activity-card:nth-child(2n) { border-left-color: var(--blue-accent); }
+        .activity-card:nth-child(3n) { border-left-color: var(--green-accent); }
+        .activity-label {
+            font-size: 0.54em;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.2rem;
+        }
+        .activity-math {
+            font-size: 0.76em;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .activity-math .katex-display { margin: 0; }
+
+        .ref-layout {
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+        .ref-columns {
+            display: grid;
+            grid-template-columns: 1.05fr 0.9fr 0.9fr 1.05fr;
+            gap: 0.6rem;
+            flex: 1;
+        }
+        .ref-card {
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .ref-card-title {
+            background: var(--navy);
+            color: white;
+            font-size: 0.56em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.42em 0.55em;
+            text-align: center;
+        }
+        .ref-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding: 0.45em 0.5em 0.55em;
+        }
+        .ref-stack {
+            display: grid;
+            gap: 0.3rem;
+        }
+        .ref-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.25rem;
+        }
+        .ref-item {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.24em 0.28em;
+            font-size: 0.62em;
+            text-align: center;
+            line-height: 1.45;
+        }
+        .ref-item.single { grid-column: 1 / -1; }
+        .ref-note, .ref-footer {
+            font-size: 0.52em;
+            line-height: 1.45;
+            color: var(--text-muted);
+        }
+        .ref-footer { text-align: center; margin-top: auto; }
+
+        .parity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .parity-panel {
+            background: white;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .parity-title {
+            background: var(--navy);
+            color: white;
+            padding: 0.45em 0.8em;
+            font-size: 0.68em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+        .parity-list {
+            list-style: none;
+            padding: 0.7em 0.9em 0.9em;
+            display: grid;
+            gap: 0.4rem;
+        }
+        .parity-list li {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.32em 0.55em;
+            font-size: 0.8em;
+            line-height: 1.6;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+        }
+        .strategy-card {
+            background: white;
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 0 10px 10px 0;
+            padding: 0.5em 0.9em;
+            display: flex;
+            gap: 0.65em;
+            align-items: flex-start;
+        }
+        .strategy-card.green { border-color: var(--green-accent); }
+        .strategy-card.teal { border-color: var(--teal-accent); }
+        .strategy-card.orange { border-color: var(--orange-accent); }
+        .strategy-card.purple { border-color: var(--purple-accent); }
+        .strategy-num {
+            min-width: 1.65em;
+            height: 1.65em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blue-accent);
+            color: white;
+            font-size: 0.66em;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 0.1em;
+        }
+        .strategy-card.green .strategy-num { background: var(--green-accent); }
+        .strategy-card.teal .strategy-num { background: var(--teal-accent); }
+        .strategy-card.orange .strategy-num { background: var(--orange-accent); }
+        .strategy-card.purple .strategy-num { background: var(--purple-accent); }
+        .strategy-title {
+            font-size: 0.68em;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+        .strategy-desc {
+            font-size: 0.58em;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-top: 0.12em;
+        }
+        .summary-note {
+            font-size: 0.64em;
+            color: var(--blue-accent);
+            font-weight: 600;
+            text-align: center;
+            margin-top: 0.8rem;
+        }
+
+        .identity-dock {
+            position: fixed;
+            left: var(--identity-dock-left);
+            bottom: calc(var(--identity-dock-bottom) + env(safe-area-inset-bottom));
+            display: flex;
+            gap: var(--identity-dock-gap);
+            z-index: 112;
+            max-width: calc(100vw - 2rem);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .identity-dock.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+        .identity-widget {
+            position: relative;
+        }
+        .identity-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 999px;
+            padding: 0.46rem 0.72rem;
+            min-width: 5rem;
+            color: var(--navy);
+            background: rgba(248, 250, 252, 0.96);
+            font: inherit;
+            font-size: 0.48em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .identity-toggle:hover,
+        .identity-toggle:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            outline: none;
+        }
+        .identity-widget.reciprocal .identity-toggle { background: rgba(239, 246, 255, 0.96); }
+        .identity-widget.quotient .identity-toggle { background: rgba(240, 253, 250, 0.96); }
+        .identity-widget.pythagorean .identity-toggle { background: rgba(240, 253, 244, 0.96); }
+        .identity-widget.cofunction .identity-toggle { background: rgba(255, 247, 237, 0.96); }
+        .identity-widget.parity .identity-toggle { background: rgba(245, 243, 255, 0.96); }
+
+        .identity-panel {
+            position: absolute;
+            left: 0;
+            bottom: calc(100% + 0.55rem);
+            width: var(--identity-panel-width);
+            border-radius: 16px;
+            padding: 0.9rem 0.95rem 0.95rem;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(248, 250, 252, 0.98);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px) scale(0.98);
+            transform-origin: bottom left;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .identity-widget.is-open .identity-panel {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .identity-widget.reciprocal .identity-panel { border-color: rgba(37, 99, 235, 0.22); }
+        .identity-widget.quotient .identity-panel { border-color: rgba(8, 145, 178, 0.22); }
+        .identity-widget.pythagorean .identity-panel { border-color: rgba(22, 163, 74, 0.22); }
+        .identity-widget.cofunction .identity-panel { border-color: rgba(217, 119, 6, 0.22); }
+        .identity-widget.parity .identity-panel { border-color: rgba(124, 58, 237, 0.22); }
+
+        .identity-panel-title {
+            font-size: 0.62em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.55rem;
+        }
+        .identity-widget.reciprocal .identity-panel-title { color: #1d4ed8; }
+        .identity-widget.quotient .identity-panel-title { color: #0f766e; }
+        .identity-widget.pythagorean .identity-panel-title { color: #15803d; }
+        .identity-widget.cofunction .identity-panel-title { color: #b45309; }
+        .identity-widget.parity .identity-panel-title { color: #6d28d9; }
+
+        .identity-panel-scroll {
+            display: grid;
+            gap: 0.5rem;
+            max-height: min(19rem, calc(100vh - 12rem));
+            overflow-y: auto;
+            padding-right: 0.15rem;
+        }
+        .identity-panel-item {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(226, 232, 240, 0.72);
+            border-left: 3px solid transparent;
+            border-radius: 12px;
+            padding: 0.62rem 0.75rem;
+        }
+        .identity-widget.reciprocal .identity-panel-item { border-left-color: rgba(37, 99, 235, 0.44); }
+        .identity-widget.quotient .identity-panel-item { border-left-color: rgba(8, 145, 178, 0.44); }
+        .identity-widget.pythagorean .identity-panel-item { border-left-color: rgba(22, 163, 74, 0.44); }
+        .identity-widget.cofunction .identity-panel-item { border-left-color: rgba(217, 119, 6, 0.44); }
+        .identity-widget.parity .identity-panel-item { border-left-color: rgba(124, 58, 237, 0.44); }
+        .identity-panel-meta {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.18rem;
+        }
+        .identity-panel-math {
+            font-size: 0.72em;
+            line-height: 1.5;
+            text-align: center;
+        }
+        .identity-panel-math .katex-display { margin: 0; }
+
+        .nav-dots {
+            position: fixed;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+        .nav-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nav-dot.active {
+            background: var(--blue-accent);
+            transform: scale(1.4);
+        }
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease;
+            z-index: 100;
+        }
+        .click-hint {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.45em;
+            color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+            z-index: 100;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .concept-box p,
+        .slide-title,
+        .strategy-title,
+        .strategy-desc,
+        .annotation {
+            overflow-wrap: anywhere;
+        }
+        .problem-statement .katex-display,
+        .step-math .katex-display,
+        .ref-item .katex-display,
+        .activity-math .katex-display,
+        .parity-list .katex-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.12em 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide { transition: opacity 0.3s ease; transform: none !important; }
+            .step.visible { animation: none; opacity: 1; }
+        }
+
+        @media (max-width: 1180px) {
+            html, body { font-size: 25px; }
+        }
+
+        @media (max-width: 900px) {
+            html, body { font-size: 22px; }
+            .slide {
+                padding-top: 4.25rem;
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+                padding-bottom: 4rem;
+            }
+            .slide-header {
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 0.55rem;
+            }
+            .activity-grid,
+            .strategy-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .identity-dock {
+                flex-wrap: wrap;
+                row-gap: 0.45rem;
+                max-width: calc(100vw - 1.5rem);
+            }
+            .nav-dots { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            html, body { font-size: 19px; }
+            .slide {
+                padding-top: max(1.4rem, env(safe-area-inset-top));
+                padding-left: 0.95rem;
+                padding-right: 0.95rem;
+                padding-bottom: 4.9rem;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .steps-area { padding-bottom: 5.4rem; }
+            .title-main { font-size: 1.72em; }
+            .step-math.has-annotation {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+            .annotation {
+                border-left: none;
+                border-top: 3px solid #93c5fd;
+                padding-left: 0;
+                padding-top: 0.65rem;
+            }
+            .parity-grid,
+            .activity-grid,
+            .strategy-grid {
+                grid-template-columns: 1fr;
+            }
+            .ref-columns {
+                grid-template-columns: 1fr 1fr;
+                overflow-y: auto;
+                padding-right: 0.2rem;
+            }
+            .identity-dock {
+                left: 0.85rem;
+                right: 0.85rem;
+                max-width: none;
+                gap: 0.4rem;
+            }
+            .identity-widget {
+                flex: 1 1 calc(50% - 0.2rem);
+            }
+            .identity-toggle {
+                width: 100%;
+                min-width: 0;
+            }
+            .identity-panel {
+                width: min(17rem, calc(100vw - 1.7rem));
+            }
+        }
+
+        @media (max-width: 480px) {
+            html, body { font-size: 17px; }
+            .slide {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+                padding-bottom: 5.2rem;
+            }
+            .title-main { font-size: 1.58em; }
+            .title-objective { font-size: 0.7em; }
+            .slide-title { line-height: 1.15; }
+            .example-label,
+            .concept-label,
+            .ref-label { font-size: 0.54em; }
+            .identity-widget {
+                flex: 1 1 100%;
+            }
+            .identity-toggle {
+                padding: 0.42rem 0.58rem;
+                font-size: 0.47em;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Grid background layer -->
-<div class="grid-bg"></div>
-
-<!-- Progress bar -->
-<div id="progress-bar"></div>
-
-<!-- Nav dots -->
-<nav id="nav-dots" aria-label="Slide navigation"></nav>
-
-<div id="slides-container">
-
-<!-- ====================================================
-     SLIDE 1 — TITLE
-     ==================================================== -->
-<section class="slide title-slide active" id="slide-1">
-  <h1 class="section-title">5.1 Using Fundamental Identities</h1>
-  <p class="section-subtitle">Simplifying and factoring trigonometric expressions</p>
-  <div class="id-chips">
-    <span class="id-chip">$\sin^2 x + \cos^2 x = 1$</span>
-    <span class="id-chip">$1 + \tan^2 x = \sec^2 x$</span>
-    <span class="id-chip">$1 + \cot^2 x = \csc^2 x$</span>
-  </div>
-
-</section>
-
-
-<!-- ====================================================
-     SLIDE 2 — TRIGONOMETRIC IDENTITIES REFERENCE
-     Three-column layout: Reciprocal, Quotient+Pythagorean, Cofunction
-     ==================================================== -->
-<section class="slide" id="slide-2">
-  <span class="example-label">REFERENCE</span>
-  <h2 class="slide-title">Trigonometric Identities</h2>
-
-  <div class="ref-grid">
-
-    <!-- Column 1: Reciprocal Identities -->
-    <div class="ref-column">
-      <div class="ref-col-header">Reciprocal Identities</div>
-      <div class="ref-cell two-col">
-        <span>$\sin\theta = \dfrac{1}{\csc\theta}$</span>
-        <span>$\csc\theta = \dfrac{1}{\sin\theta}$</span>
-      </div>
-      <div class="ref-cell two-col">
-        <span>$\cos\theta = \dfrac{1}{\sec\theta}$</span>
-        <span>$\sec\theta = \dfrac{1}{\cos\theta}$</span>
-      </div>
-      <div class="ref-cell two-col">
-        <span>$\tan\theta = \dfrac{1}{\cot\theta}$</span>
-        <span>$\cot\theta = \dfrac{1}{\tan\theta}$</span>
-      </div>
-      <div class="ref-note">Also work with powers…</div>
-      <div class="ref-cell">$\sin^2\theta = \dfrac{1}{\csc^2\theta}$</div>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="identity-dock is-hidden" id="identityDock" aria-label="Identity quick references">
+    <div class="identity-widget reciprocal" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-reciprocal">
+            Reciprocal
+        </button>
+        <div class="identity-panel" id="identity-panel-reciprocal">
+            <div class="identity-panel-title">Reciprocal Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\sin\theta = \dfrac{1}{\csc\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\csc\theta = \dfrac{1}{\sin\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\cos\theta = \dfrac{1}{\sec\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\sec\theta = \dfrac{1}{\cos\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\tan\theta = \dfrac{1}{\cot\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\cot\theta = \dfrac{1}{\tan\theta}\]</div></div>
+            </div>
+        </div>
     </div>
-
-    <!-- Column 2: Quotient + Pythagorean Identities -->
-    <div class="ref-column">
-      <div class="ref-col-header">Quotient Identities</div>
-      <div class="ref-cell two-col">
-        <span>$\tan\theta = \dfrac{\sin\theta}{\cos\theta}$</span>
-        <span>$\cot\theta = \dfrac{\cos\theta}{\sin\theta}$</span>
-      </div>
-      <div class="ref-col-header" style="margin-top: 0.4rem; border-radius: 6px 6px 0 0;">Pythagorean Identities</div>
-      <div class="ref-cell">$\cos^2\theta + \sin^2\theta = 1$</div>
-      <div class="ref-cell">$\tan^2\theta + 1 = \sec^2\theta$</div>
-      <div class="ref-cell">$\cot^2\theta + 1 = \csc^2\theta$</div>
+    <div class="identity-widget quotient" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-quotient">
+            Quotient
+        </button>
+        <div class="identity-panel" id="identity-panel-quotient">
+            <div class="identity-panel-title">Quotient Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\tan\theta = \dfrac{\sin\theta}{\cos\theta}\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\cot\theta = \dfrac{\cos\theta}{\sin\theta}\]</div></div>
+            </div>
+        </div>
     </div>
-
-    <!-- Column 3: Cofunction Identities -->
-    <div class="ref-column">
-      <div class="ref-col-header">Cofunction Identities</div>
-      <div class="ref-cell">$\sin(\theta) = \cos(90° - \theta)$</div>
-      <div class="ref-cell">$\cos(\theta) = \sin(90° - \theta)$</div>
-      <div class="ref-cell">$\tan(\theta) = \cot(90° - \theta)$</div>
-      <div class="ref-cell">$\cot(\theta) = \tan(90° - \theta)$</div>
-      <div class="ref-cell">$\sec(\theta) = \csc(90° - \theta)$</div>
-      <div class="ref-cell">$\csc(\theta) = \sec(90° - \theta)$</div>
-      <div class="ref-footer">↑ $\theta$ is an acute angle ↑</div>
+    <div class="identity-widget pythagorean" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-pythagorean">
+            Pythagorean
+        </button>
+        <div class="identity-panel" id="identity-panel-pythagorean">
+            <div class="identity-panel-title">Pythagorean Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\sin^2\theta + \cos^2\theta = 1\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[1 + \tan^2\theta = \sec^2\theta\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[1 + \cot^2\theta = \csc^2\theta\]</div></div>
+            </div>
+        </div>
     </div>
-
-  </div>
-</section>
-
-
-<!-- ====================================================
-     SLIDE 3 — EVEN / ODD IDENTITIES
-     Click 1 → reveal Even column
-     Click 2 → reveal Odd column
-     ==================================================== -->
-<section class="slide" id="slide-3" data-steps="2" data-current-step="0">
-  <span class="example-label">REFERENCE</span>
-
-  <h2 class="slide-title">Even / Odd Identities</h2>
-  <p class="slide-subtitle">Click to reveal each column</p>
-
-  <div class="identities-grid">
-    <div class="id-col">
-      <p class="id-col-header">Even Functions</p>
-      <ul class="id-list col-reveal" data-step="1">
-        <li>$\cos(-x) = \phantom{-}\cos x$</li>
-        <li>$\sec(-x) = \phantom{-}\sec x$</li>
-      </ul>
+    <div class="identity-widget cofunction" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-cofunction">
+            Co-Function
+        </button>
+        <div class="identity-panel" id="identity-panel-cofunction">
+            <div class="identity-panel-title">Cofunction Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\sin\theta = \cos\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\cos\theta = \sin\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\tan\theta = \cot\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\cot\theta = \tan\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\sec\theta = \csc\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+                <div class="identity-panel-item"><div class="identity-panel-math">\[\csc\theta = \sec\left(\dfrac{\pi}{2} - \theta\right)\]</div></div>
+            </div>
+        </div>
     </div>
-    <div class="id-col">
-      <p class="id-col-header">Odd Functions</p>
-      <ul class="id-list col-reveal" data-step="2">
-        <li>$\sin(-x) = -\sin x$</li>
-        <li>$\tan(-x) = -\tan x$</li>
-        <li>$\csc(-x) = -\csc x$</li>
-        <li>$\cot(-x) = -\cot x$</li>
-      </ul>
+    <div class="identity-widget parity" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-parity">
+            Even/Odd
+        </button>
+        <div class="identity-panel" id="identity-panel-parity">
+            <div class="identity-panel-title">Even / Odd Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Even</div>
+                    <div class="identity-panel-math">\[\cos(-x) = \cos x\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Even</div>
+                    <div class="identity-panel-math">\[\sec(-x) = \sec x\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Odd</div>
+                    <div class="identity-panel-math">\[\sin(-x) = -\sin x\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Odd</div>
+                    <div class="identity-panel-math">\[\tan(-x) = -\tan x\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Odd</div>
+                    <div class="identity-panel-math">\[\csc(-x) = -\csc x\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Odd</div>
+                    <div class="identity-panel-math">\[\cot(-x) = -\cot x\]</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <p class="click-hint">Click to reveal</p>
+<div class="slides-wrapper">
 
-</section>
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.1 Using<br>Fundamental Identities</div>
+        <div class="title-objective">
+            Objective: Use reciprocal, quotient, Pythagorean, cofunction, and even/odd identities
+            to simplify, rewrite, and factor trigonometric expressions.
+        </div>
+        <div class="identity-chips">
+            <span class="chip">Equivalent forms</span>
+            <span class="chip">Reciprocal identities</span>
+            <span class="chip">Quotient identities</span>
+            <span class="chip">Pythagorean identities</span>
+            <span class="chip">Rewrite before simplifying</span>
+        </div>
+    </section>
 
+    <section class="slide grid-bg" id="slide-1">
+        <div class="slide-header">
+            <span class="concept-label">Launch</span>
+            <h2 class="slide-title">Identity Family Sort</h2>
+        </div>
+        <div class="slide-body launch-stack">
+            <div class="concept-box teal">
+                <p><strong>At your board:</strong> Sort the 9 cards into <strong>3 families</strong> of expressions that are always equivalent.</p>
+                <p>You must be able to explain <strong>why</strong> each card belongs in its family. Do not just group by appearance.</p>
+            </div>
+            <div class="task-strip" aria-label="Task expectations">
+                <div class="task-pill">Sort into 3 families</div>
+                <div class="task-pill">Name the connection</div>
+                <div class="task-pill">Defend one grouping</div>
+                <div class="task-pill">Create 1 new card</div>
+            </div>
+            <div class="activity-grid" aria-label="Expressions to sort">
+                <div class="activity-card">
+                    <div class="activity-label">Card A</div>
+                    <div class="activity-math">\[\tan x\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card B</div>
+                    <div class="activity-math">\[\dfrac{\sin x}{\cos x}\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card C</div>
+                    <div class="activity-math">\[\dfrac{1}{\cot x}\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card D</div>
+                    <div class="activity-math">\[\csc x\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card E</div>
+                    <div class="activity-math">\[\dfrac{1}{\sin x}\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card F</div>
+                    <div class="activity-math">\[\dfrac{\sec x}{\tan x}\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card G</div>
+                    <div class="activity-math">\[1\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card H</div>
+                    <div class="activity-math">\[\sin^2 x + \cos^2 x\]</div>
+                </div>
+                <div class="activity-card">
+                    <div class="activity-label">Card I</div>
+                    <div class="activity-math">\[\sec^2 x - \tan^2 x\]</div>
+                </div>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Debrief prompt:</strong> Which pair looked the least alike at first, but turned out to be in the same family?</p>
+            </div>
+        </div>
+    </section>
 
-<!-- ====================================================
-     SLIDE 4 — EXAMPLE 1
-     Simplify sin²x · sec x − sec x
-     ==================================================== -->
-<section class="slide" id="slide-4" data-steps="3" data-current-step="0">
-  <span class="example-label">EXAMPLE 1 · SIMPLIFY</span>
+    <section class="slide grid-bg" id="slide-2">
+        <div class="slide-header">
+            <span class="ref-label">Reference</span>
+            <h2 class="slide-title">Trigonometric Identities</h2>
+        </div>
+        <div class="slide-body ref-layout">
+            <div class="ref-columns">
+                <div class="ref-card">
+                    <div class="ref-card-title">Reciprocal Identities</div>
+                    <div class="ref-card-body">
+                        <div class="ref-pair">
+                            <div class="ref-item">\[\sin\theta = \dfrac{1}{\csc\theta}\]</div>
+                            <div class="ref-item">\[\csc\theta = \dfrac{1}{\sin\theta}\]</div>
+                        </div>
+                        <div class="ref-pair">
+                            <div class="ref-item">\[\cos\theta = \dfrac{1}{\sec\theta}\]</div>
+                            <div class="ref-item">\[\sec\theta = \dfrac{1}{\cos\theta}\]</div>
+                        </div>
+                        <div class="ref-pair">
+                            <div class="ref-item">\[\tan\theta = \dfrac{1}{\cot\theta}\]</div>
+                            <div class="ref-item">\[\cot\theta = \dfrac{1}{\tan\theta}\]</div>
+                        </div>
+                        <div class="ref-note">These also work with powers, such as \(\sin^2\theta = \dfrac{1}{\csc^2\theta}\).</div>
+                    </div>
+                </div>
 
-  <p class="problem-statement">$\sin^2 x \sec x - \sec x$</p>
+                <div class="ref-card">
+                    <div class="ref-card-title">Quotient Identities</div>
+                    <div class="ref-card-body">
+                        <div class="ref-stack">
+                            <div class="ref-item single">\[\tan\theta = \dfrac{\sin\theta}{\cos\theta}\]</div>
+                            <div class="ref-item single">\[\cot\theta = \dfrac{\cos\theta}{\sin\theta}\]</div>
+                        </div>
+                    </div>
+                </div>
 
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Factor</span>
-      <div class="step-math">$= \sec x\,(\sin^2 x - 1)$</div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Pythagorean Id.</span>
-      <div class="step-math">
-        $= \sec x\,(-\cos^2 x)$
-        <span class="annotation">since $\sin^2 x - 1 = -\cos^2 x$</span>
-      </div>
-    </div>
-    <div class="step answer" data-step="3">
-      <span class="step-label">Answer</span>
-      <div class="step-math">$= \dfrac{-\cos^2 x}{\cos x} = -\cos x$</div>
-    </div>
-  </div>
+                <div class="ref-card">
+                    <div class="ref-card-title">Pythagorean Identities</div>
+                    <div class="ref-card-body">
+                        <div class="ref-stack">
+                            <div class="ref-item single">\[\sin^2\theta + \cos^2\theta = 1\]</div>
+                            <div class="ref-item single">\[1 + \tan^2\theta = \sec^2\theta\]</div>
+                            <div class="ref-item single">\[1 + \cot^2\theta = \csc^2\theta\]</div>
+                        </div>
+                    </div>
+                </div>
 
-  <p class="click-hint">Click to reveal next step</p>
+                <div class="ref-card">
+                    <div class="ref-card-title">Cofunction Identities</div>
+                    <div class="ref-card-body">
+                        <div class="ref-stack">
+                            <div class="ref-item single">\[\sin\theta = \cos\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                            <div class="ref-item single">\[\cos\theta = \sin\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                            <div class="ref-item single">\[\tan\theta = \cot\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                            <div class="ref-item single">\[\cot\theta = \tan\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                            <div class="ref-item single">\[\sec\theta = \csc\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                            <div class="ref-item single">\[\csc\theta = \sec\left(\dfrac{\pi}{2} - \theta\right)\]</div>
+                        </div>
+                        <div class="ref-footer">\(\theta\) is an acute angle.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</section>
+    <section class="slide grid-bg" id="slide-3" data-steps="2">
+        <div class="slide-header">
+            <span class="ref-label">Reference</span>
+            <h2 class="slide-title">Even / Odd Identities</h2>
+        </div>
+        <div class="slide-body">
+            <div class="concept-box orange" style="margin-bottom:0.9rem;">
+                <ul>
+                    <li><strong>Even functions:</strong> the output stays the same when the input changes sign, so \(\,f(-x) = f(x)\,\).</li>
+                    <li><strong>Odd functions:</strong> the output switches sign when the input changes sign, so \(\,f(-x) = -f(x)\,\).</li>
+                </ul>
+            </div>
+            <div class="steps-area">
+                <div class="parity-grid">
+                    <div class="step" id="slide-3-step-0">
+                        <div class="parity-panel">
+                            <div class="parity-title">Even Functions</div>
+                            <ul class="parity-list">
+                                <li>\[\cos(-x) = \cos x\]</li>
+                                <li>\[\sec(-x) = \sec x\]</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-3-step-1">
+                        <div class="parity-panel">
+                            <div class="parity-title">Odd Functions</div>
+                            <ul class="parity-list">
+                                <li>\[\sin(-x) = -\sin x\]</li>
+                                <li>\[\tan(-x) = -\tan x\]</li>
+                                <li>\[\csc(-x) = -\csc x\]</li>
+                                <li>\[\cot(-x) = -\cot x\]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="slide grid-bg" id="slide-4" data-steps="3">
+        <div class="slide-header">
+            <span class="example-label">Example 1</span>
+            <h2 class="slide-title">Simplify the expression</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\sin^2 x\sec x - \sec x\]</div>
+            <div class="strategy-note">Strategy: factor first, then use a Pythagorean identity to reduce the bracket.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor</div>
+                        <div class="step-math">\[\sec x(\sin^2 x - 1)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean Identity</div>
+                        <div class="step-math">\[\sec x(\sin^2 x - 1) = \sec x(-\cos^2 x)\]
+                            <div class="annotation">Use \(\sin^2 x - 1 = -\cos^2 x\).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\dfrac{-\cos^2 x}{\cos x} = -\cos x\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- ====================================================
-     SLIDE 5 — EXAMPLE 2
-     Simplify sin²x − cos²x
-     ==================================================== -->
-<section class="slide" id="slide-5" data-steps="2" data-current-step="0">
-  <span class="example-label">EXAMPLE 2 · SIMPLIFY</span>
+    <section class="slide grid-bg" id="slide-5" data-steps="2">
+        <div class="slide-header">
+            <span class="example-label">Example 2</span>
+            <h2 class="slide-title">Rewrite in an equivalent form</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\sin^2 x - \cos^2 x\]</div>
+            <div class="strategy-note">Strategy: replace one squared trig function with an equivalent expression involving the other.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Substitute</div>
+                        <div class="step-math">\[\sin^2 x - (1 - \sin^2 x)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[2\sin^2 x - 1\]
+                            <div class="annotation">An equivalent answer is \(1 - 2\cos^2 x\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <p class="problem-statement">$\sin^2 x - \cos^2 x$</p>
+    <section class="slide grid-bg" id="slide-6" data-steps="6">
+        <div class="slide-header">
+            <span class="example-label">Example 3</span>
+            <h2 class="slide-title">Factor the expression</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[6\cot^2\theta - 13\cot\theta + 5\]</div>
+            <div class="strategy-note">Strategy: let \(u = \cot\theta\) so the trinomial behaves like an ordinary quadratic.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Substitution</div>
+                        <div class="step-math">\[\text{Let } u = \cot\theta \quad \Rightarrow \quad 6u^2 - 13u + 5\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Find Factors</div>
+                        <div class="step-math">\[6 \cdot 5 = 30,\quad -10 + (-3) = -13\]
+                            <div class="annotation">Use \(-10\) and \(-3\) to split the middle term.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Rewrite Middle Term</div>
+                        <div class="step-math">\[6u^2 - 10u - 3u + 5\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Group</div>
+                        <div class="step-math">\[2u(3u - 5) - 1(3u - 5)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-4">
+                    <div class="step-box">
+                        <div class="step-label">Factor</div>
+                        <div class="step-math">\[(2u - 1)(3u - 5)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-5">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[(2\cot\theta - 1)(3\cot\theta - 5)\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Substitute</span>
-      <div class="step-math">
-        Replace $\cos^2 x$ with $1 - \sin^2 x$:<br>
-        $= \sin^2 x - (1 - \sin^2 x)$
-      </div>
-    </div>
-    <div class="step answer" data-step="2">
-      <span class="step-label">Answer</span>
-      <div class="step-math">
-        $= 2\sin^2 x - 1$
-        <span class="annotation">(equivalently, $\,1 - 2\cos^2 x$)</span>
-      </div>
-    </div>
-  </div>
+    <section class="slide grid-bg" id="slide-7" data-steps="3">
+        <div class="slide-header">
+            <span class="example-label">Example 4</span>
+            <h2 class="slide-title">Factor after rewriting</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\cot^2 x - 2\csc x - 7\]</div>
+            <div class="strategy-note">Strategy: rewrite \(\cot^2 x\) using a Pythagorean identity so every term involves \(\csc x\).</div>
+            <div class="steps-area">
+                <div class="step" id="slide-7-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Pythagorean Identity</div>
+                        <div class="step-math">\[\cot^2 x = \csc^2 x - 1 \quad \Rightarrow \quad \csc^2 x - 1 - 2\csc x - 7\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Combine</div>
+                        <div class="step-math">\[\csc^2 x - 2\csc x - 8\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[(\csc x - 4)(\csc x + 2)\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <p class="click-hint">Click to reveal next step</p>
+    <section class="slide grid-bg" id="slide-8" data-steps="4">
+        <div class="slide-header">
+            <span class="example-label">Example 5</span>
+            <h2 class="slide-title">Simplify the expression</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\csc x\sec x - \sin x\sec x\]</div>
+            <div class="strategy-note">Strategy: factor, convert to sine and cosine, then use a Pythagorean identity to create cancellation.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor</div>
+                        <div class="step-math">\[\sec x(\csc x - \sin x)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Reciprocal Identities</div>
+                        <div class="step-math">\[\dfrac{1}{\cos x}\left(\dfrac{1}{\sin x} - \sin x\right) = \dfrac{1}{\cos x} \cdot \dfrac{1 - \sin^2 x}{\sin x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean Identity</div>
+                        <div class="step-math">\[\dfrac{1}{\cos x} \cdot \dfrac{\cos^2 x}{\sin x}\]
+                            <div class="annotation">Replace \(1 - \sin^2 x\) with \(\cos^2 x\).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-3">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\dfrac{\cos x}{\sin x} = \cot x\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</section>
+    <section class="slide grid-bg" id="slide-9" data-steps="3">
+        <div class="slide-header">
+            <span class="example-label">Example 6</span>
+            <h2 class="slide-title">Rewrite without a fraction</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\text{Rewrite } \dfrac{\sin^2 x}{1 + \cos x} \text{ without a fraction.}\]</div>
+            <div class="strategy-note">Strategy: factor \(\sin^2 x\) as a difference of squares so the denominator appears as a common factor.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-9-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Pythagorean Identity</div>
+                        <div class="step-math">\[\sin^2 x = 1 - \cos^2 x = (1 - \cos x)(1 + \cos x)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Substitute</div>
+                        <div class="step-math">\[\dfrac{(1 - \cos x)(1 + \cos x)}{1 + \cos x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[1 - \cos x\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="slide grid-bg" id="slide-10" data-steps="4">
+        <div class="slide-header">
+            <span class="example-label">Example 7</span>
+            <h2 class="slide-title">Trig substitution</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">\[\text{Use } x = 9\cos\theta,\; 0 < \theta < \dfrac{\pi}{2}, \text{ to write } \sqrt{81 - x^2} \text{ as a trig function of } \theta.\]</div>
+            <div class="strategy-note">Strategy: substitute first, use a Pythagorean identity on the radicand, then use the domain to choose the correct sign.</div>
+            <div class="steps-area">
+                <div class="step" id="slide-10-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Substitute</div>
+                        <div class="step-math">\[x = 9\cos\theta \Rightarrow x^2 = 81\cos^2\theta\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Simplify Radicand</div>
+                        <div class="step-math">\[81 - x^2 = 81 - 81\cos^2\theta = 81(1 - \cos^2\theta)\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean Identity</div>
+                        <div class="step-math">\[81(1 - \cos^2\theta) = 81\sin^2\theta\]
+                            <div class="annotation">Use \(1 - \cos^2\theta = \sin^2\theta\).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-3">
+                    <div class="step-box green">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[\sqrt{81 - x^2} = \sqrt{81\sin^2\theta} = 9\sin\theta\]
+                            <div class="annotation">This is positive because \(0 < \theta < \dfrac{\pi}{2}\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<!-- ====================================================
-     SLIDE 6 — EXAMPLE 3
-     Factor 6cot²θ − 13cotθ + 5
-     ==================================================== -->
-<section class="slide" id="slide-6" data-steps="6" data-current-step="0">
-  <span class="example-label">EXAMPLE 3 · FACTOR</span>
+    <section class="slide grid-bg" id="slide-11">
+        <div class="slide-header">
+            <span class="concept-label">Summary</span>
+            <h2 class="slide-title">Strategies for Simplifying</h2>
+        </div>
+        <div class="slide-body">
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-num">1</div>
+                    <div>
+                        <div class="strategy-title">Factor out a common term</div>
+                        <div class="strategy-desc">Look for a shared factor across all terms before choosing an identity. Example 1 and Example 5 start that way.</div>
+                    </div>
+                </div>
+                <div class="strategy-card green">
+                    <div class="strategy-num">2</div>
+                    <div>
+                        <div class="strategy-title">Apply a Pythagorean identity</div>
+                        <div class="strategy-desc">Use \(\sin^2 x + \cos^2 x = 1\) and its rearrangements to replace one squared trig expression with another.</div>
+                    </div>
+                </div>
+                <div class="strategy-card teal">
+                    <div class="strategy-num">3</div>
+                    <div>
+                        <div class="strategy-title">Rewrite in sine and cosine</div>
+                        <div class="strategy-desc">Convert \(\sec\), \(\csc\), \(\tan\), and \(\cot\) when that reveals cancellation or common structure.</div>
+                    </div>
+                </div>
+                <div class="strategy-card orange">
+                    <div class="strategy-num">4</div>
+                    <div>
+                        <div class="strategy-title">Use \(u\)-substitution for factoring</div>
+                        <div class="strategy-desc">If a trig expression repeats, rename it first so the algebra becomes a familiar polynomial.</div>
+                    </div>
+                </div>
+                <div class="strategy-card purple">
+                    <div class="strategy-num">5</div>
+                    <div>
+                        <div class="strategy-title">Factor a difference of squares</div>
+                        <div class="strategy-desc">Expressions like \(1 - \cos^2 x\) can be factored further when you need a cancellation target.</div>
+                    </div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">6</div>
+                    <div>
+                        <div class="strategy-title">Look for the first move that reduces complexity</div>
+                        <div class="strategy-desc">Most problems use more than one idea, so the best first step is the one that makes the expression simpler.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-note">Most problems combine two or more of these moves. The hard part is spotting the first productive rewrite.</div>
+        </div>
+    </section>
 
-  <p class="problem-statement">$6\cot^2\!\theta - 13\cot\theta + 5$</p>
+</div>
 
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Substitution</span>
-      <div class="step-math">Let $u = \cot\theta$. Now factor $6u^2 - 13u + 5$.</div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Find factors</span>
-      <div class="step-math">Need two factors of $6 \cdot 5 = 30$ that sum to $-13$: <span class="annotation">$-10$ and $-3$</span></div>
-    </div>
-    <div class="step" data-step="3">
-      <span class="step-label">Rewrite middle</span>
-      <div class="step-math">$= 6u^2 - 10u - 3u + 5$</div>
-    </div>
-    <div class="step" data-step="4">
-      <span class="step-label">Group</span>
-      <div class="step-math">$= 2u(3u - 5) - 1(3u - 5)$</div>
-    </div>
-    <div class="step" data-step="5">
-      <span class="step-label">Factor</span>
-      <div class="step-math">$= (2u - 1)(3u - 5)$</div>
-    </div>
-    <div class="step answer" data-step="6">
-      <span class="step-label">Answer</span>
-      <div class="step-math">$= (2\cot\theta - 1)(3\cot\theta - 5)$</div>
-    </div>
-  </div>
-
-  <p class="click-hint">Click to reveal next step</p>
-
-</section>
-
-
-<!-- ====================================================
-     SLIDE 7 — EXAMPLE 4
-     Factor cot²x − 2csc x − 7
-     ==================================================== -->
-<section class="slide" id="slide-7" data-steps="3" data-current-step="0">
-  <span class="example-label">EXAMPLE 4 · FACTOR</span>
-
-  <p class="problem-statement">$\cot^2 x - 2\csc x - 7$</p>
-
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Pythagorean Id.</span>
-      <div class="step-math">
-        Use $\cot^2 x = \csc^2 x - 1$:<br>
-        $= \csc^2 x - 1 - 2\csc x - 7$
-      </div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Combine</span>
-      <div class="step-math">$= \csc^2 x - 2\csc x - 8$</div>
-    </div>
-    <div class="step answer" data-step="3">
-      <span class="step-label">Answer</span>
-      <div class="step-math">$= (\csc x - 4)(\csc x + 2)$</div>
-    </div>
-  </div>
-
-  <p class="click-hint">Click to reveal next step</p>
-
-</section>
-
-
-<!-- ====================================================
-     SLIDE 8 — EXAMPLE 5
-     Simplify csc x · sec x − sin x · sec x
-     ==================================================== -->
-<section class="slide" id="slide-8" data-steps="4" data-current-step="0">
-  <span class="example-label">EXAMPLE 5 · SIMPLIFY</span>
-
-  <p class="problem-statement">$\csc x \sec x - \sin x \sec x$</p>
-
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Factor</span>
-      <div class="step-math">$= \sec x\,(\csc x - \sin x)$</div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Reciprocal Ids.</span>
-      <div class="step-math">
-        $= \dfrac{1}{\cos x}\!\left(\dfrac{1}{\sin x} - \sin x\right)$<br>
-        $= \dfrac{1}{\cos x} \cdot \dfrac{1 - \sin^2 x}{\sin x}$
-      </div>
-    </div>
-    <div class="step" data-step="3">
-      <span class="step-label">Pythagorean Id.</span>
-      <div class="step-math">
-        $= \dfrac{1}{\cos x} \cdot \dfrac{\cos^2 x}{\sin x}$
-        <span class="annotation">since $1 - \sin^2 x = \cos^2 x$</span>
-      </div>
-    </div>
-    <div class="step answer" data-step="4">
-      <span class="step-label">Answer</span>
-      <div class="step-math">$= \dfrac{\cos x}{\sin x} = \cot x$</div>
-    </div>
-  </div>
-
-  <p class="click-hint">Click to reveal next step</p>
-
-</section>
-
-
-<!-- ====================================================
-     SLIDE 9 — EXAMPLE 6
-     Rewrite sin²x / (1 + cos x) without fractions
-     ==================================================== -->
-<section class="slide" id="slide-9" data-steps="3" data-current-step="0">
-  <span class="example-label">EXAMPLE 6 · REWRITE</span>
-
-  <p class="problem-statement">
-    Rewrite $\dfrac{\sin^2 x}{1 + \cos x}$ without a fraction.
-  </p>
-
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Pythagorean Id.</span>
-      <div class="step-math">
-        $\sin^2 x = 1 - \cos^2 x = (1 - \cos x)(1 + \cos x)$
-      </div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Substitute</span>
-      <div class="step-math">
-        $= \dfrac{(1 - \cos x)(1 + \cos x)}{1 + \cos x}$
-      </div>
-    </div>
-    <div class="step answer" data-step="3">
-      <span class="step-label">Answer</span>
-      <div class="step-math">$= 1 - \cos x$</div>
-    </div>
-  </div>
-
-  <p class="click-hint">Click to reveal next step</p>
-
-</section>
-
-
-<!-- ====================================================
-     SLIDE 10 — EXAMPLE 7
-     Trig substitution: x = 9cosθ, write √(81−x²) as trig
-     ==================================================== -->
-<section class="slide" id="slide-10" data-steps="4" data-current-step="0">
-  <span class="example-label">EXAMPLE 7 · SUBSTITUTION</span>
-
-  <p class="problem-statement">
-    Use $x = 9\cos\theta$, $\,0 < \theta < \dfrac{\pi}{2}$,
-    to write $\sqrt{81 - x^2}$ as a trig function of $\theta$.
-  </p>
-
-  <div class="steps-area">
-    <div class="step" data-step="1">
-      <span class="step-label">Substitute</span>
-      <div class="step-math">
-        $x = 9\cos\theta \;\Longrightarrow\; x^2 = 81\cos^2\!\theta$
-      </div>
-    </div>
-    <div class="step" data-step="2">
-      <span class="step-label">Simplify radicand</span>
-      <div class="step-math">
-        $81 - x^2 = 81 - 81\cos^2\!\theta = 81(1 - \cos^2\!\theta)$
-      </div>
-    </div>
-    <div class="step" data-step="3">
-      <span class="step-label">Pythagorean Id.</span>
-      <div class="step-math">
-        $= 81\sin^2\!\theta$
-        <span class="annotation">since $1 - \cos^2\theta = \sin^2\theta$</span>
-      </div>
-    </div>
-    <div class="step answer" data-step="4">
-      <span class="step-label">Answer</span>
-      <div class="step-math">
-        $\sqrt{81 - x^2} = \sqrt{81\sin^2\!\theta} = 9\sin\theta$
-        <span class="annotation">positive since $0 < \theta < \tfrac{\pi}{2}$</span>
-      </div>
-    </div>
-  </div>
-
-  <p class="click-hint">Click to reveal next step</p>
-
-</section>
-
-<!-- ====================================================
-     SLIDE 11 — STRATEGY SUMMARY
-     ==================================================== -->
-<section class="slide" id="slide-11">
-  <span class="example-label">SUMMARY</span>
-  <h2 class="slide-title">Strategies for Simplifying</h2>
-
-  <div class="strategy-grid">
-
-    <div class="strategy-card">
-      <span class="strategy-num">1</span>
-      <div class="strategy-content">
-        <div class="strategy-title">Factor out a common term</div>
-        <div class="strategy-desc">Look for a shared factor across all terms and pull it out front. <em>Ex 1, 5</em></div>
-      </div>
-    </div>
-
-    <div class="strategy-card green">
-      <span class="strategy-num">2</span>
-      <div class="strategy-content">
-        <div class="strategy-title">Apply a Pythagorean Identity</div>
-        <div class="strategy-desc">Swap $\sin^2 x + \cos^2 x = 1$ (or its rearrangements) to reduce terms. <em>Ex 1, 2, 4, 5, 6, 7</em></div>
-      </div>
-    </div>
-
-    <div class="strategy-card teal">
-      <span class="strategy-num">3</span>
-      <div class="strategy-content">
-        <div class="strategy-title">Rewrite in sine &amp; cosine</div>
-        <div class="strategy-desc">Convert $\sec$, $\csc$, $\tan$, $\cot$ to $\dfrac{1}{\cos}$, $\dfrac{1}{\sin}$, etc. to find cancellations. <em>Ex 1, 5</em></div>
-      </div>
-    </div>
-
-    <div class="strategy-card orange">
-      <span class="strategy-num">4</span>
-      <div class="strategy-content">
-        <div class="strategy-title">$u$-substitution for factoring</div>
-        <div class="strategy-desc">Replace a trig expression with $u$ to reveal a factorable polynomial. <em>Ex 3</em></div>
-      </div>
-    </div>
-
-    <div class="strategy-card purple">
-      <span class="strategy-num">5</span>
-      <div class="strategy-content">
-        <div class="strategy-title">Factor as difference of squares</div>
-        <div class="strategy-desc">Write $1 - \cos^2 x$ as $(1 - \cos x)(1 + \cos x)$ to cancel with the denominator. <em>Ex 6</em></div>
-      </div>
-    </div>
-
-    <div class="strategy-card">
-      <span class="strategy-num">6</span>
-      <div class="strategy-content">
-        <div class="strategy-title">Cancel common factors</div>
-        <div class="strategy-desc">After rewriting, look for matching factors in numerator and denominator to simplify. <em>Ex 1, 5, 6</em></div>
-      </div>
-    </div>
-
-  </div>
-
-  <p class="strategy-footer">Most problems use more than one strategy — look for the first move that reduces complexity.</p>
-
-</section>
-
-</div><!-- #slides-container -->
-
-
-<!-- ====================================================
-     SCRIPTS
-     KaTeX + presentation controller
-     ==================================================== -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
-/* =====================================================
-   RENDER LATEX
-   Auto-render all $...$ in the document once scripts load.
-   ===================================================== */
-renderMathInElement(document.body, {
-  delimiters: [
-    { left: '$$', right: '$$', display: true  },
-    { left: '$',  right: '$',  display: false }
-  ],
-  throwOnError: false
-});
-
-
-/* =====================================================
-   PRESENTATION CONTROLLER
-
-   Navigation:
-     → / Space  advance (next step, then next slide)
-     ←          previous slide
-     Nav dots   jump to any slide
-     Click      reveal next step (problem slides only)
-   ===================================================== */
-class Presentation {
-  constructor() {
-    this.slides  = Array.from(document.querySelectorAll('.slide'));
-    this.current = 0;
-    this.dots    = [];
-    this._init();
-  }
-
-  _init() {
-    this._buildDots();
-    this._sync();
-    this._bindEvents();
-  }
-
-  /* ---- Build nav dots ---- */
-  _buildDots() {
-    const nav = document.getElementById('nav-dots');
-    this.slides.forEach((_, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'nav-dot';
-      btn.setAttribute('aria-label', `Slide ${i + 1}`);
-      btn.addEventListener('click', () => this._goTo(i));
-      nav.appendChild(btn);
-      this.dots.push(btn);
-    });
-  }
-
-  /* ---- Sync progress bar + dots to this.current ---- */
-  _sync() {
-    this.dots.forEach((d, i) =>
-      d.classList.toggle('active', i === this.current));
-    document.getElementById('progress-bar').style.width =
-      `${((this.current + 1) / this.slides.length) * 100}%`;
-  }
-
-  /* ---- Navigate to a slide index ---- */
-  _goTo(index) {
-    if (index < 0 || index >= this.slides.length) return;
-
-    // Animate outgoing slide left
-    const out = this.slides[this.current];
-    out.classList.add('exit-left');
-    out.classList.remove('active');
-    setTimeout(() => out.classList.remove('exit-left'), 500);
-
-    this.current = index;
-    this.slides[this.current].classList.add('active');
-    this._sync();
-  }
-
-  /* ---- Backward: hide last revealed step or go to previous slide ---- */
-  _backward() {
-    const slide   = this.slides[this.current];
-    const curStep = parseInt(slide.dataset.currentStep || '0');
-    if (curStep > 0) {
-      const el = slide.querySelector(`[data-step="${curStep}"]`);
-      if (el) el.classList.remove('visible');
-      slide.dataset.currentStep = curStep - 1;
-    } else {
-      this._goTo(this.current - 1);
-    }
-  }
-
-  /* ---- Forward: reveal next step or advance slide ---- */
-  _forward() {
-    const slide    = this.slides[this.current];
-    const maxSteps = parseInt(slide.dataset.steps    || '0');
-    const curStep  = parseInt(slide.dataset.currentStep || '0');
-
-    if (maxSteps > 0 && curStep < maxSteps) {
-      this._revealStep(slide, curStep + 1);
-    } else {
-      this._goTo(this.current + 1);
-    }
-  }
-
-  /* ---- Reveal numbered step on a slide ---- */
-  _revealStep(slide, stepNum) {
-    slide.dataset.currentStep = stepNum;
-
-    // Handles both .step and .col-reveal elements
-    const el = slide.querySelector(`[data-step="${stepNum}"]`);
-    if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-
-    const maxSteps = parseInt(slide.dataset.steps || '0');
-    const hint = slide.querySelector('.click-hint');
-    if (hint) {
-      hint.textContent = (stepNum >= maxSteps)
-        ? 'Press → or Space for next slide'
-        : 'Click to reveal next step';
-    }
-  }
-
-  /* ---- Bind keyboard + click events ---- */
-  _bindEvents() {
-    document.addEventListener('keydown', e => {
-      if (e.key === 'ArrowRight' || e.key === ' ') {
-        e.preventDefault();
-        this._forward();
-      } else if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        this._backward();
-      }
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
     });
 
-    this.slides.forEach(slide => {
-      if (!slide.dataset.steps) return;
-      slide.addEventListener('click', e => {
-        if (e.target.closest('#nav-dots')) return;
-        const curStep  = parseInt(slide.dataset.currentStep || '0');
-        const maxSteps = parseInt(slide.dataset.steps);
-        if (curStep < maxSteps) this._revealStep(slide, curStep + 1);
-      });
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
     });
-  }
-}
 
-new Presentation();
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.current = 0;
+            this.total = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl = document.getElementById('navDots');
+            this.clickHint = document.getElementById('clickHint');
+            this.identityDock = document.getElementById('identityDock');
+            this.identityWidgets = Array.from(document.querySelectorAll('[data-identity-widget]'));
+            this._buildNav();
+            this._bindIdentityDock();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => {
+                    e.stopPropagation();
+                    this._goTo(i);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((dot, i) => dot.classList.toggle('active', i === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max = parseInt(slide.dataset.steps || 0);
+            const cur = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+            const showDock = this.current >= 4;
+            this.identityDock.classList.toggle('is-hidden', !showDock);
+            if (!showDock) this._closeIdentityPanels();
+        }
+
+        _activate(i) {
+            this.slides[i].classList.add('active');
+            this._sync();
+        }
+
+        _goTo(i) {
+            if (i === this.current || i < 0 || i >= this.total) return;
+            this._closeIdentityPanels();
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i;
+            this.slides[i].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (el) {
+                    el.classList.add('visible');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) {
+                this._goTo(this.current + 1);
+            }
+        }
+
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current]) && this.current > 0) {
+                this._goTo(this.current - 1);
+            }
+        }
+
+        _bindIdentityDock() {
+            this.identityWidgets.forEach((widget) => {
+                const toggle = widget.querySelector('[data-identity-toggle]');
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const willOpen = !widget.classList.contains('is-open');
+                    this._closeIdentityPanels();
+                    widget.classList.toggle('is-open', willOpen);
+                    toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                });
+            });
+        }
+
+        _closeIdentityPanels() {
+            this.identityWidgets.forEach((widget) => {
+                widget.classList.remove('is-open');
+                widget.querySelector('[data-identity-toggle]')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        _hasOpenIdentityPanel() {
+            return this.identityWidgets.some((widget) => widget.classList.contains('is-open'));
+        }
+
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && this._hasOpenIdentityPanel()) {
+                    this._closeIdentityPanels();
+                    return;
+                }
+                if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
+                    e.preventDefault();
+                    this._next();
+                } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
+                    e.preventDefault();
+                    this._prev();
+                }
+            });
+
+            document.addEventListener('click', e => {
+                if (e.target.closest('.nav-dot') || e.target.closest('.identity-dock')) return;
+                if (this._hasOpenIdentityPanel()) {
+                    this._closeIdentityPanels();
+                    return;
+                }
+                this._next();
+            });
+
+            let touchX = 0;
+            document.addEventListener('touchstart', e => {
+                touchX = e.touches[0].clientX;
+            }, { passive: true });
+            document.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - touchX;
+                if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev();
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
 </script>
-
 </body>
 </html>
