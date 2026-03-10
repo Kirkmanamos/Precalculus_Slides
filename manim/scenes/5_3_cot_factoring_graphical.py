@@ -55,9 +55,9 @@ class CotFactoringGraphicalAnalysis(Scene):
     FULL_CTR   center of full-scene graph
     """
 
-    SMALL     = 0.55                          # larger thumbnails on final screen
-    COT_THUMB = LEFT  * 3.65 + DOWN * 0.55    # spread wider to fit bigger thumbs
-    COS_THUMB = RIGHT * 3.50 + DOWN * 0.55
+    SMALL     = 0.65                          # larger thumbnails on final screen
+    COT_THUMB = LEFT  * 3.60 + DOWN * 0.25    # centered between title and banner
+    COS_THUMB = RIGHT * 3.40 + DOWN * 0.25
     FULL_CTR  = DOWN  * 0.75
 
     def construct(self):
@@ -231,7 +231,7 @@ class CotFactoringGraphicalAnalysis(Scene):
         )
         graph_lbl = MathTex(
             r"\text{Case 1: }\cot x = 0",
-            font_size=28, color=Q1_COLOR,
+            font_size=34, color=Q1_COLOR,
         ).next_to(border, UP, buff=0.10)
 
         # x-tick labels
@@ -265,12 +265,6 @@ class CotFactoringGraphicalAnalysis(Scene):
         c_lbl = MathTex(r"y = \cot x", font_size=25, color=ACCENT_TEAL).next_to(
             axes.c2p(PI * 0.30, _cot(PI * 0.30)), UR, buff=0.14)
 
-        # y = 0 reference line
-        ref = axes.plot(lambda x: 0, x_range=[0, 3*PI],
-                        color=Q1_COLOR, stroke_width=2.8)
-        ref_lbl = MathTex(r"y = 0", font_size=23, color=Q1_COLOR).next_to(
-            axes.c2p(0.2, 0), UL, buff=0.12)
-
         # ── animate graph ────────────────────────────────────────────────
         self.play(FadeIn(border), Write(graph_lbl), Create(axes), run_time=1.1)
         self.play(
@@ -289,8 +283,6 @@ class CotFactoringGraphicalAnalysis(Scene):
             run_time=2.2,
         )
         self.play(Write(c_lbl), run_time=0.55)
-        self.wait(0.3)
-        self.play(Create(ref), Write(ref_lbl), run_time=0.90)
         self.wait(0.3)
 
         # ── annotation: why cot x = 0 ────────────────────────────────────
@@ -311,7 +303,7 @@ class CotFactoringGraphicalAnalysis(Scene):
             (5*PI/2,   r"\tfrac{5\pi}{2}", r"n = 2"),
         ]:
             pt   = axes.c2p(x_val, 0)
-            dot  = Dot(pt, radius=0.12, color=HIGHLIGHT, z_index=5)
+            dot  = Dot(pt, radius=0.12, color=HIGHLIGHT)
             xlbl = MathTex(lbl_s, font_size=24, color=HIGHLIGHT).next_to(pt, DOWN, buff=0.22)
             ntag = Tex(ntag_s, font_size=18, color=Q1_COLOR).next_to(dot, UP, buff=0.09)
             self.play(FadeIn(dot, scale=1.7), Write(xlbl), Write(ntag), run_time=0.75)
@@ -338,7 +330,6 @@ class CotFactoringGraphicalAnalysis(Scene):
             border, graph_lbl, axes, x_lbls, xe, ye,
             a1, a2, al1, al2,
             b1, b2, b3, c_lbl,
-            ref, ref_lbl,
             annot,
             *zero_mobs,
             gen_box, gen_sol,
@@ -385,7 +376,7 @@ class CotFactoringGraphicalAnalysis(Scene):
         )
         graph_lbl = MathTex(
             r"\text{Case 2: }\cos^2\!x = 2\;?",
-            font_size=28, color=ACCENT_RED,
+            font_size=34, color=ACCENT_RED,
         ).next_to(border, UP, buff=0.10)
 
         # x-tick labels
@@ -465,10 +456,10 @@ class CotFactoringGraphicalAnalysis(Scene):
     # ── Phase 5 : solution banner ─────────────────────────────────────────────
     def _phase_banner(self):
         lbl_a = MathTex(
-            r"\checkmark\;\cot x = 0", font_size=20, color=Q1_COLOR
+            r"\checkmark\;\cot x = 0", font_size=28, color=Q1_COLOR
         ).next_to(self.cot_vg, UP, buff=0.12)
         lbl_b = MathTex(
-            r"\times\;\cos^2\!x = 2", font_size=20, color=ACCENT_RED
+            r"\times\;\cos^2\!x = 2", font_size=28, color=ACCENT_RED
         ).next_to(self.cos_vg, UP, buff=0.12)
 
         self.play(Write(lbl_a), Write(lbl_b), run_time=0.70)

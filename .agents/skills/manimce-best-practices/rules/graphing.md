@@ -231,3 +231,4 @@ class SurfacePlot(ThreeDScene):
 3. **Match graph color to concept** - Consistent color coding
 4. **Use i2gp for points on graphs** - Automatically handles conversion
 5. **Animate graph creation** - More engaging than static display
+6. **For tan/cot/csc/sec** - Plot separate branches with EPS gaps around each asymptote. Use EPS large enough that function values stay within y_range (e.g., EPS=0.25 for y_range [-4,4]). Avoid np.clip — it creates visible flatlines. See `rules/panel-layout.md` for the full pattern and EPS reference table.
