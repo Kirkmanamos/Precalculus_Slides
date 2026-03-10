@@ -25,12 +25,18 @@
             --slide-pad-top: 5rem;
             --slide-pad-bottom: 3rem;
             --slide-pad-inline: max(3rem, calc((100% - var(--content-max-width)) / 2));
-            --steps-pad-bottom: 3.5rem;
+            --steps-pad-bottom: 5.6rem;
             --problem-pad-inline: 1.2em;
             --problem-pad-block: 0.7em;
             --annotation-gap: 2.5rem;
             --annotation-basis: 36%;
             --annotation-divider: #93c5fd;
+            --floating-ui-clearance: 5rem;
+            --bottom-ui-stack-height: 8.4rem;
+            --jump-bar-bottom: 0.9rem;
+            --support-dock-left: 1rem;
+            --support-dock-bottom: 0.9rem;
+            --support-panel-width: min(20rem, calc(100vw - 2rem));
             --click-hint-left: 50%;
             --click-hint-right: auto;
             --click-hint-transform: translateX(-50%);
@@ -68,6 +74,13 @@
 
         .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
         .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
+        .slide-body:has(.concept-box),
+        .slide-body:has(.activity-grid) {
+            justify-content: flex-start;
+            overflow-y: auto;
+            padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+            scroll-padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+        }
 
         /* ===== BACKGROUNDS ===== */
         .title-slide { background: var(--dark-navy); color: white; justify-content: center; }
@@ -129,7 +142,15 @@
         .strategy-note { font-size: 0.65em; color: #64748b; font-style: italic; margin-bottom: 0.8rem; flex-shrink: 0; }
 
         /* ===== STEP REVEALS ===== */
-        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: calc(var(--steps-pad-bottom) + env(safe-area-inset-bottom)); }
+        .steps-area {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+            padding-bottom: calc(max(var(--steps-pad-bottom), var(--bottom-ui-stack-height)) + env(safe-area-inset-bottom));
+            scroll-padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+        }
 
         .step { display: none; min-width: 0; }
         .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.5rem; }
@@ -170,6 +191,206 @@
         .concept-box p { font-size: 0.75em; color: #1e293b; line-height: 1.6; }
         .concept-box p + p { margin-top: 0.5em; }
 
+        /* ===== BOARD LAUNCH ACTIVITY ===== */
+        .launch-stack { gap: 0.9rem; }
+        .bucket-strip {
+            display: flex; flex-wrap: wrap; gap: 0.55rem;
+        }
+        .bucket-pill {
+            background: rgba(255, 255, 255, 0.72); border: 1px solid rgba(148, 163, 184, 0.28); color: #475569;
+            border-radius: 999px; padding: 0.26em 0.78em; font-size: 0.56em; font-weight: 600;
+            letter-spacing: 0.03em; text-transform: uppercase;
+            transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
+        }
+        .bucket-pill.is-active {
+            background: rgba(219, 234, 254, 0.92);
+            border-color: rgba(37, 99, 235, 0.28);
+            color: var(--dark-navy);
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08);
+        }
+        .activity-grid {
+            display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+        .activity-card {
+            background: rgba(255, 255, 255, 0.86); border: 1px solid rgba(203, 213, 225, 0.72); border-left: 3px solid #94a3b8;
+            border-radius: 12px; padding: 0.65em 0.9em; box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+        .activity-card:nth-child(2n) { border-left-color: #94a3b8; }
+        .activity-card:nth-child(3n) { border-left-color: #cbd5e1; }
+        .activity-card:hover,
+        .activity-card:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+            outline: none;
+        }
+        .activity-card.is-active {
+            background: rgba(239, 246, 255, 0.92);
+            border-color: rgba(37, 99, 235, 0.26);
+            border-left-color: var(--blue-accent);
+            box-shadow: 0 14px 28px rgba(37, 99, 235, 0.08);
+        }
+        .activity-label {
+            font-size: 0.52em; font-weight: 700; color: #64748b;
+            letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.18rem;
+        }
+        .activity-math {
+            font-size: 0.84em; text-align: center; line-height: 1.8;
+        }
+        .activity-math .katex-display { margin: 0; }
+
+        /* ===== QUICK REFERENCE DOCK ===== */
+        .quick-dock {
+            position: fixed;
+            left: var(--support-dock-left);
+            bottom: calc(var(--support-dock-bottom) + env(safe-area-inset-bottom));
+            display: flex;
+            gap: 0.55rem;
+            z-index: 115;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            max-width: calc(100vw - 2rem);
+        }
+        .quick-dock.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+        .quick-widget { position: relative; }
+        .quick-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 999px;
+            padding: 0.46rem 0.74rem;
+            min-width: 5rem;
+            color: var(--dark-navy);
+            font: inherit;
+            font-size: 0.49em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .quick-toggle:hover,
+        .quick-toggle:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            outline: none;
+        }
+        .quick-widget.concept .quick-toggle { background: rgba(240, 253, 250, 0.96); }
+        .quick-widget.caution .quick-toggle { background: rgba(255, 247, 237, 0.96); }
+        .quick-panel {
+            position: absolute;
+            left: 0;
+            bottom: calc(100% + 0.55rem);
+            width: var(--support-panel-width);
+            border-radius: 16px;
+            padding: 0.9rem 0.95rem 0.95rem;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px) scale(0.98);
+            transform-origin: bottom left;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .quick-widget.is-open .quick-panel {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .quick-widget.concept .quick-panel {
+            background: rgba(248, 250, 252, 0.98);
+            border-color: rgba(45, 212, 191, 0.24);
+        }
+        .quick-widget.caution .quick-panel {
+            background: rgba(248, 250, 252, 0.98);
+            border-color: rgba(245, 158, 11, 0.24);
+        }
+        .quick-panel-title {
+            font-size: 0.62em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.55rem;
+        }
+        .quick-widget.concept .quick-panel-title { color: #0f766e; }
+        .quick-widget.caution .quick-panel-title { color: #b45309; }
+        .quick-panel-card {
+            background: rgba(255, 255, 255, 0.82);
+            border-radius: 12px;
+            padding: 0.7rem 0.8rem;
+            border-left: 3px solid transparent;
+            border: 1px solid rgba(226, 232, 240, 0.72);
+        }
+        .quick-widget.concept .quick-panel-card { border-left-color: rgba(13, 148, 136, 0.48); }
+        .quick-widget.caution .quick-panel-card { border-left-color: rgba(217, 119, 6, 0.48); }
+        .quick-panel-card + .quick-panel-card { margin-top: 0.55rem; }
+        .quick-panel-card p {
+            font-size: 0.64em;
+            line-height: 1.45;
+            color: #1e293b;
+        }
+        .quick-panel-card p + p { margin-top: 0.45rem; }
+
+        /* ===== SECTION JUMP BAR ===== */
+        .section-jump-bar {
+            position: fixed;
+            left: 50%;
+            bottom: calc(var(--jump-bar-bottom) + env(safe-area-inset-bottom));
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 0.24rem;
+            padding: 0.22rem;
+            max-width: min(31rem, calc(100vw - 2.4rem));
+            overflow-x: auto;
+            background: rgba(248, 250, 252, 0.68);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            border-radius: 999px;
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+            backdrop-filter: blur(16px);
+            z-index: 114;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            scrollbar-width: none;
+        }
+        .section-jump-bar::-webkit-scrollbar { display: none; }
+        .section-jump-bar.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(10px);
+        }
+        .section-jump-btn {
+            flex: 0 0 auto;
+            border: 1px solid transparent;
+            border-radius: 999px;
+            padding: 0.32rem 0.62rem;
+            background: transparent;
+            color: #475569;
+            font: inherit;
+            font-size: 0.45em;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .section-jump-btn:hover,
+        .section-jump-btn:focus-visible {
+            background: rgba(226, 232, 240, 0.72);
+            color: var(--dark-navy);
+            outline: none;
+        }
+        .section-jump-btn.active {
+            background: rgba(30, 41, 59, 0.9);
+            border-color: rgba(15, 23, 42, 0.08);
+            color: #f8fafc;
+        }
+
         /* ===== NAV / PROGRESS ===== */
         .nav-dots {
             position: fixed; right: 1.2rem; top: 50%;
@@ -189,7 +410,7 @@
         }
 
         .click-hint {
-            position: fixed; bottom: calc(1.5rem + env(safe-area-inset-bottom)); left: var(--click-hint-left);
+            position: fixed; bottom: calc(var(--floating-ui-clearance) + env(safe-area-inset-bottom)); left: var(--click-hint-left);
             right: var(--click-hint-right); transform: var(--click-hint-transform);
             font-size: 0.45em; color: rgba(100,116,139,0.6);
             letter-spacing: 0.1em; text-transform: uppercase;
@@ -199,6 +420,7 @@
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
         .concept-box p,
+        .quick-panel-card p,
         .annotation,
         .slide-title,
         .section-title { overflow-wrap: anywhere; }
@@ -213,6 +435,11 @@
         @media (prefers-reduced-motion: reduce) {
             .slide { transition: opacity 0.3s ease; transform: none !important; }
             .step.visible { animation: none; opacity: 1; }
+            .quick-dock,
+            .quick-toggle,
+            .quick-panel,
+            .section-jump-bar,
+            .section-jump-btn { transition: none; }
         }
         /* ===========================================
            RESPONSIVE LAYOUT TOKENS
@@ -232,9 +459,11 @@
                 --slide-pad-top: 4.25rem;
                 --slide-pad-inline: 1.5rem;
                 --slide-pad-bottom: 4rem;
-                --steps-pad-bottom: 4.5rem;
+                --steps-pad-bottom: 5.7rem;
                 --problem-pad-inline: 0.95em;
                 --problem-pad-block: 0.58em;
+                --floating-ui-clearance: 5.2rem;
+                --bottom-ui-stack-height: 8.8rem;
             }
 
             .slide-header {
@@ -252,9 +481,14 @@
                 --slide-pad-top: max(1.4rem, env(safe-area-inset-top));
                 --slide-pad-inline: 0.95rem;
                 --slide-pad-bottom: 4.9rem;
-                --steps-pad-bottom: 5.4rem;
+                --steps-pad-bottom: 6.5rem;
                 --annotation-gap: 0.8rem;
                 --annotation-basis: 100%;
+                --floating-ui-clearance: 6rem;
+                --bottom-ui-stack-height: 10.4rem;
+                --support-dock-left: 0.9rem;
+                --support-dock-bottom: 4.55rem;
+                --support-panel-width: min(16.5rem, calc(100vw - 1.8rem));
                 --click-hint-left: auto;
                 --click-hint-right: 0.9rem;
                 --click-hint-transform: none;
@@ -288,6 +522,24 @@
                 padding-left: 0;
                 padding-top: 0.7rem;
             }
+
+            .quick-dock {
+                flex-direction: column;
+                gap: 0.42rem;
+            }
+            .quick-widget { width: 100%; }
+            .quick-panel {
+                left: auto;
+                right: 0;
+                transform-origin: bottom right;
+                padding: 0.78rem 0.82rem 0.82rem;
+            }
+            .section-jump-bar {
+                width: calc(100vw - 2rem);
+                justify-content: flex-start;
+            }
+
+            .activity-grid { grid-template-columns: 1fr 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -295,7 +547,11 @@
                 --base-font-size: 17px;
                 --slide-pad-inline: 0.75rem;
                 --slide-pad-bottom: 5.2rem;
-                --steps-pad-bottom: 5.7rem;
+                --steps-pad-bottom: 6.9rem;
+                --floating-ui-clearance: 6.35rem;
+                --bottom-ui-stack-height: 10.9rem;
+                --support-dock-left: 0.75rem;
+                --support-dock-bottom: 4.75rem;
             }
 
             .title-main { font-size: 1.58em; }
@@ -305,6 +561,17 @@
             .concept-label,
             .caution-label { font-size: 0.54em; }
             .slide-title { line-height: 1.15; }
+            .section-jump-btn {
+                padding: 0.3rem 0.56rem;
+                font-size: 0.44em;
+            }
+            .quick-toggle {
+                min-width: 0;
+                width: 100%;
+                padding: 0.42rem 0.58rem;
+                font-size: 0.48em;
+            }
+            .activity-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -313,6 +580,46 @@
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
+<div class="quick-dock is-hidden" id="quickDock" aria-label="Quick references">
+    <div class="quick-widget concept" data-quick-widget>
+        <button class="quick-toggle" type="button" data-quick-toggle aria-expanded="false" aria-controls="quick-panel-concept">
+            Concept
+        </button>
+        <div class="quick-panel" id="quick-panel-concept">
+            <div class="quick-panel-title">Concept Quick Reference</div>
+            <div class="quick-panel-card">
+                <p><strong>Solve trig equations like algebra first:</strong> collect like terms, factor when possible, and isolate the trig function before going to the unit circle.</p>
+                <p><strong>Restricted domain:</strong> list only the angles in the given interval, such as \(0 \le \theta &lt; 2\pi\).</p>
+            </div>
+            <div class="quick-panel-card">
+                <p><strong>All solutions:</strong> for sine and cosine add \(+\,2\pi n\); for tangent and cotangent add \(+\,\pi n\), where \(n \in \mathbb{Z}\).</p>
+                <p>After solving, substitute back into the original equation to catch extraneous solutions.</p>
+            </div>
+        </div>
+    </div>
+    <div class="quick-widget caution" data-quick-widget>
+        <button class="quick-toggle" type="button" data-quick-toggle aria-expanded="false" aria-controls="quick-panel-caution">
+            Caution
+        </button>
+        <div class="quick-panel" id="quick-panel-caution">
+            <div class="quick-panel-title">Caution Quick Reference</div>
+            <div class="quick-panel-card">
+                <p><strong>Do not divide both sides by a trig factor just to cancel it.</strong> You may divide by zero and lose valid solutions.</p>
+                <p>Preferred move: put everything on one side and factor instead.</p>
+            </div>
+            <div class="quick-panel-card">
+                <p><strong>Exception:</strong> dividing is fine when you are intentionally rewriting an expression into another trig form rather than solving by cancellation.</p>
+                <p>Any time you square both sides, verify the final answers in the original equation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="section-jump-bar is-hidden" id="sectionJumpBar" aria-label="Section navigation">
+    <button class="section-jump-btn" type="button" data-section-target="slide-launch">Launch</button>
+    <button class="section-jump-btn" type="button" data-section-target="slide-1">Foundations</button>
+    <button class="section-jump-btn" type="button" data-section-target="slide-5">Quadratic Type</button>
+    <button class="section-jump-btn" type="button" data-section-target="slide-10">Multiple Angles</button>
+</nav>
 
 <div class="slides-wrapper" id="slidesWrapper">
 
@@ -337,7 +644,58 @@
     </section>
 
     <!-- ================================================
-         SLIDE 2 — INTRODUCTION
+         SLIDE 2 — BOARD LAUNCH
+         ================================================ -->
+    <section class="slide grid-bg" id="slide-launch">
+        <div class="slide-header">
+            <div class="concept-label">Launch</div>
+            <div class="slide-title">Vertical Board Sort</div>
+        </div>
+        <div class="slide-body launch-stack">
+            <div class="concept-box teal">
+                <p><strong>At your board:</strong> Sort the equations into four columns labeled <strong>0 solutions</strong>, <strong>1 solution</strong>, <strong>2 solutions</strong>, and <strong>4 solutions</strong> in the interval \(0 \le \theta &lt; 2\pi\).</p>
+                <p>Do not solve each one completely yet. Use the unit circle, symmetry, and the range of each trig function to justify your choices.</p>
+            </div>
+            <div class="bucket-strip" aria-label="Sorting buckets">
+                <div class="bucket-pill" data-bucket-count="0">0 solutions</div>
+                <div class="bucket-pill" data-bucket-count="1">1 solution</div>
+                <div class="bucket-pill" data-bucket-count="2">2 solutions</div>
+                <div class="bucket-pill" data-bucket-count="4">4 solutions</div>
+            </div>
+            <div class="activity-grid" aria-label="Equations to sort">
+                <div class="activity-card" data-solution-count="2" tabindex="0" role="button" aria-label="Card A, sine theta equals one half, 2 solutions">
+                    <div class="activity-label">Card A</div>
+                    <div class="activity-math">\[\sin\theta = \dfrac{1}{2}\]</div>
+                </div>
+                <div class="activity-card" data-solution-count="1" tabindex="0" role="button" aria-label="Card B, cosine theta equals negative 1, 1 solution">
+                    <div class="activity-label">Card B</div>
+                    <div class="activity-math">\[\cos\theta = -1\]</div>
+                </div>
+                <div class="activity-card" data-solution-count="2" tabindex="0" role="button" aria-label="Card C, tangent theta equals 0, 2 solutions">
+                    <div class="activity-label">Card C</div>
+                    <div class="activity-math">\[\tan\theta = 0\]</div>
+                </div>
+                <div class="activity-card" data-solution-count="0" tabindex="0" role="button" aria-label="Card D, sine theta equals 2, 0 solutions">
+                    <div class="activity-label">Card D</div>
+                    <div class="activity-math">\[\sin\theta = 2\]</div>
+                </div>
+                <div class="activity-card" data-solution-count="4" tabindex="0" role="button" aria-label="Card E, tangent squared theta equals 1, 4 solutions">
+                    <div class="activity-label">Card E</div>
+                    <div class="activity-math">\[\tan^2\theta = 1\]</div>
+                </div>
+                <div class="activity-card" data-solution-count="2" tabindex="0" role="button" aria-label="Card F, cosine theta equals 0, 2 solutions">
+                    <div class="activity-label">Card F</div>
+                    <div class="activity-math">\[\cos\theta = 0\]</div>
+                </div>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Debrief prompt:</strong> Be ready to defend one placement your group thinks another group might disagree with.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 3 — INTRODUCTION
          ================================================ -->
     <section class="slide grid-bg" id="slide-1">
         <div class="slide-header">
@@ -760,13 +1118,28 @@
     /* ===== PRESENTATION CONTROLLER ===== */
     class SlidePresentation {
         constructor() {
-            this.slides      = Array.from(document.querySelectorAll('.slide'));
-            this.current     = 0;
-            this.total       = this.slides.length;
-            this.progressBar = document.getElementById('progressBar');
-            this.navDotsEl   = document.getElementById('navDots');
-            this.clickHint   = document.getElementById('clickHint');
+            this.slides          = Array.from(document.querySelectorAll('.slide'));
+            this.current         = 0;
+            this.total           = this.slides.length;
+            this.progressBar     = document.getElementById('progressBar');
+            this.navDotsEl       = document.getElementById('navDots');
+            this.clickHint       = document.getElementById('clickHint');
+            this.quickDock       = document.getElementById('quickDock');
+            this.sectionJumpBar  = document.getElementById('sectionJumpBar');
+            this.quickWidgets    = Array.from(document.querySelectorAll('[data-quick-widget]'));
+            this.launchCards     = Array.from(document.querySelectorAll('.activity-card[data-solution-count]'));
+            this.launchBuckets   = Array.from(document.querySelectorAll('.bucket-pill[data-bucket-count]'));
+            this.sectionTargets  = Array.from(document.querySelectorAll('[data-section-target]'))
+                .map((button) => ({
+                    button,
+                    targetId: button.dataset.sectionTarget,
+                    index: this.slides.findIndex((slide) => slide.id === button.dataset.sectionTarget)
+                }))
+                .filter(({ index }) => index >= 0);
             this._buildNav();
+            this._bindLaunchActivity();
+            this._bindQuickDock();
+            this._bindSectionJump();
             this._activate(0);
             this._bindEvents();
         }
@@ -791,12 +1164,24 @@
             this.clickHint.textContent = (curStep < maxSteps - 1)
                 ? 'click to advance'
                 : (this.current < this.total - 1 ? 'click for next slide' : '');
+
+            const activeSection = [...this.sectionTargets].reverse()
+                .find(({ index }) => this.current >= index);
+            this.sectionTargets.forEach(({ button }) => {
+                button.classList.toggle('active', activeSection?.button === button);
+            });
+
+            const showQuickUi = this.current > 0;
+            this.sectionJumpBar.classList.toggle('is-hidden', !showQuickUi);
+            this.quickDock.classList.toggle('is-hidden', !showQuickUi);
+            if (!showQuickUi) this._closeQuickPanels();
         }
 
         _activate(index) { this.slides[index].classList.add('active'); this._sync(); }
 
         _goTo(index) {
             if (index === this.current) return;
+            this._closeQuickPanels();
             const out = this.slides[this.current];
             out.classList.add('exit-left');
             out.classList.remove('active');
@@ -833,12 +1218,86 @@
         }
         _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
 
+        _bindQuickDock() {
+            this.quickWidgets.forEach((widget) => {
+                const toggle = widget.querySelector('[data-quick-toggle]');
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const willOpen = !widget.classList.contains('is-open');
+                    this._closeQuickPanels();
+                    widget.classList.toggle('is-open', willOpen);
+                    toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                });
+            });
+        }
+
+        _bindLaunchActivity() {
+            this.launchCards.forEach((card) => {
+                const activate = () => {
+                    const willDeactivate = card.classList.contains('is-active');
+                    this._clearLaunchSelection();
+                    if (willDeactivate) return;
+                    card.classList.add('is-active');
+                    const bucket = this.launchBuckets.find((pill) => pill.dataset.bucketCount === card.dataset.solutionCount);
+                    bucket?.classList.add('is-active');
+                };
+
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    activate();
+                });
+
+                card.addEventListener('keydown', (e) => {
+                    if (!['Enter', ' '].includes(e.key)) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    activate();
+                });
+            });
+        }
+
+        _bindSectionJump() {
+            this.sectionTargets.forEach(({ button, index }) => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._goTo(index);
+                });
+            });
+        }
+
+        _clearLaunchSelection() {
+            this.launchCards.forEach((card) => card.classList.remove('is-active'));
+            this.launchBuckets.forEach((pill) => pill.classList.remove('is-active'));
+        }
+
+        _closeQuickPanels() {
+            this.quickWidgets.forEach((widget) => {
+                widget.classList.remove('is-open');
+                widget.querySelector('[data-quick-toggle]')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+
+        _hasOpenQuickPanel() {
+            return this.quickWidgets.some((widget) => widget.classList.contains('is-open'));
+        }
+
         _bindEvents() {
             document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this._hasOpenQuickPanel()) {
+                    this._closeQuickPanels();
+                    return;
+                }
                 if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) { e.preventDefault(); this._next(); }
                 else if (['ArrowLeft', 'ArrowUp'].includes(e.key))    { e.preventDefault(); this._prev(); }
             });
-            document.addEventListener('click', (e) => { if (!e.target.closest('.nav-dot')) this._next(); });
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.nav-dot') || e.target.closest('.quick-dock') || e.target.closest('.section-jump-bar')) return;
+                if (this._hasOpenQuickPanel()) {
+                    this._closeQuickPanels();
+                    return;
+                }
+                this._next();
+            });
             let tx = 0;
             document.addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; }, { passive: true });
             document.addEventListener('touchend',   (e) => {
