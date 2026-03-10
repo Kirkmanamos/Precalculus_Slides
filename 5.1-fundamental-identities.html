@@ -282,6 +282,9 @@
         .launch-stack {
             justify-content: flex-start;
             gap: 0.75rem;
+            overflow-y: auto;
+            scroll-padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+            -webkit-overflow-scrolling: touch;
         }
         .task-strip {
             display: flex;
