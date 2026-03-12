@@ -5,6 +5,27 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-03-12
+
+### New Manim Scenes — 5.3 Examples 4 & 5
+
+- **`manim/scenes/5_3_pyth_sub_graphical.py`** — `PythSubGraphicalAnalysis`
+  - Graphical solution of `2sin²x + 3cos x - 3 = 0` for all solutions
+  - Pythagorean substitution → factor into `(2cos x - 1)(cos x - 1) = 0`
+  - Two-panel layout: cos x = 1/2 (green, QI/QIV dots) and cos x = 1 (blue, 3 dots)
+  - Both cases valid → double ✓ labels + combined solution banner
+  - 58 animations, rendered at 1080p60
+
+- **`manim/scenes/5_3_squaring_graphical.py`** — `SquaringGraphicalAnalysis`
+  - Graphical solution of `cos x + 1 = sin x` on [0, 2π)
+  - Single-panel: plots y = cos x + 1 (teal) vs y = sin x (pink)
+  - Two valid intersections (π/2, π) marked with green ✓
+  - Extraneous candidate at 3π/2 highlighted: red ✗ + dashed gap line + annotation
+  - Warning box about squaring introducing extraneous solutions
+  - 39 animations, rendered at 1080p60
+
+---
+
 ## 2026-03-09 (session 2)
 
 ### `CotFactoringGraphicalAnalysis` — v2 rebuild

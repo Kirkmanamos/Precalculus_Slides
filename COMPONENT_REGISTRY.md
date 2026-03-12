@@ -275,6 +275,81 @@ manim -pqh scenes/5_3_cot_factoring_graphical.py CotFactoringGraphicalAnalysis  
 
 ---
 
+### `PythSubGraphicalAnalysis`
+
+**File:** `manim/scenes/5_3_pyth_sub_graphical.py`
+**Class:** `PythSubGraphicalAnalysis`
+**Status:** ✅ Working (rendered 2026-03-12, ManimCE v0.19.2)
+**Covers:** Section 5.3 — Solving Trig Equations (Example 4)
+
+**What it does:**
+Full narrative animation for `2sin²x + 3cos x - 3 = 0` — **all solutions**.
+Pythagorean substitution converts to a quadratic in cos x, then factors into two valid cases.
+Two-panel modular layout with scrim pattern.
+
+1. Title + "All Solutions — no domain restriction" statement
+2. **Algebra steps** — original → Pythagorean sub (`sin²x = 1 - cos²x`) → expand/simplify → factor;
+   ZPP split: Case 1 `cos x = 1/2` (green) vs Case 2 `cos x = 1` (blue); bridge text
+3. **Panel A** (green border, `[0, 2π]`) — `y = cos x` with dashed `y = 1/2` reference;
+   intersections at `π/3` (QI, green dot) and `5π/3` (QIV, gold dot); general solution box
+4. Panel A shrinks to left thumbnail
+5. **Panel B** (blue border, `[0, 4π]`) — `y = cos x` with dashed `y = 1` reference;
+   intersections at `0, 2π, 4π` (blue dots with n-tags); general solution box
+6. Panel B shrinks to right thumbnail (scrim fades out)
+7. Both panels get ✓ labels + combined solution banner
+
+**Color coding:**
+- Panel A border + QI elements → `Q1_COLOR`; QIV dot → `Q4_COLOR`
+- Panel B border + elements → `ACCENT_BLUE`
+- `y = cos x` curves → `ACCENT_TEAL`
+- Solution dots + banner → `HIGHLIGHT`
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_3_pyth_sub_graphical.py PythSubGraphicalAnalysis  # preview
+manim -pqh scenes/5_3_pyth_sub_graphical.py PythSubGraphicalAnalysis  # final
+```
+
+---
+
+### `SquaringGraphicalAnalysis`
+
+**File:** `manim/scenes/5_3_squaring_graphical.py`
+**Class:** `SquaringGraphicalAnalysis`
+**Status:** ✅ Working (rendered 2026-03-12, ManimCE v0.19.2)
+**Covers:** Section 5.3 — Solving Trig Equations (Example 5)
+
+**What it does:**
+Single-panel graphical analysis of `cos x + 1 = sin x` on **[0, 2π)**.
+Squaring both sides introduces an extraneous solution — the graph makes this visually obvious.
+
+1. Title + "[0, 2π) — restricted domain" badge
+2. **Algebra steps** — original → square both sides → Pythagorean sub → factor;
+   warning box: "Squaring can introduce extraneous solutions — must verify!";
+   ZPP split: `cos x = 0` (green) vs `cos x = -1` (blue); candidates: `π/2, 3π/2, π`
+3. **Single full-scene graph** — `y = cos x + 1` (teal) vs `y = sin x` (pink) on `[0, 2π]`
+   - ✓ green dot at `π/2` (both curves = 1)
+   - ✓ green dot at `π` (both curves = 0)
+   - ✗ red dots at `3π/2` with dashed gap line showing LHS = 1, RHS = -1 (gap = 2)
+   - "Extraneous!" annotation with algebraic proof
+4. Solution banner: `x = π/2, x = π`
+
+**Color coding:**
+- `y = cos x + 1` → `ACCENT_TEAL`; `y = sin x` → `Q3_COLOR` (pink)
+- Valid intersections → `Q1_COLOR` (green ✓)
+- Extraneous candidate → `ACCENT_RED` (✗ + gap)
+- Banner → `HIGHLIGHT`
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_3_squaring_graphical.py SquaringGraphicalAnalysis  # preview
+manim -pqh scenes/5_3_squaring_graphical.py SquaringGraphicalAnalysis  # final
+```
+
+---
+
 ### Planned Scenes
 
 | Planned scene | File | Covers |
