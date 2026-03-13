@@ -84,7 +84,8 @@
             justify-content: center;
             min-height: 0;
         }
-        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
+        .slide-body:has(.steps-area),
+        .slide-body:has(.launch-layout) { justify-content: flex-start; overflow: hidden; }
 
         /* ===== BACKGROUNDS ===== */
         .title-slide { background: var(--dark-navy); color: white; justify-content: center; }
@@ -253,6 +254,176 @@
         }
         .concept-box.teal { border-color: var(--teal-accent); }
         .concept-box p { font-size: 0.75em; color: #1e293b; line-height: 1.6; }
+
+        /* ===== LAUNCH SLIDE ===== */
+        .launch-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-bottom: calc(var(--steps-pad-bottom) + env(safe-area-inset-bottom));
+        }
+        .launch-intro {
+            margin-bottom: 0;
+        }
+        .launch-intro p + p {
+            margin-top: 0.55em;
+        }
+        .launch-board {
+            display: grid;
+            gap: 1rem;
+        }
+        .launch-zone {
+            background: rgba(248, 250, 252, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            border-radius: 18px;
+            padding: 0.9rem 1rem 1rem;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .launch-zone.is-over {
+            border-color: var(--blue-accent);
+            box-shadow: 0 18px 38px rgba(37, 99, 235, 0.14);
+            background: rgba(239, 246, 255, 0.96);
+        }
+        .launch-zone:focus-visible {
+            outline: 2px solid rgba(37, 99, 235, 0.45);
+            outline-offset: 2px;
+        }
+        .launch-zone-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.7rem;
+        }
+        .launch-zone-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-size: 0.54em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #475569;
+        }
+        .launch-zone-label::before {
+            content: '';
+            width: 0.65rem;
+            height: 0.65rem;
+            border-radius: 999px;
+            background: var(--teal-accent);
+            opacity: 0.65;
+        }
+        .launch-reset {
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            background: rgba(255, 255, 255, 0.82);
+            color: #475569;
+            border-radius: 999px;
+            padding: 0.3rem 0.7rem;
+            font: inherit;
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .launch-reset:hover,
+        .launch-reset:focus-visible {
+            border-color: rgba(37, 99, 235, 0.45);
+            background: rgba(239, 246, 255, 0.95);
+            color: var(--blue-accent);
+            outline: none;
+        }
+        .launch-card-holder {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+            gap: 0.8rem;
+            align-items: start;
+        }
+        .launch-card-holder:empty::after {
+            content: attr(data-empty-label);
+            display: block;
+            padding: 0.9rem 1rem;
+            border: 1px dashed rgba(148, 163, 184, 0.55);
+            border-radius: 14px;
+            font-size: 0.6em;
+            color: #94a3b8;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.55);
+        }
+        .launch-bucket-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+            gap: 0.9rem;
+        }
+        .launch-bucket {
+            min-height: 9rem;
+        }
+        .launch-bucket .launch-zone-label::before {
+            background: var(--blue-accent);
+        }
+        .launch-card {
+            width: 100%;
+            border: 1px solid rgba(148, 163, 184, 0.42);
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 16px;
+            padding: 0.8rem 0.85rem 0.9rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.45rem;
+            text-align: left;
+            cursor: grab;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+        }
+        .launch-card:hover,
+        .launch-card:focus-visible {
+            transform: translateY(-2px);
+            border-color: rgba(37, 99, 235, 0.45);
+            box-shadow: 0 16px 34px rgba(15, 23, 42, 0.11);
+            outline: none;
+        }
+        .launch-card:active {
+            cursor: grabbing;
+        }
+        .launch-card.is-selected {
+            border-color: var(--blue-accent);
+            background: rgba(239, 246, 255, 0.96);
+            box-shadow: 0 18px 38px rgba(37, 99, 235, 0.14);
+        }
+        .launch-card.is-dragging {
+            opacity: 0.42;
+            transform: scale(0.98);
+            box-shadow: none;
+        }
+        .launch-card-tag {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+        .launch-card-math {
+            width: 100%;
+            font-size: 0.8em;
+            color: var(--dark-navy);
+        }
+        .launch-card-math .katex-display {
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.08em 0;
+        }
+        .launch-support-note {
+            font-size: 0.58em;
+            color: #64748b;
+            letter-spacing: 0.02em;
+        }
 
         /* ===== NAV / PROGRESS ===== */
         .nav-dots {
@@ -449,6 +620,8 @@
             .guidelines-grid { grid-template-columns: 1fr; }
             .guideline-tip { grid-column: auto; }
             .nav-dots { display: none; }
+            .launch-card-holder,
+            .launch-bucket-grid { grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr)); }
         }
 
         @media (max-width: 768px) {
@@ -504,6 +677,15 @@
                 transform-origin: bottom right;
                 padding: 0.8rem 0.85rem 0.85rem;
             }
+            .launch-zone {
+                padding: 0.8rem 0.85rem 0.9rem;
+            }
+            .launch-zone-header {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+            .launch-card-holder,
+            .launch-bucket-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
@@ -527,6 +709,9 @@
                 width: 100%;
                 padding: 0.42rem 0.6rem;
                 font-size: 0.5em;
+            }
+            .launch-card {
+                padding: 0.72rem 0.75rem 0.8rem;
             }
         }
     </style>
@@ -590,7 +775,92 @@
     </section>
 
     <!-- ================================================
-         SLIDE 2 — CONCEPT
+         SLIDE 2 — LAUNCH
+         ================================================ -->
+    <section class="slide grid-bg launch-slide" id="slide-launch">
+        <div class="slide-header">
+            <div class="example-label">Launch</div>
+            <div class="slide-title">Strategy Sort — Best First Move</div>
+        </div>
+        <div class="slide-body">
+            <div class="launch-layout">
+                <div class="concept-box launch-intro" style="border-color: var(--teal-accent);">
+                    <p><strong>At your boards:</strong> Sort each identity by the <strong>best first move</strong>. Choose the strategy that gets the proof started cleanly, but do not finish the algebra yet.</p>
+                    <p><strong>Touchscreen fallback:</strong> Tap a card, then tap a bucket. On laptops, you can drag cards directly and they will snap into the grid.</p>
+                </div>
+                <div class="launch-board" data-launch-board>
+                    <div class="launch-zone launch-bank" data-launch-dropzone tabindex="0" aria-label="Card bank">
+                        <div class="launch-zone-header">
+                            <div class="launch-zone-label">Card Bank</div>
+                            <button class="launch-reset" type="button" data-launch-reset>Reset Sort</button>
+                        </div>
+                        <div class="launch-card-holder" id="launch-bank-cards" data-launch-card-holder data-empty-label="Cards return here when you reset the activity.">
+                            <button class="launch-card" id="launch-card-a" type="button" draggable="true" data-launch-card data-default-order="0">
+                                <span class="launch-card-tag">Card A</span>
+                                <span class="launch-card-math">\[\dfrac{\sec^2\theta - 1}{\sec^2\theta} = \sin^2\theta\]</span>
+                            </button>
+                            <button class="launch-card" id="launch-card-b" type="button" draggable="true" data-launch-card data-default-order="1">
+                                <span class="launch-card-tag">Card B</span>
+                                <span class="launch-card-math">\[\dfrac{1}{1-\sin\alpha} + \dfrac{1}{1+\sin\alpha} = 2\sec^2\alpha\]</span>
+                            </button>
+                            <button class="launch-card" id="launch-card-c" type="button" draggable="true" data-launch-card data-default-order="2">
+                                <span class="launch-card-tag">Card C</span>
+                                <span class="launch-card-math">\[\tan x + \cot x = \sec x \csc x\]</span>
+                            </button>
+                            <button class="launch-card" id="launch-card-d" type="button" draggable="true" data-launch-card data-default-order="3">
+                                <span class="launch-card-tag">Card D</span>
+                                <span class="launch-card-math">\[\sec x + \tan x = \dfrac{\cos x}{1-\sin x}\]</span>
+                            </button>
+                            <button class="launch-card" id="launch-card-e" type="button" draggable="true" data-launch-card data-default-order="4">
+                                <span class="launch-card-tag">Card E</span>
+                                <span class="launch-card-math">\[\dfrac{\cot^2\theta}{1+\csc\theta} = \dfrac{1-\sin\theta}{\sin\theta}\]</span>
+                            </button>
+                            <button class="launch-card" id="launch-card-f" type="button" draggable="true" data-launch-card data-default-order="5">
+                                <span class="launch-card-tag">Card F</span>
+                                <span class="launch-card-math">\[\sin^3 x \cos^4 x = (\cos^4 x - \cos^6 x)\sin x\]</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="launch-bucket-grid">
+                        <div class="launch-zone launch-bucket" data-launch-dropzone tabindex="0" aria-label="Pythagorean identity bucket">
+                            <div class="launch-zone-header">
+                                <div class="launch-zone-label">Pythagorean Identity</div>
+                            </div>
+                            <div class="launch-card-holder" data-launch-card-holder data-empty-label="Drop the identity that wants a Pythagorean rewrite first."></div>
+                        </div>
+                        <div class="launch-zone launch-bucket" data-launch-dropzone tabindex="0" aria-label="Common denominator bucket">
+                            <div class="launch-zone-header">
+                                <div class="launch-zone-label">Common Denominator</div>
+                            </div>
+                            <div class="launch-card-holder" data-launch-card-holder data-empty-label="Drop the identity that starts by combining fractions."></div>
+                        </div>
+                        <div class="launch-zone launch-bucket" data-launch-dropzone tabindex="0" aria-label="Convert to sine and cosine bucket">
+                            <div class="launch-zone-header">
+                                <div class="launch-zone-label">Convert to sin and cos</div>
+                            </div>
+                            <div class="launch-card-holder" data-launch-card-holder data-empty-label="Drop the identity that becomes clearer in sine and cosine."></div>
+                        </div>
+                        <div class="launch-zone launch-bucket" data-launch-dropzone tabindex="0" aria-label="Multiply by conjugate bucket">
+                            <div class="launch-zone-header">
+                                <div class="launch-zone-label">Multiply by Conjugate</div>
+                            </div>
+                            <div class="launch-card-holder" data-launch-card-holder data-empty-label="Drop the identity that benefits from a conjugate."></div>
+                        </div>
+                        <div class="launch-zone launch-bucket" data-launch-dropzone tabindex="0" aria-label="Factor bucket">
+                            <div class="launch-zone-header">
+                                <div class="launch-zone-label">Factor</div>
+                            </div>
+                            <div class="launch-card-holder" data-launch-card-holder data-empty-label="Drop the identity that starts by factoring an expression."></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="launch-support-note">Teacher key: A → Pythagorean identity, B → common denominator, C → convert to sin and cos, D → multiply by conjugate, E → factor, F → factor.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         SLIDE 3 — CONCEPT
          ================================================ -->
     <section class="slide grid-bg" id="slide-1">
         <div class="slide-header">
@@ -1080,9 +1350,17 @@
             this.clickHint    = document.getElementById('clickHint');
             this.strategyDock = document.getElementById('strategyDock');
             this.strategyWidgets = Array.from(document.querySelectorAll('[data-strategy-widget]'));
+            this.strategyDockStart = this.slides.findIndex((slide) => slide.id === 'slide-3');
+            this.launchBoard = document.querySelector('[data-launch-board]');
+            this.launchCards = Array.from(document.querySelectorAll('[data-launch-card]'));
+            this.launchDropzones = Array.from(document.querySelectorAll('[data-launch-dropzone]'));
+            this.launchResetButton = document.querySelector('[data-launch-reset]');
+            this.draggedLaunchCard = null;
+            this.selectedLaunchCard = null;
 
             this._buildNav();
             this._bindStrategyDock();
+            this._bindLaunchSort();
             this._activate(0);
             this._bindEvents();
         }
@@ -1113,7 +1391,7 @@
             this.clickHint.textContent = (curStep < maxSteps - 1)
                 ? 'click to advance'
                 : (this.current < this.total - 1 ? 'click for next slide' : '');
-            const showStrategyDock = this.current >= 3;
+            const showStrategyDock = this.strategyDockStart >= 0 && this.current >= this.strategyDockStart;
             if (!showStrategyDock) this._closeStrategyPanels();
             this.strategyDock.classList.toggle('is-hidden', !showStrategyDock);
         }
@@ -1190,9 +1468,103 @@
             return this.strategyWidgets.some((widget) => widget.classList.contains('is-open'));
         }
 
+        _bindLaunchSort() {
+            if (!this.launchBoard) return;
+
+            this.launchCards.forEach((card) => {
+                card.addEventListener('dragstart', (e) => {
+                    this.draggedLaunchCard = card;
+                    card.classList.add('is-dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/plain', card.id);
+                });
+
+                card.addEventListener('dragend', () => {
+                    card.classList.remove('is-dragging');
+                    this.draggedLaunchCard = null;
+                    this._clearLaunchDropState();
+                });
+
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this._setSelectedLaunchCard(this.selectedLaunchCard === card ? null : card);
+                });
+            });
+
+            this.launchDropzones.forEach((zone) => {
+                zone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('is-over');
+                });
+
+                zone.addEventListener('dragenter', (e) => {
+                    e.preventDefault();
+                    zone.classList.add('is-over');
+                });
+
+                zone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    const cardId = e.dataTransfer.getData('text/plain');
+                    const card = document.getElementById(cardId) || this.draggedLaunchCard;
+                    this._moveLaunchCard(card, zone);
+                    this._clearLaunchDropState();
+                });
+
+                zone.addEventListener('click', (e) => {
+                    if (e.target.closest('[data-launch-card]') || e.target.closest('[data-launch-reset]')) return;
+                    if (!this.selectedLaunchCard) return;
+                    e.stopPropagation();
+                    this._moveLaunchCard(this.selectedLaunchCard, zone);
+                });
+
+                zone.addEventListener('keydown', (e) => {
+                    if (!this.selectedLaunchCard || !['Enter', ' '].includes(e.key)) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this._moveLaunchCard(this.selectedLaunchCard, zone);
+                });
+            });
+
+            this.launchResetButton?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const bankHolder = document.getElementById('launch-bank-cards');
+                this.launchCards
+                    .slice()
+                    .sort((a, b) => Number(a.dataset.defaultOrder) - Number(b.dataset.defaultOrder))
+                    .forEach((card) => bankHolder?.appendChild(card));
+                this._setSelectedLaunchCard(null);
+                this._clearLaunchDropState();
+            });
+        }
+
+        _moveLaunchCard(card, zone) {
+            const holder = zone?.querySelector('[data-launch-card-holder]');
+            if (!card || !holder) return;
+            holder.appendChild(card);
+            this._setSelectedLaunchCard(null);
+        }
+
+        _setSelectedLaunchCard(card) {
+            if (this.selectedLaunchCard) this.selectedLaunchCard.classList.remove('is-selected');
+            this.selectedLaunchCard = card;
+            if (this.selectedLaunchCard) this.selectedLaunchCard.classList.add('is-selected');
+        }
+
+        _clearLaunchDropState() {
+            this.launchDropzones.forEach((zone) => zone.classList.remove('is-over'));
+        }
+
         _bindEvents() {
             /* Keyboard */
             document.addEventListener('keydown', (e) => {
+                if (e.target.closest('.strategy-dock, [data-launch-board]')) {
+                    if (e.key === 'Escape') {
+                        this._closeStrategyPanels();
+                        this._setSelectedLaunchCard(null);
+                        return;
+                    }
+                    return;
+                }
                 if (e.key === 'Escape' && this._hasOpenStrategyPanel()) {
                     this._closeStrategyPanels();
                     return;
@@ -1206,9 +1578,13 @@
 
             /* Click anywhere (except nav dots, handled separately) */
             document.addEventListener('click', (e) => {
-                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock')) return;
+                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock') || e.target.closest('[data-launch-board]')) return;
                 if (this._hasOpenStrategyPanel()) {
                     this._closeStrategyPanels();
+                    return;
+                }
+                if (this.selectedLaunchCard) {
+                    this._setSelectedLaunchCard(null);
                     return;
                 }
                 this._next();
