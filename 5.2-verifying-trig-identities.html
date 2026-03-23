@@ -499,6 +499,7 @@
         }
         .strategy-widget.do .strategy-toggle { background: var(--green-accent); }
         .strategy-widget.dont .strategy-toggle { background: var(--red-accent); }
+        .strategy-widget.identities .strategy-toggle { background: var(--blue-accent); }
 
         .strategy-panel {
             position: absolute;
@@ -529,6 +530,11 @@
             background: #fef2f2;
             border-color: var(--red-accent);
         }
+        .strategy-widget.identities .strategy-panel {
+            width: min(22rem, calc(100vw - 2.5rem));
+            background: #eff6ff;
+            border-color: var(--blue-accent);
+        }
         .strategy-panel-title {
             font-size: 0.68em;
             font-weight: 700;
@@ -538,6 +544,7 @@
         }
         .strategy-widget.do .strategy-panel-title { color: var(--green-accent); }
         .strategy-widget.dont .strategy-panel-title { color: var(--red-accent); }
+        .strategy-widget.identities .strategy-panel-title { color: var(--blue-accent); }
         .strategy-panel ul {
             list-style: none;
             display: flex;
@@ -576,6 +583,49 @@
         .strategy-widget.dont .strategy-panel li::before {
             content: '✗';
             color: var(--red-accent);
+        }
+        .identity-reference-scroll {
+            display: grid;
+            gap: 0.65rem;
+            max-height: min(19rem, calc(100vh - 12rem));
+            overflow-y: auto;
+            padding-right: 0.15rem;
+        }
+        .identity-reference-group {
+            background: rgba(255, 255, 255, 0.88);
+            border: 1px solid rgba(147, 197, 253, 0.7);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 12px;
+            padding: 0.7rem 0.8rem 0.8rem;
+        }
+        .identity-reference-label {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1d4ed8;
+            margin-bottom: 0.35rem;
+        }
+        .identity-reference-items {
+            display: grid;
+            gap: 0.4rem;
+        }
+        .identity-reference-item {
+            background: rgba(239, 246, 255, 0.9);
+            border: 1px solid rgba(191, 219, 254, 0.88);
+            border-radius: 10px;
+            padding: 0.45rem 0.55rem;
+        }
+        .identity-reference-math {
+            font-size: 0.68em;
+            line-height: 1.45;
+            text-align: center;
+        }
+        .identity-reference-math .katex-display {
+            margin: 0;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.08em 0;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -751,6 +801,42 @@
                 <li>Add to both sides.</li>
                 <li>Square both sides.</li>
             </ul>
+        </div>
+    </div>
+    <div class="strategy-widget identities" data-strategy-widget>
+        <button class="strategy-toggle" type="button" data-strategy-toggle aria-expanded="false" aria-controls="strategy-panel-identities">
+            Identities
+        </button>
+        <div class="strategy-panel" id="strategy-panel-identities">
+            <div class="strategy-panel-title">Fundamental Identities</div>
+            <div class="identity-reference-scroll">
+                <div class="identity-reference-group">
+                    <div class="identity-reference-label">Reciprocal</div>
+                    <div class="identity-reference-items">
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\sin\theta = \dfrac{1}{\csc\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\cos\theta = \dfrac{1}{\sec\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\tan\theta = \dfrac{1}{\cot\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\csc\theta = \dfrac{1}{\sin\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\sec\theta = \dfrac{1}{\cos\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\cot\theta = \dfrac{1}{\tan\theta}\]</div></div>
+                    </div>
+                </div>
+                <div class="identity-reference-group">
+                    <div class="identity-reference-label">Quotient</div>
+                    <div class="identity-reference-items">
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\tan\theta = \dfrac{\sin\theta}{\cos\theta}\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\cot\theta = \dfrac{\cos\theta}{\sin\theta}\]</div></div>
+                    </div>
+                </div>
+                <div class="identity-reference-group">
+                    <div class="identity-reference-label">Pythagorean</div>
+                    <div class="identity-reference-items">
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[\sin^2\theta + \cos^2\theta = 1\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[1 + \tan^2\theta = \sec^2\theta\]</div></div>
+                        <div class="identity-reference-item"><div class="identity-reference-math">\[1 + \cot^2\theta = \csc^2\theta\]</div></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
