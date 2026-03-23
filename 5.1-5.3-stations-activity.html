@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.1–5.3 Review Stations Activity</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 18px;
+            color: var(--text);
+            background: white;
+        }
+
+        /* ============================================================
+           PAGE LAYOUT — each station is one printable page
+           ============================================================ */
+        .station-page {
+            width: 7.5in;
+            min-height: 9.5in;
+            margin: 0.5in auto;
+            padding: 0.5in;
+            border: 2px solid var(--navy);
+            border-radius: 16px;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+        .station-page:last-child {
+            page-break-after: auto;
+        }
+
+        /* ============================================================
+           STATION HEADER
+           ============================================================ */
+        .station-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.4in;
+            padding-bottom: 0.6rem;
+            border-bottom: 3px solid var(--navy);
+        }
+        .station-badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: white;
+            padding: 0.3em 0.8em;
+            border-radius: 8px;
+            white-space: nowrap;
+        }
+        .station-badge.blue   { background: var(--blue-accent); }
+        .station-badge.green  { background: var(--green-accent); }
+        .station-badge.teal   { background: var(--teal-accent); }
+        .station-badge.orange { background: var(--orange-accent); }
+
+        .station-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .station-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        /* ============================================================
+           QUESTION CARDS
+           ============================================================ */
+        .questions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35in;
+            flex: 1;
+        }
+
+        .question-card {
+            border: 1.5px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 0.6rem 0.9rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .question-card.q1 { border-left: 5px solid var(--green-accent); }
+        .question-card.q2 { border-left: 5px solid var(--blue-accent); }
+        .question-card.q3 { border-left: 5px solid var(--orange-accent); }
+
+        .question-top {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .q-number {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.15em 0.6em;
+            border-radius: 6px;
+            color: white;
+        }
+        .q1 .q-number { background: var(--green-accent); }
+        .q2 .q-number { background: var(--blue-accent); }
+        .q3 .q-number { background: var(--orange-accent); }
+
+        .q-difficulty {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .question-prompt {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+        }
+
+        .question-math {
+            font-size: 1.15rem;
+            text-align: center;
+            padding: 0.3rem 0;
+        }
+
+        .work-space {
+            flex: 1;
+            min-height: 1.3in;
+            border-top: 1px dashed #cbd5e1;
+            margin-top: 0.4rem;
+            padding-top: 0.3rem;
+        }
+        .work-label {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* ============================================================
+           ANSWER KEY PAGE
+           ============================================================ */
+        .answer-page {
+            width: 7.5in;
+            margin: 0.5in auto;
+            padding: 0.5in;
+            border: 2px dashed var(--text-muted);
+            border-radius: 16px;
+            page-break-after: always;
+        }
+        .answer-page:last-child {
+            page-break-after: auto;
+        }
+        .answer-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-align: center;
+            margin-bottom: 0.4in;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--navy);
+        }
+        .answer-station {
+            margin-bottom: 0.35in;
+        }
+        .answer-station-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.15rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .answer-item {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            font-size: 0.9rem;
+        }
+        .answer-q-label {
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            min-width: 1.8rem;
+        }
+        .answer-q-label.green  { color: var(--green-accent); }
+        .answer-q-label.blue   { color: var(--blue-accent); }
+        .answer-q-label.orange { color: var(--orange-accent); }
+
+        /* ============================================================
+           PRINT STYLES
+           ============================================================ */
+        @media print {
+            html, body { font-size: 16px; }
+            .station-page {
+                margin: 0;
+                border: 2px solid var(--navy);
+                width: 100%;
+                min-height: auto;
+                height: 100vh;
+                padding: 0.4in;
+                border-radius: 0;
+            }
+            .answer-page {
+                margin: 0;
+                width: 100%;
+                padding: 0.4in;
+                border-radius: 0;
+            }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ================================================================
+     STATION 1 — SIMPLIFY
+     ================================================================ -->
+<div class="station-page">
+    <div class="station-header">
+        <div class="station-badge blue">Station 1</div>
+        <div class="station-title">Simplify the Expression</div>
+        <div class="station-subtitle">Sections 5.1</div>
+    </div>
+
+    <div class="questions">
+        <!-- Q1 -->
+        <div class="question-card q1">
+            <div class="question-top">
+                <div class="q-number">Q1</div>
+                <div class="q-difficulty">Standard</div>
+            </div>
+            <div class="question-prompt">Simplify completely.</div>
+            <div class="question-math">
+                \[\sin x \csc x - \cos^2 x\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card q2">
+            <div class="question-top">
+                <div class="q-number">Q2</div>
+                <div class="q-difficulty">Intermediate</div>
+            </div>
+            <div class="question-prompt">Simplify completely. Write your answer without fractions.</div>
+            <div class="question-math">
+                \[\dfrac{\sin^2 x}{1 + \cos x}\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card q3">
+            <div class="question-top">
+                <div class="q-number">Q3</div>
+                <div class="q-difficulty">Challenge</div>
+            </div>
+            <div class="question-prompt">Simplify completely.</div>
+            <div class="question-math">
+                \[\dfrac{1 + \tan^2 x}{1 + \cot^2 x}\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     STATION 2 — VERIFY
+     ================================================================ -->
+<div class="station-page">
+    <div class="station-header">
+        <div class="station-badge green">Station 2</div>
+        <div class="station-title">Verify the Identity</div>
+        <div class="station-subtitle">Section 5.2</div>
+    </div>
+
+    <div class="questions">
+        <!-- Q1 -->
+        <div class="question-card q1">
+            <div class="question-top">
+                <div class="q-number">Q1</div>
+                <div class="q-difficulty">Standard</div>
+            </div>
+            <div class="question-prompt">Verify the identity. Show all steps working one side only.</div>
+            <div class="question-math">
+                \[\sin x \sec x = \tan x\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card q2">
+            <div class="question-top">
+                <div class="q-number">Q2</div>
+                <div class="q-difficulty">Intermediate</div>
+            </div>
+            <div class="question-prompt">Verify the identity. Show all steps working one side only.</div>
+            <div class="question-math">
+                \[\dfrac{\cos x}{1 - \sin x} = \sec x + \tan x\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card q3">
+            <div class="question-top">
+                <div class="q-number">Q3</div>
+                <div class="q-difficulty">Challenge</div>
+            </div>
+            <div class="question-prompt">Verify the identity. Show all steps working one side only.</div>
+            <div class="question-math">
+                \[(\csc x - \cot x)^2 = \dfrac{1 - \cos x}{1 + \cos x}\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     STATION 3 — SOLVE ON INTERVAL
+     ================================================================ -->
+<div class="station-page">
+    <div class="station-header">
+        <div class="station-badge teal">Station 3</div>
+        <div class="station-title">Solve on \([0, 2\pi)\)</div>
+        <div class="station-subtitle">Section 5.3</div>
+    </div>
+
+    <div class="questions">
+        <!-- Q1 -->
+        <div class="question-card q1">
+            <div class="question-top">
+                <div class="q-number">Q1</div>
+                <div class="q-difficulty">Standard</div>
+            </div>
+            <div class="question-prompt">Find all solutions in \([0, 2\pi)\).</div>
+            <div class="question-math">
+                \[\tan^2 x - 1 = 0\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card q2">
+            <div class="question-top">
+                <div class="q-number">Q2</div>
+                <div class="q-difficulty">Intermediate</div>
+            </div>
+            <div class="question-prompt">Find all solutions in \([0, 2\pi)\).</div>
+            <div class="question-math">
+                \[2\cos^2 x + 3\cos x + 1 = 0\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card q3">
+            <div class="question-top">
+                <div class="q-number">Q3</div>
+                <div class="q-difficulty">Challenge</div>
+            </div>
+            <div class="question-prompt">Find all solutions in \([0, 2\pi)\).</div>
+            <div class="question-math">
+                \[\cos^2 x - 3\sin x + 3 = 0\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     STATION 4 — GENERAL SOLUTION
+     ================================================================ -->
+<div class="station-page">
+    <div class="station-header">
+        <div class="station-badge orange">Station 4</div>
+        <div class="station-title">Solve — General Solution</div>
+        <div class="station-subtitle">Section 5.3</div>
+    </div>
+
+    <div class="questions">
+        <!-- Q1 -->
+        <div class="question-card q1">
+            <div class="question-top">
+                <div class="q-number">Q1</div>
+                <div class="q-difficulty">Standard</div>
+            </div>
+            <div class="question-prompt">Find all solutions. Write your answer in general form.</div>
+            <div class="question-math">
+                \[2\cos x + \sqrt{3} = 0\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="question-card q2">
+            <div class="question-top">
+                <div class="q-number">Q2</div>
+                <div class="q-difficulty">Intermediate</div>
+            </div>
+            <div class="question-prompt">Find all solutions. Write your answer in general form.</div>
+            <div class="question-math">
+                \[\sin x \tan x = \sin x\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="question-card q3">
+            <div class="question-top">
+                <div class="q-number">Q3</div>
+                <div class="q-difficulty">Challenge</div>
+            </div>
+            <div class="question-prompt">Find all solutions. Write your answer in general form.</div>
+            <div class="question-math">
+                \[2\cos^2 x - 3\sin x = 3\]
+            </div>
+            <div class="work-space">
+                <div class="work-label">Show your work</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     ANSWER KEY — PAGE 1 (Stations 1 & 2)
+     ================================================================ -->
+<div class="answer-page">
+    <div class="answer-title">Answer Key — Stations 1 &amp; 2</div>
+
+    <div class="answer-station">
+        <div class="answer-station-label">Station 1 — Simplify</div>
+        <div class="answer-item">
+            <div class="answer-q-label green">Q1</div>
+            <div>\(\sin x \csc x - \cos^2 x = 1 - \cos^2 x = \boxed{\sin^2 x}\)</div>
+        </div>
+        <div class="answer-item">
+            <div class="answer-q-label blue">Q2</div>
+            <div>\(\dfrac{\sin^2 x}{1 + \cos x} = \dfrac{(1-\cos x)(1+\cos x)}{1+\cos x} = \boxed{1 - \cos x}\)</div>
+        </div>
+        <div class="answer-item">
+            <div class="answer-q-label orange">Q3</div>
+            <div>\(\dfrac{1 + \tan^2 x}{1 + \cot^2 x} = \dfrac{\sec^2 x}{\csc^2 x} = \dfrac{\sin^2 x}{\cos^2 x} = \boxed{\tan^2 x}\)</div>
+        </div>
+    </div>
+
+    <div class="answer-station">
+        <div class="answer-station-label">Station 2 — Verify</div>
+        <div class="answer-item">
+            <div class="answer-q-label green">Q1</div>
+            <div>LHS: \(\sin x \cdot \dfrac{1}{\cos x} = \dfrac{\sin x}{\cos x} = \tan x\;\checkmark\)</div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label blue">Q2</div>
+                <div>Work the left side — multiply by conjugate \(\dfrac{1+\sin x}{1+\sin x}\):</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \(\dfrac{\cos x(1+\sin x)}{1-\sin^2 x} = \dfrac{\cos x(1+\sin x)}{\cos^2 x} = \dfrac{1+\sin x}{\cos x} = \sec x + \tan x\;\checkmark\)
+            </div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label orange">Q3</div>
+                <div>Work the left side — convert to sin &amp; cos, then square:</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \(\left(\dfrac{1-\cos x}{\sin x}\right)^2 = \dfrac{(1-\cos x)^2}{\sin^2 x} = \dfrac{(1-\cos x)^2}{1-\cos^2 x} = \dfrac{(1-\cos x)^2}{(1-\cos x)(1+\cos x)} = \dfrac{1-\cos x}{1+\cos x}\;\checkmark\)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================
+     ANSWER KEY — PAGE 2 (Stations 3 & 4)
+     ================================================================ -->
+<div class="answer-page">
+    <div class="answer-title">Answer Key — Stations 3 &amp; 4</div>
+
+    <div class="answer-station">
+        <div class="answer-station-label">Station 3 — Solve on \([0, 2\pi)\)</div>
+        <div class="answer-item">
+            <div class="answer-q-label green">Q1</div>
+            <div>\(\tan^2 x = 1 \;\Rightarrow\; \tan x = \pm 1 \;\Rightarrow\; \boxed{x = \dfrac{\pi}{4},\; \dfrac{3\pi}{4},\; \dfrac{5\pi}{4},\; \dfrac{7\pi}{4}}\)</div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label blue">Q2</div>
+                <div>Factor: \((2\cos x + 1)(\cos x + 1) = 0\)</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \(\cos x = -\tfrac{1}{2} \;\Rightarrow\; x = \tfrac{2\pi}{3},\, \tfrac{4\pi}{3}\) &nbsp;&nbsp; \(\cos x = -1 \;\Rightarrow\; x = \pi\) &nbsp;&nbsp; \(\boxed{x = \dfrac{2\pi}{3},\; \pi,\; \dfrac{4\pi}{3}}\)
+            </div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label orange">Q3</div>
+                <div>Pythagorean sub: \((1 - \sin^2 x) - 3\sin x + 3 = 0\)</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \(\sin^2 x + 3\sin x - 4 = 0 \;\Rightarrow\; (\sin x + 4)(\sin x - 1) = 0\)<br>
+                \(\sin x = -4\) (impossible) &nbsp;&nbsp; \(\sin x = 1 \;\Rightarrow\;\) \(\boxed{x = \dfrac{\pi}{2}}\)
+            </div>
+        </div>
+    </div>
+
+    <div class="answer-station">
+        <div class="answer-station-label">Station 4 — General Solution</div>
+        <div class="answer-item">
+            <div class="answer-q-label green">Q1</div>
+            <div>\(\cos x = -\dfrac{\sqrt{3}}{2} \;\Rightarrow\; \boxed{x = \dfrac{5\pi}{6} + 2\pi n \;\;\text{or}\;\; x = \dfrac{7\pi}{6} + 2\pi n}\)</div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label blue">Q2</div>
+                <div>Factor (don't divide!): \(\sin x(\tan x - 1) = 0\)</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \(\sin x = 0 \;\Rightarrow\; x = \pi n\) &nbsp;&nbsp; \(\tan x = 1 \;\Rightarrow\; x = \dfrac{\pi}{4} + \pi n\) &nbsp;&nbsp; \(\boxed{x = \pi n \;\;\text{or}\;\; x = \dfrac{\pi}{4} + \pi n}\)
+            </div>
+        </div>
+        <div class="answer-item" style="flex-direction: column; gap: 0.2rem;">
+            <div style="display: flex; align-items: baseline; gap: 0.5rem;">
+                <div class="answer-q-label orange">Q3</div>
+                <div>Pythagorean sub: \(2(1-\sin^2 x) - 3\sin x - 3 = 0 \;\Rightarrow\; 2\sin^2 x + 3\sin x + 1 = 0\)</div>
+            </div>
+            <div style="padding-left: 2.3rem;">
+                \((2\sin x + 1)(\sin x + 1) = 0\)<br>
+                \(\sin x = -\tfrac{1}{2} \;\Rightarrow\; x = \tfrac{7\pi}{6} + 2\pi n\) or \(x = \tfrac{11\pi}{6} + 2\pi n\)<br>
+                \(\sin x = -1 \;\Rightarrow\; x = \tfrac{3\pi}{2} + 2\pi n\)<br>
+                \(\boxed{x = \dfrac{7\pi}{6} + 2\pi n, \;\; \dfrac{3\pi}{2} + 2\pi n, \;\; \dfrac{11\pi}{6} + 2\pi n}\)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- KaTeX -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+</script>
+</body>
+</html>

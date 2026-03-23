@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.1–5.3 Review — Trig Identities &amp; Equations</title>
+
+    <!-- Font: Source Sans 3 (standard for HoffMath Classroom) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+
+    <!-- KaTeX CDN (required for all math) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        /* ============================================================
+           THEME — HoffMath Classroom
+           ============================================================ */
+        :root {
+            --navy:          #1a365d;
+            --blue-accent:   #2563eb;
+            --green-accent:  #16a34a;
+            --teal-accent:   #0891b2;
+            --orange-accent: #d97706;
+            --red-accent:    #dc2626;
+            --grid-line:     #dbeafe;
+            --bg-white:      #ffffff;
+            --text:          #1e293b;
+            --text-muted:    #64748b;
+            --blue-light:    #eff6ff;
+            --green-light:   #f0fdf4;
+            --teal-light:    #f0fdfa;
+            --orange-light:  #fffbeb;
+            --navy-light:    #e8edf5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 28px;           /* FIXED — do not use clamp() */
+            background: var(--navy);
+        }
+
+        /* ============================================================
+           SLIDE SHELL — horizontal transition model
+           ============================================================ */
+        .slides-wrapper {
+            width: 100vw; height: 100vh;
+            position: relative; overflow: hidden;
+        }
+
+        .slide {
+            position: absolute; inset: 0;
+            display: flex; flex-direction: column;
+            padding-top: 5rem; padding-bottom: 3rem;
+            padding-left:  max(3rem, calc((100% - 1120px) / 2));
+            padding-right: max(3rem, calc((100% - 1120px) / 2));
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
+        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
+
+        /* FLEXBOX AUTOSCALING */
+        .slide-body {
+            flex: 1;
+            display: flex; flex-direction: column;
+            justify-content: center;
+        }
+        .slide-body:has(.steps-area) {
+            justify-content: flex-start;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           BACKGROUNDS
+           ============================================================ */
+        .title-slide {
+            background: var(--navy); color: white;
+            justify-content: center;
+        }
+        .grid-bg {
+            background-color: var(--bg-white);
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text);
+        }
+
+        /* ============================================================
+           TITLE SLIDE TYPOGRAPHY
+           ============================================================ */
+        .title-section-label {
+            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
+            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
+        }
+        .title-main {
+            font-size: 2em; font-weight: 700; line-height: 1.2;
+            color: white; margin-bottom: 0.5rem;
+        }
+        .title-objective {
+            font-size: 0.72em; color: #93c5fd; font-weight: 400;
+            line-height: 1.6; margin-top: 0.75rem;
+        }
+        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+        .chip {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; padding: 0.2em 0.75em;
+            font-size: 0.58em; color: #e2e8f0;
+        }
+
+        /* ============================================================
+           SECTION DIVIDER
+           ============================================================ */
+        .section-divider {
+            background: var(--navy); color: white;
+            justify-content: center; text-align: center;
+        }
+        .section-number {
+            font-size: 0.6em; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-size: 1.6em; font-weight: 700; color: white; margin-bottom: 0.4rem;
+        }
+        .section-subtitle {
+            font-size: 0.72em; color: #93c5fd; font-weight: 400;
+        }
+
+        /* ============================================================
+           SLIDE HEADER
+           ============================================================ */
+        .slide-header {
+            display: flex; align-items: center; gap: 1rem;
+            margin-bottom: 1rem; flex-shrink: 0;
+        }
+        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
+
+        /* Tags / labels */
+        .example-label, .concept-label, .ref-label, .review-label {
+            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
+            border-radius: 6px; letter-spacing: 0.05em;
+            text-transform: uppercase; color: white;
+        }
+        .example-label { background: var(--green-accent); }
+        .concept-label { background: var(--teal-accent); }
+        .ref-label     { background: var(--navy); }
+        .review-label  { background: var(--orange-accent); }
+
+        /* ============================================================
+           PROBLEM STATEMENT
+           ============================================================ */
+        .problem-statement {
+            background: var(--navy-light);
+            border-left: 5px solid var(--navy);
+            border-radius: 10px; padding: 0.65em 1.2em;
+            margin-bottom: 0.9rem; flex-shrink: 0;
+            font-weight: 600; color: var(--navy); font-size: 0.9em;
+        }
+        .problem-statement .katex-display { margin: 0; }
+
+        /* ============================================================
+           FORMULA REFERENCE CARDS
+           ============================================================ */
+        .formula-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+
+        .formula-row {
+            background: var(--blue-light); border-radius: 10px;
+            padding: 0.4em 1.1em;
+            display: flex; align-items: center; gap: 1rem;
+            border-left: 5px solid var(--blue-accent);
+        }
+        .formula-row.pyth-row  { border-color: var(--green-accent); background: var(--green-light); }
+        .formula-row.quot-row  { border-color: var(--teal-accent);  background: var(--teal-light); }
+        .formula-row.eo-row    { border-color: var(--orange-accent); background: var(--orange-light); }
+
+        .fn-label {
+            font-size: 0.55em; font-weight: 700; letter-spacing: 0.05em;
+            text-transform: uppercase; color: var(--text-muted);
+            min-width: 5rem; flex-shrink: 0;
+        }
+        .fn-eq-stack {
+            display: flex; flex-wrap: wrap; gap: 0.2rem 2rem;
+            align-items: center; flex: 1;
+        }
+        .fn-eq-stack .step-math { font-size: 0.82em; line-height: 1.8; }
+
+        /* ============================================================
+           IDENTITY GRID — two-column layout for reference
+           ============================================================ */
+        .identity-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .identity-card {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 8px;
+            padding: 0.2em 0.7em;
+        }
+        .identity-card.green  { background: var(--green-light); border-color: var(--green-accent); }
+        .identity-card.teal   { background: var(--teal-light);  border-color: var(--teal-accent); }
+        .identity-card.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+        .identity-card-label {
+            font-size: 0.52em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.15em;
+        }
+        .identity-card .step-math { font-size: 0.6em; line-height: 1.4; text-align: center; }
+        .identity-card .step-math .katex-display { margin: 0; }
+        .identity-card .katex { font-size: 1em; }
+
+        /* ============================================================
+           STRATEGY CARDS
+           ============================================================ */
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.4rem;
+        }
+        .strategy-card {
+            background: var(--blue-light);
+            border-radius: 10px;
+            padding: 0.35em 0.8em;
+            display: flex; align-items: center; gap: 0.6rem;
+        }
+        .strategy-card.warn {
+            background: #fef2f2;
+            border: 2px solid var(--red-accent);
+        }
+        .strategy-num {
+            font-size: 0.72em; font-weight: 700;
+            color: var(--blue-accent);
+            min-width: 1.4rem; text-align: center;
+        }
+        .strategy-card.warn .strategy-num { color: var(--red-accent); }
+        .strategy-text {
+            font-size: 0.58em; font-weight: 500; color: var(--text);
+            line-height: 1.35;
+        }
+        .strategy-card.warn .strategy-text { color: var(--red-accent); font-weight: 600; }
+
+        /* ============================================================
+           KEY IDEA CALLOUT
+           ============================================================ */
+        .key-idea {
+            background: var(--orange-light);
+            border-left: 5px solid var(--orange-accent);
+            border-radius: 10px;
+            padding: 0.4em 1em;
+            margin-top: 0.4rem;
+        }
+        .key-idea-label {
+            font-size: 0.55em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--orange-accent); margin-bottom: 0.2em;
+        }
+        .key-idea-text {
+            font-size: 0.62em; color: var(--text); line-height: 1.4; font-weight: 500;
+        }
+
+        /* ============================================================
+           STEP REVEALS — display:none/block with keyframe animation
+           ============================================================ */
+        .steps-area {
+            display: flex; flex-direction: column;
+            overflow-y: auto; flex: 1;
+            min-height: 0; padding-bottom: 3.5rem;
+        }
+
+        .step { display: none; }
+        .step.visible {
+            display: block;
+            animation: stepReveal 0.4s ease both;
+            margin-bottom: 0.4rem;
+        }
+        .step.visible:last-child { margin-bottom: 0; }
+
+        @keyframes stepReveal {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================================================
+           STEP-BOX CARDS
+           ============================================================ */
+        .step-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px; padding: 0.45em 1.1em;
+        }
+        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
+        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
+        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
+        .step-box.dark   { background: var(--navy); }
+
+        .step-label {
+            font-size: 0.58em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--text-muted); margin-bottom: 0.08em;
+        }
+        .step-box.dark .step-label { color: #93c5fd; }
+
+        .step-math {
+            font-size: 0.88em; line-height: 2;
+            padding: 0.2em 0; text-align: center;
+        }
+        .step-box.dark .step-math { color: white; }
+        .step-box.dark .katex { color: white; }
+
+        /* Annotation beside equation */
+        .step-math.has-annotation {
+            display: flex; align-items: center;
+            gap: 2.5rem; text-align: left;
+        }
+        .step-eq { flex: 1; text-align: center; }
+        .annotation {
+            flex: 0 0 36%; color: var(--blue-accent);
+            font-size: 0.72em; font-weight: 600; line-height: 1.45;
+            text-align: left; border-left: 3px solid #93c5fd;
+            padding-left: 1rem;
+        }
+
+        /* ============================================================
+           NAV / PROGRESS
+           ============================================================ */
+        .nav-dots {
+            position: fixed; right: 1.2rem; top: 50%;
+            transform: translateY(-50%);
+            display: flex; flex-direction: column;
+            gap: 8px; z-index: 100;
+        }
+        .nav-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: none; cursor: pointer; transition: all 0.3s;
+        }
+        .nav-dot.active {
+            background: var(--blue-accent);
+            transform: scale(1.4);
+        }
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+            transition: width 0.4s ease; z-index: 100;
+        }
+        .click-hint {
+            position: fixed; bottom: 1.5rem; left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.45em; color: rgba(100,116,139,0.6);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite; z-index: 100;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide { transition: opacity 0.3s ease; transform: none !important; }
+            .step.visible { animation: none; opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Navigation dots -->
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+<!-- Click hint -->
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper">
+
+    <!-- ===== SLIDE 0 — TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Sections 5.1 – 5.3 Review</div>
+        <h1 class="title-main">Trig Identities &amp; Equations</h1>
+        <p class="title-objective">Review: Simplifying with identities, verifying identities, and solving trig equations</p>
+        <div class="identity-chips">
+            <span class="chip">Fundamental Identities</span>
+            <span class="chip">Verifying</span>
+            <span class="chip">Solving Equations</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1 — SECTION DIVIDER: 5.1 ===== -->
+    <section class="slide section-divider" id="slide-1">
+        <div class="slide-body">
+            <div class="section-number">Section 5.1</div>
+            <div class="section-title">Using Fundamental Identities</div>
+            <div class="section-subtitle">Reciprocal, Quotient, Pythagorean, Cofunction, Even/Odd</div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2 — IDENTITY REFERENCE ===== -->
+    <section class="slide grid-bg" id="slide-2">
+        <div class="slide-header">
+            <span class="ref-label">Reference</span>
+            <h2 class="slide-title">Fundamental Identities</h2>
+        </div>
+        <div class="slide-body">
+            <div class="identity-grid">
+                <div class="identity-card green">
+                    <div class="identity-card-label">Pythagorean Identities</div>
+                    <div class="step-math">\[\sin^2\theta + \cos^2\theta = 1 \qquad 1 + \tan^2\theta = \sec^2\theta \qquad 1 + \cot^2\theta = \csc^2\theta\]</div>
+                </div>
+                <div class="identity-card">
+                    <div class="identity-card-label">Reciprocal Identities</div>
+                    <div class="step-math">\[\csc\theta = \frac{1}{\sin\theta} \qquad \sec\theta = \frac{1}{\cos\theta} \qquad \cot\theta = \frac{1}{\tan\theta}\]</div>
+                </div>
+                <div class="identity-card teal">
+                    <div class="identity-card-label">Quotient Identities</div>
+                    <div class="step-math">\[\tan\theta = \frac{\sin\theta}{\cos\theta} \qquad \cot\theta = \frac{\cos\theta}{\sin\theta}\]</div>
+                </div>
+                <div class="identity-card orange">
+                    <div class="identity-card-label">Even / Odd Identities</div>
+                    <div class="step-math">\[\cos(-\theta) = \cos\theta \qquad \sin(-\theta) = -\sin\theta \qquad \tan(-\theta) = -\tan\theta\]</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3 — 5.1 STRATEGIES ===== -->
+    <section class="slide grid-bg" id="slide-3">
+        <div class="slide-header">
+            <span class="concept-label">Strategies</span>
+            <h2 class="slide-title">Simplifying Trig Expressions</h2>
+        </div>
+        <div class="slide-body">
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-num">1</div>
+                    <div class="strategy-text">Factor out a common term</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">2</div>
+                    <div class="strategy-text">Apply a Pythagorean identity</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">3</div>
+                    <div class="strategy-text">Rewrite in sine and cosine</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">4</div>
+                    <div class="strategy-text">Find a common denominator</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">5</div>
+                    <div class="strategy-text">Factor a difference of squares</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">6</div>
+                    <div class="strategy-text">Multiply by the conjugate</div>
+                </div>
+            </div>
+            <div class="key-idea" style="margin-top: 0.8rem;">
+                <div class="key-idea-label">Goal</div>
+                <div class="key-idea-text">Reduce to fewer trig functions, eliminate fractions, or match a target form.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4 — 5.1 PRACTICE: Simplify ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="4">
+        <div class="slide-header">
+            <span class="review-label">5.1 Practice</span>
+            <h2 class="slide-title">Simplify the expression</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\csc x - \cos x \cot x\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Rewrite in sine &amp; cosine</div>
+                        <div class="step-math">\[\dfrac{1}{\sin x} - \cos x \cdot \dfrac{\cos x}{\sin x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Combine over common denominator</div>
+                        <div class="step-math">\[\dfrac{1 - \cos^2 x}{\sin x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean identity</div>
+                        <div class="step-math">
+                            \[\dfrac{\sin^2 x}{\sin x}\]
+                            <div class="annotation">Since \(\sin^2 x + \cos^2 x = 1\),<br>we have \(1 - \cos^2 x = \sin^2 x\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Simplified</div>
+                        <div class="step-math">\[\sin x\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5 — 5.1 PRACTICE: Factor after rewriting ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="4">
+        <div class="slide-header">
+            <span class="review-label">5.1 Practice</span>
+            <h2 class="slide-title">Factor the expression</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\sec^2 x + \tan x - 3\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Pythagorean substitution</div>
+                        <div class="step-math">
+                            \[(1 + \tan^2 x) + \tan x - 3\]
+                            <div class="annotation">Replace \(\sec^2 x\) with<br>\(1 + \tan^2 x\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Simplify</div>
+                        <div class="step-math">\[\tan^2 x + \tan x - 2\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Factor as a quadratic in tan x</div>
+                        <div class="step-math">
+                            \[(\tan x + 2)(\tan x - 1)\]
+                            <div class="annotation">Think: \(u^2 + u - 2 = (u+2)(u-1)\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Factored form</div>
+                        <div class="step-math">\[(\tan x + 2)(\tan x - 1)\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6 — SECTION DIVIDER: 5.2 ===== -->
+    <section class="slide section-divider" id="slide-6">
+        <div class="slide-body">
+            <div class="section-number">Section 5.2</div>
+            <div class="section-title">Verifying Trig Identities</div>
+            <div class="section-subtitle">Work one side at a time — never cross the equal sign</div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7 — 5.2 GUIDELINES ===== -->
+    <section class="slide grid-bg" id="slide-7">
+        <div class="slide-header">
+            <span class="concept-label">Guidelines</span>
+            <h2 class="slide-title">Verifying Identities</h2>
+        </div>
+        <div class="slide-body">
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-num">1</div>
+                    <div class="strategy-text">Work with the more complicated side</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">2</div>
+                    <div class="strategy-text">Convert everything to sine and cosine</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">3</div>
+                    <div class="strategy-text">Factor expressions</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">4</div>
+                    <div class="strategy-text">Find a common denominator</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">5</div>
+                    <div class="strategy-text">Multiply by the conjugate</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">6</div>
+                    <div class="strategy-text">Apply Pythagorean identities</div>
+                </div>
+                <div class="strategy-card warn" style="grid-column: 1 / -1;">
+                    <div class="strategy-num">✗</div>
+                    <div class="strategy-text">Never cross the equal sign — do not add, multiply, or square both sides</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8 — 5.2 PRACTICE: Verify identity ===== -->
+    <section class="slide grid-bg" id="slide-8" data-steps="4">
+        <div class="slide-header">
+            <span class="review-label">5.2 Practice</span>
+            <h2 class="slide-title">Verify the identity</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\dfrac{1}{1 - \sin x} + \dfrac{1}{1 + \sin x} = 2\sec^2 x\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Work the left side — common denominator</div>
+                        <div class="step-math">\[\dfrac{(1 + \sin x) + (1 - \sin x)}{(1 - \sin x)(1 + \sin x)}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Simplify numerator and denominator</div>
+                        <div class="step-math">
+                            \[\dfrac{2}{1 - \sin^2 x}\]
+                            <div class="annotation">Numerator: \(\sin x\) cancels<br>Denominator: difference of squares</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean identity</div>
+                        <div class="step-math">\[\dfrac{2}{\cos^2 x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Equals the right side ✓</div>
+                        <div class="step-math">\[2\sec^2 x \;\; \checkmark\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9 — 5.2 PRACTICE: Verify with split fraction ===== -->
+    <section class="slide grid-bg" id="slide-9" data-steps="5">
+        <div class="slide-header">
+            <span class="review-label">5.2 Practice</span>
+            <h2 class="slide-title">Verify the identity</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\dfrac{\csc^2 x - 1}{\csc^2 x} = \cos^2 x\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-9-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Work the left side — split the fraction</div>
+                        <div class="step-math">\[\dfrac{\csc^2 x}{\csc^2 x} - \dfrac{1}{\csc^2 x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Simplify each fraction</div>
+                        <div class="step-math">\[1 - \dfrac{1}{\csc^2 x}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Reciprocal identity</div>
+                        <div class="step-math">
+                            \[1 - \sin^2 x\]
+                            <div class="annotation">Since \(\dfrac{1}{\csc x} = \sin x\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Pythagorean identity</div>
+                        <div class="step-math">\[\cos^2 x\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">Equals the right side ✓</div>
+                        <div class="step-math">\[\cos^2 x \;\; \checkmark\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 10 — SECTION DIVIDER: 5.3 ===== -->
+    <section class="slide section-divider" id="slide-10">
+        <div class="slide-body">
+            <div class="section-number">Section 5.3</div>
+            <div class="section-title">Solving Trig Equations</div>
+            <div class="section-subtitle">Restricted domains and general solutions</div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 11 — 5.3 KEY CONCEPTS ===== -->
+    <section class="slide grid-bg" id="slide-11">
+        <div class="slide-header">
+            <span class="concept-label">Key Ideas</span>
+            <h2 class="slide-title">Solving Trig Equations</h2>
+        </div>
+        <div class="slide-body">
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-num">1</div>
+                    <div class="strategy-text">Isolate the trig function (like solving for \(x\) in algebra)</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">2</div>
+                    <div class="strategy-text">Factor — never divide both sides by a trig function</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">3</div>
+                    <div class="strategy-text">Use Pythagorean identities to rewrite in one trig function</div>
+                </div>
+                <div class="strategy-card">
+                    <div class="strategy-num">4</div>
+                    <div class="strategy-text">Use the unit circle for exact values</div>
+                </div>
+            </div>
+            <div class="key-idea" style="margin-top: 0.5rem;">
+                <div class="key-idea-label">Restricted vs. General Solutions</div>
+                <div class="key-idea-text">
+                    <strong>Restricted</strong> \([0, 2\pi)\): list only angles in the interval. &nbsp;
+                    <strong>General</strong>: add \(+ 2\pi n\) (or \(+ \pi n\) for tan/cot).
+                </div>
+            </div>
+            <div class="key-idea" style="margin-top: 0.5rem; background: #fef2f2; border-color: var(--red-accent);">
+                <div class="key-idea-label" style="color: var(--red-accent);">Caution</div>
+                <div class="key-idea-text" style="color: var(--red-accent);">Never divide both sides by a trig function — you'll lose solutions! Factor instead.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 12 — 5.3 PRACTICE: Quadratic trig equation ===== -->
+    <section class="slide grid-bg" id="slide-12" data-steps="5">
+        <div class="slide-header">
+            <span class="review-label">5.3 Practice</span>
+            <h2 class="slide-title">Solve in \([0, 2\pi)\)</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[2\sin^2\theta + \sin\theta - 1 = 0\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-12-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor as a quadratic in sin θ</div>
+                        <div class="step-math">
+                            \[(2\sin\theta - 1)(\sin\theta + 1) = 0\]
+                            <div class="annotation">Let \(u = \sin\theta\):<br>\(2u^2 + u - 1 = (2u-1)(u+1)\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-12-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Set each factor equal to zero</div>
+                        <div class="step-math">\[2\sin\theta - 1 = 0 \qquad \text{or} \qquad \sin\theta + 1 = 0\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-12-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Solve the first equation</div>
+                        <div class="step-math">
+                            \[\sin\theta = \dfrac{1}{2} \quad \Longrightarrow \quad \theta = \dfrac{\pi}{6},\; \dfrac{5\pi}{6}\]
+                            <div class="annotation">Sine is \(\tfrac{1}{2}\)<br>in QI and QII</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-12-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Solve the second equation</div>
+                        <div class="step-math">\[\sin\theta = -1 \quad \Longrightarrow \quad \theta = \dfrac{3\pi}{2}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-12-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">Solution set</div>
+                        <div class="step-math">\[\theta = \dfrac{\pi}{6},\; \dfrac{5\pi}{6},\; \dfrac{3\pi}{2}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 13 — 5.3 PRACTICE: Factor instead of divide ===== -->
+    <section class="slide grid-bg" id="slide-13" data-steps="5">
+        <div class="slide-header">
+            <span class="review-label">5.3 Practice</span>
+            <h2 class="slide-title">Solve for all solutions</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\cos x \tan x = \cos x\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-13-step-0">
+                    <div class="step-box orange">
+                        <div class="step-label">Do NOT divide by cos x — factor instead!</div>
+                        <div class="step-math">\[\cos x \tan x - \cos x = 0\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-13-step-1">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor out cos x</div>
+                        <div class="step-math">\[\cos x(\tan x - 1) = 0\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-13-step-2">
+                    <div class="step-box">
+                        <div class="step-label">First factor</div>
+                        <div class="step-math">\[\cos x = 0 \quad \Longrightarrow \quad x = \dfrac{\pi}{2} + \pi n\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-13-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Second factor</div>
+                        <div class="step-math">\[\tan x = 1 \quad \Longrightarrow \quad x = \dfrac{\pi}{4} + \pi n\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-13-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">General solution</div>
+                        <div class="step-math">
+                            \[x = \dfrac{\pi}{2} + \pi n \quad \text{or} \quad x = \dfrac{\pi}{4} + \pi n\]
+                            <div class="annotation">Both families are needed —<br>neither contains the other</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 14 — 5.3 PRACTICE: Pythagorean substitution ===== -->
+    <section class="slide grid-bg" id="slide-14" data-steps="5">
+        <div class="slide-header">
+            <span class="review-label">5.3 Practice</span>
+            <h2 class="slide-title">Solve in \([0, 2\pi)\)</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[2\cos^2 x - 5\sin x + 1 = 0\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-14-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Pythagorean substitution</div>
+                        <div class="step-math">
+                            \[2(1 - \sin^2 x) - 5\sin x + 1 = 0\]
+                            <div class="annotation">Replace \(\cos^2 x\) with<br>\(1 - \sin^2 x\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-14-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Expand and simplify</div>
+                        <div class="step-math">\[-2\sin^2 x - 5\sin x + 3 = 0 \quad \Longrightarrow \quad 2\sin^2 x + 5\sin x - 3 = 0\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-14-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Factor</div>
+                        <div class="step-math">\[(2\sin x - 1)(\sin x + 3) = 0\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-14-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Solve each factor</div>
+                        <div class="step-math">
+                            \[\sin x = \dfrac{1}{2} \;\Rightarrow\; x = \dfrac{\pi}{6},\, \dfrac{5\pi}{6} \qquad \sin x = -3 \;\Rightarrow\; \text{No solution}\]
+                            <div class="annotation">\(\sin x = -3\) is impossible<br>since \(-1 \le \sin x \le 1\)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-14-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">Solution set</div>
+                        <div class="step-math">\[x = \dfrac{\pi}{6},\; \dfrac{5\pi}{6}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div><!-- end .slides-wrapper -->
+
+<!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    /* Render all LaTeX in the document */
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* Move each annotation beside its equation */
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(n => eqDiv.appendChild(n));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    /* ===== PRESENTATION CONTROLLER ===== */
+    class SlidePresentation {
+        constructor() {
+            this.slides      = Array.from(document.querySelectorAll('.slide'));
+            this.current     = 0;
+            this.total       = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl   = document.getElementById('navDots');
+            this.clickHint   = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                dot.addEventListener('click', e => {
+                    e.stopPropagation(); this._goTo(i);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+            this.progressBar.style.width =
+                ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max   = parseInt(slide.dataset.steps || 0);
+            const cur   = parseInt(slide.dataset.currentStep ?? -1);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide' : '';
+        }
+
+        _activate(i) {
+            this.slides[i].classList.add('active');
+            this._sync();
+        }
+
+        _goTo(i) {
+            if (i === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = i;
+            this.slides[i].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0);
+            let   cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (el) {
+                    el.classList.add('visible');
+                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current])
+                && this.current < this.total - 1)
+                this._goTo(this.current + 1);
+        }
+
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current])
+                && this.current > 0)
+                this._goTo(this.current - 1);
+        }
+
+        _bindEvents() {
+            document.addEventListener('keydown', e => {
+                if (['ArrowRight','ArrowDown',' '].includes(e.key)) {
+                    e.preventDefault(); this._next();
+                } else if (['ArrowLeft','ArrowUp'].includes(e.key)) {
+                    e.preventDefault(); this._prev();
+                }
+            });
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.nav-dot')) this._next();
+            });
+            let tx = 0;
+            document.addEventListener('touchstart', e => {
+                tx = e.touches[0].clientX;
+            }, { passive: true });
+            document.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - tx;
+                if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev();
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>
