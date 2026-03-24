@@ -30,11 +30,18 @@ class MyScene(Scene):
 ## Render Command
 
 ```bash
+# From the repo root, sync dependencies first
+uv sync
+
+# Then render from the manim/ directory so the external `manim` package
+# is used instead of the repo's local `manim/` folder name.
+cd manim
+
 # Standard quality (for slide embedding)
-manim -pql scenes/my_scene.py MyScene
+uv run manim -pql scenes/my_scene.py MyScene
 
 # High quality (for final export)
-manim -pqh scenes/my_scene.py MyScene
+uv run manim -pqh scenes/my_scene.py MyScene
 ```
 
 Output goes to `media/videos/`. Copy the final `.mp4` to

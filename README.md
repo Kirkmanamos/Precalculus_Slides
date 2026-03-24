@@ -8,6 +8,13 @@
 - Unit 4 and Unit 5 HTML slide decks now include a first-pass mobile phone layout patch.
 - Desktop and projector presentation behavior remains intact.
 
+## Python / uv
+- This repo uses `uv` for Python environment management.
+- Python is pinned by [`.python-version`](/Users/kirkmanamos/Documents/GitHub/precalculus_slides/.python-version) and dependencies are defined in [`pyproject.toml`](/Users/kirkmanamos/Documents/GitHub/precalculus_slides/pyproject.toml).
+- Create or update the project environment with `uv sync`.
+- Activate it with `source .venv/bin/activate`.
+- Prefer `uv run ...` and `uv pip ... --python .venv/bin/python` over plain `pip`.
+
 ## Unit 3: Rational Functions
 - [Rational Features](RationalFeatures.html)
 - [Rational Graphing](RationalGraphing.html)

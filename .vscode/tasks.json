@@ -4,7 +4,7 @@
         {
             "label": "Slidev: Install deps (trial-run)",
             "type": "shell",
-            "command": "/opt/homebrew/bin/npm",
+            "command": "npm",
             "args": ["install"],
             "options": {
                 "cwd": "${workspaceFolder}/slidev/trial-run"
@@ -14,7 +14,7 @@
         {
             "label": "Slidev: Dev (trial-run, port 3030)",
             "type": "shell",
-            "command": "/opt/homebrew/bin/npm",
+            "command": "npm",
             "args": ["run", "dev", "--", "--port", "3030"],
             "options": {
                 "cwd": "${workspaceFolder}/slidev/trial-run"
@@ -24,4 +24,3 @@
         }
     ]
 }
-
