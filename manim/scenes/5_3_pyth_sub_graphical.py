@@ -31,6 +31,19 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from shared.colors import *
 
+# ── 3b1b palette override ────────────────────────────────────────────────────
+BG_COLOR    = "#1C1C2E"
+TEXT_COLOR   = WHITE
+TEXT_MUTED   = GREY_B
+AXIS_COLOR   = GREY_C
+TICK_COLOR   = GREY_A
+HIGHLIGHT    = YELLOW
+ACCENT_TEAL  = TEAL
+ACCENT_BLUE  = BLUE_B
+ACCENT_RED   = RED
+Q1_COLOR     = GREEN
+Q3_COLOR     = RED
+
 
 class PythSubGraphicalAnalysis(Scene):
     """
@@ -72,7 +85,7 @@ class PythSubGraphicalAnalysis(Scene):
         ).next_to(title, DOWN, buff=0.20)
         sub_box = SurroundingRectangle(
             subtitle, color=ACCENT_BLUE, stroke_width=1.5,
-            fill_color="#050f1e", fill_opacity=0.50,
+            fill_color="#141428", fill_opacity=0.50,
             buff=0.13, corner_radius=0.08,
         )
 
@@ -213,7 +226,7 @@ class PythSubGraphicalAnalysis(Scene):
         # graph chrome
         border = SurroundingRectangle(
             axes, color=Q1_COLOR, stroke_width=2.0,
-            fill_color="#030e08", fill_opacity=0.55,
+            fill_color="#142018", fill_opacity=0.55,
             buff=0.25, corner_radius=0.12,
         )
         graph_lbl = MathTex(
@@ -294,7 +307,7 @@ class PythSubGraphicalAnalysis(Scene):
         ).move_to(axes.c2p(PI, -0.80))
         gen_box = SurroundingRectangle(
             gen_sol, color=HIGHLIGHT, stroke_width=1.5,
-            fill_color="#181000", fill_opacity=0.60,
+            fill_color="#201c14", fill_opacity=0.60,
             buff=0.12, corner_radius=0.08,
         )
         self.play(DrawBorderThenFill(gen_box), Write(gen_sol), run_time=0.90)
@@ -346,7 +359,7 @@ class PythSubGraphicalAnalysis(Scene):
         # graph chrome
         border = SurroundingRectangle(
             axes, color=ACCENT_BLUE, stroke_width=2.0,
-            fill_color="#050812", fill_opacity=0.55,
+            fill_color="#141428", fill_opacity=0.55,
             buff=0.25, corner_radius=0.12,
         )
         graph_lbl = MathTex(
@@ -424,7 +437,7 @@ class PythSubGraphicalAnalysis(Scene):
         ).move_to(axes.c2p(2 * PI, -0.80))
         gen_box = SurroundingRectangle(
             gen_sol, color=HIGHLIGHT, stroke_width=1.5,
-            fill_color="#181000", fill_opacity=0.60,
+            fill_color="#201c14", fill_opacity=0.60,
             buff=0.12, corner_radius=0.08,
         )
         self.play(DrawBorderThenFill(gen_box), Write(gen_sol), run_time=0.90)

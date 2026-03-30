@@ -5,6 +5,43 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-03-29
+
+### New Manim Scenes — 5.5 Double & Half-Angle Identities (6 videos)
+
+Created 6 Manim scene files for all worked examples in the 5.5 presentation.
+Each uses a **left-2/3 + right-1/3 split layout** (math visuals left, step annotations right).
+
+- **`manim/shared/helpers.py`** — New shared module with layout constants, `build_unit_circle()`, `build_angle_arc()`, `build_reference_triangle()`, `TextPanel` class, `build_result_banner()`, `build_quadrant_highlight()`, `build_terminal_point()`
+
+- **`manim/scenes/5_5_double_angle_given_info.py`** — `DoubleAngleGivenInfo`
+  - Find sin(2θ), cos(2θ), tan(2θ) given cos θ = 5/13 in QIV
+  - Unit circle + 5-12-13 triangle + formula application, ~26s
+
+- **`manim/scenes/5_5_double_angle_equation.py`** — `DoubleAngleEquation`
+  - Solve 2cos x + sin(2x) = 0 on [0, 2π)
+  - Identity sub → factor → unit circle solutions, ~27s
+
+- **`manim/scenes/5_5_pattern_recognition.py`** — `PatternRecognition`
+  - Rewrite cos²(5α) − sin²(5α) = cos(10α)
+  - Color-coded pattern matching with template, ~20s
+
+- **`manim/scenes/5_5_half_angle_exact_value.py`** — `HalfAngleExactValue`
+  - Find cos 165° using half-angle (165° = 330°/2)
+  - Two angles on unit circle + 30-60-90 triangle + sign from QII, ~24s
+
+- **`manim/scenes/5_5_half_angle_given_info_qi.py`** — `HalfAngleGivenInfoQI`
+  - Given sin x = 2/5 in QI, find cos(x/2)
+  - Right triangle + quadrant analysis + formula, ~23s
+
+- **`manim/scenes/5_5_half_angle_quadrant_analysis.py`** — `HalfAngleQuadrantAnalysis`
+  - Given cos θ = 5/13 in QIV, find sin(θ/2)
+  - **Capstone**: shows θ/2 lands in QII (not QIV) — addresses #1 misconception, ~23s
+
+All 6 rendered at 480p15 (low quality preview). Total: ~143s of educational animation.
+
+---
+
 ## 2026-03-12
 
 ### New Manim Scenes — 5.3 Examples 4 & 5

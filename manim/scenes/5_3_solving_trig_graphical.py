@@ -17,10 +17,20 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from shared.colors import *
 
+# ── 3b1b palette override ────────────────────────────────────────────────────
+BG_COLOR   = "#1C1C2E"
+TEXT_COLOR  = WHITE
+TEXT_MUTED  = GREY_B
+AXIS_COLOR  = GREY_C
+TICK_COLOR  = GREY_A
+HIGHLIGHT   = YELLOW
+Q1_COLOR    = GREEN
+Q3_COLOR    = RED
+
 # ── constants ─────────────────────────────────────────────────────────────────
 SQRT3   = np.sqrt(3)
 EPS     = 0.07          # gap either side of tan asymptotes
-ASYM_C  = "#3d5a73"     # muted blue-grey for asymptote dashes
+ASYM_C  = GREY_D        # muted grey for asymptote dashes
 
 
 class TanEquationGraphicalAnalysis(Scene):
@@ -240,7 +250,7 @@ class TanEquationGraphicalAnalysis(Scene):
         banner = RoundedRectangle(
             corner_radius=0.14,
             width=9.0, height=0.86,
-            fill_color="#0b1d2e", fill_opacity=0.96,
+            fill_color="#12122a", fill_opacity=0.96,
             stroke_color=HIGHLIGHT, stroke_width=2.5,
         ).to_edge(DOWN, buff=0.16)
 

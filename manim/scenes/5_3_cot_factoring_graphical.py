@@ -30,12 +30,25 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from shared.colors import *
 
+# ── 3b1b palette override ────────────────────────────────────────────────────
+BG_COLOR    = "#1C1C2E"
+TEXT_COLOR   = WHITE
+TEXT_MUTED   = GREY_B
+AXIS_COLOR   = GREY_C
+TICK_COLOR   = GREY_A
+HIGHLIGHT    = YELLOW
+ACCENT_TEAL  = TEAL
+ACCENT_BLUE  = BLUE_B
+ACCENT_RED   = RED
+Q1_COLOR     = GREEN
+Q3_COLOR     = RED
+
 # ── constants ─────────────────────────────────────────────────────────────────
 # EPS = gap on each side of cot asymptotes.  At EPS = 0.25 the max
 # |cot| value is ≈ 3.9, safely inside the axes y_range [-4, 4].
 # No np.clip needed → no flatline near asymptotes.
 EPS    = 0.25
-ASYM_C = "#3d5a73"      # muted blue-grey for asymptote dashes
+ASYM_C = GREY_D         # muted grey for asymptote dashes
 
 
 def _cot(x):

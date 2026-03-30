@@ -16,6 +16,19 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from shared.colors import *
 
+# ── 3b1b palette override ────────────────────────────────────────────────────
+BG_COLOR    = "#1C1C2E"
+TEXT_COLOR   = WHITE
+TEXT_MUTED   = GREY_B
+AXIS_COLOR   = GREY_C
+TICK_COLOR   = GREY_A
+HIGHLIGHT    = YELLOW
+ACCENT_TEAL  = TEAL
+ACCENT_BLUE  = BLUE_B
+ACCENT_RED   = RED
+Q1_COLOR     = GREEN
+Q3_COLOR     = RED
+
 import numpy as np
 
 

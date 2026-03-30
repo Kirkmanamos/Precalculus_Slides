@@ -26,6 +26,19 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from shared.colors import *
 
+# ── 3b1b palette override ────────────────────────────────────────────────────
+BG_COLOR    = "#1C1C2E"
+TEXT_COLOR   = WHITE
+TEXT_MUTED   = GREY_B
+AXIS_COLOR   = GREY_C
+TICK_COLOR   = GREY_A
+HIGHLIGHT    = YELLOW
+ACCENT_TEAL  = TEAL
+ACCENT_BLUE  = BLUE_B
+ACCENT_RED   = RED
+Q1_COLOR     = GREEN
+Q3_COLOR     = RED
+
 
 class SquaringGraphicalAnalysis(Scene):
     """
@@ -56,7 +69,7 @@ class SquaringGraphicalAnalysis(Scene):
         ).next_to(title, DOWN, buff=0.20)
         sub_box = SurroundingRectangle(
             subtitle, color=ACCENT_BLUE, stroke_width=1.5,
-            fill_color="#050f1e", fill_opacity=0.50,
+            fill_color="#141428", fill_opacity=0.50,
             buff=0.13, corner_radius=0.08,
         )
 
@@ -120,7 +133,7 @@ class SquaringGraphicalAnalysis(Scene):
         )
         warn_box = SurroundingRectangle(
             warn_tex, color=ACCENT_RED, stroke_width=1.5,
-            fill_color="#160404", fill_opacity=0.55,
+            fill_color="#2a1420", fill_opacity=0.55,
             buff=0.13, corner_radius=0.08,
         )
         warn_grp = VGroup(warn_box, warn_tex)
@@ -345,7 +358,7 @@ class SquaringGraphicalAnalysis(Scene):
         banner = RoundedRectangle(
             corner_radius=0.14,
             width=9.0, height=0.95,
-            fill_color="#0b1d2e", fill_opacity=0.97,
+            fill_color="#12122a", fill_opacity=0.97,
             stroke_color=HIGHLIGHT, stroke_width=2.5,
         ).to_edge(DOWN, buff=0.18)
 

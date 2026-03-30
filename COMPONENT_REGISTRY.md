@@ -350,6 +350,147 @@ manim -pqh scenes/5_3_squaring_graphical.py SquaringGraphicalAnalysis  # final
 
 ---
 
+### Shared Helpers Module
+
+**File:** `manim/shared/helpers.py`
+**Status:** ✅ Working (created 2026-03-29)
+**What it does:** Shared layout helpers for scenes using a left-2/3 + right-1/3 split layout.
+
+**Exports:**
+- Layout constants: `DIVIDER_X`, `LEFT_CENTER_X`, `RIGHT_CENTER_X`, `CIRCLE_CENTER`, `RIGHT_TOP`
+- `build_unit_circle(center, radius, show_ticks)` — Circle + axes + tick labels VGroup
+- `build_angle_arc(axes, angle_rad, color, ...)` — Colored arc from +x-axis
+- `build_reference_triangle(axes, x_val, y_val, ...)` — Right triangle with colored sides (x=cyan, y=pink, r=green)
+- `TextPanel` class — Manages right-1/3 text panel: `add_entry()`, `add_text()`, `add_math()`, `clear()`
+- `build_title(tex_string)` — Full-width title at top
+- `build_result_banner(tex_string)` — Gold-bordered answer banner at bottom
+- `build_quadrant_highlight(axes, quadrant, color)` — Shaded rectangle for one quadrant
+- `build_terminal_point(axes, angle_rad)` — Dot at (cos θ, sin θ) on unit circle
+
+---
+
+### `DoubleAngleGivenInfo` (5.5 Example 1)
+
+**File:** `manim/scenes/5_5_double_angle_given_info.py`
+**Class:** `DoubleAngleGivenInfo`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Double-Angle Identities
+
+**What it does:**
+Find sin(2θ), cos(2θ), tan(2θ) given cos θ = 5/13 in QIV.
+Unit circle with angle in QIV, 5-12-13 reference triangle, step-by-step formula application.
+Duration: ~26s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_double_angle_given_info.py DoubleAngleGivenInfo
+```
+
+---
+
+### `DoubleAngleEquation` (5.5 Example 2)
+
+**File:** `manim/scenes/5_5_double_angle_equation.py`
+**Class:** `DoubleAngleEquation`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Solving Double-Angle Equations
+
+**What it does:**
+Solve 2cos x + sin(2x) = 0 on [0, 2π). Identity substitution → factoring → unit circle
+with solutions at π/2 and 3π/2. Notes that 3π/2 satisfies both cases.
+Duration: ~27s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_double_angle_equation.py DoubleAngleEquation
+```
+
+---
+
+### `PatternRecognition` (5.5 Example 3)
+
+**File:** `manim/scenes/5_5_pattern_recognition.py`
+**Class:** `PatternRecognition`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Double-Angle Identity Pattern
+
+**What it does:**
+Rewrite cos²(5α) − sin²(5α) using double-angle identity. Shows template matching
+with color-coded u ↔ 5α substitution, transforms expression to cos(10α).
+Shortest scene. Duration: ~20s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_pattern_recognition.py PatternRecognition
+```
+
+---
+
+### `HalfAngleExactValue` (5.5 Example 4)
+
+**File:** `manim/scenes/5_5_half_angle_exact_value.py`
+**Class:** `HalfAngleExactValue`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Half-Angle Identities
+
+**What it does:**
+Find cos 165°. Shows 165° = 330°/2 on unit circle, 30-60-90 reference triangle for 330°,
+sign determination (QII → negative), and formula application.
+Duration: ~24s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_half_angle_exact_value.py HalfAngleExactValue
+```
+
+---
+
+### `HalfAngleGivenInfoQI` (5.5 Example 5)
+
+**File:** `manim/scenes/5_5_half_angle_given_info_qi.py`
+**Class:** `HalfAngleGivenInfoQI`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Half-Angle from Given Info
+
+**What it does:**
+Given sin x = 2/5 in QI, find cos(x/2). Builds right triangle (opp=2, hyp=5, adj=√21),
+finds cos x, determines x/2 is also in QI (cos positive), applies formula.
+Duration: ~23s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_half_angle_given_info_qi.py HalfAngleGivenInfoQI
+```
+
+---
+
+### `HalfAngleQuadrantAnalysis` (5.5 Example 6 — Capstone)
+
+**File:** `manim/scenes/5_5_half_angle_quadrant_analysis.py`
+**Class:** `HalfAngleQuadrantAnalysis`
+**Status:** ✅ Working (rendered 2026-03-29, ManimCE v0.19.2)
+**Covers:** Section 5.5 — Half-Angle Quadrant Analysis
+
+**What it does:**
+Given cos θ = 5/13 in QIV, find sin(θ/2). THE key pedagogical scene — shows that
+θ/2 lands in QII (not QIV), so sine is positive. Displays both θ and θ/2 arcs
+simultaneously on the unit circle. Addresses the #1 student misconception about
+sign determination.
+Duration: ~23s.
+
+**Render:**
+```bash
+cd manim
+manim -pql scenes/5_5_half_angle_quadrant_analysis.py HalfAngleQuadrantAnalysis
+```
+
+---
+
 ### Planned Scenes
 
 | Planned scene | File | Covers |

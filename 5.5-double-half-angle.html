@@ -32,6 +32,7 @@
 
         html, body {
             width: 100%; height: 100%;
+            min-height: 100dvh;
             overflow: hidden;
             font-family: 'Source Sans 3', sans-serif;
             font-size: 28px;
@@ -41,7 +42,13 @@
         /* ============================================================
            SLIDE SHELL — horizontal transition model (matches 5.2–5.4)
            ============================================================ */
-        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+        .slides-wrapper {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
 
         .slide {
             position: absolute; inset: 0;
@@ -164,7 +171,17 @@
            STEP REVEALS — Step boxes with labeled subtitles (5.5 style)
            Each step gets a colored background card + a descriptive label
            ============================================================ */
-        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
+        .steps-area {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            scroll-padding-bottom: 5rem;
+            flex: 1;
+            min-height: 0;
+            padding-bottom: 3.5rem;
+        }
 
         .step { display: none; }
         .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.4rem; }
@@ -240,10 +257,204 @@
         }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
+        /* ============================================================
+           IDENTITY DOCK — pop-up reference buttons
+           ============================================================ */
+        .identity-dock {
+            position: fixed;
+            left: 1.2rem;
+            bottom: calc(1.2rem + env(safe-area-inset-bottom));
+            display: flex;
+            gap: 0.55rem;
+            z-index: 115;
+            max-width: calc(100vw - 2rem);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .identity-dock.is-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+        }
+        .identity-widget { position: relative; }
+        .identity-toggle {
+            border: 1px solid rgba(148, 163, 184, 0.22);
+            border-radius: 999px;
+            padding: 0.46rem 0.74rem;
+            min-width: 5rem;
+            color: var(--navy);
+            font: inherit;
+            font-size: 0.49em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .identity-toggle:hover,
+        .identity-toggle:focus-visible {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(15, 23, 42, 0.12);
+            outline: none;
+        }
+        .identity-widget.double .identity-toggle { background: rgba(239, 246, 255, 0.96); }
+        .identity-widget.half   .identity-toggle { background: rgba(240, 253, 250, 0.96); }
+
+        .identity-panel {
+            position: absolute;
+            left: 0;
+            bottom: calc(100% + 0.55rem);
+            width: min(22rem, calc(100vw - 2rem));
+            border-radius: 16px;
+            padding: 0.9rem 0.95rem 0.95rem;
+            box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            background: rgba(248, 250, 252, 0.98);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(8px) scale(0.98);
+            transform-origin: bottom left;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .identity-widget.is-open .identity-panel {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+        .identity-widget.double .identity-panel { border-color: rgba(37, 99, 235, 0.22); }
+        .identity-widget.half   .identity-panel { border-color: rgba(8, 145, 178, 0.22); }
+
+        .identity-panel-title {
+            font-size: 0.62em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.55rem;
+        }
+        .identity-widget.double .identity-panel-title { color: #1d4ed8; }
+        .identity-widget.half   .identity-panel-title { color: #0f766e; }
+
+        .identity-panel-scroll {
+            display: grid;
+            gap: 0.5rem;
+            max-height: min(19rem, calc(100dvh - 12rem));
+            overflow-y: auto;
+            padding-right: 0.15rem;
+        }
+        .identity-panel-item {
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid rgba(226, 232, 240, 0.72);
+            border-left: 3px solid transparent;
+            border-radius: 12px;
+            padding: 0.62rem 0.75rem;
+        }
+        .identity-widget.double .identity-panel-item { border-left-color: rgba(37, 99, 235, 0.44); }
+        .identity-widget.half   .identity-panel-item { border-left-color: rgba(8, 145, 178, 0.44); }
+        .identity-panel-meta {
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.18rem;
+        }
+        .identity-panel-math {
+            font-size: 0.72em;
+            line-height: 1.5;
+            text-align: center;
+        }
+        .identity-panel-math .katex-display { margin: 0; }
+
         @media (prefers-reduced-motion: reduce) {
             .slide { transition: opacity 0.3s ease; transform: none !important; }
             .step.visible { animation: none; opacity: 1; }
         }
+
+@media (max-width: 1100px), (max-height: 900px) {
+  html, body {
+    font-size: 22px;
+  }
+
+  .slide {
+    padding-top: max(2.4rem, calc(1.25rem + env(safe-area-inset-top)));
+    padding-right: max(1.25rem, calc((100% - 960px) / 2));
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+    padding-left: max(1.25rem, calc((100% - 960px) / 2));
+  }
+
+  .slide-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .problem-statement {
+    padding: 0.55em 0.9em;
+    margin-bottom: 0.7rem;
+  }
+
+  .formula-grid {
+    gap: 0.55rem;
+  }
+
+  .formula-row {
+    gap: 0.9rem;
+    padding: 0.42em 0.9em;
+  }
+
+  .formula-note {
+    margin-top: 0.65rem;
+  }
+
+  .steps-area {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  }
+
+  .step-box {
+    padding: 0.4em 0.9em;
+  }
+
+  .step-math {
+    line-height: 1.65;
+  }
+
+  .step-math.has-annotation {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .step-eq {
+    text-align: center;
+  }
+
+  .annotation {
+    flex: 0 1 auto;
+    width: 100%;
+    border-left: none;
+    border-top: 3px solid #93c5fd;
+    padding-top: 0.6rem;
+    padding-left: 0;
+  }
+
+  .identity-dock {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: calc(0.9rem + env(safe-area-inset-bottom));
+    max-width: none;
+  }
+
+  .identity-panel {
+    width: min(18rem, calc(100vw - 1.8rem));
+  }
+
+  .identity-panel-scroll {
+    max-height: min(15rem, calc(100dvh - 10rem));
+  }
+}
+
 /* ===========================================
    MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
    =========================================== */
@@ -252,12 +463,13 @@
     font-size: 18px !important;
     width: 100%;
     height: 100%;
+    min-height: 100dvh;
   }
 
   .slide {
     padding-top: max(16px, env(safe-area-inset-top)) !important;
     padding-right: 12px !important;
-    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
     padding-left: 12px !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
@@ -279,7 +491,7 @@
   }
 
   .steps-area {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+    padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
   }
 
   .step {
@@ -327,6 +539,16 @@
     display: none !important;
   }
 
+  .identity-dock {
+    left: 0.85rem;
+    right: 0.85rem;
+    max-width: none;
+    gap: 0.4rem;
+  }
+  .identity-widget { flex: 1 1 calc(50% - 0.2rem); }
+  .identity-toggle { width: 100%; min-width: 0; }
+  .identity-panel { width: min(17rem, calc(100vw - 1.7rem)); }
+
   svg {
     max-width: 100%;
     height: auto;
@@ -347,6 +569,12 @@
   .step-text {
     font-size: 0.88em !important;
   }
+
+  .identity-widget { flex: 1 1 100%; }
+  .identity-toggle {
+    padding: 0.42rem 0.58rem;
+    font-size: 0.47em;
+  }
 }
     </style>
 </head>
@@ -355,6 +583,60 @@
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
+<div class="identity-dock is-hidden" id="identityDock" aria-label="Identity quick references">
+    <div class="identity-widget double" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-double">
+            Double Angle
+        </button>
+        <div class="identity-panel" id="identity-panel-double">
+            <div class="identity-panel-title">Double-Angle Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Sine</div>
+                    <div class="identity-panel-math">\[\sin(2\alpha) = 2\sin\alpha\cos\alpha\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Cosine — Form 1</div>
+                    <div class="identity-panel-math">\[\cos(2\alpha) = \cos^2\!\alpha - \sin^2\!\alpha\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Cosine — Form 2</div>
+                    <div class="identity-panel-math">\[\cos(2\alpha) = 2\cos^2\!\alpha - 1\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Cosine — Form 3</div>
+                    <div class="identity-panel-math">\[\cos(2\alpha) = 1 - 2\sin^2\!\alpha\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Tangent</div>
+                    <div class="identity-panel-math">\[\tan(2\alpha) = \dfrac{2\tan\alpha}{1 - \tan^2\!\alpha}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="identity-widget half" data-identity-widget>
+        <button class="identity-toggle" type="button" data-identity-toggle aria-expanded="false" aria-controls="identity-panel-half">
+            Half Angle
+        </button>
+        <div class="identity-panel" id="identity-panel-half">
+            <div class="identity-panel-title">Half-Angle Identities</div>
+            <div class="identity-panel-scroll">
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Sine</div>
+                    <div class="identity-panel-math">\[\sin\dfrac{\theta}{2} = \pm\sqrt{\dfrac{1-\cos\theta}{2}}\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Cosine</div>
+                    <div class="identity-panel-math">\[\cos\dfrac{\theta}{2} = \pm\sqrt{\dfrac{1+\cos\theta}{2}}\]</div>
+                </div>
+                <div class="identity-panel-item">
+                    <div class="identity-panel-meta">Tangent</div>
+                    <div class="identity-panel-math">\[\tan\dfrac{\theta}{2} = \dfrac{1-\cos\theta}{\sin\theta} = \dfrac{\sin\theta}{1+\cos\theta}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="slides-wrapper" id="slidesWrapper">
 
@@ -788,16 +1070,19 @@
         stepMath.classList.add('has-annotation');
     });
 
-    /* ===== PRESENTATION CONTROLLER (matches 5.2–5.4) ===== */
+    /* ===== PRESENTATION CONTROLLER ===== */
     class SlidePresentation {
         constructor() {
-            this.slides      = Array.from(document.querySelectorAll('.slide'));
-            this.current     = 0;
-            this.total       = this.slides.length;
-            this.progressBar = document.getElementById('progressBar');
-            this.navDotsEl   = document.getElementById('navDots');
-            this.clickHint   = document.getElementById('clickHint');
+            this.slides          = Array.from(document.querySelectorAll('.slide'));
+            this.current         = 0;
+            this.total           = this.slides.length;
+            this.progressBar     = document.getElementById('progressBar');
+            this.navDotsEl       = document.getElementById('navDots');
+            this.clickHint       = document.getElementById('clickHint');
+            this.identityDock    = document.getElementById('identityDock');
+            this.identityWidgets = Array.from(document.querySelectorAll('[data-identity-widget]'));
             this._buildNav();
+            this._bindIdentityDock();
             this._activate(0);
             this._bindEvents();
         }
@@ -819,14 +1104,45 @@
             const cur   = parseInt(slide.dataset.currentStep ?? -1);
             this.clickHint.textContent = cur < max - 1 ? 'click to advance'
                 : this.current < this.total - 1 ? 'click for next slide' : '';
+
+            /* Show dock on example slides (slides with data-steps), hide on title & reference */
+            const showDock = this.current >= 2;
+            this.identityDock.classList.toggle('is-hidden', !showDock);
+            if (!showDock) this._closeIdentityPanels();
         }
         _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
         _goTo(i) {
             if (i === this.current) return;
+            this._closeIdentityPanels();
             const out = this.slides[this.current];
             out.classList.add('exit-left'); out.classList.remove('active');
             setTimeout(() => out.classList.remove('exit-left'), 500);
             this.current = i; this.slides[i].classList.add('active'); this._sync();
+        }
+        _scrollStepIntoView(step) {
+            const stepsArea = step.closest('.steps-area');
+            if (!stepsArea) {
+                step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
+            }
+
+            const areaRect = stepsArea.getBoundingClientRect();
+            const stepRect = step.getBoundingClientRect();
+            const padding = Math.max(16, parseFloat(getComputedStyle(document.documentElement).fontSize) * 0.4);
+            const visibleTop = areaRect.top + padding;
+            const visibleBottom = areaRect.bottom - padding;
+
+            if (stepRect.top < visibleTop) {
+                stepsArea.scrollTo({
+                    top: stepsArea.scrollTop - (visibleTop - stepRect.top),
+                    behavior: 'smooth'
+                });
+            } else if (stepRect.bottom > visibleBottom) {
+                stepsArea.scrollTo({
+                    top: stepsArea.scrollTop + (stepRect.bottom - visibleBottom),
+                    behavior: 'smooth'
+                });
+            }
         }
         _advanceStep(slide) {
             const max = parseInt(slide.dataset.steps || 0);
@@ -834,7 +1150,10 @@
             if (cur < max - 1) {
                 cur++; slide.dataset.currentStep = cur;
                 const el = slide.querySelector(`#${slide.id}-step-${cur}`);
-                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+                if (el) {
+                    el.classList.add('visible');
+                    requestAnimationFrame(() => this._scrollStepIntoView(el));
+                }
                 this._sync();
                 return true;
             }
@@ -850,12 +1169,44 @@
         }
         _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
         _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
+        _bindIdentityDock() {
+            this.identityWidgets.forEach(widget => {
+                const toggle = widget.querySelector('[data-identity-toggle]');
+                toggle.addEventListener('click', e => {
+                    e.stopPropagation();
+                    const willOpen = !widget.classList.contains('is-open');
+                    this._closeIdentityPanels();
+                    widget.classList.toggle('is-open', willOpen);
+                    toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+                });
+            });
+        }
+        _closeIdentityPanels() {
+            this.identityWidgets.forEach(widget => {
+                widget.classList.remove('is-open');
+                widget.querySelector('[data-identity-toggle]')?.setAttribute('aria-expanded', 'false');
+            });
+        }
+        _hasOpenIdentityPanel() {
+            return this.identityWidgets.some(widget => widget.classList.contains('is-open'));
+        }
         _bindEvents() {
             document.addEventListener('keydown', e => {
+                if (e.key === 'Escape' && this._hasOpenIdentityPanel()) {
+                    this._closeIdentityPanels();
+                    return;
+                }
                 if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
                 else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
             });
-            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
+            document.addEventListener('click', e => {
+                if (e.target.closest('.nav-dot') || e.target.closest('.identity-dock')) return;
+                if (this._hasOpenIdentityPanel()) {
+                    this._closeIdentityPanels();
+                    return;
+                }
+                this._next();
+            });
             let tx = 0;
             document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
             document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
