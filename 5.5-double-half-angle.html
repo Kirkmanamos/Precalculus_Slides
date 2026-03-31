@@ -420,6 +420,23 @@
     line-height: 1.65;
   }
 
+  .identity-dock {
+    left: 0.9rem;
+    right: 0.9rem;
+    bottom: calc(0.9rem + env(safe-area-inset-bottom));
+    max-width: none;
+  }
+
+  .identity-panel {
+    width: min(18rem, calc(100vw - 1.8rem));
+  }
+
+  .identity-panel-scroll {
+    max-height: min(15rem, calc(100dvh - 10rem));
+  }
+}
+
+@media (max-width: 900px) {
   .step-math.has-annotation {
     flex-direction: column;
     align-items: stretch;
@@ -437,21 +454,6 @@
     border-top: 3px solid #93c5fd;
     padding-top: 0.6rem;
     padding-left: 0;
-  }
-
-  .identity-dock {
-    left: 0.9rem;
-    right: 0.9rem;
-    bottom: calc(0.9rem + env(safe-area-inset-bottom));
-    max-width: none;
-  }
-
-  .identity-panel {
-    width: min(18rem, calc(100vw - 1.8rem));
-  }
-
-  .identity-panel-scroll {
-    max-height: min(15rem, calc(100dvh - 10rem));
   }
 }
 
