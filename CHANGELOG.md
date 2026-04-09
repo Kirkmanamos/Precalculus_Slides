@@ -5,6 +5,40 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-04-08
+
+### New HTML Deck Set - Unit 6: Sequences, Series, and Probability
+
+Added a full consolidated Unit 6 HTML deck set in the HoffMath Classroom format.
+All seven decks follow the `5.5-double-half-angle.html` architecture with KaTeX,
+teacher-paced step reveals, horizontal slide navigation, and the mobile phone patch.
+
+- **`generate_unit6_decks.py`** - New generator that renders the Unit 6 deck set from shared deck definitions and the common 5.5-style shell
+- **`6.1-sequences.html`** - Sequences, explicit rules, recursive rules, factorial, and sigma notation
+- **`6.2-arithmetic-sequences.html`** - Arithmetic nth-term formulas, arithmetic means, and finite arithmetic sums
+- **`6.3-geometric-sequences.html`** - Geometric nth-term formulas, geometric means, finite sums, and infinite sums
+- **`6.4-binomial-theorem.html`** - Pascal's Triangle, combinations, binomial expansions, and specific-term problems
+- **`6.5-counting-principles.html`** - Fundamental Counting Principle, permutations, combinations, and non-distinct permutations
+- **`6.6-probability.html`** - Probability vocabulary, addition and multiplication rules, counting-based probability, and complements
+- **`6.7-conditional-probability.html`** - Conditional probability using two-way tables, Venn diagrams, and tree diagrams
+- **`README.md`** and **`index.html`** updated with Unit 6 navigation
+- **`CLAUDE.md`** active curriculum table updated to mark Unit 6 as complete
+
+### New Manim Scenes - Unit 6 Sequence Concepts
+
+Added two short ManimCE videos for Unit 6.1 sequence foundations plus a scene-spec markdown file.
+
+- **`manim/scenes/6_1_sequence_videos_scenes.md`** - Scene composition notes for the two sequence videos
+- **`manim/scenes/6_1_sequence_intro.py`** - `SequenceAsOrderedFunction`
+  - Bright, clean introduction to sequences as ordered lists
+  - Shows term labels `a_1, a_2, a_3, a_4`, a brief order-matters swap, and a transformation to a discrete graph on default Cartesian axes
+  - Ends with the function viewpoint: a sequence is a function on the positive integers
+- **`manim/scenes/6_1_convergent_vs_divergent.py`** - `ConvergentVsDivergentSequences`
+  - Side-by-side comparison of `a_n = 1/n` and `b_n = (-1)^n`
+  - Uses default Cartesian grids, discrete points, a highlighted band around `y = 0`, and escape arrows on the divergent side
+  - Closes with a note that `c_n = n` is another classic divergent example
+- Low-quality preview renders completed successfully for both scenes with ManimCE v0.19.2
+
 ## 2026-03-29
 
 ### New Manim Scenes — 5.5 Double & Half-Angle Identities (6 videos)

@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6.5 - Counting Principles</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+    :root {
+        --navy: #1a365d;
+        --blue-accent: #2563eb;
+        --green-accent: #16a34a;
+        --teal-accent: #0891b2;
+        --orange-accent: #d97706;
+        --red-accent: #dc2626;
+        --grid-line: #dbeafe;
+        --bg-white: #ffffff;
+        --text: #1e293b;
+        --text-muted: #64748b;
+        --blue-light: #eff6ff;
+        --green-light: #f0fdf4;
+        --teal-light: #f0fdfa;
+        --orange-light: #fffbeb;
+        --navy-light: #e8edf5;
+        --slate-line: #cbd5e1;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        min-height: 100dvh;
+        overflow: hidden;
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 28px;
+        background: var(--navy);
+    }
+
+    body {
+        color: var(--text);
+    }
+
+    .slides-wrapper {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+        padding-left: max(3rem, calc((100% - 1120px) / 2));
+        padding-right: max(3rem, calc((100% - 1120px) / 2));
+        opacity: 0;
+        transform: translateX(60px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        pointer-events: none;
+    }
+
+    .slide.active {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: all;
+    }
+
+    .slide.exit-left {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+
+    .slide-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .slide-body.top-layout {
+        justify-content: flex-start;
+        gap: 0.85rem;
+        overflow-y: auto;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .slide-body:has(.steps-area) {
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    .title-slide {
+        background: var(--navy);
+        color: white;
+        justify-content: center;
+    }
+
+    .grid-bg {
+        background-color: var(--bg-white);
+        background-image:
+            linear-gradient(var(--grid-line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .title-section-label {
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #60a5fa;
+        margin-bottom: 0.75rem;
+    }
+
+    .title-main {
+        font-size: 2em;
+        font-weight: 700;
+        line-height: 1.16;
+        color: white;
+        margin-bottom: 0.55rem;
+    }
+
+    .title-objective {
+        font-size: 0.72em;
+        color: #bfdbfe;
+        line-height: 1.6;
+        margin-top: 0.75rem;
+        max-width: 26rem;
+    }
+
+    .identity-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.2rem;
+        max-width: 32rem;
+    }
+
+    .chip {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 0.2em 0.75em;
+        font-size: 0.58em;
+        color: #e2e8f0;
+    }
+
+    .slide-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .slide-title {
+        font-size: 1em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .example-label,
+    .concept-label,
+    .ref-label {
+        font-size: 0.6em;
+        font-weight: 700;
+        padding: 0.2em 0.75em;
+        border-radius: 6px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .example-label { background: var(--green-accent); }
+    .concept-label { background: var(--teal-accent); }
+    .ref-label { background: var(--navy); }
+
+    .problem-statement {
+        background: var(--navy-light);
+        border-left: 5px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.65em 1.2em;
+        margin-bottom: 0.9rem;
+        flex-shrink: 0;
+        font-weight: 600;
+        color: var(--navy);
+        font-size: 0.9em;
+    }
+
+    .problem-statement .katex-display,
+    .step-math .katex-display,
+    .card-copy .katex-display,
+    .fn-eq-stack .katex-display,
+    .summary-value .katex-display,
+    .diagram-caption .katex-display,
+    .note-copy .katex-display {
+        margin: 0.12em 0;
+    }
+
+    .body-lead {
+        background: var(--navy-light);
+        border-left: 4px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.58em 0.95em;
+        font-size: 0.78em;
+        font-weight: 600;
+        color: var(--navy);
+        line-height: 1.5;
+    }
+
+    .stack {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1.15fr 0.95fr;
+        gap: 0.85rem;
+        align-items: start;
+    }
+
+    .col {
+        min-width: 0;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .info-card,
+    .diagram-shell,
+    .table-shell,
+    .note-box {
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(203,213,225,0.86);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 12px;
+        padding: 0.72em 0.9em;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .info-card.teal,
+    .note-box.teal,
+    .formula-row.teal {
+        background: var(--teal-light);
+        border-left-color: var(--teal-accent);
+    }
+
+    .info-card.green,
+    .note-box.green,
+    .formula-row.green {
+        background: var(--green-light);
+        border-left-color: var(--green-accent);
+    }
+
+    .info-card.orange,
+    .note-box.orange,
+    .formula-row.orange {
+        background: var(--orange-light);
+        border-left-color: var(--orange-accent);
+    }
+
+    .info-card.navy,
+    .note-box.navy {
+        background: var(--navy);
+        border-left-color: #60a5fa;
+        color: white;
+    }
+
+    .info-card.navy .card-title,
+    .note-box.navy .note-title {
+        color: #bfdbfe;
+    }
+
+    .card-title,
+    .note-title,
+    .diagram-title {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.28rem;
+    }
+
+    .card-copy,
+    .note-copy,
+    .diagram-caption {
+        font-size: 0.78em;
+        line-height: 1.5;
+    }
+
+    .formula-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .formula-row {
+        background: var(--blue-light);
+        border-left: 5px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.5em 1em;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .formula-row.blue {
+        background: var(--blue-light);
+        border-left-color: var(--blue-accent);
+    }
+
+    .fn-label {
+        min-width: 4rem;
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        flex-shrink: 0;
+    }
+
+    .fn-eq-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 0.18rem;
+        flex: 1;
+        font-size: 0.82em;
+    }
+
+    .fn-alt {
+        color: var(--text-muted);
+    }
+
+    .formula-note {
+        margin-top: 0.75rem;
+        font-size: 0.64em;
+        font-weight: 600;
+        color: var(--orange-accent);
+        background: var(--orange-light);
+        border-left: 4px solid var(--orange-accent);
+        border-radius: 8px;
+        padding: 0.55em 0.9em;
+    }
+
+    .table-shell {
+        padding: 0.45em 0.55em;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+        background: white;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+        border: 1px solid #cbd5e1;
+        padding: 0.48em 0.52em;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .data-table th {
+        background: var(--navy);
+        color: white;
+        font-weight: 700;
+    }
+
+    .data-table tr:nth-child(even) td {
+        background: #f8fafc;
+    }
+
+    .steps-area {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .step { display: none; }
+
+    .step.visible {
+        display: block;
+        animation: stepReveal 0.4s ease both;
+        margin-bottom: 0.45rem;
+    }
+
+    .step.visible:last-child {
+        margin-bottom: 0;
+    }
+
+    @keyframes stepReveal {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-box {
+        background: var(--blue-light);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.46em 1em;
+    }
+
+    .step-box.teal {
+        background: var(--teal-light);
+        border-color: var(--teal-accent);
+    }
+
+    .step-box.green {
+        background: var(--green-light);
+        border-color: var(--green-accent);
+    }
+
+    .step-box.orange {
+        background: var(--orange-light);
+        border-color: var(--orange-accent);
+    }
+
+    .step-box.dark {
+        background: var(--navy);
+        border-color: #60a5fa;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.12rem;
+    }
+
+    .step-box.dark .step-label {
+        color: #bfdbfe;
+    }
+
+    .step-math,
+    .step-copy {
+        font-size: 0.84em;
+        line-height: 1.6;
+        padding: 0.12em 0;
+    }
+
+    .step-math {
+        text-align: center;
+    }
+
+    .step-copy ul,
+    .card-copy ul,
+    .note-copy ul {
+        padding-left: 1.1rem;
+    }
+
+    .step-copy li,
+    .card-copy li,
+    .note-copy li {
+        margin-bottom: 0.22rem;
+    }
+
+    .step-box.dark .step-math,
+    .step-box.dark .step-copy,
+    .step-box.dark .katex {
+        color: white;
+    }
+
+    .step-math.has-annotation {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        text-align: left;
+    }
+
+    .step-eq {
+        flex: 1;
+        text-align: center;
+    }
+
+    .annotation {
+        flex: 0 0 34%;
+        color: var(--blue-accent);
+        font-size: 0.72em;
+        font-weight: 600;
+        line-height: 1.45;
+        text-align: left;
+        border-left: 3px solid #93c5fd;
+        padding-left: 0.9rem;
+    }
+
+    .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .summary-pill {
+        border-radius: 10px;
+        padding: 0.52em 0.8em;
+        background: var(--navy);
+        color: white;
+    }
+
+    .summary-pill.green {
+        background: #14532d;
+    }
+
+    .summary-label {
+        font-size: 0.56em;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #bfdbfe;
+        margin-bottom: 0.12rem;
+    }
+
+    .summary-value {
+        font-size: 0.82em;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    .diagram-shell {
+        border-left-color: var(--teal-accent);
+        background: white;
+    }
+
+    .diagram {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .svg-line {
+        stroke: #475569;
+        stroke-width: 2.5;
+        fill: none;
+    }
+
+    .svg-label {
+        font: 600 16px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+    }
+
+    .svg-count {
+        font: 700 26px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+        text-anchor: middle;
+    }
+
+    .svg-note,
+    .svg-prob,
+    .svg-joint {
+        font: 600 14px 'Source Sans 3', sans-serif;
+        fill: #2563eb;
+    }
+
+    .pascal-grid {
+        display: grid;
+        gap: 0.36rem;
+    }
+
+    .pascal-row {
+        display: grid;
+        grid-template-columns: 3.5rem 1fr;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .pascal-index {
+        font-size: 0.62em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .pascal-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .pascal-cell {
+        min-width: 1.9rem;
+        padding: 0.2rem 0.38rem;
+        border-radius: 999px;
+        background: var(--blue-light);
+        border: 1px solid #bfdbfe;
+        text-align: center;
+        font-size: 0.72em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .nav-dots {
+        position: fixed;
+        right: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 100;
+    }
+
+    .nav-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .nav-dot.active {
+        background: var(--blue-accent);
+        transform: scale(1.4);
+    }
+
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+        transition: width 0.4s ease;
+        z-index: 100;
+    }
+
+    .click-hint {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.45em;
+        color: rgba(100,116,139,0.6);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        animation: pulse 2s ease-in-out infinite;
+        z-index: 100;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .slide { transition: opacity 0.3s ease; transform: none !important; }
+        .step.visible { animation: none; opacity: 1; }
+    }
+
+    @media (max-width: 1100px), (max-height: 900px) {
+        html, body { font-size: 22px; }
+
+        .slide {
+            padding-top: max(2.4rem, calc(1.25rem + env(safe-area-inset-top)));
+            padding-right: max(1.25rem, calc((100% - 960px) / 2));
+            padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+            padding-left: max(1.25rem, calc((100% - 960px) / 2));
+        }
+
+        .slide-header {
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        }
+    }
+
+    @media (max-width: 900px) {
+        .two-col,
+        .step-math.has-annotation {
+            grid-template-columns: 1fr;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .annotation {
+            flex: 0 1 auto;
+            width: 100%;
+            border-left: none;
+            border-top: 3px solid #93c5fd;
+            padding-left: 0;
+            padding-top: 0.55rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        html, body {
+            font-size: 18px !important;
+            width: 100%;
+            height: 100%;
+            min-height: 100dvh;
+        }
+
+        .slide {
+            padding-top: max(16px, env(safe-area-inset-top)) !important;
+            padding-right: 12px !important;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+            padding-left: 12px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .problem-statement {
+            font-size: 0.95em !important;
+            padding: 0.48em 0.66em !important;
+            margin-bottom: 0.55rem !important;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+        }
+
+        .example-label,
+        .concept-label,
+        .ref-label {
+            font-size: 0.52em !important;
+            padding: 0.22em 0.6em !important;
+        }
+
+        .click-hint {
+            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            font-size: 0.5em !important;
+            max-width: 92vw;
+            text-align: center;
+        }
+
+        .nav-dots {
+            display: none !important;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 420px) {
+        html, body { font-size: 16px !important; }
+        .slide {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
+    <div class="title-main">6.5 Counting Principles</div>
+    <div class="title-objective">Objective: Use the counting principle, permutations, combinations, and non-distinct permutations to count outcomes efficiently.</div>
+    <div class="identity-chips"><span class="chip">counting principle</span><span class="chip">permutations</span><span class="chip">combinations</span><span class="chip">order matters</span><span class="chip">non-distinct objects</span></div>
+</section>
+<section class="slide grid-bg" id="slide-1">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">The Fundamental Counting Principle</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">If one choice can happen in \(m\) ways and the next choice can happen in \(n\) ways, then the two-step process can happen in \(mn\) ways.</div>
+<div class="two-col">
+            <div class="col"><div class="stack"><div class="info-card teal">
+    <div class="card-title">Sandwich Choices</div>
+    <div class="card-copy">Bill chooses one of \(4\) meats and one of \(3\) breads.</div>
+</div><div class="info-card green">
+    <div class="card-title">Multiply the Choices</div>
+    <div class="card-copy">\[4 \cdot 3 = 12\text{ sandwiches}\]</div>
+</div></div></div>
+            <div class="col"><div class="stack"><div class="note-box navy">
+    <div class="note-title">General Rule</div>
+    <div class="note-copy">\[\text{Total outcomes} = (\text{ways for step 1})(\text{ways for step 2})\]</div>
+</div><div class="info-card orange">
+    <div class="card-title">When to Use It</div>
+    <div class="card-copy">Use the counting principle when a problem is built from sequential decisions.</div>
+</div></div></div>
+        </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-2">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Quick Counting-Principle Examples</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Airport Codes</div>
+    <div class="card-copy">
+                <p>Three-letter airport codes allow repetition.</p>
+                \[26 \cdot 26 \cdot 26 = 17576\]
+                </div>
+</div><div class="info-card green">
+    <div class="card-title">Phone Numbers</div>
+    <div class="card-copy">
+                <p>The first digit cannot be \(0\) or \(1\), so it has \(8\) choices.</p>
+                \[8 \cdot 10^6 = 8000000\]
+                </div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-3">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Permutations</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row teal">
+    <div class="fn-label">meaning</div>
+    <div class="fn-eq-stack">
+        <div>\[\text{Order matters}\]</div>
+
+    </div>
+</div><div class="formula-row blue">
+    <div class="fn-label">formula</div>
+    <div class="fn-eq-stack">
+        <div>\[{}_nP_r = \dfrac{n!}{(n-r)!}\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">A permutation is an arrangement in a specific order, so changing the order creates a different outcome.</div>
+<div class="cards-grid"><div class="info-card orange">
+    <div class="card-title">Ribbon Example</div>
+    <div class="card-copy">Awarding blue, red, white, and yellow ribbons to four students gives \(4! = 24\) possible orders.</div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+            <div class="slide-header">
+                <div class="example-label">Example 1</div>
+                <div class="slide-title">Ranking Horses in a Race</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">Eight horses are running in a race. In how many ways can the horses finish 1st, 2nd, and 3rd?</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-4-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Order Matters</div>
+
+    <div class="step-copy">
+        <ul>
+            <li>1st place is different from 2nd place.</li>
+            <li>2nd place is different from 3rd place.</li>
+        </ul>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-4-step-1">
+    <div class="step-box">
+        <div class="step-label">Use a Permutation</div>
+
+    <div class="step-math">
+        \[{}_8P_3 = 8 \cdot 7 \cdot 6 = 336\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-4-step-2">
+    <div class="step-box green">
+        <div class="step-label">If All Eight Are Ranked</div>
+
+    <div class="step-math">
+        \[{}_8P_8 = 8! = 40320\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-4-step-3">
+    <div class="step-box dark">
+        <div class="step-label">Answer</div>
+        <div class="step-math">\[\text{Top three finishes: }336\]</div>
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-5">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Combinations</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row teal">
+    <div class="fn-label">meaning</div>
+    <div class="fn-eq-stack">
+        <div>\[\text{Order does not matter}\]</div>
+
+    </div>
+</div><div class="formula-row blue">
+    <div class="fn-label">formula</div>
+    <div class="fn-eq-stack">
+        <div>\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">Use combinations when you are selecting a group, not arranging a lineup.</div>
+<div class="cards-grid"><div class="info-card green">
+    <div class="card-title">Combination Examples</div>
+    <div class="card-copy">Committees, pizza toppings, and lottery numbers are all combination situations.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Permutation Examples</div>
+    <div class="card-copy">Lineups, shelf order, and race results are permutation situations.</div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-6">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Combination Examples</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Pizza Special</div>
+    <div class="card-copy">
+                <p>Choose \(4\) toppings from \(12\).</p>
+                \[\binom{12}{4} = 495\]
+                </div>
+</div><div class="info-card green">
+    <div class="card-title">Packing T-Shirts</div>
+    <div class="card-copy">
+                <p>Choose \(5\) shirts from \(16\).</p>
+                \[\binom{16}{5} = 4368\]
+                </div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 2</div>
+                <div class="slide-title">Committee Counting</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">A committee of \(6\) people will be formed from \(7\) students and \(5\) teachers. Find the number of committees if (a) any \(6\) people may be chosen and (b) exactly four members must be students.</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-7-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Part (a): Any Six People</div>
+
+    <div class="step-math">
+        \[\binom{12}{6} = 924\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-7-step-1">
+    <div class="step-box">
+        <div class="step-label">Part (b): Split the Choice by Group</div>
+
+    <div class="step-math">
+        \[\binom{7}{4}\binom{5}{2}\]
+        <div class="annotation">Choose \(4\) students and \(2\) teachers.</div>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-7-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Multiply the Independent Choices</div>
+
+    <div class="step-math">
+        \[\binom{7}{4}\binom{5}{2} = 35 \cdot 10 = 350\]
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-8" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 3</div>
+                <div class="slide-title">Non-Distinct Permutations</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">How many distinguishable arrangements of the letters in <strong>TATTOOS</strong> are possible?</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-8-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Count the Repeated Letters</div>
+
+    <div class="step-copy">
+        <ul>
+            <li>Total letters: \(7\)</li>
+            <li>\(T\) appears \(3\) times.</li>
+            <li>\(O\) appears \(2\) times.</li>
+        </ul>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-8-step-1">
+    <div class="step-box">
+        <div class="step-label">Start with \(7!\) and Divide Out the Repeats</div>
+
+    <div class="step-math">
+        \[\dfrac{7!}{3!\,2!}\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-8-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Simplify</div>
+
+    <div class="step-math">
+        \[\dfrac{5040}{12} = 420\]
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.current = 0;
+            this.total = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl = document.getElementById('navDots');
+            this.clickHint = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                dot.addEventListener('click', event => {
+                    event.stopPropagation();
+                    this._goTo(index);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide'
+                : '';
+        }
+
+        _activate(index) {
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _goTo(index) {
+            if (index === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = index;
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const step = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (step) {
+                    step.classList.add('visible');
+                    step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) {
+                this._goTo(this.current + 1);
+            }
+        }
+
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current]) && this.current > 0) {
+                this._goTo(this.current - 1);
+            }
+        }
+
+        _bindEvents() {
+            document.addEventListener('keydown', event => {
+                if (['ArrowRight', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                    this._next();
+                } else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+                    event.preventDefault();
+                    this._prev();
+                }
+            });
+
+            document.addEventListener('click', event => {
+                if (!event.target.closest('.nav-dot')) {
+                    this._next();
+                }
+            });
+
+            let touchX = 0;
+            document.addEventListener('touchstart', event => {
+                touchX = event.touches[0].clientX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', event => {
+                const delta = event.changedTouches[0].clientX - touchX;
+                if (Math.abs(delta) > 50) {
+                    delta < 0 ? this._next() : this._prev();
+                }
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

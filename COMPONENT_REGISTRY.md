@@ -491,6 +491,69 @@ manim -pql scenes/5_5_half_angle_quadrant_analysis.py HalfAngleQuadrantAnalysis
 
 ---
 
+### `SequenceAsOrderedFunction`
+
+**File:** `manim/scenes/6_1_sequence_intro.py`
+**Class:** `SequenceAsOrderedFunction`
+**Status:** ✅ Working (rendered 2026-04-08, ManimCE v0.19.2)
+**Covers:** Unit 6.1 — Intro to Sequences
+
+**What it does:**
+Short 3Blue1Brown-inspired introduction to the idea of a sequence.
+
+1. Opens with the question "What is a sequence?"
+2. Builds a colorful ordered list `3, 7, 11, 15, ...` with term labels `a_1, a_2, a_3, a_4`
+3. Briefly swaps two terms to show that changing the order creates a different sequence
+4. Transforms the ordered list into discrete plotted points `(1,3), (2,7), (3,11), (4,15)` on default Cartesian axes with a grid
+5. Closes with the statement that a sequence is an ordered list, or equivalently a function on the positive integers
+
+**Visual features:**
+- Bright card colors for the first four terms
+- Default Manim axes and NumberPlane
+- Dashed guides from each positive integer input to its output value
+- Final explicit rule `a_n = 4n - 1`
+
+**Render:**
+```bash
+cd manim
+../.venv/bin/python -m manim -pql scenes/6_1_sequence_intro.py SequenceAsOrderedFunction
+../.venv/bin/python -m manim -pqh scenes/6_1_sequence_intro.py SequenceAsOrderedFunction
+```
+
+---
+
+### `ConvergentVsDivergentSequences`
+
+**File:** `manim/scenes/6_1_convergent_vs_divergent.py`
+**Class:** `ConvergentVsDivergentSequences`
+**Status:** ✅ Working (rendered 2026-04-08, ManimCE v0.19.2)
+**Covers:** Unit 6.1 — Infinite Sequences, Convergence vs Divergence
+
+**What it does:**
+Side-by-side visual comparison of a classic convergent sequence and a classic divergent sequence.
+
+1. Opens with the question "Do the dots settle near one number?"
+2. Left panel graphs the convergent sequence `a_n = 1/n`
+3. Right panel graphs the divergent sequence `b_n = (-1)^n`
+4. Adds a highlighted horizontal band around `y = 0`
+5. Shows that the `1/n` dots eventually stay inside the band, while the `(-1)^n` dots keep escaping it
+6. Ends with a short note that `c_n = n` is another classic divergent example because it grows without bound
+
+**Visual features:**
+- Two default Manim Cartesian grids in matching framed panels
+- Discrete dots only, not continuous curves
+- Bright green for convergence, bright pink for divergence, gold limit-band highlight
+- Arrow callouts on the divergent panel to emphasize the repeated escape from the target band
+
+**Render:**
+```bash
+cd manim
+../.venv/bin/python -m manim -pql scenes/6_1_convergent_vs_divergent.py ConvergentVsDivergentSequences
+../.venv/bin/python -m manim -pqh scenes/6_1_convergent_vs_divergent.py ConvergentVsDivergentSequences
+```
+
+---
+
 ### Planned Scenes
 
 | Planned scene | File | Covers |

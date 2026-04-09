@@ -5,7 +5,7 @@
 [Precalculus Slides (GitHub Pages)](https://kirkmanamos.github.io/Precalculus_Slides/)
 
 ## Status
-- Unit 4 and Unit 5 HTML slide decks now include a first-pass mobile phone layout patch.
+- Unit 4, Unit 5, and Unit 6 HTML slide decks now include a first-pass mobile phone layout patch.
 - Desktop and projector presentation behavior remains intact.
 
 ## Python / uv
@@ -34,3 +34,12 @@
 - [5.3 Solving Trig Equations](5.3-solving-trig-equations.html)
 - [5.4 Sum and Difference Identities](5.4-sum-and-difference.html)
 - [5.5 Double & Half Angle Identities](5.5-double-half-angle.html)
+
+## Unit 6: Sequences, Series, and Probability
+- [6.1 Sequences](6.1-sequences.html)
+- [6.2 Arithmetic Sequences](6.2-arithmetic-sequences.html)
+- [6.3 Geometric Sequences](6.3-geometric-sequences.html)
+- [6.4 The Binomial Theorem](6.4-binomial-theorem.html)
+- [6.5 Counting Principles](6.5-counting-principles.html)
+- [6.6 Probability](6.6-probability.html)
+- [6.7 Conditional Probability](6.7-conditional-probability.html)

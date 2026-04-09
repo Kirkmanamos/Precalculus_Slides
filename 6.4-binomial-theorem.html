@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6.4 - The Binomial Theorem</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+    :root {
+        --navy: #1a365d;
+        --blue-accent: #2563eb;
+        --green-accent: #16a34a;
+        --teal-accent: #0891b2;
+        --orange-accent: #d97706;
+        --red-accent: #dc2626;
+        --grid-line: #dbeafe;
+        --bg-white: #ffffff;
+        --text: #1e293b;
+        --text-muted: #64748b;
+        --blue-light: #eff6ff;
+        --green-light: #f0fdf4;
+        --teal-light: #f0fdfa;
+        --orange-light: #fffbeb;
+        --navy-light: #e8edf5;
+        --slate-line: #cbd5e1;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        min-height: 100dvh;
+        overflow: hidden;
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 28px;
+        background: var(--navy);
+    }
+
+    body {
+        color: var(--text);
+    }
+
+    .slides-wrapper {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+        padding-left: max(3rem, calc((100% - 1120px) / 2));
+        padding-right: max(3rem, calc((100% - 1120px) / 2));
+        opacity: 0;
+        transform: translateX(60px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        pointer-events: none;
+    }
+
+    .slide.active {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: all;
+    }
+
+    .slide.exit-left {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+
+    .slide-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .slide-body.top-layout {
+        justify-content: flex-start;
+        gap: 0.85rem;
+        overflow-y: auto;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .slide-body:has(.steps-area) {
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    .title-slide {
+        background: var(--navy);
+        color: white;
+        justify-content: center;
+    }
+
+    .grid-bg {
+        background-color: var(--bg-white);
+        background-image:
+            linear-gradient(var(--grid-line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .title-section-label {
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #60a5fa;
+        margin-bottom: 0.75rem;
+    }
+
+    .title-main {
+        font-size: 2em;
+        font-weight: 700;
+        line-height: 1.16;
+        color: white;
+        margin-bottom: 0.55rem;
+    }
+
+    .title-objective {
+        font-size: 0.72em;
+        color: #bfdbfe;
+        line-height: 1.6;
+        margin-top: 0.75rem;
+        max-width: 26rem;
+    }
+
+    .identity-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.2rem;
+        max-width: 32rem;
+    }
+
+    .chip {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 0.2em 0.75em;
+        font-size: 0.58em;
+        color: #e2e8f0;
+    }
+
+    .slide-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .slide-title {
+        font-size: 1em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .example-label,
+    .concept-label,
+    .ref-label {
+        font-size: 0.6em;
+        font-weight: 700;
+        padding: 0.2em 0.75em;
+        border-radius: 6px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .example-label { background: var(--green-accent); }
+    .concept-label { background: var(--teal-accent); }
+    .ref-label { background: var(--navy); }
+
+    .problem-statement {
+        background: var(--navy-light);
+        border-left: 5px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.65em 1.2em;
+        margin-bottom: 0.9rem;
+        flex-shrink: 0;
+        font-weight: 600;
+        color: var(--navy);
+        font-size: 0.9em;
+    }
+
+    .problem-statement .katex-display,
+    .step-math .katex-display,
+    .card-copy .katex-display,
+    .fn-eq-stack .katex-display,
+    .summary-value .katex-display,
+    .diagram-caption .katex-display,
+    .note-copy .katex-display {
+        margin: 0.12em 0;
+    }
+
+    .body-lead {
+        background: var(--navy-light);
+        border-left: 4px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.58em 0.95em;
+        font-size: 0.78em;
+        font-weight: 600;
+        color: var(--navy);
+        line-height: 1.5;
+    }
+
+    .stack {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1.15fr 0.95fr;
+        gap: 0.85rem;
+        align-items: start;
+    }
+
+    .col {
+        min-width: 0;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .info-card,
+    .diagram-shell,
+    .table-shell,
+    .note-box {
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(203,213,225,0.86);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 12px;
+        padding: 0.72em 0.9em;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .info-card.teal,
+    .note-box.teal,
+    .formula-row.teal {
+        background: var(--teal-light);
+        border-left-color: var(--teal-accent);
+    }
+
+    .info-card.green,
+    .note-box.green,
+    .formula-row.green {
+        background: var(--green-light);
+        border-left-color: var(--green-accent);
+    }
+
+    .info-card.orange,
+    .note-box.orange,
+    .formula-row.orange {
+        background: var(--orange-light);
+        border-left-color: var(--orange-accent);
+    }
+
+    .info-card.navy,
+    .note-box.navy {
+        background: var(--navy);
+        border-left-color: #60a5fa;
+        color: white;
+    }
+
+    .info-card.navy .card-title,
+    .note-box.navy .note-title {
+        color: #bfdbfe;
+    }
+
+    .card-title,
+    .note-title,
+    .diagram-title {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.28rem;
+    }
+
+    .card-copy,
+    .note-copy,
+    .diagram-caption {
+        font-size: 0.78em;
+        line-height: 1.5;
+    }
+
+    .formula-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .formula-row {
+        background: var(--blue-light);
+        border-left: 5px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.5em 1em;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .formula-row.blue {
+        background: var(--blue-light);
+        border-left-color: var(--blue-accent);
+    }
+
+    .fn-label {
+        min-width: 4rem;
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        flex-shrink: 0;
+    }
+
+    .fn-eq-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 0.18rem;
+        flex: 1;
+        font-size: 0.82em;
+    }
+
+    .fn-alt {
+        color: var(--text-muted);
+    }
+
+    .formula-note {
+        margin-top: 0.75rem;
+        font-size: 0.64em;
+        font-weight: 600;
+        color: var(--orange-accent);
+        background: var(--orange-light);
+        border-left: 4px solid var(--orange-accent);
+        border-radius: 8px;
+        padding: 0.55em 0.9em;
+    }
+
+    .table-shell {
+        padding: 0.45em 0.55em;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+        background: white;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+        border: 1px solid #cbd5e1;
+        padding: 0.48em 0.52em;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .data-table th {
+        background: var(--navy);
+        color: white;
+        font-weight: 700;
+    }
+
+    .data-table tr:nth-child(even) td {
+        background: #f8fafc;
+    }
+
+    .steps-area {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .step { display: none; }
+
+    .step.visible {
+        display: block;
+        animation: stepReveal 0.4s ease both;
+        margin-bottom: 0.45rem;
+    }
+
+    .step.visible:last-child {
+        margin-bottom: 0;
+    }
+
+    @keyframes stepReveal {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-box {
+        background: var(--blue-light);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.46em 1em;
+    }
+
+    .step-box.teal {
+        background: var(--teal-light);
+        border-color: var(--teal-accent);
+    }
+
+    .step-box.green {
+        background: var(--green-light);
+        border-color: var(--green-accent);
+    }
+
+    .step-box.orange {
+        background: var(--orange-light);
+        border-color: var(--orange-accent);
+    }
+
+    .step-box.dark {
+        background: var(--navy);
+        border-color: #60a5fa;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.12rem;
+    }
+
+    .step-box.dark .step-label {
+        color: #bfdbfe;
+    }
+
+    .step-math,
+    .step-copy {
+        font-size: 0.84em;
+        line-height: 1.6;
+        padding: 0.12em 0;
+    }
+
+    .step-math {
+        text-align: center;
+    }
+
+    .step-copy ul,
+    .card-copy ul,
+    .note-copy ul {
+        padding-left: 1.1rem;
+    }
+
+    .step-copy li,
+    .card-copy li,
+    .note-copy li {
+        margin-bottom: 0.22rem;
+    }
+
+    .step-box.dark .step-math,
+    .step-box.dark .step-copy,
+    .step-box.dark .katex {
+        color: white;
+    }
+
+    .step-math.has-annotation {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        text-align: left;
+    }
+
+    .step-eq {
+        flex: 1;
+        text-align: center;
+    }
+
+    .annotation {
+        flex: 0 0 34%;
+        color: var(--blue-accent);
+        font-size: 0.72em;
+        font-weight: 600;
+        line-height: 1.45;
+        text-align: left;
+        border-left: 3px solid #93c5fd;
+        padding-left: 0.9rem;
+    }
+
+    .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .summary-pill {
+        border-radius: 10px;
+        padding: 0.52em 0.8em;
+        background: var(--navy);
+        color: white;
+    }
+
+    .summary-pill.green {
+        background: #14532d;
+    }
+
+    .summary-label {
+        font-size: 0.56em;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #bfdbfe;
+        margin-bottom: 0.12rem;
+    }
+
+    .summary-value {
+        font-size: 0.82em;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    .diagram-shell {
+        border-left-color: var(--teal-accent);
+        background: white;
+    }
+
+    .diagram {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .svg-line {
+        stroke: #475569;
+        stroke-width: 2.5;
+        fill: none;
+    }
+
+    .svg-label {
+        font: 600 16px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+    }
+
+    .svg-count {
+        font: 700 26px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+        text-anchor: middle;
+    }
+
+    .svg-note,
+    .svg-prob,
+    .svg-joint {
+        font: 600 14px 'Source Sans 3', sans-serif;
+        fill: #2563eb;
+    }
+
+    .pascal-grid {
+        display: grid;
+        gap: 0.36rem;
+    }
+
+    .pascal-row {
+        display: grid;
+        grid-template-columns: 3.5rem 1fr;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .pascal-index {
+        font-size: 0.62em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .pascal-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .pascal-cell {
+        min-width: 1.9rem;
+        padding: 0.2rem 0.38rem;
+        border-radius: 999px;
+        background: var(--blue-light);
+        border: 1px solid #bfdbfe;
+        text-align: center;
+        font-size: 0.72em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .nav-dots {
+        position: fixed;
+        right: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 100;
+    }
+
+    .nav-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .nav-dot.active {
+        background: var(--blue-accent);
+        transform: scale(1.4);
+    }
+
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+        transition: width 0.4s ease;
+        z-index: 100;
+    }
+
+    .click-hint {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.45em;
+        color: rgba(100,116,139,0.6);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        animation: pulse 2s ease-in-out infinite;
+        z-index: 100;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .slide { transition: opacity 0.3s ease; transform: none !important; }
+        .step.visible { animation: none; opacity: 1; }
+    }
+
+    @media (max-width: 1100px), (max-height: 900px) {
+        html, body { font-size: 22px; }
+
+        .slide {
+            padding-top: max(2.4rem, calc(1.25rem + env(safe-area-inset-top)));
+            padding-right: max(1.25rem, calc((100% - 960px) / 2));
+            padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+            padding-left: max(1.25rem, calc((100% - 960px) / 2));
+        }
+
+        .slide-header {
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        }
+    }
+
+    @media (max-width: 900px) {
+        .two-col,
+        .step-math.has-annotation {
+            grid-template-columns: 1fr;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .annotation {
+            flex: 0 1 auto;
+            width: 100%;
+            border-left: none;
+            border-top: 3px solid #93c5fd;
+            padding-left: 0;
+            padding-top: 0.55rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        html, body {
+            font-size: 18px !important;
+            width: 100%;
+            height: 100%;
+            min-height: 100dvh;
+        }
+
+        .slide {
+            padding-top: max(16px, env(safe-area-inset-top)) !important;
+            padding-right: 12px !important;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+            padding-left: 12px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .problem-statement {
+            font-size: 0.95em !important;
+            padding: 0.48em 0.66em !important;
+            margin-bottom: 0.55rem !important;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+        }
+
+        .example-label,
+        .concept-label,
+        .ref-label {
+            font-size: 0.52em !important;
+            padding: 0.22em 0.6em !important;
+        }
+
+        .click-hint {
+            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            font-size: 0.5em !important;
+            max-width: 92vw;
+            text-align: center;
+        }
+
+        .nav-dots {
+            display: none !important;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 420px) {
+        html, body { font-size: 16px !important; }
+        .slide {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
+    <div class="title-main">6.4 The Binomial Theorem</div>
+    <div class="title-objective">Objective: Use Pascal&#x27;s Triangle, combinations, and the Binomial Theorem to expand expressions and find specific terms.</div>
+    <div class="identity-chips"><span class="chip">Pascal&#x27;s Triangle</span><span class="chip">binomial coefficients</span><span class="chip">full expansions</span><span class="chip">specific terms</span><span class="chip">coefficients</span></div>
+</section>
+<section class="slide grid-bg" id="slide-1">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Patterns in Binomial Expansions</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Before using a formula, it helps to notice what always happens in an expansion of \((a+b)^n\).</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Number of Terms</div>
+    <div class="card-copy">There are always \(n+1\) terms.</div>
+</div><div class="info-card green">
+    <div class="card-title">Exponents</div>
+    <div class="card-copy">The exponent on the first factor decreases while the exponent on the second factor increases.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Coefficients</div>
+    <div class="card-copy">The coefficients are symmetric and match Pascal's Triangle.</div>
+</div></div>
+<div class="note-box navy">
+    <div class="note-title">Sample Pattern</div>
+    <div class="note-copy">\[(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\]</div>
+</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-2">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Pascal&#x27;s Triangle and Combinations</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="diagram-shell">
+    <div class="diagram-title">Pascal's Triangle</div>
+    <div class="pascal-grid">
+        <div class="pascal-row"><span class="pascal-index">n = 0</span><div class="pascal-values"><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 1</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 2</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">2</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 3</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">3</span><span class="pascal-cell">3</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 4</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">4</span><span class="pascal-cell">6</span><span class="pascal-cell">4</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 5</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">5</span><span class="pascal-cell">10</span><span class="pascal-cell">10</span><span class="pascal-cell">5</span><span class="pascal-cell">1</span></div></div>
+    </div>
+    <div class="diagram-caption">Row <strong>n</strong> gives the coefficients of \((a+b)^n\).</div>
+</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Combination Formula</div>
+    <div class="card-copy">\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
+</div><div class="info-card green">
+    <div class="card-title">Calculator</div>
+    <div class="card-copy">On many calculators, use <strong>nCr</strong> to find \(\binom{n}{r}\).</div>
+</div><div class="info-card orange">
+    <div class="card-title">Row 4 Example</div>
+    <div class="card-copy">Row \(4\) gives \(1, 4, 6, 4, 1\), which are the coefficients of \((a+b)^4\).</div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-3" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 1</div>
+                <div class="slide-title">Expanding with Pascal&#x27;s Triangle</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">Use Pascal's Triangle to expand \((2x + y)^4\).</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-3-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Choose the Row of Coefficients</div>
+
+    <div class="step-math">
+        \[1,\ 4,\ 6,\ 4,\ 1\]
+        <div class="annotation">Row \(4\) matches the exponent \(4\).</div>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-3-step-1">
+    <div class="step-box">
+        <div class="step-label">Match the Power Pattern</div>
+
+    <div class="step-math">
+        \[(2x)^4,\ (2x)^3y,\ (2x)^2y^2,\ (2x)y^3,\ y^4\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-3-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Multiply the Coefficients In</div>
+
+    <div class="step-math">
+        \[(2x+y)^4 = 16x^4 + 32x^3y + 24x^2y^2 + 8xy^3 + y^4\]
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-4">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">The Binomial Theorem</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row blue">
+    <div class="fn-label">theorem</div>
+    <div class="fn-eq-stack">
+        <div>\[(a+b)^n = \sum_{r=0}^{n}\binom{n}{r}a^{\,n-r}b^r\]</div>
+
+    </div>
+</div><div class="formula-row teal">
+    <div class="fn-label">term</div>
+    <div class="fn-eq-stack">
+        <div>\[T_{r+1} = \binom{n}{r}a^{\,n-r}b^r\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">The term number is always one more than \(r\), so the 6th term uses \(r=5\).</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-5" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 2</div>
+                <div class="slide-title">Expanding with the Binomial Theorem</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">Use the Binomial Theorem to expand \((x - 3)^5\).</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-5-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Identify \(a\), \(b\), and \(n\)</div>
+
+    <div class="step-math">
+        \[a = x,\qquad b = -3,\qquad n = 5\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-5-step-1">
+    <div class="step-box">
+        <div class="step-label">Apply the Theorem</div>
+
+    <div class="step-math">
+        \[(x-3)^5 = \sum_{r=0}^{5}\binom{5}{r}x^{5-r}(-3)^r\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-5-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Simplify Each Term</div>
+
+    <div class="step-math">
+        \[(x-3)^5 = x^5 - 15x^4 + 90x^3 - 270x^2 + 405x - 243\]
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-6" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 3</div>
+                <div class="slide-title">Finding a Specific Term</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">Find the 6th term of \((2x - y)^8\).</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-6-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Match the Term Number to \(r\)</div>
+
+    <div class="step-math">
+        \[\text{6th term} \Rightarrow r = 5\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-6-step-1">
+    <div class="step-box">
+        <div class="step-label">Use the General Term</div>
+
+    <div class="step-math">
+        \[T_6 = \binom{8}{5}(2x)^{8-5}(-y)^5\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-6-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Simplify</div>
+
+    <div class="step-math">
+        \[T_6 = 56(2x)^3(-y)^5 = 56(8x^3)(-y^5) = -448x^3y^5\]
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 4</div>
+                <div class="slide-title">Finding a Coefficient</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">Find the coefficient of \(x^2\) in the expansion of \((2x + 3)^5\).</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-7-step-0">
+    <div class="step-box teal">
+        <div class="step-label">Identify Which Power of \(3\) You Need</div>
+
+    <div class="step-math">
+        \[x^2 \text{ means } 5-r = 2 \Rightarrow r = 3\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-7-step-1">
+    <div class="step-box">
+        <div class="step-label">Use the Matching Term</div>
+
+    <div class="step-math">
+        \[\binom{5}{3}(2x)^2(3)^3 = 10 \cdot 4x^2 \cdot 27\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-7-step-2">
+    <div class="step-box dark">
+        <div class="step-label">Answer</div>
+        <div class="step-math">\[\text{Coefficient of }x^2 = 1080\]</div>
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.current = 0;
+            this.total = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl = document.getElementById('navDots');
+            this.clickHint = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                dot.addEventListener('click', event => {
+                    event.stopPropagation();
+                    this._goTo(index);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide'
+                : '';
+        }
+
+        _activate(index) {
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _goTo(index) {
+            if (index === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = index;
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const step = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (step) {
+                    step.classList.add('visible');
+                    step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) {
+                this._goTo(this.current + 1);
+            }
+        }
+
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current]) && this.current > 0) {
+                this._goTo(this.current - 1);
+            }
+        }
+
+        _bindEvents() {
+            document.addEventListener('keydown', event => {
+                if (['ArrowRight', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                    this._next();
+                } else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+                    event.preventDefault();
+                    this._prev();
+                }
+            });
+
+            document.addEventListener('click', event => {
+                if (!event.target.closest('.nav-dot')) {
+                    this._next();
+                }
+            });
+
+            let touchX = 0;
+            document.addEventListener('touchstart', event => {
+                touchX = event.touches[0].clientX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', event => {
+                const delta = event.changedTouches[0].clientX - touchX;
+                if (Math.abs(delta) > 50) {
+                    delta < 0 ? this._next() : this._prev();
+                }
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

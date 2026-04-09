@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6.6 - Probability</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+    :root {
+        --navy: #1a365d;
+        --blue-accent: #2563eb;
+        --green-accent: #16a34a;
+        --teal-accent: #0891b2;
+        --orange-accent: #d97706;
+        --red-accent: #dc2626;
+        --grid-line: #dbeafe;
+        --bg-white: #ffffff;
+        --text: #1e293b;
+        --text-muted: #64748b;
+        --blue-light: #eff6ff;
+        --green-light: #f0fdf4;
+        --teal-light: #f0fdfa;
+        --orange-light: #fffbeb;
+        --navy-light: #e8edf5;
+        --slate-line: #cbd5e1;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        min-height: 100dvh;
+        overflow: hidden;
+        font-family: 'Source Sans 3', sans-serif;
+        font-size: 28px;
+        background: var(--navy);
+    }
+
+    body {
+        color: var(--text);
+    }
+
+    .slides-wrapper {
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        padding-top: 5rem;
+        padding-bottom: 3rem;
+        padding-left: max(3rem, calc((100% - 1120px) / 2));
+        padding-right: max(3rem, calc((100% - 1120px) / 2));
+        opacity: 0;
+        transform: translateX(60px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        pointer-events: none;
+    }
+
+    .slide.active {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: all;
+    }
+
+    .slide.exit-left {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+
+    .slide-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .slide-body.top-layout {
+        justify-content: flex-start;
+        gap: 0.85rem;
+        overflow-y: auto;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .slide-body:has(.steps-area) {
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    .title-slide {
+        background: var(--navy);
+        color: white;
+        justify-content: center;
+    }
+
+    .grid-bg {
+        background-color: var(--bg-white);
+        background-image:
+            linear-gradient(var(--grid-line) 1px, transparent 1px),
+            linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .title-section-label {
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #60a5fa;
+        margin-bottom: 0.75rem;
+    }
+
+    .title-main {
+        font-size: 2em;
+        font-weight: 700;
+        line-height: 1.16;
+        color: white;
+        margin-bottom: 0.55rem;
+    }
+
+    .title-objective {
+        font-size: 0.72em;
+        color: #bfdbfe;
+        line-height: 1.6;
+        margin-top: 0.75rem;
+        max-width: 26rem;
+    }
+
+    .identity-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1.2rem;
+        max-width: 32rem;
+    }
+
+    .chip {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 0.2em 0.75em;
+        font-size: 0.58em;
+        color: #e2e8f0;
+    }
+
+    .slide-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.2rem;
+        flex-shrink: 0;
+    }
+
+    .slide-title {
+        font-size: 1em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .example-label,
+    .concept-label,
+    .ref-label {
+        font-size: 0.6em;
+        font-weight: 700;
+        padding: 0.2em 0.75em;
+        border-radius: 6px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: white;
+    }
+
+    .example-label { background: var(--green-accent); }
+    .concept-label { background: var(--teal-accent); }
+    .ref-label { background: var(--navy); }
+
+    .problem-statement {
+        background: var(--navy-light);
+        border-left: 5px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.65em 1.2em;
+        margin-bottom: 0.9rem;
+        flex-shrink: 0;
+        font-weight: 600;
+        color: var(--navy);
+        font-size: 0.9em;
+    }
+
+    .problem-statement .katex-display,
+    .step-math .katex-display,
+    .card-copy .katex-display,
+    .fn-eq-stack .katex-display,
+    .summary-value .katex-display,
+    .diagram-caption .katex-display,
+    .note-copy .katex-display {
+        margin: 0.12em 0;
+    }
+
+    .body-lead {
+        background: var(--navy-light);
+        border-left: 4px solid var(--navy);
+        border-radius: 10px;
+        padding: 0.58em 0.95em;
+        font-size: 0.78em;
+        font-weight: 600;
+        color: var(--navy);
+        line-height: 1.5;
+    }
+
+    .stack {
+        display: grid;
+        gap: 0.75rem;
+    }
+
+    .two-col {
+        display: grid;
+        grid-template-columns: 1.15fr 0.95fr;
+        gap: 0.85rem;
+        align-items: start;
+    }
+
+    .col {
+        min-width: 0;
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .info-card,
+    .diagram-shell,
+    .table-shell,
+    .note-box {
+        background: rgba(255,255,255,0.94);
+        border: 1px solid rgba(203,213,225,0.86);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 12px;
+        padding: 0.72em 0.9em;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .info-card.teal,
+    .note-box.teal,
+    .formula-row.teal {
+        background: var(--teal-light);
+        border-left-color: var(--teal-accent);
+    }
+
+    .info-card.green,
+    .note-box.green,
+    .formula-row.green {
+        background: var(--green-light);
+        border-left-color: var(--green-accent);
+    }
+
+    .info-card.orange,
+    .note-box.orange,
+    .formula-row.orange {
+        background: var(--orange-light);
+        border-left-color: var(--orange-accent);
+    }
+
+    .info-card.navy,
+    .note-box.navy {
+        background: var(--navy);
+        border-left-color: #60a5fa;
+        color: white;
+    }
+
+    .info-card.navy .card-title,
+    .note-box.navy .note-title {
+        color: #bfdbfe;
+    }
+
+    .card-title,
+    .note-title,
+    .diagram-title {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.28rem;
+    }
+
+    .card-copy,
+    .note-copy,
+    .diagram-caption {
+        font-size: 0.78em;
+        line-height: 1.5;
+    }
+
+    .formula-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .formula-row {
+        background: var(--blue-light);
+        border-left: 5px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.5em 1em;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .formula-row.blue {
+        background: var(--blue-light);
+        border-left-color: var(--blue-accent);
+    }
+
+    .fn-label {
+        min-width: 4rem;
+        font-size: 0.62em;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        flex-shrink: 0;
+    }
+
+    .fn-eq-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 0.18rem;
+        flex: 1;
+        font-size: 0.82em;
+    }
+
+    .fn-alt {
+        color: var(--text-muted);
+    }
+
+    .formula-note {
+        margin-top: 0.75rem;
+        font-size: 0.64em;
+        font-weight: 600;
+        color: var(--orange-accent);
+        background: var(--orange-light);
+        border-left: 4px solid var(--orange-accent);
+        border-radius: 8px;
+        padding: 0.55em 0.9em;
+    }
+
+    .table-shell {
+        padding: 0.45em 0.55em;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72em;
+        background: white;
+        overflow: hidden;
+        border-radius: 10px;
+    }
+
+    .data-table th,
+    .data-table td {
+        border: 1px solid #cbd5e1;
+        padding: 0.48em 0.52em;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .data-table th {
+        background: var(--navy);
+        color: white;
+        font-weight: 700;
+    }
+
+    .data-table tr:nth-child(even) td {
+        background: #f8fafc;
+    }
+
+    .steps-area {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+        padding-bottom: 3.5rem;
+    }
+
+    .step { display: none; }
+
+    .step.visible {
+        display: block;
+        animation: stepReveal 0.4s ease both;
+        margin-bottom: 0.45rem;
+    }
+
+    .step.visible:last-child {
+        margin-bottom: 0;
+    }
+
+    @keyframes stepReveal {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .step-box {
+        background: var(--blue-light);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.46em 1em;
+    }
+
+    .step-box.teal {
+        background: var(--teal-light);
+        border-color: var(--teal-accent);
+    }
+
+    .step-box.green {
+        background: var(--green-light);
+        border-color: var(--green-accent);
+    }
+
+    .step-box.orange {
+        background: var(--orange-light);
+        border-color: var(--orange-accent);
+    }
+
+    .step-box.dark {
+        background: var(--navy);
+        border-color: #60a5fa;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.12rem;
+    }
+
+    .step-box.dark .step-label {
+        color: #bfdbfe;
+    }
+
+    .step-math,
+    .step-copy {
+        font-size: 0.84em;
+        line-height: 1.6;
+        padding: 0.12em 0;
+    }
+
+    .step-math {
+        text-align: center;
+    }
+
+    .step-copy ul,
+    .card-copy ul,
+    .note-copy ul {
+        padding-left: 1.1rem;
+    }
+
+    .step-copy li,
+    .card-copy li,
+    .note-copy li {
+        margin-bottom: 0.22rem;
+    }
+
+    .step-box.dark .step-math,
+    .step-box.dark .step-copy,
+    .step-box.dark .katex {
+        color: white;
+    }
+
+    .step-math.has-annotation {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        text-align: left;
+    }
+
+    .step-eq {
+        flex: 1;
+        text-align: center;
+    }
+
+    .annotation {
+        flex: 0 0 34%;
+        color: var(--blue-accent);
+        font-size: 0.72em;
+        font-weight: 600;
+        line-height: 1.45;
+        text-align: left;
+        border-left: 3px solid #93c5fd;
+        padding-left: 0.9rem;
+    }
+
+    .summary-strip {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .summary-pill {
+        border-radius: 10px;
+        padding: 0.52em 0.8em;
+        background: var(--navy);
+        color: white;
+    }
+
+    .summary-pill.green {
+        background: #14532d;
+    }
+
+    .summary-label {
+        font-size: 0.56em;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #bfdbfe;
+        margin-bottom: 0.12rem;
+    }
+
+    .summary-value {
+        font-size: 0.82em;
+        line-height: 1.45;
+        text-align: center;
+    }
+
+    .diagram-shell {
+        border-left-color: var(--teal-accent);
+        background: white;
+    }
+
+    .diagram {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .svg-line {
+        stroke: #475569;
+        stroke-width: 2.5;
+        fill: none;
+    }
+
+    .svg-label {
+        font: 600 16px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+    }
+
+    .svg-count {
+        font: 700 26px 'Source Sans 3', sans-serif;
+        fill: #0f172a;
+        text-anchor: middle;
+    }
+
+    .svg-note,
+    .svg-prob,
+    .svg-joint {
+        font: 600 14px 'Source Sans 3', sans-serif;
+        fill: #2563eb;
+    }
+
+    .pascal-grid {
+        display: grid;
+        gap: 0.36rem;
+    }
+
+    .pascal-row {
+        display: grid;
+        grid-template-columns: 3.5rem 1fr;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .pascal-index {
+        font-size: 0.62em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .pascal-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+    }
+
+    .pascal-cell {
+        min-width: 1.9rem;
+        padding: 0.2rem 0.38rem;
+        border-radius: 999px;
+        background: var(--blue-light);
+        border: 1px solid #bfdbfe;
+        text-align: center;
+        font-size: 0.72em;
+        font-weight: 700;
+        color: var(--navy);
+    }
+
+    .nav-dots {
+        position: fixed;
+        right: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 100;
+    }
+
+    .nav-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.3);
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .nav-dot.active {
+        background: var(--blue-accent);
+        transform: scale(1.4);
+    }
+
+    .progress-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
+        transition: width 0.4s ease;
+        z-index: 100;
+    }
+
+    .click-hint {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.45em;
+        color: rgba(100,116,139,0.6);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        animation: pulse 2s ease-in-out infinite;
+        z-index: 100;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .slide { transition: opacity 0.3s ease; transform: none !important; }
+        .step.visible { animation: none; opacity: 1; }
+    }
+
+    @media (max-width: 1100px), (max-height: 900px) {
+        html, body { font-size: 22px; }
+
+        .slide {
+            padding-top: max(2.4rem, calc(1.25rem + env(safe-area-inset-top)));
+            padding-right: max(1.25rem, calc((100% - 960px) / 2));
+            padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+            padding-left: max(1.25rem, calc((100% - 960px) / 2));
+        }
+
+        .slide-header {
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+        }
+    }
+
+    @media (max-width: 900px) {
+        .two-col,
+        .step-math.has-annotation {
+            grid-template-columns: 1fr;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .annotation {
+            flex: 0 1 auto;
+            width: 100%;
+            border-left: none;
+            border-top: 3px solid #93c5fd;
+            padding-left: 0;
+            padding-top: 0.55rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        html, body {
+            font-size: 18px !important;
+            width: 100%;
+            height: 100%;
+            min-height: 100dvh;
+        }
+
+        .slide {
+            padding-top: max(16px, env(safe-area-inset-top)) !important;
+            padding-right: 12px !important;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+            padding-left: 12px !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .problem-statement {
+            font-size: 0.95em !important;
+            padding: 0.48em 0.66em !important;
+            margin-bottom: 0.55rem !important;
+        }
+
+        .steps-area,
+        .slide-body.top-layout {
+            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+        }
+
+        .example-label,
+        .concept-label,
+        .ref-label {
+            font-size: 0.52em !important;
+            padding: 0.22em 0.6em !important;
+        }
+
+        .click-hint {
+            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            font-size: 0.5em !important;
+            max-width: 92vw;
+            text-align: center;
+        }
+
+        .nav-dots {
+            display: none !important;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+        }
+    }
+
+    @media (max-width: 420px) {
+        html, body { font-size: 16px !important; }
+        .slide {
+            padding-right: 10px !important;
+            padding-left: 10px !important;
+        }
+    }
+</style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
+    <div class="title-main">6.6 Probability</div>
+    <div class="title-objective">Objective: Classify events, use the addition and multiplication rules, and solve counting-based probability problems.</div>
+    <div class="identity-chips"><span class="chip">sample space</span><span class="chip">addition rule</span><span class="chip">multiplication rule</span><span class="chip">counting-based probability</span><span class="chip">complements</span></div>
+</section>
+<section class="slide grid-bg" id="slide-1">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Probability Vocabulary</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Probability starts with clear language: experiment, sample space, and event.</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Experiment</div>
+    <div class="card-copy">An experiment is any process that leads to a well-defined outcome, such as rolling a die or drawing a card.</div>
+</div><div class="info-card green">
+    <div class="card-title">Sample Space</div>
+    <div class="card-copy">The sample space \(S\) is the set of all possible outcomes.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Event</div>
+    <div class="card-copy">An event \(E\) is any subset of the sample space.</div>
+</div></div>
+<div class="table-shell">
+    <table class="data-table">
+        <thead>
+            <tr><th>Situation</th><th>Sample Space</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Rolling a six-sided die</td><td>\(\{1,2,3,4,5,6\}\)</td></tr><tr><td>Flipping two coins</td><td>\(\{HH, HT, TH, TT\}\)</td></tr>
+        </tbody>
+    </table>
+</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-2">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Basic Probability and Experimental Probability</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Probability Forms</div>
+    <div class="card-copy">Probabilities can be written as fractions, decimals, or percents.</div>
+</div><div class="info-card green">
+    <div class="card-title">Impossible vs. Certain</div>
+    <div class="card-copy">If \(P(E)=0\), the event is impossible. If \(P(E)=1\), the event is certain.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Theoretical vs. Experimental</div>
+    <div class="card-copy">Theoretical probability is based on reasoning. Experimental probability is based on actual trials.</div>
+</div></div>
+<div class="note-box navy">
+    <div class="note-title">Example</div>
+    <div class="note-copy">A fair die has theoretical probability \(\dfrac{1}{6}\) of landing on \(3\). If a coin lands heads \(47\) times in \(100\) flips, the experimental probability is \(\dfrac{47}{100}\).</div>
+</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-3">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Addition Rule</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row teal">
+    <div class="fn-label">mutually exclusive</div>
+    <div class="fn-eq-stack">
+        <div>\[P(A \text{ or } B) = P(A) + P(B)\]</div>
+
+    </div>
+</div><div class="formula-row blue">
+    <div class="fn-label">inclusive</div>
+    <div class="fn-eq-stack">
+        <div>\[P(A \text{ or } B) = P(A) + P(B) - P(A \text{ and } B)\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">The addition rule finds the probability that at least one of the events occurs.</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-4">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Addition Rule Examples</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Mutually Exclusive</div>
+    <div class="card-copy">
+                <p>In a class of \(30\) students, \(18\) were born in the United States and \(3\) were born in India.</p>
+                \[P(\text{U.S. or India}) = \dfrac{18+3}{30} = \dfrac{7}{10}\]
+                </div>
+</div><div class="info-card green">
+            <div class="card-title">Inclusive</div>
+            <div class="card-copy"><div class="diagram-shell">
+    <div class="diagram-title">Venn Diagram</div>
+    <svg class="diagram" viewBox="0 0 360 220" role="img" aria-label="Five students take only Chemistry, fifteen take both, four take only History, and three take neither.">
+        <rect x="8" y="8" width="344" height="204" rx="18" fill="#f8fafc" stroke="#cbd5e1" />
+        <circle cx="145" cy="108" r="66" fill="rgba(8,145,178,0.18)" stroke="#0891b2" stroke-width="3" />
+        <circle cx="215" cy="108" r="66" fill="rgba(37,99,235,0.18)" stroke="#2563eb" stroke-width="3" />
+        <text x="116" y="52" class="svg-label">Chemistry</text>
+        <text x="227" y="52" class="svg-label">History</text>
+        <text x="108" y="114" class="svg-count">5</text>
+        <text x="176" y="114" class="svg-count">15</text>
+        <text x="244" y="114" class="svg-count">4</text>
+        <text x="28" y="188" class="svg-note">Outside: 3</text>
+    </svg>
+    <div class="diagram-caption">Five students take only Chemistry, fifteen take both, four take only History, and three take neither.</div>
+</div>
+<p>\[P(\text{Chemistry or History}) = \dfrac{20+19-15}{27} = \dfrac{24}{27} = \dfrac{8}{9}\]</p></div>
+        </div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-5">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Multiplication Rule</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row teal">
+    <div class="fn-label">independent</div>
+    <div class="fn-eq-stack">
+        <div>\[P(A \text{ and } B) = P(A)P(B)\]</div>
+
+    </div>
+</div><div class="formula-row blue">
+    <div class="fn-label">dependent</div>
+    <div class="fn-eq-stack">
+        <div>\[P(A \text{ and } B) = P(A)P(B\mid A)\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">The multiplication rule finds the probability that multiple events all occur.</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-6" data-steps="3">
+            <div class="slide-header">
+                <div class="example-label">Example 1</div>
+                <div class="slide-title">Independent vs. Dependent Events</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">There are \(9\) brown boxes and \(6\) blue boxes on a shelf. Find the probability that Ana and Sebastian both choose brown if (a) Ana replaces her box and (b) Ana keeps her box.</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-6-step-0">
+    <div class="step-box teal">
+        <div class="step-label">With Replacement</div>
+
+    <div class="step-math">
+        \[P(\text{both brown}) = \dfrac{9}{15}\cdot\dfrac{9}{15} = \dfrac{9}{25}\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-6-step-1">
+    <div class="step-box">
+        <div class="step-label">Without Replacement</div>
+
+    <div class="step-math">
+        \[P(\text{both brown}) = \dfrac{9}{15}\cdot\dfrac{8}{14} = \dfrac{12}{35}\]
+    </div>
+
+    </div>
+</div><div class="step" id="slide-6-step-2">
+    <div class="step-box green">
+        <div class="step-label">Why the Answers Differ</div>
+
+    <div class="step-copy">
+        <ul>
+            <li>Replacing keeps the second draw independent.</li>
+            <li>Not replacing changes the sample space for the second draw.</li>
+        </ul>
+    </div>
+
+    </div>
+</div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-7">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Probability with Permutations and Combinations</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Exactly 2 Red Marbles</div>
+    <div class="card-copy">
+                <p>From \(8\) red and \(6\) blue marbles, choose \(4\).</p>
+                \[\dfrac{\binom{8}{2}\binom{6}{2}}{\binom{14}{4}} = \dfrac{60}{143}\]
+                </div>
+</div><div class="info-card green">
+    <div class="card-title">No Repeated Digits in a 4-Digit PIN</div>
+    <div class="card-copy">
+                <p>Any of the \(10\) digits may appear in each spot.</p>
+                \[\dfrac{{}_{10}P_4}{10^4} = \dfrac{10\cdot9\cdot8\cdot7}{10000} = \dfrac{63}{125}\]
+                </div>
+</div><div class="info-card orange">
+    <div class="card-title">Odd First Digit</div>
+    <div class="card-copy">
+                <p>A 4-digit PIN uses digits \(1\)-\(9\) without repetition.</p>
+                \[\dfrac{5\cdot8\cdot7\cdot6}{{}_9P_4} = \dfrac{5}{9}\]
+                </div>
+</div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-8">
+            <div class="slide-header">
+                <div class="ref-label">Reference</div>
+                <div class="slide-title">Complement Rule</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="formula-grid">
+            <div class="formula-row orange">
+    <div class="fn-label">complement</div>
+    <div class="fn-eq-stack">
+        <div>\[P(E') = 1 - P(E)\]</div>
+
+    </div>
+</div>
+        </div>
+        <div class="formula-note">When a problem asks for <em>at least one</em>, it is often easier to find the probability of <em>none</em> and subtract from \(1\).</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">At Least One Yellow</div>
+    <div class="card-copy">
+                <p>A jar has \(8\) blue and \(4\) yellow marbles. Choose \(3\).</p>
+                \[1 - \dfrac{\binom{8}{3}}{\binom{12}{3}} = 1 - \dfrac{56}{220} = \dfrac{41}{55}\]
+                </div>
+</div><div class="info-card green">
+    <div class="card-title">Two Dice, Sum Greater Than 3</div>
+    <div class="card-copy">
+                <p>The complement is sum \(\le 3\): \((1,1), (1,2), (2,1)\).</p>
+                \[1 - \dfrac{3}{36} = \dfrac{11}{12}\]
+                </div>
+</div></div>
+            </div>
+        </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    document.querySelectorAll('.step-math').forEach(stepMath => {
+        const annotation = stepMath.querySelector('.annotation');
+        if (!annotation) return;
+        const eqDiv = document.createElement('div');
+        eqDiv.className = 'step-eq';
+        const before = [];
+        for (const node of stepMath.childNodes) {
+            if (node === annotation) break;
+            before.push(node);
+        }
+        before.forEach(node => eqDiv.appendChild(node));
+        stepMath.insertBefore(eqDiv, annotation);
+        stepMath.classList.add('has-annotation');
+    });
+
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.current = 0;
+            this.total = this.slides.length;
+            this.progressBar = document.getElementById('progressBar');
+            this.navDotsEl = document.getElementById('navDots');
+            this.clickHint = document.getElementById('clickHint');
+            this._buildNav();
+            this._activate(0);
+            this._bindEvents();
+        }
+
+        _buildNav() {
+            this.slides.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = 'nav-dot';
+                dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+                dot.addEventListener('click', event => {
+                    event.stopPropagation();
+                    this._goTo(index);
+                });
+                this.navDotsEl.appendChild(dot);
+            });
+            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
+
+        _sync() {
+            this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
+            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const slide = this.slides[this.current];
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            this.clickHint.textContent =
+                cur < max - 1 ? 'click to advance'
+                : this.current < this.total - 1 ? 'click for next slide'
+                : '';
+        }
+
+        _activate(index) {
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _goTo(index) {
+            if (index === this.current) return;
+            const out = this.slides[this.current];
+            out.classList.add('exit-left');
+            out.classList.remove('active');
+            setTimeout(() => out.classList.remove('exit-left'), 500);
+            this.current = index;
+            this.slides[index].classList.add('active');
+            this._sync();
+        }
+
+        _advanceStep(slide) {
+            const max = parseInt(slide.dataset.steps || 0, 10);
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < max - 1) {
+                cur++;
+                slide.dataset.currentStep = cur;
+                const step = slide.querySelector(`#${slide.id}-step-${cur}`);
+                if (step) {
+                    step.classList.add('visible');
+                    step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+                this._sync();
+                return true;
+            }
+            return false;
+        }
+
+        _retreatStep(slide) {
+            let cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            if (cur < 0) return false;
+            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
+            slide.dataset.currentStep = cur - 1;
+            this._sync();
+            return true;
+        }
+
+        _next() {
+            if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) {
+                this._goTo(this.current + 1);
+            }
+        }
+
+        _prev() {
+            if (!this._retreatStep(this.slides[this.current]) && this.current > 0) {
+                this._goTo(this.current - 1);
+            }
+        }
+
+        _bindEvents() {
+            document.addEventListener('keydown', event => {
+                if (['ArrowRight', 'ArrowDown', ' '].includes(event.key)) {
+                    event.preventDefault();
+                    this._next();
+                } else if (['ArrowLeft', 'ArrowUp'].includes(event.key)) {
+                    event.preventDefault();
+                    this._prev();
+                }
+            });
+
+            document.addEventListener('click', event => {
+                if (!event.target.closest('.nav-dot')) {
+                    this._next();
+                }
+            });
+
+            let touchX = 0;
+            document.addEventListener('touchstart', event => {
+                touchX = event.touches[0].clientX;
+            }, { passive: true });
+
+            document.addEventListener('touchend', event => {
+                const delta = event.changedTouches[0].clientX - touchX;
+                if (Math.abs(delta) > 50) {
+                    delta < 0 ? this._next() : this._prev();
+                }
+            }, { passive: true });
+        }
+    }
+
+    new SlidePresentation();
+</script>
+</body>
+</html>

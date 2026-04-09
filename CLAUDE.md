@@ -106,8 +106,15 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 5.3 | Solving Trig Equations | ✅ Complete | — |
 | 5.4 | Sum and Difference Identities | ✅ Complete | — |
 | 5.5 | Double &amp; Half Angle Identities | ✅ Complete | — |
+| 6.1 | Sequences | ✅ Complete | — |
+| 6.2 | Arithmetic Sequences | ✅ Complete | — |
+| 6.3 | Geometric Sequences | ✅ Complete | — |
+| 6.4 | The Binomial Theorem | ✅ Complete | — |
+| 6.5 | Counting Principles | ✅ Complete | — |
+| 6.6 | Probability | ✅ Complete | — |
+| 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Continue Unit 5 HTML decks (5.6+); convert prototypes to full Slidev decks.
+**Next up:** Continue remaining precalculus HTML decks and add supporting review materials where needed.
 
 ---
 
