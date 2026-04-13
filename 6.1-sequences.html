@@ -180,6 +180,7 @@
 
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
+    .practice-label { background: var(--orange-accent); }
     .ref-label { background: var(--navy); }
 
     .problem-statement {
@@ -774,231 +775,659 @@
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
 <div class="slides-wrapper">
+<!-- ==================== SLIDE 0: TITLE ==================== -->
 <section class="slide title-slide" id="slide-0">
     <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
     <div class="title-main">6.1 Sequences</div>
     <div class="title-objective">Objective: Define sequences, write explicit and recursive rules, and evaluate factorial and sigma notation.</div>
     <div class="identity-chips"><span class="chip">subscript notation</span><span class="chip">finite vs. infinite</span><span class="chip">explicit rules</span><span class="chip">recursive rules</span><span class="chip">factorial and sigma notation</span></div>
 </section>
+
+<!-- ==================== SLIDE 1: CONCEPT — What Is a Sequence? ==================== -->
 <section class="slide grid-bg" id="slide-1">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">What Is a Sequence?</div>
-            </div>
-            <div class="slide-body top-layout">
-                <div class="body-lead">A sequence is an ordered list. Each term has a position, so subscript notation lets us talk about where a value appears.</div>
-<div class="two-col">
-            <div class="col"><div class="stack"><div class="info-card">
-    <div class="card-title">Definition</div>
-    <div class="card-copy">A sequence can be viewed as a function whose domain is the positive integers.</div>
-</div><div class="info-card teal">
-    <div class="card-title">Finite Sequence</div>
-    <div class="card-copy">A finite sequence stops after a fixed number of terms.</div>
-</div><div class="info-card green">
-    <div class="card-title">Infinite Sequence</div>
-    <div class="card-copy">An infinite sequence continues forever, so we show that with an ellipsis <strong>...</strong>.</div>
-</div></div></div>
-            <div class="col"><div class="stack"><div class="note-box navy">
-    <div class="note-title">Subscript Notation</div>
-    <div class="note-copy">The numbers are the <strong>terms</strong>, and the subscripts record their <strong>positions</strong>.</div>
-</div><div class="table-shell">
-    <table class="data-table">
-        <thead>
-            <tr><th>Position</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>Term</td><td>3</td><td>7</td><td>11</td><td>15</td></tr><tr><td>Notation</td><td>\(a_1\)</td><td>\(a_2\)</td><td>\(a_3\)</td><td>\(a_4\)</td></tr>
-        </tbody>
-    </table>
-</div></div></div>
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">What Is a Sequence?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A sequence is an ordered list. Each term has a position, so subscript notation lets us talk about where a value appears.</div>
+        <div class="two-col">
+            <div class="col"><div class="stack">
+                <div class="info-card">
+                    <div class="card-title">Definition</div>
+                    <div class="card-copy">A sequence can be viewed as a function whose domain is the positive integers.</div>
+                </div>
+                <div class="info-card teal">
+                    <div class="card-title">Finite Sequence</div>
+                    <div class="card-copy">A finite sequence stops after a fixed number of terms.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Infinite Sequence</div>
+                    <div class="card-copy">An infinite sequence continues forever, so we show that with an ellipsis <strong>...</strong>.</div>
+                </div>
+            </div></div>
+            <div class="col"><div class="stack">
+                <div class="note-box navy">
+                    <div class="note-title">Subscript Notation</div>
+                    <div class="note-copy">The numbers are the <strong>terms</strong>, and the subscripts record their <strong>positions</strong>.</div>
+                </div>
+                <div class="table-shell">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Position</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Term</td><td>3</td><td>7</td><td>11</td><td>15</td></tr>
+                            <tr><td>Notation</td><td>\(a_1\)</td><td>\(a_2\)</td><td>\(a_3\)</td><td>\(a_4\)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div></div>
         </div>
-            </div>
-        </section>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 2: CONCEPT — Infinite Sequences (+ SVG visualization) ==================== -->
 <section class="slide grid-bg" id="slide-2">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">Infinite Sequences</div>
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Infinite Sequences</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The big question for an infinite sequence is whether the terms settle near one value.</div>
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Convergent</div>
+                <div class="card-copy">If the terms approach a single number, the sequence is <strong>convergent</strong>.</div>
             </div>
-            <div class="slide-body top-layout">
-                <div class="body-lead">The big question for an infinite sequence is whether the terms settle near one value.</div>
-<div class="cards-grid"><div class="info-card green">
-    <div class="card-title">Convergent</div>
-    <div class="card-copy">If the terms approach a single number, the sequence is <strong>convergent</strong>.</div>
-</div><div class="info-card orange">
-    <div class="card-title">Divergent</div>
-    <div class="card-copy">If the terms do not approach one value, the sequence is <strong>divergent</strong>.</div>
-</div><div class="info-card teal">
-    <div class="card-title">Oscillation</div>
-    <div class="card-copy">Some divergent sequences bounce back and forth, such as \((-1)^n\).</div>
-</div></div>
-<div class="table-shell">
-    <table class="data-table">
-        <thead>
-            <tr><th>Sequence</th><th>Behavior</th><th>Conclusion</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>\(a_n = \dfrac{1}{n}\)</td><td>\(1,\dfrac12,\dfrac13,\dots\)</td><td>Converges to \(0\)</td></tr><tr><td>\(a_n = n\)</td><td>\(1,2,3,4,\dots\)</td><td>Diverges to infinity</td></tr><tr><td>\(a_n = (-1)^n\)</td><td>\(-1,1,-1,1,\dots\)</td><td>Diverges by oscillation</td></tr>
-        </tbody>
-    </table>
-</div>
+            <div class="info-card orange">
+                <div class="card-title">Divergent</div>
+                <div class="card-copy">If the terms do not approach one value, the sequence is <strong>divergent</strong>.</div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-3" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 1</div>
-                <div class="slide-title">Writing an Explicit Rule</div>
+            <div class="info-card teal">
+                <div class="card-title">Oscillation</div>
+                <div class="card-copy">Some divergent sequences bounce back and forth, such as \((-1)^n\).</div>
             </div>
-            <div class="slide-body">
-                <div class="problem-statement">Write an explicit formula for the sequence \(1, 3, 5, 7, \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-3-step-0">
-                    <div class="step-box teal">
-                        <div class="step-label">Organize Position and Term</div>
-                        <div class="table-shell">
-    <table class="data-table">
-        <thead>
-            <tr><th>Position \(n\)</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>Term \(a_n\)</td><td>1</td><td>3</td><td>5</td><td>7</td></tr>
-        </tbody>
-    </table>
-</div>
-                    </div>
-                </div><div class="step" id="slide-3-step-1">
-    <div class="step-box">
-        <div class="step-label">Look for the Pattern</div>
+        </div>
+        <div class="diagram-shell">
+            <svg viewBox="0 0 520 155" class="diagram" xmlns="http://www.w3.org/2000/svg">
+                <!-- LEFT: Convergent aₙ = 1/n -->
+                <text x="130" y="14" text-anchor="middle" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">Convergent: aₙ = 1/n</text>
+                <!-- y-axis -->
+                <line x1="35" y1="20" x2="35" y2="138" stroke="#cbd5e1" stroke-width="1.5"/>
+                <!-- x-axis -->
+                <line x1="35" y1="138" x2="240" y2="138" stroke="#cbd5e1" stroke-width="1.5"/>
+                <!-- dashed limit at y=0 -->
+                <line x1="35" y1="138" x2="240" y2="138" stroke="#16a34a" stroke-width="1" stroke-dasharray="5,4" opacity="0.4"/>
+                <!-- y-axis label -->
+                <text x="20" y="30" font-size="11" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">1</text>
+                <text x="20" y="140" font-size="11" font-family="'Source Sans 3', sans-serif" fill="#16a34a" font-weight="600" text-anchor="middle">0</text>
+                <!-- n-axis ticks and labels -->
+                <text x="55" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">1</text>
+                <text x="85" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">2</text>
+                <text x="115" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">3</text>
+                <text x="145" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">4</text>
+                <text x="175" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">5</text>
+                <text x="205" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">6</text>
+                <!-- dots: 1/n scaled so 1→y=28, 0→y=138 (range=110) -->
+                <circle cx="55" cy="28" r="5.5" fill="#4ade80"/>
+                <circle cx="85" cy="83" r="5.5" fill="#4ade80"/>
+                <circle cx="115" cy="101" r="5.5" fill="#4ade80"/>
+                <circle cx="145" cy="111" r="5.5" fill="#4ade80"/>
+                <circle cx="175" cy="116" r="5.5" fill="#4ade80"/>
+                <circle cx="205" cy="120" r="5.5" fill="#4ade80"/>
+                <!-- converge arrow -->
+                <text x="228" y="142" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">→ 0</text>
 
-    <div class="step-math">
-        \[\text{Each term is }1\text{ less than twice its position.}\]
-        <div class="annotation">\(2(1)-1 = 1,\ 2(2)-1 = 3,\ 2(3)-1 = 5\)</div>
+                <!-- RIGHT: Divergent aₙ = n -->
+                <text x="400" y="14" text-anchor="middle" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#d97706">Divergent: aₙ = n</text>
+                <!-- y-axis -->
+                <line x1="300" y1="20" x2="300" y2="138" stroke="#cbd5e1" stroke-width="1.5"/>
+                <!-- x-axis -->
+                <line x1="300" y1="138" x2="490" y2="138" stroke="#cbd5e1" stroke-width="1.5"/>
+                <!-- n-axis labels -->
+                <text x="330" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">1</text>
+                <text x="365" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">2</text>
+                <text x="400" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">3</text>
+                <text x="435" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">4</text>
+                <text x="470" y="152" font-size="10" font-family="'Source Sans 3', sans-serif" fill="#64748b" text-anchor="middle">5</text>
+                <!-- dots: n scaled so 0→y=138, 5→y=28 (range=110, 22/unit) -->
+                <circle cx="330" cy="116" r="5.5" fill="#fbbf24"/>
+                <circle cx="365" cy="94" r="5.5" fill="#fbbf24"/>
+                <circle cx="400" cy="72" r="5.5" fill="#fbbf24"/>
+                <circle cx="435" cy="50" r="5.5" fill="#fbbf24"/>
+                <circle cx="470" cy="28" r="5.5" fill="#fbbf24"/>
+                <!-- diverge arrow -->
+                <text x="484" y="24" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#d97706">↗ ∞</text>
+            </svg>
+        </div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Sequence</th><th>Behavior</th><th>Conclusion</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(a_n = \dfrac{1}{n}\)</td><td>\(1,\dfrac12,\dfrac13,\dots\)</td><td>Converges to \(0\)</td></tr>
+                    <tr><td>\(a_n = n\)</td><td>\(1,2,3,4,\dots\)</td><td>Diverges to infinity</td></tr>
+                    <tr><td>\(a_n = (-1)^n\)</td><td>\(-1,1,-1,1,\dots\)</td><td>Diverges by oscillation</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+</section>
 
+<!-- ==================== SLIDE 3: EXAMPLE 1 — Computing Terms from a Formula ==================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Computing Terms from a Formula</div>
     </div>
-</div><div class="step" id="slide-3-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Write the Explicit Rule</div>
-
-    <div class="step-math">
-        \[a_n = 2n - 1\]
-    </div>
-
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the first three terms of the sequence given by \(\displaystyle a_n = \frac{(-1)^n}{2n-1}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Substitute \(n = 1\)</div>
+                    <div class="step-math">\[a_1 = \frac{(-1)^1}{2(1)-1} = \frac{-1}{1} = -1\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-4" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 2</div>
-                <div class="slide-title">Recognizing a Quadratic Pattern</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Write an explicit formula for the sequence \(2, 5, 10, 17, \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-4-step-0">
-                    <div class="step-box teal">
-                        <div class="step-label">Compare Terms to Familiar Values</div>
-                        <div class="table-shell">
-    <table class="data-table">
-        <thead>
-            <tr><th>\(n\)</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>\(n^2\)</td><td>1</td><td>4</td><td>9</td><td>16</td></tr><tr><td>\(a_n\)</td><td>2</td><td>5</td><td>10</td><td>17</td></tr>
-        </tbody>
-    </table>
-</div>
-                    </div>
-                </div><div class="step" id="slide-4-step-1">
-    <div class="step-box">
-        <div class="step-label">Describe the Pattern</div>
-
-    <div class="step-math">
-        \[\text{Each term is }1\text{ more than }n^2.\]
-        <div class="annotation">The second differences are constant, so a quadratic rule makes sense.</div>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-4-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Write the Explicit Rule</div>
-
-    <div class="step-math">
-        \[a_n = n^2 + 1\]
-    </div>
-
-    </div>
-</div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(n = 2\)</div>
+                    <div class="step-math">\[a_2 = \frac{(-1)^2}{2(2)-1} = \frac{1}{3}\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-5">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">Recursive Rules and Factorial</div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(n = 3\)</div>
+                    <div class="step-math">\[a_3 = \frac{(-1)^3}{2(3)-1} = \frac{-1}{5}\]</div>
+                </div>
             </div>
-            <div class="slide-body top-layout">
-                <div class="body-lead">Recursive rules tell you how to get the next term from the previous term. Factorial notation is a compact way to write long products of consecutive integers.</div>
-<div class="cards-grid"><div class="info-card teal">
-            <div class="card-title">Recursive Example</div>
-            <div class="card-copy"><p>Suppose \(a_1 = 4\) and \(a_n = a_{n-1} + 3\).</p>
-<p>The first four terms are \(4, 7, 10, 13\).</p></div>
-        </div><div class="info-card green">
-            <div class="card-title">Factorial Definition</div>
-            <div class="card-copy"><p>\(n! = n(n-1)(n-2)\cdots 2\cdot 1\)</p>
-<p>By definition, \(0! = 1\).</p></div>
-        </div><div class="info-card orange">
-    <div class="card-title">Factorial Simplification</div>
-    <div class="card-copy">\[\dfrac{7!}{5!} = \dfrac{7\cdot6\cdot5!}{5!} = 42\]</div>
-</div></div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_1 = -1,\quad a_2 = \tfrac{1}{3},\quad a_3 = -\tfrac{1}{5}\]</div>
+                </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 4: YOUR TURN — Practice Computing Terms ==================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Computing Terms</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the first three terms of the sequence given by \(\displaystyle a_n = \frac{n}{n+1}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_1 = \frac{1}{2},\quad a_2 = \frac{2}{3},\quad a_3 = \frac{3}{4}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 5: EXAMPLE 2 — Writing an Explicit Rule ==================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Writing an Explicit Rule</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an explicit formula for the sequence \(1, 3, 5, 7, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Organize Position and Term</div>
+                    <div class="table-shell">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>Position \(n\)</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Term \(a_n\)</td><td>1</td><td>3</td><td>5</td><td>7</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Look for the Pattern</div>
+                    <div class="step-math">
+                        \[\text{Each term is }1\text{ less than twice its position.}\]
+                        <div class="annotation">\(2(1)-1 = 1,\ 2(2)-1 = 3,\ 2(3)-1 = 5\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Write the Explicit Rule</div>
+                    <div class="step-math">\[a_n = 2n - 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 6: EXAMPLE 3 — Recognizing a Quadratic Pattern (+ differences) ==================== -->
 <section class="slide grid-bg" id="slide-6" data-steps="4">
-            <div class="slide-header">
-                <div class="example-label">Example 3</div>
-                <div class="slide-title">Summation Notation and Partial Sums</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Evaluate \(\displaystyle \sum_{n=1}^{4}(n^2+1)\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-6-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Identify the Summand</div>
-        <div class="step-copy"><ul><li>The index is \(n\).</li><li>The lower limit is \(1\).</li><li>The upper limit is \(4\).</li><li>The summand is \(n^2+1\).</li></ul></div>
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Recognizing a Quadratic Pattern</div>
     </div>
-</div><div class="step" id="slide-6-step-1">
-    <div class="step-box">
-        <div class="step-label">Write the First Four Terms</div>
-
-    <div class="step-math">
-        \[(1^2+1) + (2^2+1) + (3^2+1) + (4^2+1)\]
-        <div class="annotation">Substitute \(n=1,2,3,4\)</div>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-2">
-    <div class="step-box">
-        <div class="step-label">Simplify and Add</div>
-
-    <div class="step-math">
-        \[2 + 5 + 10 + 17 = 34\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-3">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-
-    <div class="step-math">
-        \[\sum_{n=1}^{4}(n^2+1) = 34\]
-    </div>
-
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an explicit formula for the sequence \(2, 5, 10, 17, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Check the Differences</div>
+                    <div class="table-shell">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th></th><th>2</th><th></th><th>5</th><th></th><th>10</th><th></th><th>17</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="font-weight:700; color:var(--blue-accent);">1st Diff</td><td></td><td style="color:var(--blue-accent); font-weight:600;">3</td><td></td><td style="color:var(--blue-accent); font-weight:600;">5</td><td></td><td style="color:var(--blue-accent); font-weight:600;">7</td><td></td></tr>
+                                <tr><td style="font-weight:700; color:var(--green-accent);">2nd Diff</td><td></td><td></td><td style="color:var(--green-accent); font-weight:600;">2</td><td></td><td style="color:var(--green-accent); font-weight:600;">2</td><td></td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Compare Terms to Perfect Squares</div>
+                    <div class="table-shell">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>\(n\)</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>\(n^2\)</td><td>1</td><td>4</td><td>9</td><td>16</td></tr>
+                                <tr><td>\(a_n\)</td><td>2</td><td>5</td><td>10</td><td>17</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Describe the Pattern</div>
+                    <div class="step-math">
+                        \[\text{Each term is }1\text{ more than }n^2.\]
+                        <div class="annotation">Constant 2nd differences confirm a quadratic rule.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Write the Explicit Rule</div>
+                    <div class="step-math">\[a_n = n^2 + 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 7: CONCEPT — Recursive Sequences ==================== -->
+<section class="slide grid-bg" id="slide-7">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Recursive Sequences</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Each term in a recursive sequence is defined by the term(s) before it, rather than by a direct formula.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Recursive Rule</div>
+                <div class="card-copy"><p>A recursive rule gives:</p>
+                <ul>
+                    <li>An initial term (or terms)</li>
+                    <li>A formula relating each term to the one(s) before it</li>
+                </ul></div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Famous Example: Fibonacci</div>
+                <div class="card-copy"><p>Each term is the sum of the two before it:</p>
+                \[0,\ 1,\ 1,\ 2,\ 3,\ 5,\ 8,\ 13,\ \dots\]</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 8: EXAMPLE 4 — Writing Terms from a Recursive Rule ==================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Writing Terms from a Recursive Rule</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the first four terms of the sequence defined recursively: \(a_1 = 3,\quad a_k = 2a_{k-1}+1,\quad k \ge 2\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Start with the Given First Term</div>
+                    <div class="step-math">\[a_1 = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Compute \(a_2\)</div>
+                    <div class="step-math">\[a_2 = 2a_1 + 1 = 2(3)+1 = 7\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Compute \(a_3\)</div>
+                    <div class="step-math">\[a_3 = 2a_2 + 1 = 2(7)+1 = 15\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box">
+                    <div class="step-label">Compute \(a_4\)</div>
+                    <div class="step-math">\[a_4 = 2a_3 + 1 = 2(15)+1 = 31\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[3,\ 7,\ 15,\ 31\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 9: YOUR TURN — Practice Recursive Sequences ==================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Recursive Sequences</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the first four terms: \(a_1 = 2,\quad a_k = 3a_{k-1}-1,\quad k \ge 2\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[2,\ 5,\ 14,\ 41\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 10: CONCEPT — Factorial Notation ==================== -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Factorial Notation</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Factorial notation is a compact way to write long products of consecutive integers.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Factorial Definition</div>
+                <div class="card-copy"><p>If \(n\) is a positive integer, then</p>
+                \[n! = n \cdot (n-1) \cdot (n-2) \cdots 3 \cdot 2 \cdot 1\]</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Special Case</div>
+                <div class="card-copy"><p>By definition,</p>
+                \[0! = 1\]</div>
+            </div>
+        </div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>\(n\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(n!\)</td><td>1</td><td>1</td><td>2</td><td>6</td><td>24</td><td>120</td><td>720</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 11: EXAMPLES 5–6 — Simplifying Factorial Expressions ==================== -->
+<section class="slide grid-bg" id="slide-11" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Examples 5–6</div>
+        <div class="slide-title">Simplifying Factorial Expressions</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Simplify each factorial expression.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Problem 5</div>
+                    <div class="step-math">\[\frac{8!}{2!\cdot 6!}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Expand and Cancel</div>
+                    <div class="step-math">
+                        \[\frac{8 \cdot 7 \cdot 6!}{2 \cdot 1 \cdot 6!} = \frac{56}{2} = 28\]
+                        <div class="annotation">Expand \(8!\) only until you reach \(6!\), then cancel.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">Problem 6</div>
+                    <div class="step-math">\[\frac{n!}{(n-1)!}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box">
+                    <div class="step-label">Expand and Cancel</div>
+                    <div class="step-math">
+                        \[\frac{n \cdot (n-1)!}{(n-1)!} = n\]
+                        <div class="annotation">Write \(n!\) as \(n \cdot (n-1)!\), then cancel.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Answers</div>
+                    <div class="step-math">\[\text{5)}\ 28 \qquad\qquad \text{6)}\ n\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 12: CONCEPT — Summation Notation ==================== -->
+<section class="slide grid-bg" id="slide-12">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Summation Notation</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Sigma notation gives a compact way to write sums with a clear start, stop, and rule.</div>
+        <div class="formula-row">
+            <div class="fn-eq-stack" style="text-align:center;">
+                \[\sum_{k=1}^{n} f(k) = f(1) + f(2) + f(3) + \cdots + f(n)\]
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Index</div>
+                <div class="card-copy">The variable \(k\) (or \(n\), \(i\)) that counts through integer values.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Limits</div>
+                <div class="card-copy">The <strong>lower limit</strong> is where \(k\) starts; the <strong>upper limit</strong> is where it stops.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Summand</div>
+                <div class="card-copy">The expression \(f(k)\) that gets evaluated at each value of \(k\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 13: EXAMPLE 7 — Evaluating a Sum ==================== -->
+<section class="slide grid-bg" id="slide-13" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Evaluating a Sum with Sigma Notation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate \(\displaystyle \sum_{k=3}^{6}\bigl(1+k^2\bigr)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the Summand</div>
+                    <div class="step-copy"><ul><li>The index is \(k\).</li><li>The lower limit is \(3\).</li><li>The upper limit is \(6\).</li><li>The summand is \(1+k^2\).</li></ul></div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Expand the Sum</div>
+                    <div class="step-math">
+                        \[(1+3^2) + (1+4^2) + (1+5^2) + (1+6^2)\]
+                        <div class="annotation">Substitute \(k=3,4,5,6\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box">
+                    <div class="step-label">Simplify and Add</div>
+                    <div class="step-math">\[10 + 17 + 26 + 37 = 90\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\sum_{k=3}^{6}\bigl(1+k^2\bigr) = 90\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 14: EXAMPLE 8 — Summation with Factorials (enhanced e connection) ==================== -->
+<section class="slide grid-bg" id="slide-14" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">Summation with Factorials</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate \(\displaystyle \sum_{n=0}^{5} \frac{1}{n!}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-14-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Expand the Sum</div>
+                    <div class="step-math">
+                        \[\frac{1}{0!} + \frac{1}{1!} + \frac{1}{2!} + \frac{1}{3!} + \frac{1}{4!} + \frac{1}{5!}\]
+                        <div class="annotation">Substitute \(n = 0, 1, 2, 3, 4, 5\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-1">
+                <div class="step-box">
+                    <div class="step-label">Evaluate Each Term</div>
+                    <div class="step-math">\[1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24} + \frac{1}{120}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-2">
+                <div class="step-box">
+                    <div class="step-label">Find a Common Denominator and Add</div>
+                    <div class="step-math">
+                        \[\frac{120 + 120 + 60 + 20 + 5 + 1}{120} = \frac{326}{120} = \frac{163}{60}\]
+                        <div class="annotation">LCD is \(120\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\sum_{n=0}^{5}\frac{1}{n!} = \frac{163}{60} \approx 2.7167\]</div>
+                    <div class="step-copy" style="text-align:center; margin-top:0.3em;">Just 6 terms and we're already within \(0.0016\) of \(e \approx 2.7183\). More terms → closer to \(e\)!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 15: EXAMPLE 9 — Finding a Partial Sum (+ repeating decimal) ==================== -->
+<section class="slide grid-bg" id="slide-15" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 9</div>
+        <div class="slide-title">Finding a Partial Sum</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 3rd partial sum. \(\displaystyle \sum_{k=1}^{\infty} \frac{3}{10^k}\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-15-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the First Three Terms</div>
+                    <div class="step-math">
+                        \[S_3 = \frac{3}{10^1} + \frac{3}{10^2} + \frac{3}{10^3}\]
+                        <div class="annotation">The 3rd partial sum uses only \(k = 1, 2, 3\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-15-step-1">
+                <div class="step-box">
+                    <div class="step-label">Simplify Each Term</div>
+                    <div class="step-math">\[S_3 = 0.3 + 0.03 + 0.003\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-15-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[S_3 = 0.333 = \frac{333}{1000}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-15-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Think About It</div>
+                    <div class="step-copy" style="font-size:0.84em; line-height:1.6;">What would the <em>full</em> infinite sum equal? Adding more terms gives \(0.3333\dots = \dfrac{1}{3}\). We'll learn how to prove this with <strong>geometric series</strong> in Section 6.3.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 16: REFERENCE — Honors Summation Formulas ==================== -->
+<section class="slide grid-bg" id="slide-16">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Honors: Summation Formulas</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">For any positive integer \(n\), these closed-form formulas let you evaluate common sums without expanding.</div>
+        <div class="formula-grid">
+            <div class="formula-row">
+                <div class="fn-label">Constant</div>
+                <div class="fn-eq-stack">\[\sum_{i=1}^{n} c = cn\]</div>
+            </div>
+            <div class="formula-row teal">
+                <div class="fn-label">Linear</div>
+                <div class="fn-eq-stack">\[\sum_{i=1}^{n} i = \frac{n(n+1)}{2}\]</div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Quadratic</div>
+                <div class="fn-eq-stack">\[\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}\]</div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">Cubic</div>
+                <div class="fn-eq-stack">\[\sum_{i=1}^{n} i^3 = \left[\frac{n(n+1)}{2}\right]^{2}\]</div>
+            </div>
+        </div>
+        <div class="formula-note">These can be proved by mathematical induction.</div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>

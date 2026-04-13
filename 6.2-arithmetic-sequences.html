@@ -180,6 +180,7 @@
 
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
+    .practice-label { background: var(--orange-accent); }
     .ref-label { background: var(--navy); }
 
     .problem-statement {
@@ -774,276 +775,436 @@
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
 <div class="click-hint" id="clickHint">click to advance</div>
 <div class="slides-wrapper">
+<!-- ==================== SLIDE 0: TITLE ==================== -->
 <section class="slide title-slide" id="slide-0">
     <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
     <div class="title-main">6.2 Arithmetic Sequences</div>
     <div class="title-objective">Objective: Write nth-term formulas, find arithmetic means, and evaluate finite arithmetic series.</div>
     <div class="identity-chips"><span class="chip">common difference</span><span class="chip">nth term</span><span class="chip">arithmetic means</span><span class="chip">finite sums</span><span class="chip">applications</span></div>
 </section>
+
+<!-- ==================== SLIDE 1: CONCEPT — What Is an Arithmetic Sequence? ==================== -->
 <section class="slide grid-bg" id="slide-1">
-            <div class="slide-header">
-                <div class="ref-label">Reference</div>
-                <div class="slide-title">Arithmetic Sequence Formulas</div>
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Arithmetic Sequences</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">An arithmetic sequence has a <strong>common difference</strong> \(d\). You add \(d\) to get from one term to the next.</div>
+        <div class="diagram-shell">
+            <svg viewBox="0 0 520 80" class="diagram" xmlns="http://www.w3.org/2000/svg">
+                <!-- Number line -->
+                <line x1="30" y1="50" x2="490" y2="50" stroke="#cbd5e1" stroke-width="2"/>
+                <!-- Dots and labels: 0, 3, 6, 9, 12 (d=3) -->
+                <circle cx="60" cy="50" r="7" fill="#0891b2"/>
+                <text x="60" y="75" text-anchor="middle" font-size="14" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">0</text>
+                <circle cx="160" cy="50" r="7" fill="#0891b2"/>
+                <text x="160" y="75" text-anchor="middle" font-size="14" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">3</text>
+                <circle cx="260" cy="50" r="7" fill="#0891b2"/>
+                <text x="260" y="75" text-anchor="middle" font-size="14" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">6</text>
+                <circle cx="360" cy="50" r="7" fill="#0891b2"/>
+                <text x="360" y="75" text-anchor="middle" font-size="14" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">9</text>
+                <circle cx="460" cy="50" r="7" fill="#0891b2"/>
+                <text x="460" y="75" text-anchor="middle" font-size="14" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">12</text>
+                <!-- +d arcs -->
+                <path d="M 67,43 Q 110,12 153,43" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <polygon points="153,43 148,33 155,37" fill="#16a34a"/>
+                <text x="110" y="16" text-anchor="middle" font-size="12" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">+3</text>
+                <path d="M 167,43 Q 210,12 253,43" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <polygon points="253,43 248,33 255,37" fill="#16a34a"/>
+                <text x="210" y="16" text-anchor="middle" font-size="12" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">+3</text>
+                <path d="M 267,43 Q 310,12 353,43" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <polygon points="353,43 348,33 355,37" fill="#16a34a"/>
+                <text x="310" y="16" text-anchor="middle" font-size="12" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">+3</text>
+                <path d="M 367,43 Q 410,12 453,43" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <polygon points="453,43 448,33 455,37" fill="#16a34a"/>
+                <text x="410" y="16" text-anchor="middle" font-size="12" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#16a34a">+3</text>
+            </svg>
+        </div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Sequence</th><th>Common Difference</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(1,\ 2,\ 3,\ 4,\ 5,\ 6,\ \dots\)</td><td>\(d = 1\)</td></tr>
+                    <tr><td>\(0,\ 3,\ 6,\ 9,\ 12,\ \dots\)</td><td>\(d = 3\)</td></tr>
+                    <tr><td>\(10,\ 5,\ 0,\ {-5},\ {-10},\ \dots\)</td><td>\(d = -5\)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Linear Connection</div>
+                <div class="card-copy">An arithmetic sequence behaves like a <strong>linear function</strong>. The common difference \(d\) plays the role of the <strong>slope</strong>.</div>
             </div>
-            <div class="slide-body top-layout">
-                <div class="formula-grid">
+            <div class="info-card green">
+                <div class="card-title">Test for Arithmetic</div>
+                <div class="card-copy">A sequence is arithmetic if and only if \(a_n - a_{n-1}\) is the same for every pair of consecutive terms.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 2: REFERENCE — Formulas ==================== -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Arithmetic Sequence Formulas</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
             <div class="formula-row teal">
-    <div class="fn-label">difference</div>
-    <div class="fn-eq-stack">
-        <div>\[d = a_n - a_{n-1}\]</div>
-
-    </div>
-</div><div class="formula-row blue">
-    <div class="fn-label">nth term</div>
-    <div class="fn-eq-stack">
-        <div>\[a_n = a_1 + (n-1)d\]</div>
-
-    </div>
-</div><div class="formula-row green">
-    <div class="fn-label">finite sum</div>
-    <div class="fn-eq-stack">
-        <div>\[S_n = \dfrac{n}{2}(a_1 + a_n)\]</div>
-        <div class="fn-alt">\[S_n = \dfrac{n}{2}\bigl(2a_1 + (n-1)d\bigr)\]</div>
-    </div>
-</div>
+                <div class="fn-label">difference</div>
+                <div class="fn-eq-stack">
+                    <div>\[d = a_n - a_{n-1}\]</div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">nth term</div>
+                <div class="fn-eq-stack">
+                    <div>\[a_n = a_1 + (n-1)d\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">finite sum</div>
+                <div class="fn-eq-stack">
+                    <div>\[S_n = \dfrac{n}{2}(a_1 + a_n)\]</div>
+                    <div class="fn-alt">\[S_n = \dfrac{n}{2}\bigl(2a_1 + (n-1)d\bigr)\]</div>
+                </div>
+            </div>
         </div>
         <div class="formula-note">Arithmetic sequences behave like linear functions: the common difference \(d\) acts like the slope.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Which sum formula?</div>
+                <div class="card-copy"><strong>Know the last term?</strong> Use \(S_n = \dfrac{n}{2}(a_1 + a_n)\).<br><strong>Don't know it?</strong> Use \(S_n = \dfrac{n}{2}(2a_1 + (n{-}1)d)\).</div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-2" data-steps="4">
-            <div class="slide-header">
-                <div class="example-label">Example 1</div>
-                <div class="slide-title">Finding an Explicit Formula</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find an explicit formula for the arithmetic sequence with first term \(66\) and common difference \(-11\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-2-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Use the nth-Term Formula</div>
-        <div class="step-math">\[a_n = a_1 + (n-1)d\]</div>
+        </div>
     </div>
-</div><div class="step" id="slide-2-step-1">
-    <div class="step-box">
-        <div class="step-label">Substitute the Given Values</div>
+</section>
 
-    <div class="step-math">
-        \[a_n = 66 + (n-1)(-11)\]
+<!-- ==================== SLIDE 3: EXAMPLE 1 — Finding an Explicit Formula ==================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Finding an Explicit Formula</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-2-step-2">
-    <div class="step-box">
-        <div class="step-label">Simplify</div>
-
-    <div class="step-math">
-        \[a_n = 66 - 11n + 11 = 77 - 11n\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-2-step-3">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[a_n = 77 - 11n\]</div>
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Find an explicit formula for the arithmetic sequence with first term \(66\) and common difference \(-11\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Use the nth-Term Formula</div>
+                    <div class="step-math">\[a_n = a_1 + (n-1)d\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-3" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 2</div>
-                <div class="slide-title">Using Two Known Terms</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">The 4th term of an arithmetic sequence is \(24\) and the 13th term is \(87\). Write the first five terms.</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-3-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Find the Common Difference</div>
-
-    <div class="step-math">
-        \[d = \dfrac{87 - 24}{13 - 4} = \dfrac{63}{9} = 7\]
-        <div class="annotation">There are \(9\) equal jumps from term 4 to term 13.</div>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-3-step-1">
-    <div class="step-box">
-        <div class="step-label">Back Up to the First Term</div>
-
-    <div class="step-math">
-        \[a_1 = 24 - 3(7) = 3\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-3-step-2">
-    <div class="step-box dark">
-        <div class="step-label">List the First Five Terms</div>
-
-    <div class="step-math">
-        \[3,\ 10,\ 17,\ 24,\ 31\]
-    </div>
-
-    </div>
-</div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Substitute the Given Values</div>
+                    <div class="step-math">\[a_n = 66 + (n-1)(-11)\]</div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Simplify</div>
+                    <div class="step-math">\[a_n = 66 - 11n + 11 = 77 - 11n\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_n = 77 - 11n\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 4: EXAMPLE 2 — Using Two Known Terms ==================== -->
 <section class="slide grid-bg" id="slide-4" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 3</div>
-                <div class="slide-title">Arithmetic Means</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Insert three arithmetic means between \(21\) and \(45\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-4-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Count the Equal Jumps</div>
-
-    <div class="step-math">
-        \[21,\ \square,\ \square,\ \square,\ 45\]
-        <div class="annotation">Five terms create four equal jumps.</div>
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Using Two Known Terms</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-4-step-1">
-    <div class="step-box">
-        <div class="step-label">Compute the Common Difference</div>
-
-    <div class="step-math">
-        \[d = \dfrac{45 - 21}{4} = 6\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-4-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Fill in the Means</div>
-
-    <div class="step-math">
-        \[21,\ 27,\ 33,\ 39,\ 45\]
-    </div>
-
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">The 4th term of an arithmetic sequence is \(24\) and the 13th term is \(87\). Write the first five terms.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Find the Common Difference</div>
+                    <div class="step-math">
+                        \[d = \dfrac{87 - 24}{13 - 4} = \dfrac{63}{9} = 7\]
+                        <div class="annotation">There are \(9\) equal jumps from term 4 to term 13.</div>
+                    </div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-5">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">Finite Arithmetic Series</div>
-            </div>
-            <div class="slide-body top-layout">
-                <div class="body-lead">A finite arithmetic series adds the terms of an arithmetic sequence. Pairing the first and last terms reveals a fast pattern.</div>
-<div class="cards-grid"><div class="info-card teal">
-    <div class="card-title">Gauss Pairing</div>
-    <div class="card-copy">\[(1+100),\ (2+99),\ (3+98), \dots\]</div>
-</div><div class="info-card green">
-    <div class="card-title">Same Sum Every Time</div>
-    <div class="card-copy">Each pair adds to \(101\).</div>
-</div><div class="info-card orange">
-    <div class="card-title">How Many Pairs?</div>
-    <div class="card-copy">There are \(50\) pairs, so \(S_{100} = 50(101) = 5050\).</div>
-</div></div>
-<div class="note-box navy">
-    <div class="note-title">Takeaway</div>
-    <div class="note-copy">If the first and last terms are easy to find, \(S_n = \dfrac{n}{2}(a_1+a_n)\) is the fastest formula.</div>
-</div>
-            </div>
-        </section>
-<section class="slide grid-bg" id="slide-6" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 4</div>
-                <div class="slide-title">Finding a Large Partial Sum</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the 101st partial sum of the arithmetic sequence \(7, 9.5, 12, \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-6-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Identify the Sequence Data</div>
-
-    <div class="step-copy">
-        <ul>
-            <li>\(a_1 = 7\)</li>
-            <li>\(d = 2.5\)</li>
-            <li>\(n = 101\)</li>
-        </ul>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-1">
-    <div class="step-box">
-        <div class="step-label">Find the 101st Term</div>
-
-    <div class="step-math">
-        \[a_{101} = 7 + 100(2.5) = 257\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Use the Sum Formula</div>
-
-    <div class="step-math">
-        \[S_{101} = \dfrac{101}{2}(7 + 257) = \dfrac{101}{2}(264) = 13332\]
-    </div>
-
-    </div>
-</div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Back Up to the First Term</div>
+                    <div class="step-math">\[a_1 = 24 - 3(7) = 3\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-7" data-steps="4">
-            <div class="slide-header">
-                <div class="example-label">Example 5</div>
-                <div class="slide-title">Arithmetic-Series Application</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">A business sells \(\$20{,}000\) during its first year and increases sales by \(\$15{,}000\) each year for 19 more years. Find the total sales over the first 20 years.</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-7-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Model the Annual Sales</div>
-
-    <div class="step-copy">
-        <ul>
-            <li>\(a_1 = 20000\)</li>
-            <li>\(d = 15000\)</li>
-            <li>\(n = 20\)</li>
-        </ul>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-1">
-    <div class="step-box">
-        <div class="step-label">Find the 20th Year</div>
-
-    <div class="step-math">
-        \[a_{20} = 20000 + 19(15000) = 305000\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-2">
-    <div class="step-box">
-        <div class="step-label">Add the First 20 Terms</div>
-
-    <div class="step-math">
-        \[S_{20} = \dfrac{20}{2}(20000 + 305000) = 10(325000) = 3250000\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-3">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[\$3{,}250{,}000\]</div>
-    </div>
-</div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">List the First Five Terms</div>
+                    <div class="step-math">\[3,\ 10,\ 17,\ 24,\ 31\]</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 5: YOUR TURN — Practice Two Known Terms (NEW) ==================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Two Known Terms</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The 3rd term of an arithmetic sequence is \(10\) and the 7th term is \(26\). Find \(a_1\) and \(d\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[d = \frac{26-10}{7-3} = 4,\qquad a_1 = 10 - 2(4) = 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 6: CONCEPT — Arithmetic Means ==================== -->
+<section class="slide grid-bg" id="slide-6">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Arithmetic Means</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Arithmetic means are the terms that fit <strong>between</strong> two given values, creating a sequence with a constant difference.</div>
+        <div class="info-card teal">
+            <div class="card-title">Example</div>
+            <div class="card-copy"><p>Two arithmetic means between \(5\) and \(17\):</p>
+            \[5,\ \underline{\quad 9\quad},\ \underline{\quad 13\quad},\ 17\]</div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Strategy</div>
+                <div class="card-copy">Count the total number of terms (including both endpoints), then find \(d = \dfrac{a_{\text{last}} - a_{\text{first}}}{\text{number of jumps}}\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Why "Means"?</div>
+                <div class="card-copy">Each inserted value is the <strong>average</strong> of its two neighbors. For instance, \(9 = \dfrac{5+13}{2}\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 7: EXAMPLE 3 — Inserting Arithmetic Means ==================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Inserting Arithmetic Means</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Insert three arithmetic means between \(21\) and \(45\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Count the Equal Jumps</div>
+                    <div class="step-math">
+                        \[21,\ \square,\ \square,\ \square,\ 45\]
+                        <div class="annotation">Five terms create four equal jumps.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Compute the Common Difference</div>
+                    <div class="step-math">\[d = \dfrac{45 - 21}{4} = 6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Fill in the Means</div>
+                    <div class="step-math">\[21,\ 27,\ 33,\ 39,\ 45\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 8: CONCEPT — Finite Arithmetic Series (+ Gauss SVG) ==================== -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Finite Arithmetic Series</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A finite arithmetic series adds the terms of an arithmetic sequence. Pairing the first and last terms reveals a fast pattern.</div>
+        <div class="diagram-shell">
+            <svg viewBox="0 0 480 115" class="diagram" xmlns="http://www.w3.org/2000/svg">
+                <text x="240" y="14" text-anchor="middle" font-size="12" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0891b2">GAUSS PAIRING: 1 + 2 + 3 + ... + 100</text>
+                <!-- Bottom row: numbers -->
+                <text x="40" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">1</text>
+                <text x="110" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">2</text>
+                <text x="180" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">3</text>
+                <text x="240" y="95" text-anchor="middle" font-size="14" font-family="'Source Sans 3', sans-serif" fill="#64748b">···</text>
+                <text x="300" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">98</text>
+                <text x="370" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">99</text>
+                <text x="440" y="95" text-anchor="middle" font-size="16" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#0f172a">100</text>
+                <!-- Arc 1↔100 (outermost) -->
+                <path d="M 40,82 Q 240,20 440,82" fill="none" stroke="#2563eb" stroke-width="2.5" opacity="0.9"/>
+                <text x="240" y="38" text-anchor="middle" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#2563eb">= 101</text>
+                <!-- Arc 2↔99 -->
+                <path d="M 110,82 Q 240,38 370,82" fill="none" stroke="#16a34a" stroke-width="2" opacity="0.7"/>
+                <text x="240" y="55" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3', sans-serif" fill="#16a34a">= 101</text>
+                <!-- Arc 3↔98 -->
+                <path d="M 180,82 Q 240,55 300,82" fill="none" stroke="#d97706" stroke-width="2" opacity="0.6"/>
+                <text x="240" y="70" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3', sans-serif" fill="#d97706">= 101</text>
+                <!-- Result -->
+                <text x="240" y="112" text-anchor="middle" font-size="13" font-weight="700" font-family="'Source Sans 3', sans-serif" fill="#1a365d">50 pairs × 101 = 5,050</text>
+            </svg>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Takeaway</div>
+            <div class="note-copy">If the first and last terms are easy to find, \(S_n = \dfrac{n}{2}(a_1+a_n)\) is the fastest formula.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 9: EXAMPLE 4 — Finding a Large Partial Sum ==================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Finding a Large Partial Sum</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 101st partial sum of the arithmetic sequence \(7, 9.5, 12, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the Sequence Data</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(a_1 = 7\)</li>
+                            <li>\(d = 2.5\)</li>
+                            <li>\(n = 101\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Find the 101st Term</div>
+                    <div class="step-math">\[a_{101} = 7 + 100(2.5) = 257\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Use the Sum Formula</div>
+                    <div class="step-math">\[S_{101} = \dfrac{101}{2}(7 + 257) = \dfrac{101}{2}(264) = 13{,}332\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 10: EXAMPLE 5 — Summation Notation ==================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Writing a Sum in Sigma Notation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Express in summation notation: \(\displaystyle \frac{1}{4} + \frac{2}{9} + \frac{3}{14} + \frac{4}{19} + \frac{5}{24} + \frac{6}{29}\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Find the Numerator Pattern</div>
+                    <div class="step-math">
+                        \[1,\ 2,\ 3,\ 4,\ 5,\ 6\]
+                        <div class="annotation">Numerators: just \(k\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Find the Denominator Pattern</div>
+                    <div class="step-math">
+                        \[4,\ 9,\ 14,\ 19,\ 24,\ 29\]
+                        <div class="annotation">Arithmetic with \(d = 5\) and first term \(4\): each is \(5k - 1\)</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Verify</div>
+                    <div class="step-copy" style="font-size:0.84em; line-height:1.6;"><ul>
+                        <li>\(k=1\): \(\frac{1}{5(1)-1} = \frac{1}{4}\) &#10004;</li>
+                        <li>\(k=2\): \(\frac{2}{5(2)-1} = \frac{2}{9}\) &#10004;</li>
+                        <li>\(k=6\): \(\frac{6}{5(6)-1} = \frac{6}{29}\) &#10004;</li>
+                    </ul></div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\sum_{k=1}^{6} \frac{k}{5k-1}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 11: EXAMPLE 6 — Arithmetic-Series Application (enhanced) ==================== -->
+<section class="slide grid-bg" id="slide-11" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Arithmetic-Series Application</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A business sells \(\$20{,}000\) during its first year and increases sales by \(\$15{,}000\) each year for 19 more years. Find the total sales over the first 20 years.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Model the Annual Sales</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(a_1 = 20{,}000\)</li>
+                            <li>\(d = 15{,}000\)</li>
+                            <li>\(n = 20\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Find the 20th Year</div>
+                    <div class="step-math">\[a_{20} = 20{,}000 + 19(15{,}000) = 305{,}000\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Add the First 20 Terms</div>
+                    <div class="step-math">\[S_{20} = \dfrac{20}{2}(20{,}000 + 305{,}000) = 10(325{,}000) = 3{,}250{,}000\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\$3{,}250{,}000\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Interpret</div>
+                    <div class="step-copy" style="font-size:0.84em; line-height:1.6;">Year 1 sales: \(\$20{,}000\). By year 20: \(\$305{,}000\). Cumulative revenue over all 20 years: <strong>$3.25 million</strong>.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>

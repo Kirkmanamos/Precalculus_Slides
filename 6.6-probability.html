@@ -168,7 +168,8 @@
 
     .example-label,
     .concept-label,
-    .ref-label {
+    .ref-label,
+    .practice-label {
         font-size: 0.6em;
         font-weight: 700;
         padding: 0.2em 0.75em;
@@ -181,6 +182,7 @@
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
     .ref-label { background: var(--navy); }
+    .practice-label { background: var(--orange-accent); }
 
     .problem-statement {
         background: var(--navy-light);
@@ -738,7 +740,8 @@
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
@@ -815,6 +818,38 @@
                 <div class="slide-title">Basic Probability and Experimental Probability</div>
             </div>
             <div class="slide-body top-layout">
+                <div class="diagram-shell">
+    <div class="diagram-title">Probability Scale</div>
+    <svg class="diagram" viewBox="0 0 480 70" role="img" aria-label="Probability scale from 0 (Impossible) to 1 (Certain)">
+        <defs>
+            <linearGradient id="probGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#dc2626"/>
+                <stop offset="50%" stop-color="#d97706"/>
+                <stop offset="100%" stop-color="#16a34a"/>
+            </linearGradient>
+        </defs>
+        <rect x="40" y="28" width="400" height="8" rx="4" fill="url(#probGrad)" />
+        <!-- Major markers -->
+        <line x1="40"  y1="22" x2="40"  y2="42" stroke="#dc2626" stroke-width="2.5"/>
+        <line x1="240" y1="22" x2="240" y2="42" stroke="#d97706" stroke-width="2.5"/>
+        <line x1="440" y1="22" x2="440" y2="42" stroke="#16a34a" stroke-width="2.5"/>
+        <!-- Minor markers -->
+        <line x1="140" y1="25" x2="140" y2="39" stroke="#475569" stroke-width="1.5"/>
+        <line x1="340" y1="25" x2="340" y2="39" stroke="#475569" stroke-width="1.5"/>
+        <!-- Major labels -->
+        <text x="40"  y="16" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="12" font-weight="700" fill="#dc2626">0</text>
+        <text x="40"  y="58" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#64748b">Impossible</text>
+        <text x="240" y="16" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="12" font-weight="700" fill="#d97706">0.5</text>
+        <text x="240" y="58" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#64748b">Equally Likely</text>
+        <text x="440" y="16" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="12" font-weight="700" fill="#16a34a">1</text>
+        <text x="440" y="58" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#64748b">Certain</text>
+        <!-- Minor labels -->
+        <text x="140" y="16" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#475569">0.25</text>
+        <text x="140" y="58" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#64748b">Unlikely</text>
+        <text x="340" y="16" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#475569">0.75</text>
+        <text x="340" y="58" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#64748b">Likely</text>
+    </svg>
+</div>
                 <div class="cards-grid"><div class="info-card teal">
     <div class="card-title">Probability Forms</div>
     <div class="card-copy">Probabilities can be written as fractions, decimals, or percents.</div>
@@ -853,6 +888,26 @@
 </div>
         </div>
         <div class="formula-note">The addition rule finds the probability that at least one of the events occurs.</div>
+        <div class="diagram-shell">
+    <div class="diagram-title">Addition Rule — Venn Diagram</div>
+    <svg class="diagram" viewBox="0 0 400 140" role="img" aria-label="Venn diagram showing the addition rule for two events A and B">
+        <!-- Circle A -->
+        <circle cx="150" cy="65" r="55" fill="rgba(37,99,235,0.15)" stroke="#2563eb" stroke-width="2.5"/>
+        <!-- Circle B -->
+        <circle cx="250" cy="65" r="55" fill="rgba(22,163,74,0.15)" stroke="#16a34a" stroke-width="2.5"/>
+        <!-- Overlap darkening -->
+        <clipPath id="clipA"><circle cx="150" cy="65" r="55"/></clipPath>
+        <circle cx="250" cy="65" r="55" clip-path="url(#clipA)" fill="rgba(0,0,0,0.06)" stroke="none"/>
+        <!-- Labels -->
+        <text x="115" y="40" font-family="'Source Sans 3', sans-serif" font-size="15" font-weight="700" fill="#2563eb">A</text>
+        <text x="278" y="40" font-family="'Source Sans 3', sans-serif" font-size="15" font-weight="700" fill="#16a34a">B</text>
+        <text x="110" y="70" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#1e293b">P(A only)</text>
+        <text x="200" y="70" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#1e293b">P(A∩B)</text>
+        <text x="290" y="70" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="600" fill="#1e293b">P(B only)</text>
+        <!-- Formula below -->
+        <text x="200" y="135" text-anchor="middle" font-family="'Source Sans 3', sans-serif" font-size="13" font-weight="600" fill="#475569">P(A∪B) = P(A) + P(B) − P(A∩B)</text>
+    </svg>
+</div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-4">
@@ -954,11 +1009,63 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-7">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">Probability with Permutations and Combinations</div>
+
+<!-- NEW: Ex 2 — notes Ex 4 (independent events, smartphone) -->
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Independent Events — Repeated Trials</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">In a recent survey, 85% of adults said they could <em>not</em> go a full day without their smartphone. If 6 adults are chosen at random, what is the probability that all 6 say they could not go a full day without their smartphone?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Independent Events — Multiply</div>
+                    <div class="step-math">\[P(\text{all 6}) = (0.85)^6\]
+                        <div class="annotation">Each adult's response is independent of the others.</div>
+                    </div>
+                </div>
             </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[P(\text{all 6}) \approx 0.3771\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Interpret</div>
+                    <div class="step-copy" style="font-size:0.84em; line-height:1.6;">Even though each individual has an 85% probability, the chance that <strong>all 6 agree</strong> is only about 38%. Repeated independent events compound quickly.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-8" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Independent Events</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A bag has \(5\) red and \(3\) blue marbles. You draw two marbles <em>with replacement</em>. What is the probability both are red?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[P(\text{both red}) = \frac{5}{8} \cdot \frac{5}{8} = \frac{25}{64}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-9">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Probability with Permutations and Combinations</div>
+    </div>
             <div class="slide-body top-layout">
                 <div class="cards-grid"><div class="info-card teal">
     <div class="card-title">Exactly 2 Red Marbles</div>
@@ -981,7 +1088,7 @@
 </div></div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-8">
+<section class="slide grid-bg" id="slide-10">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Complement Rule</div>

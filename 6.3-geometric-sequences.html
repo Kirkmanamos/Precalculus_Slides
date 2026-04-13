@@ -168,6 +168,7 @@
 
     .example-label,
     .concept-label,
+    .practice-label,
     .ref-label {
         font-size: 0.6em;
         font-weight: 700;
@@ -180,6 +181,7 @@
 
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
+    .practice-label { background: var(--orange-accent); }
     .ref-label { background: var(--navy); }
 
     .problem-statement {
@@ -780,290 +782,523 @@
     <div class="title-objective">Objective: Write geometric nth-term formulas, use geometric means, and evaluate finite and infinite geometric series.</div>
     <div class="identity-chips"><span class="chip">common ratio</span><span class="chip">nth term</span><span class="chip">geometric mean</span><span class="chip">finite sums</span><span class="chip">infinite sums</span></div>
 </section>
+
+<!-- NEW: Concept — Geometric Sequences definition -->
 <section class="slide grid-bg" id="slide-1">
-            <div class="slide-header">
-                <div class="ref-label">Reference</div>
-                <div class="slide-title">Geometric Sequence Formulas</div>
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Geometric Sequences</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A <strong>geometric sequence</strong> has a <strong>common ratio</strong> \(r\). You <strong>multiply</strong> to get from one term to the next.</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Arithmetic (+3) vs Geometric (×2)</div>
+            <svg viewBox="0 0 440 155" class="diagram" xmlns="http://www.w3.org/2000/svg">
+                <!-- x-axis -->
+                <line x1="60" y1="130" x2="400" y2="130" stroke="#cbd5e1" stroke-width="1.5"/>
+                <!-- Term labels -->
+                <text x="90" y="148" text-anchor="middle" font-size="13" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n = 1</text>
+                <text x="190" y="148" text-anchor="middle" font-size="13" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n = 2</text>
+                <text x="290" y="148" text-anchor="middle" font-size="13" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n = 3</text>
+                <text x="390" y="148" text-anchor="middle" font-size="13" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n = 4</text>
+                <!-- Arithmetic line (blue dashed) -->
+                <polyline points="90,115 190,100 290,85 390,70" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
+                <circle cx="90" cy="115" r="5" fill="#2563eb"/><circle cx="190" cy="100" r="5" fill="#2563eb"/>
+                <circle cx="290" cy="85" r="5" fill="#2563eb"/><circle cx="390" cy="70" r="5" fill="#2563eb"/>
+                <text x="78" y="112" text-anchor="end" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">3</text>
+                <text x="178" y="97" text-anchor="end" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">6</text>
+                <text x="278" y="82" text-anchor="end" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">9</text>
+                <text x="378" y="67" text-anchor="end" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">12</text>
+                <!-- Geometric curve (green solid) -->
+                <path d="M 90,115 Q 190,105 190,100" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <path d="M 190,100 Q 240,85 290,70" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <path d="M 290,70 Q 340,40 390,10" fill="none" stroke="#16a34a" stroke-width="2.5"/>
+                <circle cx="90" cy="115" r="5" fill="#16a34a"/><circle cx="190" cy="100" r="5" fill="#16a34a"/>
+                <circle cx="290" cy="70" r="5" fill="#16a34a"/><circle cx="390" cy="10" r="5" fill="#16a34a"/>
+                <text x="102" y="118" text-anchor="start" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#16a34a">3</text>
+                <text x="202" y="103" text-anchor="start" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#16a34a">6</text>
+                <text x="302" y="68" text-anchor="start" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#16a34a">12</text>
+                <text x="393" y="25" text-anchor="start" font-size="12" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#16a34a">24</text>
+                <!-- Legend -->
+                <line x1="100" y1="5" x2="125" y2="5" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
+                <text x="130" y="9" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#2563eb">Arithmetic (+3)</text>
+                <line x1="250" y1="5" x2="275" y2="5" stroke="#16a34a" stroke-width="2.5"/>
+                <text x="280" y="9" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#16a34a">Geometric (×2)</text>
+            </svg>
+        </div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead><tr><th>Sequence</th><th>Common Ratio</th></tr></thead>
+                <tbody>
+                    <tr><td>\(2,\ 10,\ 50,\ 250,\ \dots\)</td><td>\(r = 5\)</td></tr>
+                    <tr><td>\(3,\ {-6},\ 12,\ {-24},\ \dots\)</td><td>\(r = -2\)</td></tr>
+                    <tr><td>\(1,\ \frac{1}{2},\ \frac{1}{4},\ \frac{1}{8},\ \frac{1}{16},\ \dots\)</td><td>\(r = \frac{1}{2}\)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Test for Geometric</div>
+                <div class="card-copy">A sequence is geometric if and only if \(\dfrac{a_n}{a_{n-1}}\) is the same for every pair of consecutive terms.</div>
             </div>
-            <div class="slide-body top-layout">
-                <div class="formula-grid">
+            <div class="info-card green">
+                <div class="card-title">Ratio Can Be Negative</div>
+                <div class="card-copy">When \(r < 0\), the terms <strong>alternate in sign</strong>.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Geometric Sequence Formulas</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
             <div class="formula-row teal">
-    <div class="fn-label">ratio</div>
-    <div class="fn-eq-stack">
-        <div>\[r = \dfrac{a_n}{a_{n-1}}\]</div>
-
-    </div>
-</div><div class="formula-row blue">
-    <div class="fn-label">nth term</div>
-    <div class="fn-eq-stack">
-        <div>\[a_n = a_1r^{\,n-1}\]</div>
-
-    </div>
-</div><div class="formula-row green">
-    <div class="fn-label">finite sum</div>
-    <div class="fn-eq-stack">
-        <div>\[S_n = \dfrac{a_1(1-r^n)}{1-r}, \quad r \ne 1\]</div>
-
-    </div>
-</div><div class="formula-row orange">
-    <div class="fn-label">infinite sum</div>
-    <div class="fn-eq-stack">
-        <div>\[S_{\infty} = \dfrac{a_1}{1-r}, \quad |r| < 1\]</div>
-
-    </div>
-</div>
+                <div class="fn-label">ratio</div>
+                <div class="fn-eq-stack"><div>\[r = \dfrac{a_n}{a_{n-1}}\]</div></div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">nth term</div>
+                <div class="fn-eq-stack"><div>\[a_n = a_1r^{\,n-1}\]</div></div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">finite sum</div>
+                <div class="fn-eq-stack"><div>\[S_n = \dfrac{a_1(1-r^n)}{1-r}, \quad r \ne 1\]</div></div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">infinite sum</div>
+                <div class="fn-eq-stack"><div>\[S_{\infty} = \dfrac{a_1}{1-r}, \quad |r| < 1\]</div></div>
+            </div>
         </div>
         <div class="formula-note">The geometric mean between two positive numbers \(a\) and \(b\) is \(\sqrt{ab}\).</div>
-            </div>
-        </section>
-<section class="slide grid-bg" id="slide-2" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 1</div>
-                <div class="slide-title">Recognizing a Geometric Rule</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Write an explicit formula for the sequence \(3, 6, 12, 24, \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-2-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Find the Common Ratio</div>
+    </div>
+</section>
 
-    <div class="step-math">
-        \[\dfrac{6}{3} = \dfrac{12}{6} = \dfrac{24}{12} = 2\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-2-step-1">
-    <div class="step-box">
-        <div class="step-label">Use the nth-Term Formula</div>
-
-    <div class="step-math">
-        \[a_n = a_1r^{n-1} = 3(2)^{n-1}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-2-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[a_n = 3\cdot 2^{n-1}\]</div>
-    </div>
-</div>
-                </div>
-            </div>
-        </section>
 <section class="slide grid-bg" id="slide-3" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 2</div>
-                <div class="slide-title">Growth by a Percent Ratio</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the 15th term of the geometric sequence with \(a_1 = 20\) and \(r = 1.05\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-3-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Use the nth-Term Formula</div>
-        <div class="step-math">\[a_{15} = 20(1.05)^{14}\]</div>
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Recognizing a Geometric Rule</div>
     </div>
-</div><div class="step" id="slide-3-step-1">
-    <div class="step-box">
-        <div class="step-label">Evaluate</div>
-
-    <div class="step-math">
-        \[a_{15} \approx 39.60\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-3-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[a_{15} \approx 39.60\]</div>
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an explicit formula for the sequence \(3, 6, 12, 24, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Find the Common Ratio</div>
+                    <div class="step-math">\[\dfrac{6}{3} = \dfrac{12}{6} = \dfrac{24}{12} = 2\]</div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the nth-Term Formula</div>
+                    <div class="step-math">\[a_n = a_1r^{n-1} = 3(2)^{n-1}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_n = 3\cdot 2^{n-1}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="slide grid-bg" id="slide-4" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 3</div>
-                <div class="slide-title">Geometric Means</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find three geometric means between \(3.12\) and \(49.92\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-4-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Set Up the Five-Term Sequence</div>
-
-    <div class="step-math">
-        \[3.12,\ \square,\ \square,\ \square,\ 49.92\]
-        <div class="annotation">Five terms create four equal ratio jumps.</div>
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Growth by a Percent Ratio</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-4-step-1">
-    <div class="step-box">
-        <div class="step-label">Solve for the Ratio</div>
-
-    <div class="step-math">
-        \[3.12r^4 = 49.92 \quad \Rightarrow \quad r^4 = 16 \quad \Rightarrow \quad r = 2\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-4-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Fill in the Means</div>
-
-    <div class="step-math">
-        \[3.12,\ 6.24,\ 12.48,\ 24.96,\ 49.92\]
-    </div>
-
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 15th term of the geometric sequence with \(a_1 = 20\) and \(r = 1.05\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Use the nth-Term Formula</div>
+                    <div class="step-math">\[a_{15} = 20(1.05)^{14}\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-5">
-            <div class="slide-header">
-                <div class="concept-label">Concept</div>
-                <div class="slide-title">Finite and Infinite Geometric Sums</div>
-            </div>
-            <div class="slide-body top-layout">
-                <div class="body-lead">Multiplying a geometric sum by the common ratio makes almost every term line up, which is why the finite-sum formula works so cleanly.</div>
-<div class="cards-grid"><div class="info-card teal">
-    <div class="card-title">Finite Sum</div>
-    <div class="card-copy">\[S_n = a_1 + a_1r + a_1r^2 + \dots + a_1r^{n-1}\]</div>
-</div><div class="info-card green">
-    <div class="card-title">Subtract the Shifted Copy</div>
-    <div class="card-copy">\[(1-r)S_n = a_1 - a_1r^n\]</div>
-</div><div class="info-card orange">
-    <div class="card-title">Infinite Sum</div>
-    <div class="card-copy">When \(|r|<1\), the term \(a_1r^n\) approaches \(0\), so the sum approaches a finite value.</div>
-</div></div>
-            </div>
-        </section>
-<section class="slide grid-bg" id="slide-6" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 4</div>
-                <div class="slide-title">Summing a Finite Geometric Series</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the exact sum of the first 12 terms of \(8, 4, 2, \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-6-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Identify the Data</div>
-
-    <div class="step-copy">
-        <ul>
-            <li>\(a_1 = 8\)</li>
-            <li>\(r = \dfrac{1}{2}\)</li>
-            <li>\(n = 12\)</li>
-        </ul>
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-1">
-    <div class="step-box">
-        <div class="step-label">Use the Finite-Sum Formula</div>
-
-    <div class="step-math">
-        \[S_{12} = \dfrac{8\left(1-\left(\frac12\right)^{12}\right)}{1-\frac12}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Simplify Exactly</div>
-
-    <div class="step-math">
-        \[S_{12} = 16\left(1 - \dfrac{1}{4096}\right) = \dfrac{4095}{256}\]
-    </div>
-
-    </div>
-</div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Evaluate</div>
+                    <div class="step-math">\[a_{15} \approx 39.60\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-7" data-steps="4">
-            <div class="slide-header">
-                <div class="example-label">Example 5</div>
-                <div class="slide-title">Solving for the Number of Terms</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">A geometric series has first term \(1\), common ratio \(3\), and finite sum \(29524\). Find \(n\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-7-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Write the Sum Formula</div>
-
-    <div class="step-math">
-        \[29524 = \dfrac{1(1-3^n)}{1-3} = \dfrac{3^n - 1}{2}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-1">
-    <div class="step-box">
-        <div class="step-label">Solve for \(3^n\)</div>
-
-    <div class="step-math">
-        \[59048 = 3^n - 1 \quad \Rightarrow \quad 59049 = 3^n\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-2">
-    <div class="step-box">
-        <div class="step-label">Recognize the Power</div>
-
-    <div class="step-math">
-        \[59049 = 3^{10}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-3">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[n = 10\]</div>
-    </div>
-</div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_{15} \approx 39.60\]</div>
                 </div>
             </div>
-        </section>
-<section class="slide grid-bg" id="slide-8" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 6</div>
-                <div class="slide-title">Infinite Geometric Series</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the sum of the infinite geometric series \(6 + 3 + 1.5 + 0.75 + \dots\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-8-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Check the Ratio</div>
+        </div>
+    </div>
+</section>
 
-    <div class="step-math">
-        \[r = \dfrac{3}{6} = \dfrac12\]
-        <div class="annotation">\(|r| < 1\), so the infinite sum exists.</div>
+<!-- NEW: Ex 3 — notes Ex 2 (find a₁ from a later term) -->
+<section class="slide grid-bg" id="slide-5" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Finding \(a_1\) from a Later Term</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-8-step-1">
-    <div class="step-box">
-        <div class="step-label">Use the Infinite-Sum Formula</div>
-
-    <div class="step-math">
-        \[S_{\infty} = \dfrac{a_1}{1-r} = \dfrac{6}{1-\frac12}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-8-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[S_{\infty} = 12\]</div>
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an equation for the \(n\)th term of the geometric sequence where \(a_6 = 4\) and \(r = 3\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Use the nth-Term Formula</div>
+                    <div class="step-math">\[a_6 = a_1 \cdot r^5 \implies 4 = a_1 \cdot 3^5 = 243\,a_1\]</div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(a_1\)</div>
+                    <div class="step-math">\[a_1 = \frac{4}{243}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_n = \frac{4}{243}\cdot 3^{\,n-1}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Your Turn after Ex 3 -->
+<section class="slide grid-bg" id="slide-6" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Finding \(a_1\) from a Later Term</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A geometric sequence has \(a_5 = 162\) and \(r = 3\). Find \(a_1\) and write the explicit formula for \(a_n\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_1 = \frac{162}{3^4} = \frac{162}{81} = 2, \qquad a_n = 2 \cdot 3^{\,n-1}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Geometric Means</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find three geometric means between \(3.12\) and \(49.92\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Set Up the Five-Term Sequence</div>
+                    <div class="step-math">\[3.12,\ \square,\ \square,\ \square,\ 49.92\]
+                        <div class="annotation">Five terms create four equal ratio jumps.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Solve for the Ratio</div>
+                    <div class="step-math">\[3.12r^4 = 49.92 \quad \Rightarrow \quad r^4 = 16 \quad \Rightarrow \quad r = 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Fill in the Means</div>
+                    <div class="step-math">\[3.12,\ 6.24,\ 12.48,\ 24.96,\ 49.92\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- UPDATED: Sums concept slide — added divergence note -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Finite and Infinite Geometric Sums</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Multiplying a geometric sum by the common ratio makes almost every term line up, which is why the finite-sum formula works so cleanly.</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Partial Sums Approaching a Limit (6 + 3 + 1.5 + 0.75 + …)</div>
+            <svg viewBox="0 0 440 115" class="diagram" xmlns="http://www.w3.org/2000/svg">
+                <!-- Asymptote dashed line at S=12 -->
+                <line x1="40" y1="15" x2="420" y2="15" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6,3"/>
+                <text x="425" y="19" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#dc2626">S = 12</text>
+                <!-- x-axis -->
+                <line x1="40" y1="100" x2="420" y2="100" stroke="#cbd5e1" stroke-width="1"/>
+                <!-- Partial sum dots: S₁=6→y65, S₂=9→y40, S₃=10.5→y27, S₄=11.25→y21, S₅=11.625→y18 -->
+                <!-- y scale: 0→y100, 12→y15. range=85, scale=85/12≈7.08 -->
+                <circle cx="80" cy="57" r="6" fill="#2563eb"/>
+                <text x="80" y="75" text-anchor="middle" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">S₁ = 6</text>
+                <circle cx="150" cy="36" r="6" fill="#2563eb"/>
+                <text x="150" y="75" text-anchor="middle" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">S₂ = 9</text>
+                <circle cx="220" cy="25" r="6" fill="#2563eb"/>
+                <text x="220" y="75" text-anchor="middle" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">S₃ = 10.5</text>
+                <circle cx="290" cy="20" r="5" fill="#2563eb"/>
+                <text x="290" y="75" text-anchor="middle" font-size="10" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">S₄ = 11.25</text>
+                <circle cx="360" cy="18" r="5" fill="#2563eb"/>
+                <text x="360" y="75" text-anchor="middle" font-size="10" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#2563eb">S₅ ≈ 11.6</text>
+                <!-- Connecting curve -->
+                <path d="M 80,57 Q 115,38 150,36 Q 185,28 220,25 Q 255,21 290,20 Q 325,18 360,18" fill="none" stroke="#2563eb" stroke-width="2" opacity="0.4"/>
+                <!-- n labels -->
+                <text x="80" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=1</text>
+                <text x="150" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=2</text>
+                <text x="220" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=3</text>
+                <text x="290" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=4</text>
+                <text x="360" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=5</text>
+            </svg>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Finite Sum</div>
+                <div class="card-copy">\[S_n = a_1 + a_1r + a_1r^2 + \dots + a_1r^{n-1}\]</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Subtract the Shifted Copy</div>
+                <div class="card-copy">\[(1-r)S_n = a_1 - a_1r^n\]</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Convergence (\(|r| < 1\))</div>
+                <div class="card-copy">When \(|r|<1\), the term \(a_1r^n \to 0\), so the sum approaches a finite value: \(S = \dfrac{a_1}{1-r}\).</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Divergence (\(|r| \ge 1\))</div>
+                <div class="card-copy">When \(|r| \ge 1\), the terms grow without bound — the series <strong>diverges</strong> and has no finite sum.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-9" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Summing a Finite Geometric Series</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the exact sum of the first 12 terms of \(8, 4, 2, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the Data</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(a_1 = 8\)</li>
+                            <li>\(r = \dfrac{1}{2}\)</li>
+                            <li>\(n = 12\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the Finite-Sum Formula</div>
+                    <div class="step-math">\[S_{12} = \dfrac{8\left(1-\left(\frac12\right)^{12}\right)}{1-\frac12}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Simplify Exactly</div>
+                    <div class="step-math">\[S_{12} = 16\left(1 - \dfrac{1}{4096}\right) = \dfrac{4095}{256}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Solving for the Number of Terms</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A geometric series has first term \(1\), common ratio \(3\), and finite sum \(29{,}524\). Find \(n\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Write the Sum Formula</div>
+                    <div class="step-math">\[29{,}524 = \dfrac{1(1-3^n)}{1-3} = \dfrac{3^n - 1}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(3^n\)</div>
+                    <div class="step-math">\[59{,}048 = 3^n - 1 \quad \Rightarrow \quad 59{,}049 = 3^n\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Recognize the Power</div>
+                    <div class="step-math">\[59{,}049 = 3^{10}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[n = 10\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Ex 7 — notes Ex 6 (sigma notation finite sum) -->
+<section class="slide grid-bg" id="slide-11" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Evaluating a Sum in Sigma Notation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the sum: \(\displaystyle \sum_{n=1}^{12} 4(0.3)^n\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the Data</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(a_1 = 4(0.3)^1 = 1.2\)</li>
+                            <li>\(r = 0.3\)</li>
+                            <li>\(n = 12\)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box green">
+                    <div class="step-label">Tip</div>
+                    <div class="step-copy" style="font-size:0.84em">To find \(a_1\) from sigma notation, plug the <strong>starting index</strong> into the formula: \(a_1 = 4(0.3)^1 = 1.2\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Use the Finite-Sum Formula</div>
+                    <div class="step-math">\[S_{12} = \dfrac{1.2\left(1-0.3^{12}\right)}{1-0.3}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[S_{12} \approx 1.714\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-12" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">Infinite Geometric Series</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the sum of the infinite geometric series \(6 + 3 + 1.5 + 0.75 + \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Check the Ratio</div>
+                    <div class="step-math">\[r = \dfrac{3}{6} = \dfrac12\]
+                        <div class="annotation">\(|r| < 1\), so the infinite sum exists.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the Infinite-Sum Formula</div>
+                    <div class="step-math">\[S_{\infty} = \dfrac{a_1}{1-r} = \dfrac{6}{1-\frac12}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[S_{\infty} = 12\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Ex 9 — notes Ex 7 (alternating infinite series) -->
+<section class="slide grid-bg" id="slide-13" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 9</div>
+        <div class="slide-title">Alternating Infinite Series</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the sum of \(\displaystyle 3 - \frac{3}{2} + \frac{3}{4} - \frac{3}{8} + \cdots\), if it exists.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify \(a_1\) and \(r\)</div>
+                    <div class="step-math">\[a_1 = 3, \qquad r = \frac{-3/2}{3} = -\frac{1}{2}\]
+                        <div class="annotation">\(|r| = \frac{1}{2} < 1\), so the series converges.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Apply the Infinite-Sum Formula</div>
+                    <div class="step-math">\[S = \frac{3}{1-\left(-\frac{1}{2}\right)} = \frac{3}{\frac{3}{2}}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[S = 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Ex 10 — notes Ex 8 (infinite series in sigma notation) -->
+<section class="slide grid-bg" id="slide-14" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 10</div>
+        <div class="slide-title">Infinite Series in Sigma Notation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the sum: \(\displaystyle \sum_{n=1}^{\infty} 3\!\left(\frac{2}{3}\right)^{\!n}\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-14-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify \(a_1\) and \(r\)</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(a_1 = 3 \cdot \frac{2}{3} = 2\)</li>
+                            <li>\(r = \frac{2}{3}\), and \(|r| < 1\) so the series converges.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-1">
+                <div class="step-box">
+                    <div class="step-label">Apply the Infinite-Sum Formula</div>
+                    <div class="step-math">\[S = \frac{2}{1-\frac{2}{3}} = \frac{2}{\frac{1}{3}}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[S = 6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Think About It</div>
+                    <div class="step-copy" style="font-size:0.84em; line-height:1.6;">Every repeating decimal is a geometric series! For example, \(0.666\ldots = \frac{6}{10} + \frac{6}{100} + \frac{6}{1000} + \cdots\) with \(r = \frac{1}{10}\), giving \(S = \frac{6/10}{1-1/10} = \frac{2}{3}\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>

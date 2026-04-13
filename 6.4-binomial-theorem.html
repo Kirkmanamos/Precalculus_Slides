@@ -168,7 +168,8 @@
 
     .example-label,
     .concept-label,
-    .ref-label {
+    .ref-label,
+    .practice-label {
         font-size: 0.6em;
         font-weight: 700;
         padding: 0.2em 0.75em;
@@ -180,6 +181,7 @@
 
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
+    .practice-label { background: var(--orange-accent); }
     .ref-label { background: var(--navy); }
 
     .problem-statement {
@@ -738,7 +740,8 @@
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
@@ -800,6 +803,55 @@
 <div class="note-box navy">
     <div class="note-title">Sample Pattern</div>
     <div class="note-copy">\[(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\]</div>
+</div>
+<div class="diagram-shell">
+    <div class="diagram-title">Exponent Pattern in \((a+b)^4\)</div>
+    <svg class="diagram" viewBox="0 0 480 100" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .exp-blue { font: 700 14px 'Source Sans 3', sans-serif; fill: #2563eb; text-anchor: middle; }
+            .exp-green { font: 700 14px 'Source Sans 3', sans-serif; fill: #16a34a; text-anchor: middle; }
+            .exp-term { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; text-anchor: middle; }
+            .exp-muted { font: 600 11px 'Source Sans 3', sans-serif; fill: #64748b; text-anchor: middle; }
+            .exp-arrow { stroke: #64748b; stroke-width: 1.2; fill: none; marker-end: url(#arrowhead); }
+        </style>
+        <defs>
+            <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                <polygon points="0 0, 6 2.5, 0 5" fill="#64748b"/>
+            </marker>
+        </defs>
+        <!-- a-exponent label -->
+        <text class="exp-muted" x="16" y="16">a exp</text>
+        <!-- b-exponent label -->
+        <text class="exp-muted" x="16" y="92">b exp</text>
+        <!-- Term 1 -->
+        <text class="exp-blue" x="96" y="16">4</text>
+        <text class="exp-term" x="96" y="52">a⁴b⁰</text>
+        <text class="exp-green" x="96" y="92">0</text>
+        <!-- Term 2 -->
+        <text class="exp-blue" x="168" y="16">3</text>
+        <text class="exp-term" x="168" y="52">a³b¹</text>
+        <text class="exp-green" x="168" y="92">1</text>
+        <!-- Term 3 -->
+        <text class="exp-blue" x="240" y="16">2</text>
+        <text class="exp-term" x="240" y="52">a²b²</text>
+        <text class="exp-green" x="240" y="92">2</text>
+        <!-- Term 4 -->
+        <text class="exp-blue" x="312" y="16">1</text>
+        <text class="exp-term" x="312" y="52">a¹b³</text>
+        <text class="exp-green" x="312" y="92">3</text>
+        <!-- Term 5 -->
+        <text class="exp-blue" x="384" y="16">0</text>
+        <text class="exp-term" x="384" y="52">a⁰b⁴</text>
+        <text class="exp-green" x="384" y="92">4</text>
+        <!-- Decreasing arrow (a exponents) -->
+        <line class="exp-arrow" x1="106" y1="13" x2="372" y2="13"/>
+        <text class="exp-muted" x="440" y="16">▼</text>
+        <!-- Increasing arrow (b exponents) -->
+        <line class="exp-arrow" x1="106" y1="89" x2="372" y2="89"/>
+        <text class="exp-muted" x="440" y="92">▲</text>
+        <!-- Sum note -->
+        <text class="exp-muted" x="240" y="72">each pair sums to 4</text>
+    </svg>
 </div>
             </div>
         </section>
@@ -890,9 +942,19 @@
 </div>
         </div>
         <div class="formula-note">The term number is always one more than \(r\), so the 6th term uses \(r=5\).</div>
+<div class="info-card teal" style="margin-top:0.7rem">
+    <div class="card-title">How to Find a Specific Term</div>
+    <div class="card-copy">
+        <ol style="padding-left:1.1rem; font-size:0.95em; line-height:1.6;">
+            <li>Set \(r = \text{term number} - 1\)</li>
+            <li>Plug \(a\), \(b\), \(n\), \(r\) into \(T_{r+1} = \binom{n}{r}a^{n-r}b^r\)</li>
+            <li>Simplify powers and coefficients separately</li>
+        </ol>
+    </div>
+</div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-5" data-steps="3">
+<section class="slide grid-bg" id="slide-5" data-steps="4">
             <div class="slide-header">
                 <div class="example-label">Example 2</div>
                 <div class="slide-title">Expanding with the Binomial Theorem</div>
@@ -927,84 +989,196 @@
     </div>
 
     </div>
+</div><div class="step" id="slide-5-step-3">
+    <div class="step-box orange">
+        <div class="step-label">Watch Out</div>
+        <div class="step-copy" style="font-size:0.84em; line-height:1.6;">When \(b\) is negative, the signs <strong>alternate</strong>: \((-b)^0 = +\), \((-b)^1 = -\), \((-b)^2 = +\), \((-b)^3 = -\), …</div>
+    </div>
 </div>
                 </div>
             </div>
         </section>
+<!-- NEW: Ex 3 — notes Ex 3 (second full expansion) -->
 <section class="slide grid-bg" id="slide-6" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 3</div>
-                <div class="slide-title">Finding a Specific Term</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the 6th term of \((2x - y)^8\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-6-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Match the Term Number to \(r\)</div>
-
-    <div class="step-math">
-        \[\text{6th term} \Rightarrow r = 5\]
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Another Full Expansion</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-1">
-    <div class="step-box">
-        <div class="step-label">Use the General Term</div>
-
-    <div class="step-math">
-        \[T_6 = \binom{8}{5}(2x)^{8-5}(-y)^5\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-6-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Simplify</div>
-
-    <div class="step-math">
-        \[T_6 = 56(2x)^3(-y)^5 = 56(8x^3)(-y^5) = -448x^3y^5\]
-    </div>
-
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the expansion of \((3x+1)^5\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify \(a\), \(b\), and \(n\)</div>
+                    <div class="step-math">\[a = 3x,\qquad b = 1,\qquad n = 5\]</div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Apply the Theorem</div>
+                    <div class="step-math">\[(3x)^5 + 5(3x)^4(1) + 10(3x)^3(1)^2 + 10(3x)^2(1)^3 + 5(3x)(1)^4 + 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Simplify</div>
+                    <div class="step-math">\[(3x+1)^5 = 243x^5 + 405x^4 + 270x^3 + 90x^2 + 15x + 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="slide grid-bg" id="slide-7" data-steps="3">
-            <div class="slide-header">
-                <div class="example-label">Example 4</div>
-                <div class="slide-title">Finding a Coefficient</div>
-            </div>
-            <div class="slide-body">
-                <div class="problem-statement">Find the coefficient of \(x^2\) in the expansion of \((2x + 3)^5\).</div>
-                <div class="steps-area">
-                    <div class="step" id="slide-7-step-0">
-    <div class="step-box teal">
-        <div class="step-label">Identify Which Power of \(3\) You Need</div>
-
-    <div class="step-math">
-        \[x^2 \text{ means } 5-r = 2 \Rightarrow r = 3\]
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Finding a Specific Term</div>
     </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-1">
-    <div class="step-box">
-        <div class="step-label">Use the Matching Term</div>
-
-    <div class="step-math">
-        \[\binom{5}{3}(2x)^2(3)^3 = 10 \cdot 4x^2 \cdot 27\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-7-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Answer</div>
-        <div class="step-math">\[\text{Coefficient of }x^2 = 1080\]</div>
-    </div>
-</div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 6th term of \((2x - y)^8\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Match the Term Number to \(r\)</div>
+                    <div class="step-math">\[\text{6th term} \Rightarrow r = 5\]</div>
                 </div>
             </div>
-        </section>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the General Term</div>
+                    <div class="step-math">\[T_6 = \binom{8}{5}(2x)^{8-5}(-y)^5\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Simplify</div>
+                    <div class="step-math">\[T_6 = 56(2x)^3(-y)^5 = 56(8x^3)(-y^5) = -448x^3y^5\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Ex 5 — notes Ex 5 (second find-a-term problem) -->
+<section class="slide grid-bg" id="slide-8" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Finding Another Specific Term</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 4th term of \((3x-5)^9\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Match the Term Number to \(r\)</div>
+                    <div class="step-math">\[\text{4th term} \Rightarrow r = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the General Term</div>
+                    <div class="step-math">\[T_4 = \binom{9}{3}(3x)^{6}(-5)^3 = 84 \cdot 729x^6 \cdot (-125)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[T_4 = -7{,}654{,}500\,x^6\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-9" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Finding a Specific Term</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the 3rd term of \((2x + 1)^7\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[T_3 = \binom{7}{2}(2x)^5(1)^2 = 21 \cdot 32x^5 = 672x^5\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-10" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Finding a Coefficient</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the coefficient of \(x^2\) in the expansion of \((2x + 3)^5\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify Which Power of \(3\) You Need</div>
+                    <div class="step-math">\[x^2 \text{ means } 5-r = 2 \Rightarrow r = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use the Matching Term</div>
+                    <div class="step-math">\[\binom{5}{3}(2x)^2(3)^3 = 10 \cdot 4x^2 \cdot 27\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\text{Coefficient of }x^2 = 1080\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NEW: Ex 7 — notes Ex 6 (advanced two-variable coefficient) -->
+<section class="slide grid-bg" id="slide-11" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Two-Variable Coefficient</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the coefficient of \(x^7 y^{12}\) in the expansion of \((2x-3y^3)^{11}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Set Up the General Term</div>
+                    <div class="step-math">\[T_{r+1} = \binom{11}{r}(2x)^{11-r}(-3y^3)^r\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Match the Exponents</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(x\)-exponent: \(11-r = 7 \implies r = 4\)</li>
+                            <li>\(y\)-exponent: \(3r = 12\) ✓</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(r = 4\)</div>
+                    <div class="step-math">\[\binom{11}{4}(2x)^7(-3y^3)^4 = 330 \cdot 128x^7 \cdot 81y^{12}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\text{Coefficient} = 3{,}421{,}440\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>

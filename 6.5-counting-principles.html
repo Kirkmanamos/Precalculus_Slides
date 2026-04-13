@@ -168,7 +168,8 @@
 
     .example-label,
     .concept-label,
-    .ref-label {
+    .ref-label,
+    .practice-label {
         font-size: 0.6em;
         font-weight: 700;
         padding: 0.2em 0.75em;
@@ -181,6 +182,7 @@
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
     .ref-label { background: var(--navy); }
+    .practice-label { background: var(--orange-accent); }
 
     .problem-statement {
         background: var(--navy-light);
@@ -787,6 +789,86 @@
             </div>
             <div class="slide-body top-layout">
                 <div class="body-lead">If one choice can happen in \(m\) ways and the next choice can happen in \(n\) ways, then the two-step process can happen in \(mn\) ways.</div>
+<div class="diagram-shell">
+    <svg class="diagram" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .tree-branch { stroke-width: 1.5; fill: none; }
+            .tree-meat { stroke: #2563eb; }
+            .tree-bread { stroke: #16a34a; }
+            .tree-node { font: 600 12px 'Source Sans 3', sans-serif; }
+            .tree-meat-label { fill: #2563eb; }
+            .tree-bread-label { fill: #16a34a; }
+            .tree-root { fill: #475569; }
+            .tree-result { font: 700 13px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        </style>
+        <!-- Root -->
+        <circle cx="30" cy="100" r="5" fill="#475569"/>
+        <!-- Meat branches -->
+        <line x1="35" y1="100" x2="120" y2="28" class="tree-branch tree-meat"/>
+        <line x1="35" y1="100" x2="120" y2="68" class="tree-branch tree-meat"/>
+        <line x1="35" y1="100" x2="120" y2="128" class="tree-branch tree-meat"/>
+        <line x1="35" y1="100" x2="120" y2="170" class="tree-branch tree-meat"/>
+        <!-- Meat nodes -->
+        <circle cx="120" cy="28" r="4" fill="#2563eb"/>
+        <text x="130" y="32" class="tree-node tree-meat-label">T</text>
+        <circle cx="120" cy="68" r="4" fill="#2563eb"/>
+        <text x="130" y="72" class="tree-node tree-meat-label">H</text>
+        <circle cx="120" cy="128" r="4" fill="#2563eb"/>
+        <text x="130" y="132" class="tree-node tree-meat-label">RB</text>
+        <circle cx="120" cy="170" r="4" fill="#2563eb"/>
+        <text x="130" y="174" class="tree-node tree-meat-label">C</text>
+        <!-- Bread branches from T -->
+        <line x1="124" y1="28" x2="200" y2="12" class="tree-branch tree-bread"/>
+        <line x1="124" y1="28" x2="200" y2="28" class="tree-branch tree-bread"/>
+        <line x1="124" y1="28" x2="200" y2="44" class="tree-branch tree-bread"/>
+        <text x="208" y="16" class="tree-node tree-bread-label">W</text>
+        <text x="208" y="32" class="tree-node tree-bread-label">Wh</text>
+        <text x="208" y="48" class="tree-node tree-bread-label">R</text>
+        <!-- Bread branches from H -->
+        <line x1="124" y1="68" x2="200" y2="52" class="tree-branch tree-bread"/>
+        <line x1="124" y1="68" x2="200" y2="68" class="tree-branch tree-bread"/>
+        <line x1="124" y1="68" x2="200" y2="84" class="tree-branch tree-bread"/>
+        <text x="208" y="56" class="tree-node tree-bread-label">W</text>
+        <text x="208" y="72" class="tree-node tree-bread-label">Wh</text>
+        <text x="208" y="88" class="tree-node tree-bread-label">R</text>
+        <!-- Bread branches from RB -->
+        <line x1="124" y1="128" x2="200" y2="112" class="tree-branch tree-bread"/>
+        <line x1="124" y1="128" x2="200" y2="128" class="tree-branch tree-bread"/>
+        <line x1="124" y1="128" x2="200" y2="144" class="tree-branch tree-bread"/>
+        <text x="208" y="116" class="tree-node tree-bread-label">W</text>
+        <text x="208" y="132" class="tree-node tree-bread-label">Wh</text>
+        <text x="208" y="148" class="tree-node tree-bread-label">R</text>
+        <!-- Bread branches from C -->
+        <line x1="124" y1="170" x2="200" y2="154" class="tree-branch tree-bread"/>
+        <line x1="124" y1="170" x2="200" y2="170" class="tree-branch tree-bread"/>
+        <line x1="124" y1="170" x2="200" y2="186" class="tree-branch tree-bread"/>
+        <text x="208" y="158" class="tree-node tree-bread-label">W</text>
+        <text x="208" y="174" class="tree-node tree-bread-label">Wh</text>
+        <text x="208" y="190" class="tree-node tree-bread-label">R</text>
+        <!-- Outcome labels -->
+        <text x="240" y="16" class="tree-node" style="fill:#1e293b; font-size:11px">T-W</text>
+        <text x="240" y="32" class="tree-node" style="fill:#1e293b; font-size:11px">T-Wh</text>
+        <text x="240" y="48" class="tree-node" style="fill:#1e293b; font-size:11px">T-R</text>
+        <text x="240" y="56" class="tree-node" style="fill:#1e293b; font-size:11px">H-W</text>
+        <text x="240" y="72" class="tree-node" style="fill:#1e293b; font-size:11px">H-Wh</text>
+        <text x="240" y="88" class="tree-node" style="fill:#1e293b; font-size:11px">H-R</text>
+        <text x="240" y="116" class="tree-node" style="fill:#1e293b; font-size:11px">RB-W</text>
+        <text x="240" y="132" class="tree-node" style="fill:#1e293b; font-size:11px">RB-Wh</text>
+        <text x="240" y="148" class="tree-node" style="fill:#1e293b; font-size:11px">RB-R</text>
+        <text x="240" y="158" class="tree-node" style="fill:#1e293b; font-size:11px">C-W</text>
+        <text x="240" y="174" class="tree-node" style="fill:#1e293b; font-size:11px">C-Wh</text>
+        <text x="240" y="190" class="tree-node" style="fill:#1e293b; font-size:11px">C-R</text>
+        <!-- Column labels -->
+        <text x="115" y="8" class="tree-node tree-meat-label" style="font-size:11px; font-weight:700" text-anchor="middle">Meat</text>
+        <text x="215" y="8" class="tree-node tree-bread-label" style="font-size:11px; font-weight:700" text-anchor="middle">Bread</text>
+        <!-- Result -->
+        <text x="400" y="105" class="tree-result" text-anchor="middle">= 12 outcomes</text>
+        <!-- Brace / summary -->
+        <line x1="290" y1="12" x2="340" y2="100" class="tree-branch" style="stroke:#475569; stroke-width:1; stroke-dasharray:4,3"/>
+        <line x1="290" y1="190" x2="340" y2="100" class="tree-branch" style="stroke:#475569; stroke-width:1; stroke-dasharray:4,3"/>
+        <text x="400" y="125" style="font: 600 11px 'Source Sans 3', sans-serif; fill: #64748b;" text-anchor="middle">4 meats x 3 breads</text>
+    </svg>
+</div>
 <div class="two-col">
             <div class="col"><div class="stack"><div class="info-card teal">
     <div class="card-title">Sandwich Choices</div>
@@ -930,6 +1012,38 @@
     <div class="card-title">Permutation Examples</div>
     <div class="card-copy">Lineups, shelf order, and race results are permutation situations.</div>
 </div></div>
+<div class="diagram-shell">
+    <svg class="diagram" viewBox="0 0 480 110" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            .perm-item { font: 600 12px 'Source Sans 3', sans-serif; fill: #2563eb; }
+            .comb-item { font: 600 12px 'Source Sans 3', sans-serif; fill: #16a34a; }
+            .vs-heading { font: 700 12px 'Source Sans 3', sans-serif; text-anchor: middle; }
+            .vs-caption { font: 600 11px 'Source Sans 3', sans-serif; fill: #64748b; text-anchor: middle; }
+        </style>
+        <!-- Divider -->
+        <line x1="240" y1="8" x2="240" y2="92" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- Left: Permutations -->
+        <text x="120" y="16" class="vs-heading" fill="#2563eb">Permutations of {A, B, C}</text>
+        <rect x="30" y="24" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="56" y="39" class="perm-item" text-anchor="middle">ABC</text>
+        <rect x="88" y="24" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="114" y="39" class="perm-item" text-anchor="middle">ACB</text>
+        <rect x="146" y="24" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="172" y="39" class="perm-item" text-anchor="middle">BAC</text>
+        <rect x="30" y="52" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="56" y="67" class="perm-item" text-anchor="middle">BCA</text>
+        <rect x="88" y="52" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="114" y="67" class="perm-item" text-anchor="middle">CAB</text>
+        <rect x="146" y="52" width="52" height="22" rx="5" fill="#eff6ff" stroke="#2563eb" stroke-width="1"/>
+        <text x="172" y="67" class="perm-item" text-anchor="middle">CBA</text>
+        <!-- Right: Combinations -->
+        <text x="360" y="16" class="vs-heading" fill="#16a34a">Combinations of {A, B, C}</text>
+        <rect x="320" y="34" width="80" height="28" rx="8" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+        <text x="360" y="53" class="comb-item" text-anchor="middle" style="font-size:13px">{A, B, C}</text>
+        <!-- Bottom caption -->
+        <text x="240" y="102" class="vs-caption">6 arrangements ÷ 3! = 1 combination</text>
+    </svg>
+</div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-6">
@@ -993,7 +1107,24 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-8" data-steps="3">
+<section class="slide grid-bg" id="slide-8" data-steps="1">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Permutations or Combinations?</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A club has \(10\) members. How many ways can they choose a president, vice president, and treasurer?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\text{Order matters} \Rightarrow {}_{10}P_3 = 10 \cdot 9 \cdot 8 = 720\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="slide grid-bg" id="slide-9" data-steps="3">
             <div class="slide-header">
                 <div class="example-label">Example 3</div>
                 <div class="slide-title">Non-Distinct Permutations</div>
@@ -1001,7 +1132,7 @@
             <div class="slide-body">
                 <div class="problem-statement">How many distinguishable arrangements of the letters in <strong>TATTOOS</strong> are possible?</div>
                 <div class="steps-area">
-                    <div class="step" id="slide-8-step-0">
+                    <div class="step" id="slide-9-step-0">
     <div class="step-box teal">
         <div class="step-label">Count the Repeated Letters</div>
 
@@ -1014,7 +1145,7 @@
     </div>
 
     </div>
-</div><div class="step" id="slide-8-step-1">
+</div><div class="step" id="slide-9-step-1">
     <div class="step-box">
         <div class="step-label">Start with \(7!\) and Divide Out the Repeats</div>
 
@@ -1023,7 +1154,7 @@
     </div>
 
     </div>
-</div><div class="step" id="slide-8-step-2">
+</div><div class="step" id="slide-9-step-2">
     <div class="step-box dark">
         <div class="step-label">Simplify</div>
 

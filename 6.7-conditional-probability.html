@@ -168,7 +168,8 @@
 
     .example-label,
     .concept-label,
-    .ref-label {
+    .ref-label,
+    .practice-label {
         font-size: 0.6em;
         font-weight: 700;
         padding: 0.2em 0.75em;
@@ -181,6 +182,7 @@
     .example-label { background: var(--green-accent); }
     .concept-label { background: var(--teal-accent); }
     .ref-label { background: var(--navy); }
+    .practice-label { background: var(--orange-accent); }
 
     .problem-statement {
         background: var(--navy-light);
@@ -738,7 +740,8 @@
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
@@ -811,7 +814,7 @@
 </div></div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-2" data-steps="3">
+<section class="slide grid-bg" id="slide-2" data-steps="4">
             <div class="slide-header">
                 <div class="example-label">Example 1</div>
                 <div class="slide-title">Conditional Probability from a Two-Way Table</div>
@@ -852,50 +855,64 @@
 
     </div>
 </div>
+<div class="step" id="slide-2-step-3">
+    <div class="step-box orange">
+        <div class="step-label">Key Insight</div>
+        <div class="step-copy" style="font-size:0.84em; line-height:1.6;">For \(P(A\mid B)\), the denominator is always the total of the <strong>given</strong> row or column — not the grand total. The "given" condition restricts your sample space.</div>
+    </div>
+</div>
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-3" data-steps="3">
+<section class="slide grid-bg" id="slide-3" data-steps="5">
             <div class="slide-header">
                 <div class="example-label">Example 2</div>
                 <div class="slide-title">Theme Park Survey</div>
             </div>
             <div class="slide-body">
-                <div class="problem-statement">People exiting a new ride were asked whether they liked or disliked the ride. Find the probability that a randomly selected rider is an adult given that the rider disliked the ride.</div>
+                <div class="problem-statement">People exiting a new ride were asked whether they liked or disliked the ride. Find (a) \(P(\text{adult or disliked})\) and (b) \(P(\text{adult}\mid\text{disliked})\).</div>
                 <div class="steps-area">
                     <div class="step" id="slide-3-step-0">
-                    <div class="step-box teal">
-                        <div class="step-label">Organize the Survey</div>
-                        <div class="table-shell">
-    <table class="data-table">
-        <thead>
-            <tr><th></th><th>Child</th><th>Adult</th><th>Total</th></tr>
-        </thead>
-        <tbody>
-            <tr><td>Liked</td><td>51</td><td>26</td><td>77</td></tr><tr><td>Disliked</td><td>22</td><td>31</td><td>53</td></tr><tr><td>Total</td><td>73</td><td>57</td><td>130</td></tr>
-        </tbody>
-    </table>
-</div>
+                        <div class="step-box teal">
+                            <div class="step-label">Organize the Survey</div>
+                            <div class="table-shell">
+                                <table class="data-table">
+                                    <thead><tr><th></th><th>Child</th><th>Adult</th><th>Total</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>Liked</td><td>51</td><td>26</td><td>77</td></tr>
+                                        <tr><td>Disliked</td><td>22</td><td>31</td><td>53</td></tr>
+                                        <tr><td>Total</td><td>73</td><td>57</td><td>130</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                </div><div class="step" id="slide-3-step-1">
-    <div class="step-box">
-        <div class="step-label">Restrict the Sample Space</div>
-
-    <div class="step-math">
-        \[\text{Given disliked} \Rightarrow \text{look only at the 53 riders who disliked the ride}\]
-    </div>
-
-    </div>
-</div><div class="step" id="slide-3-step-2">
-    <div class="step-box dark">
-        <div class="step-label">Form the Conditional Probability</div>
-
-    <div class="step-math">
-        \[P(\text{Adult}\mid \text{Disliked}) = \dfrac{31}{53}\]
-    </div>
-
-    </div>
-</div>
+                    <div class="step" id="slide-3-step-1">
+                        <div class="step-box">
+                            <div class="step-label">(a) Addition Rule — "Or"</div>
+                            <div class="step-math">\[P(A \cup D) = \frac{57}{130} + \frac{53}{130} - \frac{31}{130}\]
+                                <div class="annotation">Subtract the overlap (adults who disliked) to avoid double-counting.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-3-step-2">
+                        <div class="step-box dark">
+                            <div class="step-label">Answer (a)</div>
+                            <div class="step-math">\[P(\text{adult or disliked}) = \frac{79}{130}\]</div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-3-step-3">
+                        <div class="step-box">
+                            <div class="step-label">(b) Restrict the Sample Space</div>
+                            <div class="step-math">\[\text{Given disliked} \Rightarrow \text{look only at the 53 riders who disliked the ride}\]</div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-3-step-4">
+                        <div class="step-box dark">
+                            <div class="step-label">Answer (b)</div>
+                            <div class="step-math">\[P(\text{Adult}\mid \text{Disliked}) = \dfrac{31}{53}\]</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1058,7 +1075,32 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-7" data-steps="3">
+<section class="slide grid-bg" id="slide-7" data-steps="1">
+            <div class="slide-header">
+                <div class="practice-label">Your Turn</div>
+                <div class="slide-title">Tree Diagram Practice</div>
+            </div>
+            <div class="slide-body">
+                <div class="problem-statement">A factory has two machines. Machine A produces \(60\%\) of all items and Machine B produces \(40\%\). Machine A has a \(5\%\) defect rate and Machine B has a \(3\%\) defect rate. If an item is found to be defective, what is the probability it came from Machine A?</div>
+                <div class="steps-area">
+                    <div class="step" id="slide-7-step-0">
+                        <div class="step-box dark">
+                            <div class="step-label">Answer</div>
+                            <div class="step-math">
+                                \[P(A \cap D) = 0.60 \times 0.05 = 0.03, \quad P(B \cap D) = 0.40 \times 0.03 = 0.012\]
+                            </div>
+                            <div class="step-math">
+                                \[P(D) = 0.03 + 0.012 = 0.042\]
+                            </div>
+                            <div class="step-math">
+                                \[P(A\mid D) = \dfrac{0.03}{0.042} = \dfrac{5}{7} \approx 0.714\]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-8" data-steps="3">
             <div class="slide-header">
                 <div class="example-label">Example 6</div>
                 <div class="slide-title">Weighted Basket Choice</div>
@@ -1066,7 +1108,7 @@
             <div class="slide-body">
                 <div class="problem-statement">Basket A contains \(3\) red and \(2\) white tickets. Basket B contains \(4\) red and \(1\) white ticket. A die with four faces marked A and two faces marked B chooses the basket. Given that the selected ticket is red, find the probability that it came from Basket B.</div>
                 <div class="steps-area">
-                    <div class="step" id="slide-7-step-0">
+                    <div class="step" id="slide-8-step-0">
                     <div class="step-box teal">
                         <div class="step-label">Draw the Weighted Tree</div>
                         <div class="diagram-shell">
@@ -1098,7 +1140,7 @@
             <div class="diagram-caption">A weighted die chooses Basket A or Basket B before a ticket is drawn.</div>
         </div>
                     </div>
-                </div><div class="step" id="slide-7-step-1">
+                </div><div class="step" id="slide-8-step-1">
     <div class="step-box">
         <div class="step-label">Find the Red Outcomes</div>
 
@@ -1110,7 +1152,7 @@
     </div>
 
     </div>
-</div><div class="step" id="slide-7-step-2">
+</div><div class="step" id="slide-8-step-2">
     <div class="step-box dark">
         <div class="step-label">Form the Conditional Probability</div>
 
