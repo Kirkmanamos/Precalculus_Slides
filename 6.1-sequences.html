@@ -168,6 +168,7 @@
 
     .example-label,
     .concept-label,
+    .practice-label,
     .ref-label {
         font-size: 0.6em;
         font-weight: 700;
@@ -353,6 +354,15 @@
         border-left: 4px solid var(--orange-accent);
         border-radius: 8px;
         padding: 0.55em 0.9em;
+    }
+
+    .read-aloud {
+        margin-top: 0.6rem;
+        text-align: center;
+        font-size: 0.72em;
+        font-weight: 600;
+        color: var(--navy);
+        line-height: 1.5;
     }
 
     .table-shell {
@@ -739,6 +749,7 @@
 
         .example-label,
         .concept-label,
+        .practice-label,
         .ref-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
@@ -954,7 +965,7 @@
 </section>
 
 <!-- ==================== SLIDE 4: YOUR TURN — Practice Computing Terms ==================== -->
-<section class="slide grid-bg" id="slide-4" data-steps="1">
+<section class="slide grid-bg" id="slide-4" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Computing Terms</div>
@@ -963,6 +974,12 @@
         <div class="problem-statement">Write the first three terms of the sequence given by \(\displaystyle a_n = \frac{n}{n+1}\).</div>
         <div class="steps-area">
             <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Substitute \(n=1\), \(n=2\), and \(n=3\) one at a time. Keep each term as an exact fraction instead of converting to decimals.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[a_1 = \frac{1}{2},\quad a_2 = \frac{2}{3},\quad a_3 = \frac{3}{4}\]</div>
@@ -1145,7 +1162,7 @@
 </section>
 
 <!-- ==================== SLIDE 9: YOUR TURN — Practice Recursive Sequences ==================== -->
-<section class="slide grid-bg" id="slide-9" data-steps="1">
+<section class="slide grid-bg" id="slide-9" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Recursive Sequences</div>
@@ -1154,6 +1171,12 @@
         <div class="problem-statement">Write the first four terms: \(a_1 = 2,\quad a_k = 3a_{k-1}-1,\quad k \ge 2\).</div>
         <div class="steps-area">
             <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Start with the given first term \(a_1=2\). Then build each next term from the previous one using \(a_k = 3a_{k-1}-1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[2,\ 5,\ 14,\ 41\]</div>
@@ -1170,28 +1193,65 @@
         <div class="slide-title">Factorial Notation</div>
     </div>
     <div class="slide-body top-layout">
-        <div class="body-lead">Factorial notation is a compact way to write long products of consecutive integers.</div>
-        <div class="cards-grid">
-            <div class="info-card teal">
-                <div class="card-title">Factorial Definition</div>
-                <div class="card-copy"><p>If \(n\) is a positive integer, then</p>
-                \[n! = n \cdot (n-1) \cdot (n-2) \cdots 3 \cdot 2 \cdot 1\]</div>
-            </div>
-            <div class="info-card orange">
-                <div class="card-title">Special Case</div>
-                <div class="card-copy"><p>By definition,</p>
-                \[0! = 1\]</div>
+        <div class="body-lead">Factorial notation is shorthand for multiplying consecutive whole numbers from \(n\) down to \(1\). You will see it often in counting and probability because it compresses a long repeated product into one symbol.</div>
+        <div class="formula-row blue">
+            <div class="fn-label">Definition</div>
+            <div class="fn-eq-stack" style="text-align:center;">
+                \[n! = n \cdot (n-1) \cdot (n-2) \cdots 3 \cdot 2 \cdot 1\]
             </div>
         </div>
-        <div class="table-shell">
-            <table class="data-table">
-                <thead>
-                    <tr><th>\(n\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>\(n!\)</td><td>1</td><td>1</td><td>2</td><td>6</td><td>24</td><td>120</td><td>720</td></tr>
-                </tbody>
-            </table>
+        <div class="two-col">
+            <div class="col">
+                <div class="info-card green">
+                    <div class="card-title">Read It</div>
+                    <div class="card-copy"><p>\(7!\) is read “seven factorial.” It means multiply all whole numbers from \(7\) down to \(1\).</p>
+                    \[7! = 7 \cdot 6 \cdot 5 \cdot 4 \cdot 3 \cdot 2 \cdot 1\]</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="note-box orange">
+                    <div class="note-title">Why It Matters</div>
+                    <div class="note-copy">Instead of rewriting a long product every time, factorial notation gives one compact symbol that is easier to read inside later formulas.</div>
+                </div>
+            </div>
+        </div>
+        <div class="formula-note">Self-check: factorial multiplies consecutive whole numbers from \(n\) down to \(1\). It is not the same as \(n \cdot n\).</div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 10B: CONCEPT — Factorial Pattern and Special Case ==================== -->
+<section class="slide grid-bg" id="slide-10b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Factorial Pattern</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A short table of values helps you see the pattern and explains the special case \(0! = 1\).</div>
+        <div class="two-col">
+            <div class="col">
+                <div class="table-shell">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>\(n\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>\(n!\)</td><td>1</td><td>1</td><td>2</td><td>6</td><td>24</td><td>120</td><td>720</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col"><div class="stack">
+                <div class="note-box orange">
+                    <div class="note-title">Why \(0! = 1\)</div>
+                    <div class="note-copy"><p>Use the pattern \(n! = n(n-1)!\). Since \(1! = 1\),</p>
+                    \[1! = 1 \cdot 0! \Rightarrow 1 = 1 \cdot 0! \Rightarrow 0! = 1\]</div>
+                </div>
+                <div class="info-card teal">
+                    <div class="card-title">Pattern Check</div>
+                    <div class="card-copy"><p>Each time you move from one factorial to the next, you multiply by the next whole number.</p>
+                    \[3! = 3 \cdot 2!,\qquad 4! = 4 \cdot 3!,\qquad 5! = 5 \cdot 4!\]</div>
+                </div>
+            </div></div>
         </div>
     </div>
 </section>
@@ -1249,37 +1309,82 @@
 <section class="slide grid-bg" id="slide-12">
     <div class="slide-header">
         <div class="concept-label">Concept</div>
-        <div class="slide-title">Summation Notation</div>
+        <div class="slide-title">Anatomy of Summation Notation</div>
     </div>
     <div class="slide-body top-layout">
-        <div class="body-lead">Sigma notation gives a compact way to write sums with a clear start, stop, and rule.</div>
-        <div class="formula-row">
-            <div class="fn-eq-stack" style="text-align:center;">
-                \[\sum_{k=1}^{n} f(k) = f(1) + f(2) + f(3) + \cdots + f(n)\]
-            </div>
+        <div class="body-lead">Sigma notation packages repeated addition into one symbol. The key to reading it is to identify the index, the starting value, the ending value, and the expression being added.</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Read the Whole Expression</div>
+            <div class="step-math" style="font-size:1.16em;">\[\sum_{k=1}^{n} f(k)\]</div>
+            <div class="read-aloud">Read it as: “the sum of \(f(k)\) as \(k\) goes from \(1\) to \(n\).”</div>
         </div>
         <div class="cards-grid">
-            <div class="info-card teal">
-                <div class="card-title">Index</div>
-                <div class="card-copy">The variable \(k\) (or \(n\), \(i\)) that counts through integer values.</div>
+            <div class="info-card orange">
+                <div class="card-title">Upper Limit</div>
+                <div class="step-math">\[n\]</div>
+                <div class="card-copy">The last value of the index you use.</div>
             </div>
             <div class="info-card">
-                <div class="card-title">Limits</div>
-                <div class="card-copy">The <strong>lower limit</strong> is where \(k\) starts; the <strong>upper limit</strong> is where it stops.</div>
+                <div class="card-title">Index</div>
+                <div class="step-math">\[k\]</div>
+                <div class="card-copy">The counting variable that changes by \(1\) each time.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Lower Limit</div>
+                <div class="step-math">\[1\]</div>
+                <div class="card-copy">The first value of the index you use.</div>
             </div>
             <div class="info-card green">
                 <div class="card-title">Summand</div>
-                <div class="card-copy">The expression \(f(k)\) that gets evaluated at each value of \(k\).</div>
+                <div class="step-math">\[f(k)\]</div>
+                <div class="card-copy">The expression you evaluate and add each time.</div>
             </div>
         </div>
+        <div class="formula-note">Important detail: the bottom of the sigma, \(k=1\), tells you both the <strong>index</strong> (\(k\)) and the <strong>starting value</strong> (\(1\)).</div>
     </div>
 </section>
 
-<!-- ==================== SLIDE 13: EXAMPLE 7 — Evaluating a Sum ==================== -->
+<!-- ==================== SLIDE 12B: REFERENCE — Finite Sum Properties ==================== -->
+<section class="slide grid-bg" id="slide-12b">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Finite Sum Properties</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Finite sums follow algebra rules that let you split one complicated sum into simpler sums. These rules are especially helpful when the summand has several parts.</div>
+        <div class="formula-grid">
+            <div class="formula-row blue">
+                <div class="fn-label">Sum Rule</div>
+                <div class="fn-eq-stack">\[\sum_{k=1}^{n} (a_k + b_k) = \sum_{k=1}^{n} a_k + \sum_{k=1}^{n} b_k\]</div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">Difference</div>
+                <div class="fn-eq-stack">\[\sum_{k=1}^{n} (a_k - b_k) = \sum_{k=1}^{n} a_k - \sum_{k=1}^{n} b_k\]</div>
+            </div>
+            <div class="formula-row teal">
+                <div class="fn-label">Constant</div>
+                <div class="fn-eq-stack">
+                    \[\sum_{k=1}^{n} c\,a_k = c \sum_{k=1}^{n} a_k\]
+                    <div class="fn-alt">for any constant \(c\)</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Same Term</div>
+                <div class="fn-eq-stack">
+                    \[\sum_{k=1}^{n} c = nc\]
+                    <div class="fn-alt">for any constant \(c\)</div>
+                </div>
+            </div>
+        </div>
+        <div class="formula-note">Think of these as “distribute the sigma” rules for a finite sum.</div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 13: EXAMPLE 7 — Evaluating a Sum by Expansion ==================== -->
 <section class="slide grid-bg" id="slide-13" data-steps="4">
     <div class="slide-header">
         <div class="example-label">Example 7</div>
-        <div class="slide-title">Evaluating a Sum with Sigma Notation</div>
+        <div class="slide-title">Evaluating a Sum by Expansion</div>
     </div>
     <div class="slide-body">
         <div class="problem-statement">Evaluate \(\displaystyle \sum_{k=3}^{6}\bigl(1+k^2\bigr)\).</div>
@@ -1309,6 +1414,50 @@
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[\sum_{k=3}^{6}\bigl(1+k^2\bigr) = 90\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 13B: EXAMPLE 7 — Alternative Method ==================== -->
+<section class="slide grid-bg" id="slide-13b" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Alternative Method: Split the Sum</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate \(\displaystyle \sum_{k=3}^{6}\bigl(1+k^2\bigr)\) using the finite sum properties.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Use the Sum Rule</div>
+                    <div class="step-math">
+                        \[\sum_{k=3}^{6}(1+k^2) = \sum_{k=3}^{6}1 + \sum_{k=3}^{6}k^2\]
+                        <div class="annotation">Split the original sum into two simpler sums.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13b-step-1">
+                <div class="step-box">
+                    <div class="step-label">Evaluate the Constant Sum</div>
+                    <div class="step-math">
+                        \[\sum_{k=3}^{6}1 = 1 + 1 + 1 + 1 = 4\]
+                        <div class="annotation">There are four index values: \(3, 4, 5, 6\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13b-step-2">
+                <div class="step-box">
+                    <div class="step-label">Evaluate the Square Sum</div>
+                    <div class="step-math">\[\sum_{k=3}^{6}k^2 = 3^2 + 4^2 + 5^2 + 6^2 = 9 + 16 + 25 + 36 = 86\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13b-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Same Answer</div>
+                    <div class="step-math">\[4 + 86 = 90\]</div>
+                    <div class="step-copy" style="text-align:center; margin-top:0.25em;">This method is useful when the summand can be separated into parts you already know how to add.</div>
                 </div>
             </div>
         </div>
