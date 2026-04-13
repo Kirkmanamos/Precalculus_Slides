@@ -88,7 +88,7 @@
         gap: 0.85rem;
         overflow-y: auto;
         min-height: 0;
-        padding-bottom: 3.5rem;
+        padding-bottom: 1rem;
     }
 
     .slide-body:has(.steps-area) {
@@ -402,7 +402,7 @@
         overflow-y: auto;
         flex: 1;
         min-height: 0;
-        padding-bottom: 3.5rem;
+        padding-bottom: 1rem;
     }
 
     .step { display: none; }
@@ -655,9 +655,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -697,7 +752,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -744,7 +799,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
@@ -756,10 +811,20 @@
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -923,6 +988,39 @@
                     <tr><td>\(a_n = (-1)^n\)</td><td>\(-1,1,-1,1,\dots\)</td><td>Diverges by oscillation</td></tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 2B: YOUR TURN — Classifying Infinite Sequences ==================== -->
+<section class="slide grid-bg" id="slide-2b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Classify the Infinite Sequences</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Classify each sequence as convergent, divergent to infinity, or divergent by oscillation.
+            \[
+            A:\ a_n = \frac{5}{n}
+            \qquad
+            B:\ a_n = (-1)^{n+1}
+            \qquad
+            C:\ a_n = n+2
+            \]
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-2b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Look at what happens when \(n\) gets very large. Do the terms settle near one value, bounce back and forth forever, or keep growing without bound?</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-copy"><ul><li>\(A\) is <strong>convergent</strong> because \(\frac{5}{n} \to 0\).</li><li>\(B\) is <strong>divergent by oscillation</strong> because the terms alternate between \(1\) and \(-1\).</li><li>\(C\) is <strong>divergent to infinity</strong> because the terms keep increasing.</li></ul></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -1092,6 +1190,31 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 6B: YOUR TURN — Practice Explicit Rules ==================== -->
+<section class="slide grid-bg" id="slide-6b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Explicit Rules</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an explicit formula for the sequence \(4, 7, 10, 13, \dots\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">The common difference is \(3\), so think of a linear rule. Compare each term to \(3n\) and see what constant adjustment is needed.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_n = 3n + 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 7: CONCEPT — Recursive Sequences ==================== -->
 <section class="slide grid-bg" id="slide-7">
     <div class="slide-header">
@@ -1115,6 +1238,36 @@
                 \[0,\ 1,\ 1,\ 2,\ 3,\ 5,\ 8,\ 13,\ \dots\]</div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 7B: CONCEPT — Explicit vs Recursive ==================== -->
+<section class="slide grid-bg" id="slide-7b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Explicit vs. Recursive Rules</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Both kinds of rules describe a sequence, but they answer different questions. An explicit rule tells you the term from its position. A recursive rule tells you how to build the next term from earlier terms.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Explicit Rule</div>
+                <div class="card-copy"><ul><li>Input: the position \(n\)</li><li>Output: the term \(a_n\)</li><li>Best when you want a specific term directly</li></ul></div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Recursive Rule</div>
+                <div class="card-copy"><ul><li>Input: one or more earlier terms</li><li>Output: the next term</li><li>Best when the pattern is built step by step</li></ul></div>
+            </div>
+        </div>
+        <div class="formula-row orange">
+            <div class="fn-label">Same Sequence</div>
+            <div class="fn-eq-stack">
+                \[3,\ 7,\ 11,\ 15,\ \dots\]
+                <div class="fn-alt">Explicit: \(a_n = 4n - 1\)</div>
+                <div class="fn-alt">Recursive: \(a_1 = 3,\quad a_n = a_{n-1} + 4,\ n \ge 2\)</div>
+            </div>
+        </div>
+        <div class="formula-note">Ask yourself: do I want the term at position \(n\) immediately, or do I want a rule for generating terms one at a time?</div>
     </div>
 </section>
 
@@ -1464,6 +1617,31 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 13C: YOUR TURN — Practice Evaluating a Sum ==================== -->
+<section class="slide grid-bg" id="slide-13c" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Evaluate a Finite Sum</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate \(\displaystyle \sum_{k=1}^{4}(2k-1)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13c-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Identify the index, limits, and summand. Then either substitute \(k = 1, 2, 3, 4\) into \(2k-1\), or split the sum using the finite-sum rules.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13c-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[(2\cdot1-1)+(2\cdot2-1)+(2\cdot3-1)+(2\cdot4-1)=1+3+5+7=16\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 14: EXAMPLE 8 — Summation with Factorials (enhanced e connection) ==================== -->
 <section class="slide grid-bg" id="slide-14" data-steps="4">
     <div class="slide-header">
@@ -1505,6 +1683,35 @@
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 14B: CONCEPT — Sequence vs Series ==================== -->
+<section class="slide grid-bg" id="slide-14b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Sequence vs. Series</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A <strong>sequence</strong> is a list of terms. A <strong>series</strong> is what you get when you add the terms of a sequence. A <strong>partial sum</strong> adds only the first few terms of a series.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Sequence</div>
+                <div class="card-copy"><p>A list:</p>
+                \[\frac{3}{10},\ \frac{3}{10^2},\ \frac{3}{10^3},\ \dots\]</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Series</div>
+                <div class="card-copy"><p>A sum of those terms:</p>
+                \[\frac{3}{10} + \frac{3}{10^2} + \frac{3}{10^3} + \dots\]</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Partial Sum</div>
+                <div class="card-copy"><p>Add only the first \(n\) terms:</p>
+                \[S_3 = \frac{3}{10} + \frac{3}{10^2} + \frac{3}{10^3}\]</div>
+            </div>
+        </div>
+        <div class="formula-note">Before finding a partial sum, first identify the sequence of terms. Then decide how many of those terms you are adding.</div>
     </div>
 </section>
 
@@ -1577,6 +1784,38 @@
         <div class="formula-note">These can be proved by mathematical induction.</div>
     </div>
 </section>
+<!-- ==================== SLIDE 17: REVIEW — Retrieval and Self-Check ==================== -->
+<section class="slide grid-bg" id="slide-17">
+    <div class="slide-header">
+        <div class="practice-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this slide as a self-check. If you can answer these without looking back, you understand the major ideas of Section 6.1.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Sequences</div>
+                <div class="card-copy"><ul><li>Define a sequence</li><li>Identify terms and positions</li><li>Classify infinite behavior</li></ul></div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Rules</div>
+                <div class="card-copy"><ul><li>Write an explicit rule</li><li>Write terms from a recursive rule</li><li>Explain the difference between them</li></ul></div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Factorials</div>
+                <div class="card-copy"><ul><li>Interpret \(n!\)</li><li>Use \(0! = 1\)</li><li>Simplify factorial expressions</li></ul></div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Summation</div>
+                <div class="card-copy"><ul><li>Label the parts of sigma notation</li><li>Evaluate a finite sum</li><li>Explain sequence vs. series vs. partial sum</li></ul></div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Quick Self-Quiz</div>
+            <div class="note-copy"><ul><li>Can you write one sequence both explicitly and recursively?</li><li>Can you tell why \(\sum\) notation needs both limits and a summand?</li><li>Can you explain why a partial sum uses only the first \(n\) terms?</li></ul></div>
+        </div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1612,7 +1851,18 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Basics', slideId: 'slide-1' },
+                { label: 'Infinite', slideId: 'slide-2' },
+                { label: 'Nth Term', slideId: 'slide-3' },
+                { label: 'Recursive', slideId: 'slide-7' },
+                { label: 'Factorial', slideId: 'slide-10' },
+                { label: 'Summation', slideId: 'slide-12' },
+                { label: 'Review', slideId: 'slide-17' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1631,9 +1881,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1709,7 +1992,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });
