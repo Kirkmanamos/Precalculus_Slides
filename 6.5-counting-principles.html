@@ -646,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -688,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -735,21 +790,32 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -906,6 +972,32 @@
                 \[8 \cdot 10^6 = 8000000\]
                 </div>
 </div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-2b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Which Counting Method Fits?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Before writing a formula, decide what the problem is really asking you to count: a process, an arrangement, a selection, or an arrangement with repeated objects.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Sequential Decisions</div>
+    <div class="card-copy">Use the <strong>counting principle</strong> when the outcome is built step by step: choose this, then choose that.</div>
+</div><div class="info-card green">
+    <div class="card-title">Arrange or Rank</div>
+    <div class="card-copy">Use a <strong>permutation</strong> when order changes the outcome, such as race finishes, lineups, or officer positions.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Choose a Group</div>
+    <div class="card-copy">Use a <strong>combination</strong> when order does not matter, such as committees, toppings, or lottery picks.</div>
+</div><div class="info-card navy">
+    <div class="card-title">Repeated Identical Objects</div>
+    <div class="card-copy">Use a <strong>non-distinct permutation</strong> when some objects repeat, so swapping identical objects does not create a new arrangement.</div>
+</div></div>
+                <div class="note-box teal">
+                    <div class="note-title">Ask Yourself First</div>
+                    <div class="note-copy">Does order matter? Are the choices made in stages? Are some objects identical? The answers decide the method.</div>
+                </div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-3">
@@ -1107,7 +1199,7 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-8" data-steps="1">
+<section class="slide grid-bg" id="slide-8" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Permutations or Combinations?</div>
@@ -1116,6 +1208,12 @@
         <div class="problem-statement">A club has \(10\) members. How many ways can they choose a president, vice president, and treasurer?</div>
         <div class="steps-area">
             <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">These are three different offices, so choosing the same people in a different order gives a different result.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[\text{Order matters} \Rightarrow {}_{10}P_3 = 10 \cdot 9 \cdot 8 = 720\]</div>
@@ -1124,6 +1222,29 @@
         </div>
     </div>
 </section>
+<section class="slide grid-bg" id="slide-8b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">When Repeats Change the Count</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">A regular permutation counts every position swap as different. When some objects are identical, that overcounts the real number of distinguishable arrangements.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Distinct Objects</div>
+    <div class="card-copy">For \(A,B,C\), all \(3! = 6\) orders are different because every letter is unique.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Repeated Objects</div>
+    <div class="card-copy">For \(A,A,B\), the swaps of the two \(A\)'s do not make a new arrangement, so \(3!\) is too large.</div>
+</div><div class="info-card green">
+    <div class="card-title">Fix the Overcount</div>
+    <div class="card-copy">Divide by the factorial of each repeated group: \[\dfrac{n!}{n_1!n_2!\cdots n_k!}\]</div>
+</div></div>
+                <div class="note-box navy">
+                    <div class="note-title">Why Division Works</div>
+                    <div class="note-copy">If a letter appears \(3\) times, those \(3!\) swaps all look the same. Divide by \(3!\) so each distinct arrangement is counted once.</div>
+                </div>
+            </div>
+        </section>
 <section class="slide grid-bg" id="slide-9" data-steps="3">
             <div class="slide-header">
                 <div class="example-label">Example 3</div>
@@ -1166,6 +1287,35 @@
 </div>
                 </div>
             </div>
+</section>
+<section class="slide grid-bg" id="slide-10">
+            <div class="slide-header">
+                <div class="ref-label">Review</div>
+                <div class="slide-title">Can You Now...?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Use this checklist to decide which counting tool belongs in a problem before you start computing.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Recognize a Process</div>
+    <div class="card-copy">Use the counting principle when the outcome is built in stages and each stage has a fixed number of choices.</div>
+</div><div class="info-card green">
+    <div class="card-title">Recognize Order</div>
+    <div class="card-copy">Decide whether changing the order creates a new outcome. If it does, think permutation.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Recognize a Selection</div>
+    <div class="card-copy">Use combinations when the task is choosing a group and the order of the chosen objects does not matter.</div>
+</div><div class="info-card teal">
+    <div class="card-title">Recognize Repeats</div>
+    <div class="card-copy">Use non-distinct permutations when repeated identical objects make ordinary \(n!\) count too many arrangements.</div>
+</div><div class="info-card green">
+    <div class="card-title">Explain the Method</div>
+    <div class="card-copy">Say why you chose counting principle, permutation, combination, or non-distinct permutation before writing the formula.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Check Reasonableness</div>
+    <div class="card-copy">Permutation answers should usually be larger than combination answers with the same \(n\) and \(r\) because order creates more outcomes.</div>
+</div></div>
+                <div class="formula-note">If you are unsure which formula to use, pause and classify the problem before calculating.</div>
+            </div>
         </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -1202,7 +1352,16 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Counting', slideId: 'slide-1' },
+                { label: 'Perms', slideId: 'slide-3' },
+                { label: 'Combs', slideId: 'slide-5' },
+                { label: 'Repeats', slideId: 'slide-8b' },
+                { label: 'Review', slideId: 'slide-10' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1221,9 +1380,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1299,7 +1491,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });

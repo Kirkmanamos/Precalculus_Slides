@@ -646,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -688,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -735,7 +790,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
@@ -747,10 +802,20 @@
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -780,7 +845,7 @@
 <section class="slide title-slide" id="slide-0">
     <div class="title-section-label">Unit 6 · Sequences, Series, and Probability</div>
     <div class="title-main">6.6 Probability</div>
-    <div class="title-objective">Objective: Classify events, use the addition and multiplication rules, and solve counting-based probability problems.</div>
+    <div class="title-objective">Objective: Classify events, use the addition and multiplication rules, solve counting-based probability problems, and use complements strategically.</div>
     <div class="identity-chips"><span class="chip">sample space</span><span class="chip">addition rule</span><span class="chip">multiplication rule</span><span class="chip">counting-based probability</span><span class="chip">complements</span></div>
 </section>
 <section class="slide grid-bg" id="slide-1">
@@ -866,6 +931,29 @@
 </div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-2b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Which Probability Tool Fits?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Many probability mistakes happen before the arithmetic starts. First decide what relationship the problem is describing.</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Addition Rule</div>
+    <div class="card-copy">Look for <strong>or</strong>. Ask whether the events can happen at the same time.</div>
+</div><div class="info-card green">
+    <div class="card-title">Multiplication Rule</div>
+    <div class="card-copy">Look for <strong>and</strong> or repeated events. Ask whether the first outcome changes the second.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Counting-Based Probability</div>
+    <div class="card-copy">If the problem is about selecting or arranging outcomes, use \(\dfrac{\text{favorable}}{\text{total}}\) with permutations or combinations.</div>
+</div><div class="info-card navy">
+    <div class="card-title">Complement</div>
+    <div class="card-copy">If the question says <strong>at least one</strong>, <strong>not</strong>, or direct counting is messy, think about subtracting from \(1\).</div>
+</div></div>
+<div class="formula-note">Self-check: am I adding events, multiplying events, counting outcomes, or using a complement?</div>
+            </div>
+        </section>
 <section class="slide grid-bg" id="slide-3">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
@@ -943,6 +1031,40 @@
         </div></div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-4b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Addition Rule</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Classify each pair of events, then find the probability: (a) rolling a \(2\) or a \(5\) on one die, (b) rolling a \(2\) or an even number on one die.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>Can "rolling a 2" and "rolling a 5" happen at the same time?</li>
+                            <li>Can "rolling a 2" and "rolling an even number" happen at the same time?</li>
+                            <li>If there is overlap, subtract it once.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-4b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(P(2 \text{ or } 5) = \frac{1}{6} + \frac{1}{6} = \frac{1}{3}\) because the events are mutually exclusive.</li>
+                            <li>\(P(2 \text{ or even}) = \frac{1}{6} + \frac{3}{6} - \frac{1}{6} = \frac{1}{2}\) because the events are inclusive.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="slide grid-bg" id="slide-5">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
@@ -965,6 +1087,29 @@
 </div>
         </div>
         <div class="formula-note">The multiplication rule finds the probability that multiple events all occur.</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-5b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Independent vs. Dependent Events</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">The word <strong>and</strong> does not automatically tell you which multiplication rule to use. The real question is whether the first event changes the sample space for the second.</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Independent</div>
+    <div class="card-copy">One outcome does <strong>not</strong> affect the next. Example: flipping a coin twice or drawing with replacement.</div>
+</div><div class="info-card green">
+    <div class="card-title">Dependent</div>
+    <div class="card-copy">One outcome <strong>does</strong> affect the next. Example: drawing without replacement.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Decision Question</div>
+    <div class="card-copy">After the first event happens, do the probabilities for the second event stay the same?</div>
+</div><div class="info-card navy">
+    <div class="card-title">Quick Shortcut</div>
+    <div class="card-copy"><strong>With replacement</strong> usually means independent. <strong>Without replacement</strong> usually means dependent.</div>
+</div></div>
+<div class="formula-note">If the sample space changes, the second probability must change too.</div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-6" data-steps="3">
@@ -1010,18 +1155,18 @@
             </div>
         </section>
 
-<!-- NEW: Ex 2 — notes Ex 4 (independent events, smartphone) -->
+<!-- NEW: Ex 2 - notes Ex 4 (independent events, smartphone) -->
 <section class="slide grid-bg" id="slide-7" data-steps="3">
     <div class="slide-header">
         <div class="example-label">Example 2</div>
-        <div class="slide-title">Independent Events — Repeated Trials</div>
+        <div class="slide-title">Independent Events - Repeated Trials</div>
     </div>
     <div class="slide-body">
         <div class="problem-statement">In a recent survey, 85% of adults said they could <em>not</em> go a full day without their smartphone. If 6 adults are chosen at random, what is the probability that all 6 say they could not go a full day without their smartphone?</div>
         <div class="steps-area">
             <div class="step" id="slide-7-step-0">
                 <div class="step-box teal">
-                    <div class="step-label">Independent Events — Multiply</div>
+                    <div class="step-label">Independent Events - Multiply</div>
                     <div class="step-math">\[P(\text{all 6}) = (0.85)^6\]
                         <div class="annotation">Each adult's response is independent of the others.</div>
                     </div>
@@ -1043,7 +1188,7 @@
     </div>
 </section>
 
-<section class="slide grid-bg" id="slide-8" data-steps="1">
+<section class="slide grid-bg" id="slide-8" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Independent Events</div>
@@ -1052,6 +1197,12 @@
         <div class="problem-statement">A bag has \(5\) red and \(3\) blue marbles. You draw two marbles <em>with replacement</em>. What is the probability both are red?</div>
         <div class="steps-area">
             <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Because the marble is replaced, the second draw has the same probabilities as the first. Multiply the two red-draw probabilities.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[P(\text{both red}) = \frac{5}{8} \cdot \frac{5}{8} = \frac{25}{64}\]</div>
@@ -1067,27 +1218,55 @@
         <div class="slide-title">Probability with Permutations and Combinations</div>
     </div>
             <div class="slide-body top-layout">
-                <div class="cards-grid"><div class="info-card teal">
+                <div class="body-lead">When outcomes are equally likely, use \(\displaystyle P(E) = \frac{\text{favorable outcomes}}{\text{total outcomes}}\). The main challenge is counting both parts correctly.</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Order Matters?</div>
+    <div class="card-copy">Use <strong>permutations</strong> when different orders count as different outcomes. Use <strong>combinations</strong> when order does not matter.</div>
+</div><div class="info-card green">
     <div class="card-title">Exactly 2 Red Marbles</div>
     <div class="card-copy">
                 <p>From \(8\) red and \(6\) blue marbles, choose \(4\).</p>
                 \[\dfrac{\binom{8}{2}\binom{6}{2}}{\binom{14}{4}} = \dfrac{60}{143}\]
                 </div>
-</div><div class="info-card green">
+</div><div class="info-card orange">
     <div class="card-title">No Repeated Digits in a 4-Digit PIN</div>
     <div class="card-copy">
                 <p>Any of the \(10\) digits may appear in each spot.</p>
                 \[\dfrac{{}_{10}P_4}{10^4} = \dfrac{10\cdot9\cdot8\cdot7}{10000} = \dfrac{63}{125}\]
                 </div>
-</div><div class="info-card orange">
+</div><div class="info-card navy">
     <div class="card-title">Odd First Digit</div>
     <div class="card-copy">
                 <p>A 4-digit PIN uses digits \(1\)-\(9\) without repetition.</p>
                 \[\dfrac{5\cdot8\cdot7\cdot6}{{}_9P_4} = \dfrac{5}{9}\]
                 </div>
 </div></div>
+<div class="formula-note">Ask first: am I counting arrangements, or just selections?</div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-9b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Counting-Based Probability</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A jar contains \(5\) red marbles and \(4\) blue marbles. If \(3\) marbles are chosen at random, what is the probability that exactly \(2\) are red?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Order does not matter, so count both the favorable outcomes and the total outcomes with combinations.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[P(\text{exactly 2 red}) = \dfrac{\binom{5}{2}\binom{4}{1}}{\binom{9}{3}} = \dfrac{40}{84} = \dfrac{10}{21}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="slide grid-bg" id="slide-10">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
@@ -1117,6 +1296,58 @@
                 \[1 - \dfrac{3}{36} = \dfrac{11}{12}\]
                 </div>
 </div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-10b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Complement Rule</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A jar contains \(5\) blue marbles and \(3\) yellow marbles. If \(2\) marbles are chosen, what is the probability that at least one is yellow?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">"At least one yellow" is easier to find by subtracting the probability of the complement event "both marbles are blue."</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[P(\text{at least one yellow}) = 1 - \dfrac{\binom{5}{2}}{\binom{8}{2}} = 1 - \dfrac{10}{28} = \dfrac{9}{14}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="slide grid-bg" id="slide-11">
+            <div class="slide-header">
+                <div class="ref-label">Review</div>
+                <div class="slide-title">Can You Now...?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Use this checklist to decide whether you are choosing the right probability tool before you start calculating.</div>
+<div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Define the Situation</div>
+    <div class="card-copy">Identify the experiment, sample space, event, and whether the question is asking for theoretical or experimental probability.</div>
+</div><div class="info-card green">
+    <div class="card-title">Choose Addition</div>
+    <div class="card-copy">Recognize when <strong>or</strong> means an addition rule problem and decide whether there is overlap.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Choose Multiplication</div>
+    <div class="card-copy">Recognize when <strong>and</strong> means a multiplication rule problem and decide whether the events are independent or dependent.</div>
+</div><div class="info-card teal">
+    <div class="card-title">Count Outcomes</div>
+    <div class="card-copy">Use favorable over total, with permutations or combinations, when outcomes come from arrangements or selections.</div>
+</div><div class="info-card green">
+    <div class="card-title">Use a Complement</div>
+    <div class="card-copy">Recognize when "at least one" or a difficult direct count should become \(1 - P(\text{complement})\).</div>
+</div><div class="info-card orange">
+    <div class="card-title">Explain the Rule Choice</div>
+    <div class="card-copy">Say why a problem is addition, multiplication, counting-based, or complement before writing the formula.</div>
+</div></div>
+<div class="formula-note">If an answer is wrong, check the rule choice first. In probability, that is where most errors start.</div>
             </div>
         </section>
 </div>
@@ -1154,7 +1385,17 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Basics', slideId: 'slide-1' },
+                { label: 'Addition', slideId: 'slide-3' },
+                { label: 'Multiplication', slideId: 'slide-5' },
+                { label: 'Counting', slideId: 'slide-9' },
+                { label: 'Complement', slideId: 'slide-10' },
+                { label: 'Review', slideId: 'slide-11' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1173,9 +1414,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1251,7 +1525,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });

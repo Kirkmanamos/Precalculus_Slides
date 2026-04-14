@@ -646,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -688,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -735,7 +790,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
@@ -747,10 +802,20 @@
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -1090,7 +1155,7 @@
     </div>
 </section>
 
-<section class="slide grid-bg" id="slide-9" data-steps="1">
+<section class="slide grid-bg" id="slide-9" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Finding a Specific Term</div>
@@ -1099,6 +1164,12 @@
         <div class="problem-statement">Find the 3rd term of \((2x + 1)^7\).</div>
         <div class="steps-area">
             <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">The 3rd term means \(r = 2\), because the general term is \(T_{r+1}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[T_3 = \binom{7}{2}(2x)^5(1)^2 = 21 \cdot 32x^5 = 672x^5\]</div>
@@ -1179,6 +1250,35 @@
         </div>
     </div>
 </section>
+<section class="slide grid-bg" id="slide-12">
+            <div class="slide-header">
+                <div class="ref-label">Review</div>
+                <div class="slide-title">Can You Now...?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Use this checklist to make sure you are choosing the right binomial-theorem move before you expand or isolate a term.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Spot the Pattern</div>
+    <div class="card-copy">Recognize that \((a+b)^n\) has \(n+1\) terms, symmetric coefficients, and exponents that move in opposite directions.</div>
+</div><div class="info-card green">
+    <div class="card-title">Use Pascal or Theorem</div>
+    <div class="card-copy">Choose Pascal's Triangle for small full expansions and the Binomial Theorem when you need a general or specific-term formula.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Track the Exponents</div>
+    <div class="card-copy">Check that the exponent on the first factor decreases while the exponent on the second factor increases.</div>
+</div><div class="info-card teal">
+    <div class="card-title">Match Term Number to \(r\)</div>
+    <div class="card-copy">For the \(k\)th term, use \(r = k-1\) in \(T_{r+1} = \binom{n}{r}a^{n-r}b^r\).</div>
+</div><div class="info-card green">
+    <div class="card-title">Separate Coefficients and Variables</div>
+    <div class="card-copy">Simplify the numerical coefficient and the variable powers in separate steps to avoid sign and exponent mistakes.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Target the Right Power</div>
+    <div class="card-copy">For coefficient questions, match the required exponent first, then compute only that one term.</div>
+</div></div>
+                <div class="formula-note">Most errors in these problems come from using the wrong \(r\) or missing a negative sign.</div>
+            </div>
+        </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1214,7 +1314,17 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Patterns', slideId: 'slide-1' },
+                { label: 'Pascal', slideId: 'slide-2' },
+                { label: 'Theorem', slideId: 'slide-4' },
+                { label: 'Terms', slideId: 'slide-7' },
+                { label: 'Coeffs', slideId: 'slide-10' },
+                { label: 'Review', slideId: 'slide-12' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1233,9 +1343,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1311,7 +1454,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });

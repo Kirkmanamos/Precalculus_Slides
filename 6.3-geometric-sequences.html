@@ -646,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -688,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -735,21 +790,32 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -844,6 +910,10 @@
             <div class="info-card green">
                 <div class="card-title">Ratio Can Be Negative</div>
                 <div class="card-copy">When \(r < 0\), the terms <strong>alternate in sign</strong>.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Growth vs. Decay</div>
+                <div class="card-copy">If \(|r| > 1\), the terms grow in size. If \(0 < |r| < 1\), the terms shrink toward \(0\).</div>
             </div>
         </div>
     </div>
@@ -969,7 +1039,7 @@
 </section>
 
 <!-- NEW: Your Turn after Ex 3 -->
-<section class="slide grid-bg" id="slide-6" data-steps="1">
+<section class="slide grid-bg" id="slide-6" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Finding \(a_1\) from a Later Term</div>
@@ -978,6 +1048,12 @@
         <div class="problem-statement">A geometric sequence has \(a_5 = 162\) and \(r = 3\). Find \(a_1\) and write the explicit formula for \(a_n\).</div>
         <div class="steps-area">
             <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Use \(a_5 = a_1r^4\), not \(a_1r^5\). The exponent is always one less than the term number.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[a_1 = \frac{162}{3^4} = \frac{162}{81} = 2, \qquad a_n = 2 \cdot 3^{\,n-1}\]</div>
@@ -1299,6 +1375,35 @@
         </div>
     </div>
 </section>
+<section class="slide grid-bg" id="slide-15">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to decide which geometric-sequence idea belongs in a problem before you start solving it.</div>
+        <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Recognize the Ratio</div>
+    <div class="card-copy">Check whether consecutive terms have a constant ratio and identify whether the sequence grows, decays, or alternates signs.</div>
+</div><div class="info-card green">
+    <div class="card-title">Write the nth Term</div>
+    <div class="card-copy">Use \(a_n = a_1r^{n-1}\) and remember that the exponent is one less than the term number.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Work Backward for \(a_1\)</div>
+    <div class="card-copy">Use a later term and the ratio to solve for \(a_1\) before writing the explicit rule.</div>
+</div><div class="info-card teal">
+    <div class="card-title">Find Geometric Means</div>
+    <div class="card-copy">Build the full sequence length first so you know how many equal ratio jumps are needed.</div>
+</div><div class="info-card green">
+    <div class="card-title">Choose the Right Sum Formula</div>
+    <div class="card-copy">Use the finite-sum formula for a fixed number of terms and the infinite-sum formula only when \(|r|<1\).</div>
+</div><div class="info-card orange">
+    <div class="card-title">Explain Convergence</div>
+    <div class="card-copy">State why an infinite series converges or diverges before you compute its sum.</div>
+</div></div>
+        <div class="formula-note">If an infinite geometric series does not satisfy \(|r|<1\), stop there: it has no finite sum.</div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1334,7 +1439,17 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Basics', slideId: 'slide-1' },
+                { label: 'Nth Term', slideId: 'slide-3' },
+                { label: 'Means', slideId: 'slide-7' },
+                { label: 'Series', slideId: 'slide-8' },
+                { label: 'Infinite', slideId: 'slide-12' },
+                { label: 'Review', slideId: 'slide-15' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1353,9 +1468,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1431,7 +1579,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });

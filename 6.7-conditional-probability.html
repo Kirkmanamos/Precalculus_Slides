@@ -646,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -688,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -735,7 +790,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
@@ -747,10 +802,20 @@
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -812,6 +877,29 @@
     <div class="card-title">Intersection First</div>
     <div class="card-copy">Find the overlap for the numerator, then divide by the restricted total.</div>
 </div></div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-1b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">What "Given" Does to the Sample Space</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">The phrase <strong>given that</strong> tells you to zoom in on a smaller sample space before you count anything.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Step 1: Restrict</div>
+    <div class="card-copy">Keep only the outcomes that satisfy the given condition \(B\). Everything outside \(B\) is ignored.</div>
+</div><div class="info-card green">
+    <div class="card-title">Step 2: Count the Overlap</div>
+    <div class="card-copy">Inside that restricted sample space, count how many outcomes also satisfy event \(A\).</div>
+</div><div class="info-card orange">
+    <div class="card-title">Step 3: Form the Ratio</div>
+    <div class="card-copy">That is why \(P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}\): overlap over restricted total.</div>
+</div></div>
+                <div class="note-box navy">
+                    <div class="note-title">Student Translation</div>
+                    <div class="note-copy">\[P(\text{bus}\mid \text{9th}) = \dfrac{\text{9th graders who ride the bus}}{\text{all 9th graders}}\]</div>
+                </div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-2" data-steps="4">
@@ -1075,7 +1163,7 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-7" data-steps="1">
+<section class="slide grid-bg" id="slide-7" data-steps="2">
             <div class="slide-header">
                 <div class="practice-label">Your Turn</div>
                 <div class="slide-title">Tree Diagram Practice</div>
@@ -1084,6 +1172,12 @@
                 <div class="problem-statement">A factory has two machines. Machine A produces \(60\%\) of all items and Machine B produces \(40\%\). Machine A has a \(5\%\) defect rate and Machine B has a \(3\%\) defect rate. If an item is found to be defective, what is the probability it came from Machine A?</div>
                 <div class="steps-area">
                     <div class="step" id="slide-7-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Hint</div>
+                            <div class="step-copy">Compute the two <strong>defective</strong> branch probabilities first. Then divide the Machine A defective branch by the total defective probability.</div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-7-step-1">
                         <div class="step-box dark">
                             <div class="step-label">Answer</div>
                             <div class="step-math">
@@ -1165,6 +1259,35 @@
                 </div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-9">
+            <div class="slide-header">
+                <div class="ref-label">Review</div>
+                <div class="slide-title">Can You Now...?</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">Use this checklist to make sure you are restricting the sample space correctly before you calculate.</div>
+                <div class="cards-grid"><div class="info-card teal">
+    <div class="card-title">Read "Given" Correctly</div>
+    <div class="card-copy">Translate \(P(A\mid B)\) as "the probability of \(A\), knowing \(B\) already happened."</div>
+</div><div class="info-card green">
+    <div class="card-title">Restrict the Denominator</div>
+    <div class="card-copy">Use only the outcomes inside the given event for the denominator.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Find the Overlap</div>
+    <div class="card-copy">Use the intersection \(A \cap B\) for the numerator when both conditions must be true.</div>
+</div><div class="info-card teal">
+    <div class="card-title">Use the Right Representation</div>
+    <div class="card-copy">Read the data from a table, Venn diagram, or tree diagram without changing the conditional idea.</div>
+</div><div class="info-card green">
+    <div class="card-title">Compare Branches Carefully</div>
+    <div class="card-copy">In tree problems, compare the joint outcomes that match the given condition before dividing.</div>
+</div><div class="info-card orange">
+    <div class="card-title">Explain the Restriction</div>
+    <div class="card-copy">Say out loud what the new sample space is. If you can name it, you can usually compute it.</div>
+</div></div>
+                <div class="formula-note">Most conditional-probability errors happen because the denominator never got restricted.</div>
+            </div>
+        </section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1200,7 +1323,16 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Basics', slideId: 'slide-1' },
+                { label: 'Tables', slideId: 'slide-2' },
+                { label: 'Venn', slideId: 'slide-4' },
+                { label: 'Trees', slideId: 'slide-6' },
+                { label: 'Review', slideId: 'slide-9' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1219,9 +1351,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1297,7 +1462,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });
