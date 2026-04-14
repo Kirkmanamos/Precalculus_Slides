@@ -168,6 +168,7 @@
 
     .example-label,
     .concept-label,
+    .practice-label,
     .ref-label {
         font-size: 0.6em;
         font-weight: 700;
@@ -645,9 +646,64 @@
         z-index: 100;
     }
 
+    .slide-section-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.9rem;
+        flex-shrink: 0;
+    }
+
+    .slide-section-chip {
+        border: none;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.84);
+        border: 1px solid rgba(148,163,184,0.34);
+        color: var(--text-muted);
+        font-family: inherit;
+        font-size: 0.48em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        padding: 0.52em 0.74em;
+    }
+
+    .slide-section-chip:hover {
+        background: #e2e8f0;
+        color: var(--navy);
+        transform: translateY(-1px);
+    }
+
+    .slide-section-chip.active {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+    }
+
+    .title-slide .slide-section-chip {
+        background: rgba(255,255,255,0.1);
+        border-color: rgba(255,255,255,0.2);
+        color: #dbeafe;
+    }
+
+    .title-slide .slide-section-chip:hover {
+        background: rgba(255,255,255,0.16);
+        color: white;
+    }
+
+    .title-slide .slide-section-chip.active {
+        background: #60a5fa;
+        border-color: #60a5fa;
+        color: white;
+    }
+
     .click-hint {
         position: fixed;
-        bottom: 1.5rem;
+        bottom: 4.55rem;
         left: 50%;
         transform: translateX(-50%);
         font-size: 0.45em;
@@ -687,7 +743,7 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom));
         }
     }
 
@@ -734,21 +790,32 @@
 
         .steps-area,
         .slide-body.top-layout {
-            padding-bottom: calc(86px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
         }
 
         .example-label,
         .concept-label,
+        .practice-label,
         .ref-label {
             font-size: 0.52em !important;
             padding: 0.22em 0.6em !important;
         }
 
         .click-hint {
-            bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+            bottom: calc(72px + env(safe-area-inset-bottom)) !important;
             font-size: 0.5em !important;
             max-width: 92vw;
             text-align: center;
+        }
+
+        .slide-section-nav {
+            gap: 0.26rem;
+            margin-top: 0.7rem;
+        }
+
+        .slide-section-chip {
+            font-size: 0.52em;
+            padding: 0.54em 0.68em;
         }
 
         .nav-dots {
@@ -833,14 +900,82 @@
                 </tbody>
             </table>
         </div>
-        <div class="cards-grid">
-            <div class="info-card teal">
-                <div class="card-title">Linear Connection</div>
-                <div class="card-copy">An arithmetic sequence behaves like a <strong>linear function</strong>. The common difference \(d\) plays the role of the <strong>slope</strong>.</div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 1B: CONCEPT — Arithmetic as Linear Growth ==================== -->
+<section class="slide grid-bg" id="slide-1b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Arithmetic as Linear Growth</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">An arithmetic sequence behaves like a <strong>linear function</strong>: when the input \(n\) goes up by \(1\), the output \(a_n\) changes by the same amount each time.</div>
+        <div class="two-col">
+            <div class="col">
+                <div class="table-shell">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>\(n\)</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>\(a_n\)</td><td>4</td><td>9</td><td>14</td><td>19</td><td>24</td></tr>
+                            <tr><td>change</td><td>--</td><td>\(+5\)</td><td>\(+5\)</td><td>\(+5\)</td><td>\(+5\)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="info-card green">
-                <div class="card-title">Test for Arithmetic</div>
-                <div class="card-copy">A sequence is arithmetic if and only if \(a_n - a_{n-1}\) is the same for every pair of consecutive terms.</div>
+            <div class="col">
+                <div class="stack">
+                    <div class="info-card teal">
+                        <div class="card-title">Slope Idea</div>
+                        <div class="card-copy">For a linear function, slope measures “change in output per 1 step in input.” In an arithmetic sequence, that constant change is the <strong>common difference</strong> \(d\).</div>
+                    </div>
+                    <div class="info-card green">
+                        <div class="card-title">Why the nth-Term Formula Works</div>
+                        <div class="card-copy">Start at \(a_1\). To reach term \(n\), you make exactly \(n-1\) equal jumps of size \(d\), so
+                        \[a_n = a_1 + (n-1)d\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="formula-note">Self-check: if the consecutive differences stay constant, the sequence is arithmetic.</div>
+    </div>
+</section>
+
+<!-- ==================== SLIDE 1C: YOUR TURN — Check for Arithmetic ==================== -->
+<section class="slide grid-bg" id="slide-1c" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Is It Arithmetic?</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Decide whether each sequence is arithmetic. If it is, state the common difference.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-1c-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>A: \(5,\ 9,\ 13,\ 17,\ \dots\)</li>
+                            <li>B: \(2,\ 4,\ 8,\ 16,\ \dots\)</li>
+                            <li>C: \(12,\ 7,\ 2,\ {-3},\ \dots\)</li>
+                        </ul>
+                        Subtract consecutive terms. If the difference stays the same, the sequence is arithmetic.
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-1c-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>A is arithmetic with \(d = 4\).</li>
+                            <li>B is <strong>not</strong> arithmetic because the differences change.</li>
+                            <li>C is arithmetic with \(d = -5\).</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -879,6 +1014,10 @@
             <div class="info-card teal">
                 <div class="card-title">Which sum formula?</div>
                 <div class="card-copy"><strong>Know the last term?</strong> Use \(S_n = \dfrac{n}{2}(a_1 + a_n)\).<br><strong>Don't know it?</strong> Use \(S_n = \dfrac{n}{2}(2a_1 + (n{-}1)d)\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Why \((n-1)d\)?</div>
+                <div class="card-copy">The first term is already \(a_1\). From there, it takes \(n-1\) equal jumps of size \(d\) to reach \(a_n\).</div>
             </div>
         </div>
     </div>
@@ -921,6 +1060,31 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 3B: YOUR TURN — Practice Explicit Formula ==================== -->
+<section class="slide grid-bg" id="slide-3b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Write an Explicit Formula</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an explicit formula for the arithmetic sequence with first term \(14\) and common difference \(-3\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">Start with \(a_n = a_1 + (n-1)d\). Substitute \(a_1 = 14\) and \(d = -3\), then simplify.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[a_n = 14 + (n-1)(-3) = 17 - 3n\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 4: EXAMPLE 2 — Using Two Known Terms ==================== -->
 <section class="slide grid-bg" id="slide-4" data-steps="3">
     <div class="slide-header">
@@ -955,8 +1119,46 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 4B: EXAMPLE 2 — Alternative Method ==================== -->
+<section class="slide grid-bg" id="slide-4b" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Alternative Method: Use Two Equations</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the explicit formula with the given terms \(a_4 = 24\) and \(a_{13} = 87\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Write Two Equations</div>
+                    <div class="step-math">\[24 = a_1 + 3d,\qquad 87 = a_1 + 12d\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4b-step-1">
+                <div class="step-box">
+                    <div class="step-label">Subtract to Solve for \(d\)</div>
+                    <div class="step-math">\[87 - 24 = (a_1 + 12d) - (a_1 + 3d)\Rightarrow 63 = 9d \Rightarrow d = 7\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4b-step-2">
+                <div class="step-box">
+                    <div class="step-label">Find the First Term</div>
+                    <div class="step-math">\[24 = a_1 + 3(7)\Rightarrow 24 = a_1 + 21\Rightarrow a_1 = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4b-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Same Sequence</div>
+                    <div class="step-math">\[3,\ 10,\ 17,\ 24,\ 31\]</div>
+                    <div class="step-copy" style="text-align:center; margin-top:0.25em;">This method is useful when you are given two specific terms and want an equation-based approach.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 5: YOUR TURN — Practice Two Known Terms (NEW) ==================== -->
-<section class="slide grid-bg" id="slide-5" data-steps="1">
+<section class="slide grid-bg" id="slide-5" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Two Known Terms</div>
@@ -965,6 +1167,12 @@
         <div class="problem-statement">The 3rd term of an arithmetic sequence is \(10\) and the 7th term is \(26\). Find \(a_1\) and \(d\).</div>
         <div class="steps-area">
             <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">First find the common difference by comparing term numbers and term values. Then back up from the 3rd term to the 1st term.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[d = \frac{26-10}{7-3} = 4,\qquad a_1 = 10 - 2(4) = 2\]</div>
@@ -1034,6 +1242,45 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 7B: EXAMPLE 3 — Alternative Means Method ==================== -->
+<section class="slide grid-bg" id="slide-7b" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Alternative Method: Use Averages</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Insert three arithmetic means between \(21\) and \(45\) by using the idea of a mean.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Find the Middle Mean First</div>
+                    <div class="step-math">\[\frac{21+45}{2} = 33\]</div>
+                    <div class="step-copy">With five total terms, there is one middle term halfway between the endpoints.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7b-step-1">
+                <div class="step-box">
+                    <div class="step-label">Average the Left Pair</div>
+                    <div class="step-math">\[\frac{21+33}{2} = 27\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7b-step-2">
+                <div class="step-box">
+                    <div class="step-label">Average the Right Pair</div>
+                    <div class="step-math">\[\frac{33+45}{2} = 39\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7b-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Same Means</div>
+                    <div class="step-math">\[21,\ 27,\ 33,\ 39,\ 45\]</div>
+                    <div class="step-copy" style="text-align:center; margin-top:0.25em;">This method works nicely here because there is a single middle term.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 8: CONCEPT — Finite Arithmetic Series (+ Gauss SVG) ==================== -->
 <section class="slide grid-bg" id="slide-8">
     <div class="slide-header">
@@ -1073,6 +1320,35 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 8B: CONCEPT — Sequence vs Series ==================== -->
+<section class="slide grid-bg" id="slide-8b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Arithmetic Sequence vs. Arithmetic Series</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">An <strong>arithmetic sequence</strong> is a list of terms with a constant difference. An <strong>arithmetic series</strong> is the sum of those terms. A <strong>partial sum</strong> adds only the first \(n\) terms.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Sequence</div>
+                <div class="card-copy"><p>This is a list:</p>
+                \[7,\ 9.5,\ 12,\ 14.5,\ \dots\]</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Series</div>
+                <div class="card-copy"><p>This is a sum:</p>
+                \[7 + 9.5 + 12 + 14.5 + \dots\]</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Partial Sum</div>
+                <div class="card-copy"><p>\(S_{101}\) means:</p>
+                \[\text{the sum of the first 101 terms}\]</div>
+            </div>
+        </div>
+        <div class="formula-note">Self-check: the subscript in \(S_n\) tells how many terms are being added, not the value of the last term.</div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 9: EXAMPLE 4 — Finding a Large Partial Sum ==================== -->
 <section class="slide grid-bg" id="slide-9" data-steps="3">
     <div class="slide-header">
@@ -1084,9 +1360,10 @@
         <div class="steps-area">
             <div class="step" id="slide-9-step-0">
                 <div class="step-box teal">
-                    <div class="step-label">Identify the Sequence Data</div>
+                    <div class="step-label">Interpret the Question</div>
                     <div class="step-copy">
                         <ul>
+                            <li>\(S_{101}\) means add the <strong>first 101 terms</strong>.</li>
                             <li>\(a_1 = 7\)</li>
                             <li>\(d = 2.5\)</li>
                             <li>\(n = 101\)</li>
@@ -1157,6 +1434,31 @@
     </div>
 </section>
 
+<!-- ==================== SLIDE 10B: YOUR TURN — Practice Sigma Notation ==================== -->
+<section class="slide grid-bg" id="slide-10b" data-steps="2">
+    <div class="slide-header">
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Write a Sum in Sigma Notation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Express in summation notation: \(\displaystyle \frac{3}{2} + \frac{5}{6} + \frac{7}{10} + \frac{9}{14}\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Hint</div>
+                    <div class="step-copy">The numerators \(3, 5, 7, 9\) form one arithmetic sequence, and the denominators \(2, 6, 10, 14\) form another. Write each pattern in terms of \(k\), then choose the correct start and stop values.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10b-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\sum_{k=1}^{4}\frac{2k+1}{4k-2}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- ==================== SLIDE 11: EXAMPLE 6 — Arithmetic-Series Application (enhanced) ==================== -->
 <section class="slide grid-bg" id="slide-11" data-steps="5">
     <div class="slide-header">
@@ -1205,6 +1507,44 @@
         </div>
     </div>
 </section>
+
+<!-- ==================== SLIDE 12: REVIEW — Can You Now? ==================== -->
+<section class="slide grid-bg" id="slide-12">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to decide whether you can move on confidently or whether you should revisit one part of the lesson.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Recognize</div>
+                <div class="card-copy">Tell whether a sequence is arithmetic and identify the common difference \(d\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Write Rules</div>
+                <div class="card-copy">Use \(a_n = a_1 + (n-1)d\) to write an explicit formula or solve from two known terms.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Insert Means</div>
+                <div class="card-copy">Find arithmetic means either by equal jumps or by using averages when the structure allows it.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Distinguish</div>
+                <div class="card-copy">Explain the difference between an arithmetic <strong>sequence</strong>, an arithmetic <strong>series</strong>, and a <strong>partial sum</strong>.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Add Series</div>
+                <div class="card-copy">Choose the appropriate finite-sum formula and evaluate an arithmetic series accurately.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Use Sigma</div>
+                <div class="card-copy">Write or read finite sums in summation notation by identifying the pattern and the correct limits.</div>
+            </div>
+        </div>
+        <div class="formula-note">If one box feels weak, go back to that section and rework the hint-first practice before moving on.</div>
+    </div>
+</section>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
@@ -1240,7 +1580,17 @@
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Basics', slideId: 'slide-1' },
+                { label: 'Nth Term', slideId: 'slide-2' },
+                { label: 'Means', slideId: 'slide-6' },
+                { label: 'Series', slideId: 'slide-8' },
+                { label: 'Sigma', slideId: 'slide-10' },
+                { label: 'Review', slideId: 'slide-12' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1259,9 +1609,42 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
             const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
@@ -1337,7 +1720,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot')) {
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
                     this._next();
                 }
             });
