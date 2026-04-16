@@ -1088,7 +1088,7 @@
 </section>
 
 <!-- ==================== SLIDE 5: EXAMPLE 2 — Writing an Explicit Rule ==================== -->
-<section class="slide grid-bg" id="slide-5" data-steps="3">
+<section class="slide grid-bg" id="slide-5" data-steps="5">
     <div class="slide-header">
         <div class="example-label">Example 2</div>
         <div class="slide-title">Writing an Explicit Rule</div>
@@ -1113,14 +1113,42 @@
             </div>
             <div class="step" id="slide-5-step-1">
                 <div class="step-box">
-                    <div class="step-label">Look for the Pattern</div>
+                    <div class="step-label">Check the First Differences</div>
+                    <div class="table-shell">
+                        <table class="data-table">
+                            <thead>
+                                <tr><th></th><th>1</th><th></th><th>3</th><th></th><th>5</th><th></th><th>7</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td style="font-weight:700; color:var(--blue-accent);">1st Diff</td><td></td><td style="color:var(--blue-accent); font-weight:600;">+2</td><td></td><td style="color:var(--blue-accent); font-weight:600;">+2</td><td></td><td style="color:var(--blue-accent); font-weight:600;">+2</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div class="step-math">
-                        \[\text{Each term is }1\text{ less than twice its position.}\]
-                        <div class="annotation">\(2(1)-1 = 1,\ 2(2)-1 = 3,\ 2(3)-1 = 5\)</div>
+                        \[\text{Constant first differences} \;\Rightarrow\; a_n = dn + c\]
+                        <div class="annotation">Constant 1st differences mean the rule is linear in \(n\).</div>
                     </div>
                 </div>
             </div>
             <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Use the Common Difference as the Coefficient</div>
+                    <div class="step-math">
+                        \[d = 2 \;\Rightarrow\; a_n = 2n + c\]
+                        <div class="annotation">The common difference \(d\) becomes the coefficient on \(n\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Solve for the Constant Term</div>
+                    <div class="step-math">
+                        \[a_1 = 2(1) + c \;\Rightarrow\; 1 = 2 + c \;\Rightarrow\; c = -1\]
+                        <div class="annotation">Plug in any known term — the first is easiest — and solve for \(c\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
                 <div class="step-box dark">
                     <div class="step-label">Write the Explicit Rule</div>
                     <div class="step-math">\[a_n = 2n - 1\]</div>
