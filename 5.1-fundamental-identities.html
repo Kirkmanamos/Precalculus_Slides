@@ -79,10 +79,15 @@
             justify-content: flex-start;
             overflow: hidden;
         }
-        .slide-body.ref-layout,
-        .slide-body.launch-stack,
-        .slide-body:has(.strategy-grid) {
+        .slide-body.launch-stack {
             padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+        }
+        .slide-body:has(.strategy-grid) {
+            justify-content: flex-start;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
+            scroll-padding-bottom: calc(var(--bottom-ui-stack-height) + env(safe-area-inset-bottom));
         }
 
         .title-slide {
@@ -304,8 +309,9 @@
         }
         .activity-grid {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(9.2rem, 1fr));
             gap: 0.65rem;
+            align-items: start;
         }
         .activity-card {
             background: white;
@@ -313,6 +319,7 @@
             border-left: 5px solid var(--teal-accent);
             border-radius: 12px;
             padding: 0.52em 0.8em;
+            min-width: 0;
         }
         .activity-card:nth-child(2n) { border-left-color: var(--blue-accent); }
         .activity-card:nth-child(3n) { border-left-color: var(--green-accent); }
@@ -331,15 +338,21 @@
         }
         .activity-math .katex-display { margin: 0; }
 
-        .ref-layout {
+        .slide-body.ref-layout {
             justify-content: flex-start;
-            overflow: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.6rem;
+            padding-bottom: 0.35rem;
+            scroll-padding-bottom: 1rem;
         }
         .ref-columns {
             display: grid;
-            grid-template-columns: 1.05fr 0.9fr 0.9fr 1.05fr;
-            gap: 0.6rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+            align-items: start;
             flex: 1;
+            min-width: 0;
         }
         .ref-card {
             display: flex;
@@ -348,7 +361,9 @@
             border: 2px solid #dbeafe;
             border-radius: 12px;
             overflow: hidden;
+            min-width: 0;
         }
+        .ref-card.cofunction-card { grid-column: 1 / -1; }
         .ref-card-title {
             background: var(--navy);
             color: white;
@@ -364,10 +379,15 @@
             flex-direction: column;
             gap: 0.3rem;
             padding: 0.45em 0.5em 0.55em;
+            height: 100%;
         }
         .ref-stack {
             display: grid;
             gap: 0.3rem;
+        }
+        .ref-card.cofunction-card .ref-stack {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.35rem;
         }
         .ref-pair {
             display: grid;
@@ -392,14 +412,16 @@
 
         .parity-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
             gap: 0.75rem;
+            align-items: start;
         }
         .parity-panel {
             background: white;
             border: 2px solid #dbeafe;
             border-radius: 12px;
             overflow: hidden;
+            min-width: 0;
         }
         .parity-title {
             background: var(--navy);
@@ -426,8 +448,9 @@
 
         .strategy-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(12.2rem, 1fr));
             gap: 0.7rem;
+            align-items: start;
         }
         .strategy-card {
             background: white;
@@ -437,6 +460,7 @@
             display: flex;
             gap: 0.65em;
             align-items: flex-start;
+            min-width: 0;
         }
         .strategy-card.green { border-color: var(--green-accent); }
         .strategy-card.teal { border-color: var(--teal-accent); }
@@ -478,6 +502,7 @@
             font-weight: 600;
             text-align: center;
             margin-top: 0.8rem;
+            flex-shrink: 0;
         }
 
         .identity-dock {
@@ -633,9 +658,57 @@
             transition: width 0.4s ease;
             z-index: 100;
         }
+        .slide-section-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.9rem;
+            flex-shrink: 0;
+        }
+        .slide-section-chip {
+            border: none;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.84);
+            border: 1px solid rgba(148,163,184,0.34);
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.48em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            padding: 0.52em 0.74em;
+        }
+        .slide-section-chip:hover {
+            background: #e2e8f0;
+            color: var(--navy);
+            transform: translateY(-1px);
+        }
+        .slide-section-chip.active {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+        .title-slide .slide-section-chip {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #dbeafe;
+        }
+        .title-slide .slide-section-chip:hover {
+            background: rgba(255,255,255,0.16);
+            color: white;
+        }
+        .title-slide .slide-section-chip.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
+            color: white;
+        }
         .click-hint {
             position: fixed;
-            bottom: 1.5rem;
+            bottom: 4.55rem;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.45em;
@@ -730,10 +803,8 @@
             .strategy-grid {
                 grid-template-columns: 1fr;
             }
-            .ref-columns {
-                grid-template-columns: 1fr 1fr;
-                overflow-y: auto;
-                padding-right: 0.2rem;
+            .slide-body.ref-layout {
+                padding-bottom: 0.25rem;
             }
             .identity-dock {
                 left: 0.85rem;
@@ -750,6 +821,30 @@
             }
             .identity-panel {
                 width: min(17rem, calc(100vw - 1.7rem));
+            }
+            .slide-section-nav {
+                gap: 0.26rem;
+                margin-top: 0.7rem;
+            }
+            .slide-section-chip {
+                font-size: 0.52em;
+                padding: 0.54em 0.68em;
+            }
+            .click-hint {
+                bottom: calc(72px + env(safe-area-inset-bottom));
+            }
+        }
+
+        @media (max-width: 980px) {
+            .ref-columns {
+                grid-template-columns: 1fr;
+            }
+            .ref-card.cofunction-card {
+                grid-column: auto;
+            }
+            .ref-card.cofunction-card .ref-stack,
+            .ref-pair {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1000,7 +1095,7 @@
                     </div>
                 </div>
 
-                <div class="ref-card">
+                <div class="ref-card cofunction-card">
                     <div class="ref-card-title">Cofunction Identities</div>
                     <div class="ref-card-body">
                         <div class="ref-stack">
@@ -1054,6 +1149,49 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-3b">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Choosing a First Move</h2>
+        </div>
+        <div class="slide-body">
+            <div class="concept-box teal" style="margin-bottom:0.85rem;">
+                <p>When an identity problem looks messy, do not start rewriting at random. First ask which move will make the whole expression use fewer trig families or reveal an obvious algebra pattern.</p>
+            </div>
+            <div class="strategy-grid">
+                <div class="strategy-card">
+                    <div class="strategy-num">1</div>
+                    <div>
+                        <div class="strategy-title">Look for a common factor</div>
+                        <div class="strategy-desc">If every term shares a trig factor or a binomial pattern, factor first before rewriting anything else.</div>
+                    </div>
+                </div>
+                <div class="strategy-card green">
+                    <div class="strategy-num">2</div>
+                    <div>
+                        <div class="strategy-title">Make the terms match</div>
+                        <div class="strategy-desc">If the expression mixes \(\sin\) with \(\cos\), or \(\cot\) with \(\csc\), use a Pythagorean identity so more terms speak the same language.</div>
+                    </div>
+                </div>
+                <div class="strategy-card teal">
+                    <div class="strategy-num">3</div>
+                    <div>
+                        <div class="strategy-title">Treat repeated structure like algebra</div>
+                        <div class="strategy-desc">If one trig function repeats the way a variable would in a quadratic, use substitution or factoring structure.</div>
+                    </div>
+                </div>
+                <div class="strategy-card orange">
+                    <div class="strategy-num">4</div>
+                    <div>
+                        <div class="strategy-title">Rewrite reciprocals when they hide cancellation</div>
+                        <div class="strategy-desc">Convert \(\sec\), \(\csc\), \(\tan\), or \(\cot\) when that creates a shared denominator or exposes a simpler product.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-note">A strong first move usually makes the expression more uniform before you simplify it.</div>
         </div>
     </section>
 
@@ -1312,55 +1450,55 @@
 
     <section class="slide grid-bg" id="slide-11">
         <div class="slide-header">
-            <span class="concept-label">Summary</span>
-            <h2 class="slide-title">Strategies for Simplifying</h2>
+            <span class="ref-label">Review</span>
+            <h2 class="slide-title">Can You Now...?</h2>
         </div>
         <div class="slide-body">
             <div class="strategy-grid">
                 <div class="strategy-card">
                     <div class="strategy-num">1</div>
                     <div>
-                        <div class="strategy-title">Factor out a common term</div>
-                        <div class="strategy-desc">Look for a shared factor across all terms before choosing an identity. Example 1 and Example 5 start that way.</div>
+                        <div class="strategy-title">Recognize a first move</div>
+                        <div class="strategy-desc">Decide whether factoring, rewriting in sine and cosine, or a Pythagorean identity will reduce the expression fastest.</div>
                     </div>
                 </div>
                 <div class="strategy-card green">
                     <div class="strategy-num">2</div>
                     <div>
-                        <div class="strategy-title">Apply a Pythagorean identity</div>
-                        <div class="strategy-desc">Use \(\sin^2 x + \cos^2 x = 1\) and its rearrangements to replace one squared trig expression with another.</div>
+                        <div class="strategy-title">Use a Pythagorean identity</div>
+                        <div class="strategy-desc">Rewrite one squared trig function in terms of another when that creates a common factor or a simpler expression.</div>
                     </div>
                 </div>
                 <div class="strategy-card teal">
                     <div class="strategy-num">3</div>
                     <div>
-                        <div class="strategy-title">Rewrite in sine and cosine</div>
-                        <div class="strategy-desc">Convert \(\sec\), \(\csc\), \(\tan\), and \(\cot\) when that reveals cancellation or common structure.</div>
+                        <div class="strategy-title">Rewrite with reciprocal or quotient identities</div>
+                        <div class="strategy-desc">Convert \(\sec\), \(\csc\), \(\tan\), and \(\cot\) when that reveals cancellation or a shared denominator.</div>
                     </div>
                 </div>
                 <div class="strategy-card orange">
                     <div class="strategy-num">4</div>
                     <div>
-                        <div class="strategy-title">Use \(u\)-substitution for factoring</div>
-                        <div class="strategy-desc">If a trig expression repeats, rename it first so the algebra becomes a familiar polynomial.</div>
+                        <div class="strategy-title">Factor after rewriting</div>
+                        <div class="strategy-desc">If the expression cannot factor at first, rewrite it so every term uses the same trig function and then factor.</div>
                     </div>
                 </div>
                 <div class="strategy-card purple">
                     <div class="strategy-num">5</div>
                     <div>
-                        <div class="strategy-title">Factor a difference of squares</div>
-                        <div class="strategy-desc">Expressions like \(1 - \cos^2 x\) can be factored further when you need a cancellation target.</div>
+                        <div class="strategy-title">Use substitution or structure</div>
+                        <div class="strategy-desc">Treat repeated trig expressions like algebraic variables when that makes a factoring pattern easier to see.</div>
                     </div>
                 </div>
                 <div class="strategy-card">
                     <div class="strategy-num">6</div>
                     <div>
-                        <div class="strategy-title">Look for the first move that reduces complexity</div>
-                        <div class="strategy-desc">Most problems use more than one idea, so the best first step is the one that makes the expression simpler.</div>
+                        <div class="strategy-title">Explain why the answer is simpler</div>
+                        <div class="strategy-desc">A successful identity move should leave you with fewer functions, fewer operations, or a cleaner factored form.</div>
                     </div>
                 </div>
             </div>
-            <div class="summary-note">Most problems combine two or more of these moves. The hard part is spotting the first productive rewrite.</div>
+            <div class="summary-note">Most errors in this lesson come from choosing an unhelpful first step. Pause and classify the expression before you manipulate it.</div>
         </div>
     </section>
 
@@ -1402,7 +1540,17 @@
             this.clickHint = document.getElementById('clickHint');
             this.identityDock = document.getElementById('identityDock');
             this.identityWidgets = Array.from(document.querySelectorAll('[data-identity-widget]'));
+            this.firstDockSlideIndex = this.slides.findIndex(slide => slide.id === 'slide-4');
+            this.sectionTargets = [
+                { label: 'Launch', slideId: 'slide-1' },
+                { label: 'Reference', slideId: 'slide-2' },
+                { label: 'Strategy', slideId: 'slide-3b' },
+                { label: 'Factor', slideId: 'slide-6' },
+                { label: 'Substitution', slideId: 'slide-10' },
+                { label: 'Review', slideId: 'slide-11' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._bindIdentityDock();
             this._activate(0);
             this._bindEvents();
@@ -1422,16 +1570,49 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', e => {
+                        e.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         _sync() {
             this.dots.forEach((dot, i) => dot.classList.toggle('active', i === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0);
             const cur = parseInt(slide.dataset.currentStep ?? -1);
             this.clickHint.textContent =
                 cur < max - 1 ? 'click to advance'
                 : this.current < this.total - 1 ? 'click for next slide' : '';
-            const showDock = this.current >= 4;
+            const showDock = this.firstDockSlideIndex !== -1 && this.current >= this.firstDockSlideIndex;
             this.identityDock.classList.toggle('is-hidden', !showDock);
             if (!showDock) this._closeIdentityPanels();
         }
@@ -1531,6 +1712,7 @@
             });
 
             document.addEventListener('click', e => {
+                if (e.target.closest('.slide-section-nav')) return;
                 if (e.target.closest('.nav-dot') || e.target.closest('.identity-dock')) return;
                 if (this._hasOpenIdentityPanel()) {
                     this._closeIdentityPanels();

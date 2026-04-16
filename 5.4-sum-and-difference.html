@@ -171,7 +171,8 @@
 
         .example-label,
         .concept-label,
-        .ref-label {
+        .ref-label,
+        .practice-label {
             font-size: 0.6em;
             font-weight: 700;
             padding: 0.2em 0.75em;
@@ -184,6 +185,7 @@
         .example-label { background: var(--green-accent); }
         .concept-label { background: var(--teal-accent); }
         .ref-label { background: var(--navy); }
+        .practice-label { background: var(--orange-accent); }
 
         /* ============================================================
            SINGLE-CARD CONTENT SLIDES
@@ -219,6 +221,13 @@
 
         .content-card strong {
             color: var(--navy);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.75rem;
+            align-items: start;
         }
 
         .reference-card {
@@ -460,54 +469,63 @@
             z-index: 100;
         }
 
-        .jump-nav {
-            position: fixed;
-            right: 1.2rem;
-            bottom: 1.2rem;
-            z-index: 100;
-            display: block;
-            max-width: min(12rem, calc(100vw - 2.4rem));
-        }
-
-        .jump-nav-title {
-            display: none;
-        }
-
-        .jump-links {
+        .slide-section-nav {
             display: flex;
             flex-wrap: wrap;
             gap: 0.35rem;
-            justify-content: flex-end;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0.9rem;
+            flex-shrink: 0;
         }
 
-        .jump-link {
-            border: 1px solid rgba(191, 219, 254, 0.65);
-            background: rgba(255, 255, 255, 0.62);
-            color: var(--navy);
+        .slide-section-chip {
+            border: 1px solid rgba(148,163,184,0.34);
+            background: rgba(255,255,255,0.84);
+            color: var(--text-muted);
             border-radius: 999px;
-            padding: 0.18em 0.54em;
-            font-size: 0.42em;
+            padding: 0.52em 0.74em;
+            font-size: 0.48em;
             font-weight: 700;
-            backdrop-filter: blur(8px);
+            font-family: inherit;
+            letter-spacing: 0.04em;
             cursor: pointer;
+            white-space: nowrap;
             transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
-        .jump-link:hover {
-            background: rgba(255, 255, 255, 0.82);
-            border-color: rgba(37, 99, 235, 0.75);
+        .slide-section-chip:hover {
+            background: #e2e8f0;
+            color: var(--navy);
             transform: translateY(-1px);
         }
 
-        .jump-link.active {
-            background: rgba(37, 99, 235, 0.82);
-            border-color: rgba(37, 99, 235, 0.9);
+        .slide-section-chip.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: white;
+        }
+
+        .title-slide .slide-section-chip {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #dbeafe;
+        }
+
+        .title-slide .slide-section-chip:hover {
+            background: rgba(255,255,255,0.16);
+            color: white;
+        }
+
+        .title-slide .slide-section-chip.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
             color: white;
         }
 
         .click-hint {
             position: fixed;
-            bottom: 1.5rem;
+            bottom: 4.55rem;
             left: 50%;
             transform: translateX(-50%);
             font-size: 0.45em;
@@ -562,7 +580,7 @@
             }
 
             .steps-area {
-                padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+                padding-bottom: calc(1.2rem + env(safe-area-inset-bottom)) !important;
             }
 
             .step-math {
@@ -595,22 +613,18 @@
                 display: none !important;
             }
 
-            .jump-nav {
-                right: 12px;
-                left: auto;
-                top: auto;
-                bottom: calc(42px + env(safe-area-inset-bottom));
-                max-width: none;
+            .slide-section-nav {
+                gap: 0.26rem;
+                margin-top: 0.7rem;
             }
 
-            .jump-links {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding-bottom: 2px;
+            .slide-section-chip {
+                font-size: 0.52em;
+                padding: 0.54em 0.68em;
             }
 
             .click-hint {
-                bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+                bottom: calc(72px + env(safe-area-inset-bottom)) !important;
                 font-size: 0.5em !important;
                 max-width: 92vw;
                 text-align: center;
@@ -638,10 +652,6 @@
 
 <div class="progress-bar" id="progressBar"></div>
 <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
-<nav class="jump-nav" id="exampleJumpNav" aria-label="Example navigation">
-    <div class="jump-nav-title">Jump to Example</div>
-    <div class="jump-links" id="exampleJumpLinks"></div>
-</nav>
 <div class="click-hint" id="clickHint">click to advance</div>
 
 <div class="slides-wrapper">
@@ -696,6 +706,30 @@
                 </div>
                 <div class="formula-note">For cosine and tangent, the sign in the denominator or second term flips relative to the sign inside the argument.</div>
             </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-2b">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Choosing the Correct Sign Pattern</h2>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Sine keeps the sign.</strong> In \(\sin(\alpha \pm \beta)\), the middle sign in the expanded formula matches the sign inside the parentheses.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Cosine flips the sign.</strong> In \(\cos(\alpha \pm \beta)\), the sign between the two products is the opposite of the sign inside the angle.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Tangent flips in the denominator.</strong> The top keeps the sign, but the denominator uses the opposite sign.</p>
+                </div>
+                <div class="content-card teal">
+                    <p><strong>Choose helpful angles.</strong> Rewrite the angle using special-angle sums or differences like \(45^\circ \pm 30^\circ\) or \(\frac{\pi}{3} \pm \frac{\pi}{4}\).</p>
+                </div>
+            </div>
+            <div class="formula-note">Student shortcut: sine same, cosine changes, tangent denominator changes.</div>
         </div>
     </section>
 
@@ -837,6 +871,37 @@
         </div>
     </section>
 
+    <section class="slide grid-bg" id="slide-5b" data-steps="2">
+        <div class="slide-header">
+            <span class="practice-label">Your Turn</span>
+            <h2 class="slide-title">Practice: Find the Exact Value</h2>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                \[\cos 75^\circ\]
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5b-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Hint</div>
+                        <div class="step-math">
+                            \[\cos 75^\circ = \cos(45^\circ + 30^\circ)\]
+                            <div class="annotation">Use the cosine sum identity and remember that cosine switches the sign between the two products.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5b-step-1">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">
+                            \[\cos 75^\circ = \cos45^\circ\cos30^\circ - \sin45^\circ\sin30^\circ = \dfrac{\sqrt{6} - \sqrt{2}}{4}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="slide grid-bg" id="slide-6" data-steps="5" data-current-step="-1" data-jump-label="Ex 4">
         <div class="slide-header">
             <span class="example-label">Example 4</span>
@@ -892,6 +957,27 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-6b">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Two Ways These Identities Are Used</h2>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Evaluate exact values.</strong> Break a non-special angle into special angles, then substitute known unit-circle values.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Use given trig values.</strong> Find any missing trig values first, including signs from the quadrant, before applying the identity.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Simplify to one function.</strong> If an expression already matches a sum or difference pattern, collapse it into a single trig function before evaluating.</p>
+                </div>
+            </div>
+            <div class="formula-note">If the expression already looks like \(\sin\alpha\cos\beta + \cos\alpha\sin\beta\), do not expand it. Recognize the pattern and compress it.</div>
         </div>
     </section>
 
@@ -1024,6 +1110,36 @@
         </div>
     </section>
 
+    <section class="slide grid-bg" id="slide-10">
+        <div class="slide-header">
+            <span class="ref-label">Review</span>
+            <h2 class="slide-title">Can You Now...?</h2>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Choose a useful angle split</strong> for exact-value problems, using special angles you already know.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Keep the sign pattern straight:</strong> sine keeps the sign, cosine flips the sign, tangent flips in the denominator.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Find missing trig values first</strong> when a problem gives only one trig ratio and a quadrant.</p>
+                </div>
+                <div class="content-card teal">
+                    <p><strong>Recognize an identity pattern already in expanded form</strong> so you can simplify to one function directly.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Explain why your method fits</strong> before computing: exact-value split, given-values substitution, or pattern recognition.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Check the final function value</strong> against quadrant signs or unit-circle values to see whether the answer is reasonable.</p>
+                </div>
+            </div>
+            <div class="formula-note">Most mistakes in this lesson come from the wrong sign pattern or from choosing an angle decomposition that does not use special angles.</div>
+        </div>
+    </section>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -1062,9 +1178,17 @@
             this.total = this.slides.length;
             this.progressBar = document.getElementById('progressBar');
             this.navDotsEl = document.getElementById('navDots');
-            this.exampleJumpLinksEl = document.getElementById('exampleJumpLinks');
             this.clickHint = document.getElementById('clickHint');
+            this.sectionTargets = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Reference', slideId: 'slide-2' },
+                { label: 'Exact Values', slideId: 'slide-3' },
+                { label: 'Given Values', slideId: 'slide-6' },
+                { label: 'Simplify', slideId: 'slide-7' },
+                { label: 'Review', slideId: 'slide-10' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._activate(0);
             this._bindEvents();
         }
@@ -1082,31 +1206,44 @@
             });
 
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
+        }
 
-            this.exampleJumpButtons = this.slides
-                .map((slide, index) => ({ slide, index }))
-                .filter(item => item.slide.dataset.jumpLabel)
-                .map(item => {
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
                     const button = document.createElement('button');
-                    button.className = 'jump-link';
-                    button.textContent = item.slide.dataset.jumpLabel;
-                    button.setAttribute('aria-label', `Jump to ${item.slide.dataset.jumpLabel}`);
-                    button.dataset.slideIndex = item.index;
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
                     button.addEventListener('click', event => {
                         event.stopPropagation();
-                        this._goTo(item.index);
+                        this._goTo(target.index);
                     });
-                    this.exampleJumpLinksEl.appendChild(button);
-                    return button;
+                    nav.appendChild(button);
+                    target.buttons.push(button);
                 });
+
+                slide.appendChild(nav);
+            });
         }
 
         _sync() {
             this.dots.forEach((dot, index) => dot.classList.toggle('active', index === this.current));
-            this.exampleJumpButtons.forEach(button => {
-                button.classList.toggle('active', Number(button.dataset.slideIndex) === this.current);
-            });
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
 
             const slide = this.slides[this.current];
             const max = parseInt(slide.dataset.steps || 0, 10);
@@ -1188,7 +1325,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot, .jump-nav, .jump-link')) this._next();
+                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) this._next();
             });
 
             let startX = 0;

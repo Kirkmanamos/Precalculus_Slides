@@ -116,13 +116,14 @@
         .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
 
         /* Tags / labels */
-        .example-label, .concept-label, .ref-label {
+        .example-label, .concept-label, .ref-label, .practice-label {
             font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
             border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
         }
         .example-label { background: var(--green-accent); }
         .concept-label { background: var(--teal-accent); }
         .ref-label     { background: var(--navy); }
+        .practice-label { background: var(--orange-accent); }
 
         /* ============================================================
            PROBLEM STATEMENT
@@ -165,6 +166,47 @@
             margin-top: 0.8rem; padding: 0.45em 1em;
             background: var(--orange-light); border-left: 4px solid var(--orange-accent);
             border-radius: 6px; flex-shrink: 0;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.75rem;
+            align-items: start;
+        }
+
+        .content-card {
+            background: rgba(248, 250, 252, 0.96);
+            border: 1px solid rgba(203, 213, 225, 0.86);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 12px;
+            padding: 0.72em 0.9em;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+        }
+
+        .content-card.teal {
+            background: var(--teal-light);
+            border-left-color: var(--teal-accent);
+        }
+
+        .content-card.green {
+            background: var(--green-light);
+            border-left-color: var(--green-accent);
+        }
+
+        .content-card.orange {
+            background: var(--orange-light);
+            border-left-color: var(--orange-accent);
+        }
+
+        .content-card p {
+            font-size: 0.74em;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .content-card p + p {
+            margin-top: 0.65em;
         }
 
         /* ============================================================
@@ -249,8 +291,63 @@
             background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
             transition: width 0.4s ease; z-index: 100;
         }
+
+        .slide-section-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .slide-section-chip {
+            border: none;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.84);
+            border: 1px solid rgba(148,163,184,0.34);
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.48em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            padding: 0.52em 0.74em;
+        }
+
+        .slide-section-chip:hover {
+            background: #e2e8f0;
+            color: var(--navy);
+            transform: translateY(-1px);
+        }
+
+        .slide-section-chip.active {
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+        }
+
+        .title-slide .slide-section-chip {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #dbeafe;
+        }
+
+        .title-slide .slide-section-chip:hover {
+            background: rgba(255,255,255,0.16);
+            color: white;
+        }
+
+        .title-slide .slide-section-chip.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
+            color: white;
+        }
         .click-hint {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+            position: fixed; bottom: 4.55rem; left: 50%; transform: translateX(-50%);
             font-size: 0.45em; color: rgba(100,116,139,0.6);
             letter-spacing: 0.1em; text-transform: uppercase;
             animation: pulse 2s ease-in-out infinite; z-index: 100;
@@ -513,7 +610,8 @@
 
   .example-label,
   .concept-label,
-  .ref-label {
+  .ref-label,
+  .practice-label {
     top: 10px !important;
     left: 12px !important;
     font-size: 0.52em !important;
@@ -522,10 +620,20 @@
   }
 
   .click-hint {
-    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    bottom: calc(72px + env(safe-area-inset-bottom)) !important;
     font-size: 0.5em !important;
     max-width: 92vw;
     text-align: center;
+  }
+
+  .slide-section-nav {
+    gap: 0.26rem;
+    margin-top: 0.7rem;
+  }
+
+  .slide-section-chip {
+    font-size: 0.52em;
+    padding: 0.54em 0.68em;
   }
 
   .ref-grid,
@@ -690,6 +798,30 @@
                 </div>
             </div>
             <p class="formula-note">Derived from the Sum Identities — let β = α in sin(α+β), cos(α+β), tan(α+β)</p>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-1b">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Choosing the Best Double-Angle Form</div>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Use \(\sin(2\alpha)=2\sin\alpha\cos\alpha\)</strong> when both sine and cosine are known or easy to find.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Use \(\cos(2\alpha)=2\cos^2\alpha-1\)</strong> when cosine is given and squaring it is the cleanest move.</p>
+                </div>
+                <div class="content-card orange">
+                    <p><strong>Use \(\cos(2\alpha)=1-2\sin^2\alpha\)</strong> when sine is given and you do not want to solve for cosine first.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Use \(\cos(2\alpha)=\cos^2\alpha-\sin^2\alpha\)</strong> when both squares already appear in the expression.</p>
+                </div>
+            </div>
+            <div class="formula-note">Student shortcut: choose the form that uses the information you already have.</div>
         </div>
     </section>
 
@@ -864,6 +996,35 @@
         </div>
     </section>
 
+    <section class="slide grid-bg" id="slide-4b" data-steps="2">
+        <div class="slide-header">
+            <div class="practice-label">Your Turn</div>
+            <div class="slide-title">Practice: Rewrite as One Function</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Rewrite \(1 - 2\sin^2(3x)\) as a single trigonometric function.
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4b-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Hint</div>
+                        <div class="step-math">
+                            \[1 - 2\sin^2 u = \cos(2u)\]
+                            <div class="annotation">Match the expression to the cosine double-angle form with \(u = 3x\).</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4b-step-1">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">\[1 - 2\sin^2(3x) = \cos(6x)\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ================================================================
          SLIDE 6 — HALF-ANGLE IDENTITIES REFERENCE
          ================================================================ -->
@@ -894,6 +1055,27 @@
                 </div>
             </div>
             <p class="formula-note">The ± sign is determined by the quadrant of <strong>θ/2</strong> — not θ. Always identify the quadrant of θ/2 first!</p>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-5b">
+        <div class="slide-header">
+            <div class="concept-label">Concept</div>
+            <div class="slide-title">Half-Angle Signs Come from \(\theta/2\)</div>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Step 1:</strong> locate \(\theta\), then divide the interval by \(2\) to locate \(\theta/2\).</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Step 2:</strong> choose the sign of the square root from the quadrant of \(\theta/2\), not from \(\theta\).</p>
+                </div>
+                <div class="content-card orange">
+                    <p><strong>Example:</strong> if \(\theta\) is in QIV, then \(\theta/2\) is in QII, so \(\sin(\theta/2)\) is positive and \(\cos(\theta/2)\) is negative.</p>
+                </div>
+            </div>
+            <div class="formula-note">Most half-angle mistakes happen before any algebra: the wrong sign was chosen from the wrong quadrant.</div>
         </div>
     </section>
 
@@ -1043,6 +1225,36 @@
         </div>
     </section>
 
+    <section class="slide grid-bg" id="slide-9">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body">
+            <div class="cards-grid">
+                <div class="content-card teal">
+                    <p><strong>Choose the best double-angle form</strong> based on whether sine, cosine, or both are already available.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Use double-angle identities to solve equations</strong> by rewriting everything in terms of the same angle and then factoring.</p>
+                </div>
+                <div class="content-card orange">
+                    <p><strong>Recognize patterns like</strong> \(\cos^2u-\sin^2u\), \(1-2\sin^2u\), or \(2\cos^2u-1\) and collapse them into one cosine expression.</p>
+                </div>
+                <div class="content-card">
+                    <p><strong>Use half-angle identities correctly</strong> by deciding the sign from the quadrant of \(\theta/2\).</p>
+                </div>
+                <div class="content-card teal">
+                    <p><strong>Explain your sign choice</strong> before simplifying the radical expression in a half-angle problem.</p>
+                </div>
+                <div class="content-card green">
+                    <p><strong>Check whether the answer is reasonable</strong> by matching the sign of the result to the quadrant.</p>
+                </div>
+            </div>
+            <div class="formula-note">If a half-angle answer has the wrong sign, the algebra can still look perfect. Check the quadrant before trusting the result.</div>
+        </div>
+    </section>
+
 </div><!-- end .slides-wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -1083,7 +1295,15 @@
             this.clickHint       = document.getElementById('clickHint');
             this.identityDock    = document.getElementById('identityDock');
             this.identityWidgets = Array.from(document.querySelectorAll('[data-identity-widget]'));
+            this.sectionTargets  = [
+                { label: 'Overview', slideId: 'slide-0' },
+                { label: 'Double Angle', slideId: 'slide-1' },
+                { label: 'Equations', slideId: 'slide-3' },
+                { label: 'Half Angle', slideId: 'slide-5' },
+                { label: 'Review', slideId: 'slide-9' }
+            ];
             this._buildNav();
+            this._buildSectionNavs();
             this._bindIdentityDock();
             this._activate(0);
             this._bindEvents();
@@ -1098,9 +1318,41 @@
             });
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map(target => ({ ...target, index: this.slides.findIndex(slide => slide.id === target.slideId) }))
+                .filter(target => target.index >= 0)
+                .map(target => ({ ...target, buttons: [] }));
+
+            this.slides.forEach(slide => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach(target => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', event => {
+                        event.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
         _sync() {
             this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse().find(target => this.current >= target.index);
+            this.sectionButtons.forEach(target => {
+                target.buttons.forEach(button => button.classList.toggle('active', target === activeSection));
+            });
             const slide = this.slides[this.current];
             const max   = parseInt(slide.dataset.steps || 0);
             const cur   = parseInt(slide.dataset.currentStep ?? -1);
@@ -1202,7 +1454,7 @@
                 else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
             });
             document.addEventListener('click', e => {
-                if (e.target.closest('.nav-dot') || e.target.closest('.identity-dock')) return;
+                if (e.target.closest('.nav-dot') || e.target.closest('.identity-dock') || e.target.closest('.slide-section-nav')) return;
                 if (this._hasOpenIdentityPanel()) {
                     this._closeIdentityPanels();
                     return;

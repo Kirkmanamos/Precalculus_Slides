@@ -444,8 +444,57 @@
             transition: width 0.4s ease; z-index: 100;
         }
 
+        .slide-section-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.9rem;
+            flex-shrink: 0;
+        }
+        .slide-section-chip {
+            border: none;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.84);
+            border: 1px solid rgba(148,163,184,0.34);
+            color: #64748b;
+            font-family: inherit;
+            font-size: 0.48em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            padding: 0.52em 0.74em;
+        }
+        .slide-section-chip:hover {
+            background: #e2e8f0;
+            color: var(--dark-navy);
+            transform: translateY(-1px);
+        }
+        .slide-section-chip.active {
+            background: var(--dark-navy);
+            color: white;
+            border-color: var(--dark-navy);
+        }
+        .title-slide .slide-section-chip {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #dbeafe;
+        }
+        .title-slide .slide-section-chip:hover {
+            background: rgba(255,255,255,0.16);
+            color: white;
+        }
+        .title-slide .slide-section-chip.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
+            color: white;
+        }
+
         .click-hint {
-            position: fixed; bottom: calc(1.5rem + env(safe-area-inset-bottom)); left: var(--click-hint-left);
+            position: fixed; bottom: calc(4.55rem + env(safe-area-inset-bottom)); left: var(--click-hint-left);
             right: var(--click-hint-right);
             transform: var(--click-hint-transform);
             font-size: 0.45em; color: rgba(100,116,139,0.6);
@@ -736,6 +785,14 @@
             }
             .launch-card-holder,
             .launch-bucket-grid { grid-template-columns: 1fr; }
+            .slide-section-nav {
+                gap: 0.26rem;
+                margin-top: 0.7rem;
+            }
+            .slide-section-chip {
+                font-size: 0.52em;
+                padding: 0.54em 0.68em;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1386,6 +1443,28 @@
         </div><!-- end slide-body -->
     </section>
 
+    <section class="slide grid-bg" id="slide-12">
+        <div class="slide-header">
+            <div class="example-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body" style="gap:1rem;">
+            <div class="concept-box">
+                <p><strong>Choose a productive first move</strong> by deciding whether the identity wants factoring, a common denominator, a conjugate, a Pythagorean identity, or a sine/cosine rewrite.</p>
+            </div>
+            <div class="concept-box teal">
+                <p><strong>Work one side only</strong> and explain each rewrite without crossing the equal sign.</p>
+                <p><strong>Use another method when helpful.</strong> Many identities can be verified more than one way, and the cleaner method is often the better teaching choice.</p>
+            </div>
+            <div class="concept-box green">
+                <p><strong>Check whether the final form really matches</strong> the other side, not just whether it looks simpler. In identity work, equivalent structure matters more than appearance.</p>
+            </div>
+            <div class="concept-box orange">
+                <p><strong>Explain why the method worked.</strong> If you can name the move that unlocked the proof, you are more likely to choose it again independently.</p>
+            </div>
+        </div>
+    </section>
+
 </div><!-- end slides-wrapper -->
 
 <!-- KaTeX loaded synchronously to ensure math renders before JS runs -->
@@ -1436,6 +1515,13 @@
             this.clickHint    = document.getElementById('clickHint');
             this.strategyDock = document.getElementById('strategyDock');
             this.strategyWidgets = Array.from(document.querySelectorAll('[data-strategy-widget]'));
+            this.sectionTargets = [
+                { label: 'Launch', slideId: 'slide-launch' },
+                { label: 'Rules', slideId: 'slide-1' },
+                { label: 'Proofs', slideId: 'slide-3' },
+                { label: 'More Proofs', slideId: 'slide-8' },
+                { label: 'Review', slideId: 'slide-12' }
+            ];
             this.strategyDockStart = this.slides.findIndex((slide) => slide.id === 'slide-3');
             this.launchBoard = document.querySelector('[data-launch-board]');
             this.launchCards = Array.from(document.querySelectorAll('[data-launch-card]'));
@@ -1445,6 +1531,7 @@
             this.selectedLaunchCard = null;
 
             this._buildNav();
+            this._buildSectionNavs();
             this._bindStrategyDock();
             this._bindLaunchSort();
             this._activate(0);
@@ -1466,10 +1553,44 @@
             this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
         }
 
+        _buildSectionNavs() {
+            this.sectionButtons = this.sectionTargets
+                .map((target) => ({ ...target, index: this.slides.findIndex((slide) => slide.id === target.slideId) }))
+                .filter((target) => target.index >= 0)
+                .map((target) => ({ ...target, buttons: [] }));
+
+            this.slides.forEach((slide) => {
+                const nav = document.createElement('div');
+                nav.className = 'slide-section-nav';
+                nav.setAttribute('aria-label', 'Section navigation');
+
+                this.sectionButtons.forEach((target) => {
+                    const button = document.createElement('button');
+                    button.className = 'slide-section-chip';
+                    button.type = 'button';
+                    button.textContent = target.label;
+                    button.setAttribute('aria-label', `Jump to ${target.label}`);
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this._goTo(target.index);
+                    });
+                    nav.appendChild(button);
+                    target.buttons.push(button);
+                });
+
+                slide.appendChild(nav);
+            });
+        }
+
         /* Sync progress bar, dots, and click hint */
         _sync() {
             this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
             this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
+            const activeSection = [...this.sectionButtons].reverse()
+                .find((target) => this.current >= target.index);
+            this.sectionButtons.forEach((target) => {
+                target.buttons.forEach((button) => button.classList.toggle('active', target === activeSection));
+            });
 
             const slide    = this.slides[this.current];
             const maxSteps = parseInt(slide.dataset.steps || 0);
@@ -1664,7 +1785,7 @@
 
             /* Click anywhere (except nav dots, handled separately) */
             document.addEventListener('click', (e) => {
-                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock') || e.target.closest('[data-launch-board]')) return;
+                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock') || e.target.closest('[data-launch-board]') || e.target.closest('.slide-section-nav')) return;
                 if (this._hasOpenStrategyPanel()) {
                     this._closeStrategyPanels();
                     return;
