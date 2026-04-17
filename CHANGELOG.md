@@ -5,6 +5,35 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-04-17
+
+### Fill-in-the-blank reveal pattern across Unit 6
+
+All seven Unit 6 HTML decks now mirror the `\blank{}` macros in the LaTeX
+teacher notes with inline click-to-reveal blanks. Students see a dashed
+placeholder, and each click fills in an orange-highlighted answer aligned
+with what they are writing on paper — making it unambiguous where in the
+notes the class currently is.
+
+- Shared CSS `.notes-list` + `.fb / .fb-blank / .fb-answer` block added
+  after the `.annotation` rule in each file.
+- Uses the existing `data-steps` + `.visible` step mechanism (no JS changes).
+- Applied to concept/reference slides in **6.1** (sequences, convergent/divergent),
+  **6.2** (arithmetic sequence definition, linear/slope, arithmetic means),
+  **6.3** (geometric sequence definition, geometric means, infinite sums),
+  **6.4** (Binomial Theorem definitions), **6.5** (Counting Principle,
+  Permutations, Combinations), **6.6** (vocabulary, probability forms,
+  theoretical/experimental, Addition Rule, Multiplication Rule, Complement),
+  and **6.7** (Conditional Probability definition).
+
+### Other Unit 6 updates (2026-04-17)
+- **6.3**: Moved Ratio Playground to a new slide-7b position immediately
+  before the Finite and Infinite Geometric Sums slide to act as a hook for
+  partial and infinite sums.
+- **6.4**: Realigned example numbering and problems with
+  `notes/sections/04-binomial.tex`. Mismatched problems were relabeled as
+  "Your Turn" practice slides and retained.
+
 ## 2026-04-08
 
 ### New HTML Deck Set - Unit 6: Sequences, Series, and Probability

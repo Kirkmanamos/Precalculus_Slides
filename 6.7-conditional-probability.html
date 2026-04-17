@@ -506,6 +506,18 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list { list-style: none; padding: 0; margin: 0.6rem 0; font-size: 1em; line-height: 2; }
+    .notes-list > li { position: relative; padding: 0.2em 0 0.2em 1.4em; }
+    .notes-list > li::before { content: "•"; position: absolute; left: 0.3em; top: 0.15em; color: var(--teal-accent); font-weight: 700; font-size: 1.2em; }
+    .fb { display: inline-block; vertical-align: baseline; line-height: 1; }
+    .fb .fb-blank { display: inline-block; min-width: 4.5em; padding: 0 0.4em; border-bottom: 2px dashed #94a3b8; color: #94a3b8; font-weight: 700; text-align: center; letter-spacing: 0.1em; }
+    .fb .fb-answer { display: none; }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer { display: inline-block; background: var(--orange-light); color: var(--orange-accent); padding: 0.08em 0.55em; border-radius: 5px; font-weight: 700; border: 1.5px solid var(--orange-accent); animation: fillIn 0.45s ease both; }
+    @keyframes fillIn { 0% { transform: scale(1.25); background: #fef3c7; } 60% { transform: scale(0.98); } 100% { transform: scale(1); background: var(--orange-light); } }
+    .notes-hint { font-size: 0.78em; color: #64748b; font-style: italic; margin-top: 0.3rem; }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -848,7 +860,7 @@
     <div class="title-objective">Objective: Use tables, Venn diagrams, and tree diagrams to compute probabilities under given conditions.</div>
     <div class="identity-chips"><span class="chip">given that</span><span class="chip">two-way tables</span><span class="chip">Venn diagrams</span><span class="chip">tree diagrams</span><span class="chip">restricted sample space</span></div>
 </section>
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="2">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Conditional Probability</div>
@@ -869,7 +881,13 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">The denominator changes because once \(B\) is known, the sample space shrinks to only the outcomes in \(B\).</div>
+        <ul class="notes-list">
+            <li>Conditional Probability represents how the
+                <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">probability</span></span>
+                of one event changes when we know another event
+                <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">has occurred</span></span>.
+            </li>
+        </ul>
 <div class="cards-grid"><div class="info-card green">
     <div class="card-title">Backward Probability</div>
     <div class="card-copy">Conditional probability answers questions like: <em>If we know something already happened, how does that change the chance of another event?</em></div>

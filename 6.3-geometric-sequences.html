@@ -704,6 +704,62 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.6rem 0;
+        font-size: 1em;
+        line-height: 2;
+    }
+    .notes-list > li {
+        position: relative;
+        padding: 0.2em 0 0.2em 1.4em;
+    }
+    .notes-list > li::before {
+        content: "•";
+        position: absolute;
+        left: 0.3em;
+        top: 0.15em;
+        color: var(--teal-accent);
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+    .fb { display: inline-block; vertical-align: baseline; line-height: 1; }
+    .fb .fb-blank {
+        display: inline-block;
+        min-width: 4.5em;
+        padding: 0 0.4em;
+        border-bottom: 2px dashed #94a3b8;
+        color: #94a3b8;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 0.1em;
+    }
+    .fb .fb-answer { display: none; }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer {
+        display: inline-block;
+        background: var(--orange-light);
+        color: var(--orange-accent);
+        padding: 0.08em 0.55em;
+        border-radius: 5px;
+        font-weight: 700;
+        border: 1.5px solid var(--orange-accent);
+        animation: fillIn 0.45s ease both;
+    }
+    @keyframes fillIn {
+        0%   { transform: scale(1.25); background: #fef3c7; }
+        60%  { transform: scale(0.98); }
+        100% { transform: scale(1); background: var(--orange-light); }
+    }
+    .notes-hint {
+        font-size: 0.78em;
+        color: #64748b;
+        font-style: italic;
+        margin-top: 0.3rem;
+    }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -1192,13 +1248,29 @@
 </section>
 
 <!-- NEW: Concept — Geometric Sequences definition -->
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="2">
     <div class="slide-header">
-        <div class="concept-label">Concept</div>
+        <div class="concept-label">Definition</div>
         <div class="slide-title">Geometric Sequences</div>
     </div>
     <div class="slide-body top-layout">
-        <div class="body-lead">A <strong>geometric sequence</strong> has a <strong>common ratio</strong> \(r\). You <strong>multiply</strong> to get from one term to the next.</div>
+        <ul class="notes-list">
+            <li>A
+                <span class="fb" id="slide-1-step-0">
+                    <span class="fb-blank">__________________</span>
+                    <span class="fb-answer">geometric sequence</span>
+                </span>
+                is one that has a common ratio, \(r\).
+            </li>
+            <li>In other words, you
+                <span class="fb" id="slide-1-step-1">
+                    <span class="fb-blank">________</span>
+                    <span class="fb-answer">multiply</span>
+                </span>
+                to get to the next term.
+            </li>
+        </ul>
+        <div class="notes-hint">Click to fill in each blank — matches the "Geometric Sequence" definition in your notes.</div>
         <div class="diagram-shell">
             <div class="diagram-title">Arithmetic (+3) vs Geometric (×2)</div>
             <svg viewBox="0 0 440 155" class="diagram" xmlns="http://www.w3.org/2000/svg">
@@ -1286,51 +1358,6 @@
             </div>
         </div>
         <div class="formula-note">The geometric mean between two positive numbers \(a\) and \(b\) is \(\sqrt{ab}\).</div>
-    </div>
-</section>
-
-<section class="slide grid-bg" id="slide-2b">
-    <div class="slide-header">
-        <div class="concept-label">Explore</div>
-        <div class="slide-title">Ratio Playground</div>
-    </div>
-    <div class="slide-body top-layout">
-        <div class="explorer" id="explorer-2b">
-            <div class="explorer-chart-shell">
-                <svg data-field="chart" viewBox="0 0 580 440" preserveAspectRatio="xMidYMid meet" aria-label="Bar chart of sequence terms"></svg>
-            </div>
-            <div class="explorer-sidebar">
-                <div class="explorer-controls">
-                    <div class="explorer-control teal">
-                        <label>
-                            <span class="ctrl-name">First term <em>a</em><sub>1</sub></span>
-                            <output data-field="a1-out">2.00</output>
-                        </label>
-                        <input type="range" data-field="a1" min="-5" max="5" step="0.25" value="2">
-                    </div>
-                    <div class="explorer-control">
-                        <label>
-                            <span class="ctrl-name">Common ratio <em>r</em></span>
-                            <output data-field="r-out">1.50</output>
-                        </label>
-                        <input type="range" data-field="r" min="-2" max="2" step="0.05" value="1.5">
-                    </div>
-                </div>
-                <div class="explorer-sums">
-                    <div class="sum-card">
-                        <div class="sum-label">Partial sum S<sub>8</sub></div>
-                        <div class="sum-value" data-field="sn">—</div>
-                        <div class="sum-note">Sum of the first 8 terms shown.</div>
-                    </div>
-                    <div class="sum-card inf" data-field="inf-card">
-                        <div class="sum-label" data-field="inf-label">Infinite sum S<sub>∞</sub></div>
-                        <div class="sum-value" data-field="sinf">—</div>
-                        <div class="sum-note" data-field="inf-note">Converges because |r| &lt; 1.</div>
-                    </div>
-                </div>
-                <div class="explorer-hint">Slide <em>r</em> past ±1 to watch the series switch from converging to diverging.</div>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -1450,15 +1477,24 @@
     </div>
 </section>
 
-<section class="slide grid-bg" id="slide-7" data-steps="3">
+<section class="slide grid-bg" id="slide-7" data-steps="4">
     <div class="slide-header">
         <div class="example-label">Example 3</div>
         <div class="slide-title">Geometric Means</div>
     </div>
     <div class="slide-body">
+        <ul class="notes-list" style="margin-bottom:0.4rem;">
+            <li>The
+                <span class="fb" id="slide-7-step-0">
+                    <span class="fb-blank">______________</span>
+                    <span class="fb-answer">geometric mean</span>
+                </span>
+                of two positive numbers \(a\) and \(b\) is \(\sqrt{ab}\).
+            </li>
+        </ul>
         <div class="problem-statement">Find three geometric means between \(3.12\) and \(49.92\).</div>
         <div class="steps-area">
-            <div class="step" id="slide-7-step-0">
+            <div class="step" id="slide-7-step-1">
                 <div class="step-box teal">
                     <div class="step-label">Set Up the Five-Term Sequence</div>
                     <div class="step-math">\[3.12,\ \square,\ \square,\ \square,\ 49.92\]
@@ -1466,13 +1502,13 @@
                     </div>
                 </div>
             </div>
-            <div class="step" id="slide-7-step-1">
+            <div class="step" id="slide-7-step-2">
                 <div class="step-box">
                     <div class="step-label">Solve for the Ratio</div>
                     <div class="step-math">\[3.12r^4 = 49.92 \quad \Rightarrow \quad r^4 = 16 \quad \Rightarrow \quad r = 2\]</div>
                 </div>
             </div>
-            <div class="step" id="slide-7-step-2">
+            <div class="step" id="slide-7-step-3">
                 <div class="step-box dark">
                     <div class="step-label">Fill in the Means</div>
                     <div class="step-math">\[3.12,\ 6.24,\ 12.48,\ 24.96,\ 49.92\]</div>
@@ -1482,14 +1518,69 @@
     </div>
 </section>
 
+<section class="slide grid-bg" id="slide-7b">
+    <div class="slide-header">
+        <div class="concept-label">Explore</div>
+        <div class="slide-title">Ratio Playground — A Preview of Geometric Sums</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Before we derive the formulas, play with \(a_1\) and \(r\). Watch the <strong>partial sum \(S_8\)</strong> and the <strong>infinite sum \(S_\infty\)</strong> respond — notice what happens to \(S_\infty\) when \(|r|\) crosses 1.</div>
+        <div class="explorer" id="explorer-2b">
+            <div class="explorer-chart-shell">
+                <svg data-field="chart" viewBox="0 0 580 440" preserveAspectRatio="xMidYMid meet" aria-label="Bar chart of sequence terms"></svg>
+            </div>
+            <div class="explorer-sidebar">
+                <div class="explorer-controls">
+                    <div class="explorer-control teal">
+                        <label>
+                            <span class="ctrl-name">First term <em>a</em><sub>1</sub></span>
+                            <output data-field="a1-out">2.00</output>
+                        </label>
+                        <input type="range" data-field="a1" min="-5" max="5" step="0.25" value="2">
+                    </div>
+                    <div class="explorer-control">
+                        <label>
+                            <span class="ctrl-name">Common ratio <em>r</em></span>
+                            <output data-field="r-out">1.50</output>
+                        </label>
+                        <input type="range" data-field="r" min="-2" max="2" step="0.05" value="1.5">
+                    </div>
+                </div>
+                <div class="explorer-sums">
+                    <div class="sum-card">
+                        <div class="sum-label">Partial sum S<sub>8</sub></div>
+                        <div class="sum-value" data-field="sn">—</div>
+                        <div class="sum-note">Sum of the first 8 terms shown.</div>
+                    </div>
+                    <div class="sum-card inf" data-field="inf-card">
+                        <div class="sum-label" data-field="inf-label">Infinite sum S<sub>∞</sub></div>
+                        <div class="sum-value" data-field="sinf">—</div>
+                        <div class="sum-note" data-field="inf-note">Converges because |r| &lt; 1.</div>
+                    </div>
+                </div>
+                <div class="explorer-hint">Slide <em>r</em> past ±1 to watch the series switch from converging to diverging.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- UPDATED: Sums concept slide — added divergence note -->
-<section class="slide grid-bg" id="slide-8">
+<section class="slide grid-bg" id="slide-8" data-steps="1">
     <div class="slide-header">
         <div class="concept-label">Concept</div>
         <div class="slide-title">Finite and Infinite Geometric Sums</div>
     </div>
     <div class="slide-body top-layout">
         <div class="body-lead">Multiplying a geometric sum by the common ratio makes almost every term line up, which is why the finite-sum formula works so cleanly.</div>
+        <ul class="notes-list" style="margin:0.2rem 0 0.6rem 0;">
+            <li>If \(|r| \ge 1\), the series
+                <span class="fb" id="slide-8-step-0">
+                    <span class="fb-blank">__________</span>
+                    <span class="fb-answer">diverges</span>
+                </span>
+                (no finite sum).
+            </li>
+        </ul>
         <div class="diagram-shell compact">
             <div class="diagram-title">Partial Sums Approaching a Limit (6 + 3 + 1.5 + 0.75 + …)</div>
             <svg viewBox="0 0 440 115" class="diagram" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">

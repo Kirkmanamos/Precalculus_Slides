@@ -506,6 +506,18 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list { list-style: none; padding: 0; margin: 0.6rem 0; font-size: 1em; line-height: 2; }
+    .notes-list > li { position: relative; padding: 0.2em 0 0.2em 1.4em; }
+    .notes-list > li::before { content: "•"; position: absolute; left: 0.3em; top: 0.15em; color: var(--teal-accent); font-weight: 700; font-size: 1.2em; }
+    .fb { display: inline-block; vertical-align: baseline; line-height: 1; }
+    .fb .fb-blank { display: inline-block; min-width: 4.5em; padding: 0 0.4em; border-bottom: 2px dashed #94a3b8; color: #94a3b8; font-weight: 700; text-align: center; letter-spacing: 0.1em; }
+    .fb .fb-answer { display: none; }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer { display: inline-block; background: var(--orange-light); color: var(--orange-accent); padding: 0.08em 0.55em; border-radius: 5px; font-weight: 700; border: 1.5px solid var(--orange-accent); animation: fillIn 0.45s ease both; }
+    @keyframes fillIn { 0% { transform: scale(1.25); background: #fef3c7; } 60% { transform: scale(0.98); } 100% { transform: scale(1); background: var(--orange-light); } }
+    .notes-hint { font-size: 0.78em; color: #64748b; font-style: italic; margin-top: 0.3rem; }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -848,13 +860,29 @@
     <div class="title-objective">Objective: Classify events, use the addition and multiplication rules, solve counting-based probability problems, and use complements strategically.</div>
     <div class="identity-chips"><span class="chip">sample space</span><span class="chip">addition rule</span><span class="chip">multiplication rule</span><span class="chip">counting-based probability</span><span class="chip">complements</span></div>
 </section>
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="4">
             <div class="slide-header">
                 <div class="concept-label">Concept</div>
                 <div class="slide-title">Probability Vocabulary</div>
             </div>
             <div class="slide-body top-layout">
-                <div class="body-lead">Probability starts with clear language: experiment, sample space, and event.</div>
+                <ul class="notes-list">
+                    <li>An
+                        <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">experiment</span></span>
+                        is any process of observation that leads to a single, well-defined outcome.
+                    </li>
+                    <li>The
+                        <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">sample space</span></span>
+                        (\(S\)) is the set of all possible outcomes of an experiment.
+                    </li>
+                    <li>An
+                        <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">event</span></span>
+                        (\(E\)) is any subset of the sample space &mdash; a collection of one or more outcomes.
+                    </li>
+                    <li><span class="fb" id="slide-1-step-3"><span class="fb-blank">________</span><span class="fb-answer">Probability</span></span>
+                        is a measure of how likely an event is to occur.
+                    </li>
+                </ul>
 <div class="cards-grid"><div class="info-card teal">
     <div class="card-title">Experiment</div>
     <div class="card-copy">An experiment is any process that leads to a well-defined outcome, such as rolling a die or drawing a card.</div>
@@ -877,12 +905,33 @@
 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-2">
+<section class="slide grid-bg" id="slide-2" data-steps="7">
             <div class="slide-header">
                 <div class="concept-label">Concept</div>
                 <div class="slide-title">Basic Probability and Experimental Probability</div>
             </div>
             <div class="slide-body top-layout">
+                <ul class="notes-list">
+                    <li>Probability can be expressed as a
+                        <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">decimal</span></span>,
+                        <span class="fb" id="slide-2-step-1"><span class="fb-blank">________</span><span class="fb-answer">fraction</span></span>, or
+                        <span class="fb" id="slide-2-step-2"><span class="fb-blank">________</span><span class="fb-answer">percent</span></span>.
+                    </li>
+                    <li>If \(P(E)=0\), then \(E\) is an
+                        <span class="fb" id="slide-2-step-3"><span class="fb-blank">________</span><span class="fb-answer">impossible</span></span>
+                        event.
+                    </li>
+                    <li>If \(P(E)=1\), then \(E\) is a
+                        <span class="fb" id="slide-2-step-4"><span class="fb-blank">________</span><span class="fb-answer">certain</span></span>
+                        event.
+                    </li>
+                    <li>Theoretical probability is based on
+                        <span class="fb" id="slide-2-step-5"><span class="fb-blank">________</span><span class="fb-answer">reasoning</span></span>.
+                    </li>
+                    <li>Experimental probability is based on
+                        <span class="fb" id="slide-2-step-6"><span class="fb-blank">________</span><span class="fb-answer">an experiment</span></span>.
+                    </li>
+                </ul>
                 <div class="diagram-shell">
     <div class="diagram-title">Probability Scale</div>
     <svg class="diagram" viewBox="0 0 480 70" role="img" aria-label="Probability scale from 0 (Impossible) to 1 (Certain)">
@@ -954,7 +1003,7 @@
 <div class="formula-note">Self-check: am I adding events, multiplying events, counting outcomes, or using a complement?</div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-3">
+<section class="slide grid-bg" id="slide-3" data-steps="3">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Addition Rule</div>
@@ -975,7 +1024,20 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">The addition rule finds the probability that at least one of the events occurs.</div>
+        <ul class="notes-list">
+            <li>The Addition Rule calculates the probability that
+                <span class="fb" id="slide-3-step-0"><span class="fb-blank">________</span><span class="fb-answer">at least one</span></span>
+                of several events occurs.
+            </li>
+            <li><strong>Mutually Exclusive Events</strong> &mdash; events that
+                <span class="fb" id="slide-3-step-1"><span class="fb-blank">________</span><span class="fb-answer">cannot</span></span>
+                happen at the same time.
+            </li>
+            <li><strong>Inclusive Events</strong> &mdash; events that
+                <span class="fb" id="slide-3-step-2"><span class="fb-blank">________</span><span class="fb-answer">can</span></span>
+                happen at the same time.
+            </li>
+        </ul>
         <div class="diagram-shell">
     <div class="diagram-title">Addition Rule — Venn Diagram</div>
     <svg class="diagram" viewBox="0 0 400 140" role="img" aria-label="Venn diagram showing the addition rule for two events A and B">
@@ -1065,7 +1127,7 @@
         </div>
     </div>
 </section>
-<section class="slide grid-bg" id="slide-5">
+<section class="slide grid-bg" id="slide-5" data-steps="3">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Multiplication Rule</div>
@@ -1086,7 +1148,20 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">The multiplication rule finds the probability that multiple events all occur.</div>
+        <ul class="notes-list">
+            <li>The Multiplication Rule calculates the probability that
+                <span class="fb" id="slide-5-step-0"><span class="fb-blank">________</span><span class="fb-answer">multiple</span></span>
+                events all occur.
+            </li>
+            <li><strong>Independent Events</strong> &mdash; the occurrence of one event
+                <span class="fb" id="slide-5-step-1"><span class="fb-blank">________</span><span class="fb-answer">does not affect</span></span>
+                the occurrence of the other.
+            </li>
+            <li><strong>Dependent Events</strong> &mdash; the outcome of the first event
+                <span class="fb" id="slide-5-step-2"><span class="fb-blank">________</span><span class="fb-answer">affects</span></span>
+                the probability of subsequent events.
+            </li>
+        </ul>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-5b">
@@ -1267,7 +1342,7 @@
         </div>
     </div>
 </section>
-<section class="slide grid-bg" id="slide-10">
+<section class="slide grid-bg" id="slide-10" data-steps="2">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Complement Rule</div>
@@ -1282,7 +1357,16 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">When a problem asks for <em>at least one</em>, it is often easier to find the probability of <em>none</em> and subtract from \(1\).</div>
+        <ul class="notes-list">
+            <li>The
+                <span class="fb" id="slide-10-step-0"><span class="fb-blank">________</span><span class="fb-answer">complement</span></span>
+                of an event \(E\) is the set of all outcomes in the sample space that are not in \(E\).
+            </li>
+            <li>If \(E\) is an event, then
+                <span class="fb" id="slide-10-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(E'\)</span></span>
+                is the complementary event.
+            </li>
+        </ul>
 <div class="cards-grid"><div class="info-card teal">
     <div class="card-title">At Least One Yellow</div>
     <div class="card-copy">

@@ -506,6 +506,68 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list {
+        list-style: none;
+        padding: 0;
+        margin: 0.6rem 0;
+        font-size: 1em;
+        line-height: 2;
+    }
+    .notes-list > li {
+        position: relative;
+        padding: 0.2em 0 0.2em 1.4em;
+    }
+    .notes-list > li::before {
+        content: "•";
+        position: absolute;
+        left: 0.3em;
+        top: 0.15em;
+        color: var(--teal-accent);
+        font-weight: 700;
+        font-size: 1.2em;
+    }
+    .fb {
+        display: inline-block;
+        vertical-align: baseline;
+        line-height: 1;
+    }
+    .fb .fb-blank {
+        display: inline-block;
+        min-width: 4.5em;
+        padding: 0 0.4em;
+        border-bottom: 2px dashed #94a3b8;
+        color: #94a3b8;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: 0.1em;
+    }
+    .fb .fb-answer {
+        display: none;
+    }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer {
+        display: inline-block;
+        background: var(--orange-light);
+        color: var(--orange-accent);
+        padding: 0.08em 0.55em;
+        border-radius: 5px;
+        font-weight: 700;
+        border: 1.5px solid var(--orange-accent);
+        animation: fillIn 0.45s ease both;
+    }
+    @keyframes fillIn {
+        0%   { transform: scale(1.25); background: #fef3c7; }
+        60%  { transform: scale(0.98); }
+        100% { transform: scale(1); background: var(--orange-light); }
+    }
+    .notes-hint {
+        font-size: 0.78em;
+        color: #64748b;
+        font-style: italic;
+        margin-top: 0.3rem;
+    }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -848,23 +910,35 @@
     <div class="title-objective">Objective: Use Pascal&#x27;s Triangle, combinations, and the Binomial Theorem to expand expressions and find specific terms.</div>
     <div class="identity-chips"><span class="chip">Pascal&#x27;s Triangle</span><span class="chip">binomial coefficients</span><span class="chip">full expansions</span><span class="chip">specific terms</span><span class="chip">coefficients</span></div>
 </section>
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="3">
             <div class="slide-header">
-                <div class="concept-label">Concept</div>
+                <div class="concept-label">Definition</div>
                 <div class="slide-title">Patterns in Binomial Expansions</div>
             </div>
             <div class="slide-body top-layout">
-                <div class="body-lead">Before using a formula, it helps to notice what always happens in an expansion of \((a+b)^n\).</div>
-<div class="cards-grid"><div class="info-card teal">
-    <div class="card-title">Number of Terms</div>
-    <div class="card-copy">There are always \(n+1\) terms.</div>
-</div><div class="info-card green">
-    <div class="card-title">Exponents</div>
-    <div class="card-copy">The exponent on the first factor decreases while the exponent on the second factor increases.</div>
-</div><div class="info-card orange">
-    <div class="card-title">Coefficients</div>
-    <div class="card-copy">The coefficients are symmetric and match Pascal's Triangle.</div>
-</div></div>
+                <div class="body-lead">Before using a formula, notice what always happens when you expand \((a+b)^n\):</div>
+                <ul class="notes-list">
+                    <li>The exponents of \(a\) decrease while the exponents of \(b\) increase.</li>
+                    <li>The coefficients increase and then decrease
+                        <span class="fb" id="slide-1-step-0">
+                            <span class="fb-blank">__________</span>
+                            <span class="fb-answer">symmetrically</span>
+                        </span>.
+                    </li>
+                    <li>The coefficient of the first and last term is
+                        <span class="fb" id="slide-1-step-1">
+                            <span class="fb-blank">____</span>
+                            <span class="fb-answer">1</span>
+                        </span>.
+                    </li>
+                    <li>Each expansion of \((a+b)^n\) has
+                        <span class="fb" id="slide-1-step-2">
+                            <span class="fb-blank">______</span>
+                            <span class="fb-answer">\(n+1\)</span>
+                        </span> terms.
+                    </li>
+                </ul>
+                <div class="notes-hint">Click or press space to fill in each blank — matches the "Patterns" definition in your notes.</div>
 <div class="note-box navy">
     <div class="note-title">Sample Pattern</div>
     <div class="note-copy">\[(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\]</div>
@@ -951,7 +1025,7 @@
                 <div class="slide-title">Expanding with Pascal&#x27;s Triangle</div>
             </div>
             <div class="slide-body">
-                <div class="problem-statement">Use Pascal's Triangle to expand \((2x + y)^4\).</div>
+                <div class="problem-statement">Use Pascal's Triangle to expand \((x + 2)^4\).</div>
                 <div class="steps-area">
                     <div class="step" id="slide-3-step-0">
     <div class="step-box teal">
@@ -968,7 +1042,7 @@
         <div class="step-label">Match the Power Pattern</div>
 
     <div class="step-math">
-        \[(2x)^4,\ (2x)^3y,\ (2x)^2y^2,\ (2x)y^3,\ y^4\]
+        \[x^4\cdot 2^0,\ x^3\cdot 2^1,\ x^2\cdot 2^2,\ x\cdot 2^3,\ 2^4\]
     </div>
 
     </div>
@@ -977,7 +1051,7 @@
         <div class="step-label">Multiply the Coefficients In</div>
 
     <div class="step-math">
-        \[(2x+y)^4 = 16x^4 + 32x^3y + 24x^2y^2 + 8xy^3 + y^4\]
+        \[(x+2)^4 = x^4 + 8x^3 + 24x^2 + 32x + 16\]
     </div>
 
     </div>
@@ -1025,14 +1099,14 @@
                 <div class="slide-title">Expanding with the Binomial Theorem</div>
             </div>
             <div class="slide-body">
-                <div class="problem-statement">Use the Binomial Theorem to expand \((x - 3)^5\).</div>
+                <div class="problem-statement">Use the Binomial Theorem to expand \((x - 2y)^5\).</div>
                 <div class="steps-area">
                     <div class="step" id="slide-5-step-0">
     <div class="step-box teal">
         <div class="step-label">Identify \(a\), \(b\), and \(n\)</div>
 
     <div class="step-math">
-        \[a = x,\qquad b = -3,\qquad n = 5\]
+        \[a = x,\qquad b = -2y,\qquad n = 5\]
     </div>
 
     </div>
@@ -1041,7 +1115,7 @@
         <div class="step-label">Apply the Theorem</div>
 
     <div class="step-math">
-        \[(x-3)^5 = \sum_{r=0}^{5}\binom{5}{r}x^{5-r}(-3)^r\]
+        \[(x-2y)^5 = \sum_{r=0}^{5}\binom{5}{r}x^{5-r}(-2y)^r\]
     </div>
 
     </div>
@@ -1050,7 +1124,7 @@
         <div class="step-label">Simplify Each Term</div>
 
     <div class="step-math">
-        \[(x-3)^5 = x^5 - 15x^4 + 90x^3 - 270x^2 + 405x - 243\]
+        \[(x-2y)^5 = x^5 - 10x^4y + 40x^3y^2 - 80x^2y^3 + 80xy^4 - 32y^5\]
     </div>
 
     </div>
@@ -1100,7 +1174,7 @@
         <div class="slide-title">Finding a Specific Term</div>
     </div>
     <div class="slide-body">
-        <div class="problem-statement">Find the 6th term of \((2x - y)^8\).</div>
+        <div class="problem-statement">Find the 6th term of \((x + 2y)^8\).</div>
         <div class="steps-area">
             <div class="step" id="slide-7-step-0">
                 <div class="step-box teal">
@@ -1111,13 +1185,13 @@
             <div class="step" id="slide-7-step-1">
                 <div class="step-box">
                     <div class="step-label">Use the General Term</div>
-                    <div class="step-math">\[T_6 = \binom{8}{5}(2x)^{8-5}(-y)^5\]</div>
+                    <div class="step-math">\[T_6 = \binom{8}{5}x^{8-5}(2y)^5\]</div>
                 </div>
             </div>
             <div class="step" id="slide-7-step-2">
                 <div class="step-box dark">
                     <div class="step-label">Simplify</div>
-                    <div class="step-math">\[T_6 = 56(2x)^3(-y)^5 = 56(8x^3)(-y^5) = -448x^3y^5\]</div>
+                    <div class="step-math">\[T_6 = 56\cdot x^3\cdot 32y^5 = 1792\,x^3 y^5\]</div>
                 </div>
             </div>
         </div>
@@ -1155,6 +1229,48 @@
     </div>
 </section>
 
+<!-- Example 6 — matches notes Ex 6 (two-variable coefficient) -->
+<section class="slide grid-bg" id="slide-8b" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Two-Variable Coefficient</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the coefficient of \(x^7 y^{12}\) in the expansion of \((2x-3y^3)^{11}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8b-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Set Up the General Term</div>
+                    <div class="step-math">\[T_{r+1} = \binom{11}{r}(2x)^{11-r}(-3y^3)^r\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8b-step-1">
+                <div class="step-box">
+                    <div class="step-label">Match the Exponents</div>
+                    <div class="step-copy">
+                        <ul>
+                            <li>\(x\)-exponent: \(11-r = 7 \implies r = 4\)</li>
+                            <li>\(y\)-exponent: \(3r = 12\) ✓</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8b-step-2">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(r = 4\)</div>
+                    <div class="step-math">\[\binom{11}{4}(2x)^7(-3y^3)^4 = 330 \cdot 128x^7 \cdot 81y^{12}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8b-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[\text{Coefficient} = 3{,}421{,}440\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="slide grid-bg" id="slide-9" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
@@ -1181,8 +1297,8 @@
 
 <section class="slide grid-bg" id="slide-10" data-steps="3">
     <div class="slide-header">
-        <div class="example-label">Example 6</div>
-        <div class="slide-title">Finding a Coefficient</div>
+        <div class="practice-label">Your Turn</div>
+        <div class="slide-title">Practice: Finding a Coefficient</div>
     </div>
     <div class="slide-body">
         <div class="problem-statement">Find the coefficient of \(x^2\) in the expansion of \((2x + 3)^5\).</div>
@@ -1209,47 +1325,6 @@
     </div>
 </section>
 
-<!-- NEW: Ex 7 — notes Ex 6 (advanced two-variable coefficient) -->
-<section class="slide grid-bg" id="slide-11" data-steps="4">
-    <div class="slide-header">
-        <div class="example-label">Example 7</div>
-        <div class="slide-title">Two-Variable Coefficient</div>
-    </div>
-    <div class="slide-body">
-        <div class="problem-statement">Find the coefficient of \(x^7 y^{12}\) in the expansion of \((2x-3y^3)^{11}\).</div>
-        <div class="steps-area">
-            <div class="step" id="slide-11-step-0">
-                <div class="step-box teal">
-                    <div class="step-label">Set Up the General Term</div>
-                    <div class="step-math">\[T_{r+1} = \binom{11}{r}(2x)^{11-r}(-3y^3)^r\]</div>
-                </div>
-            </div>
-            <div class="step" id="slide-11-step-1">
-                <div class="step-box">
-                    <div class="step-label">Match the Exponents</div>
-                    <div class="step-copy">
-                        <ul>
-                            <li>\(x\)-exponent: \(11-r = 7 \implies r = 4\)</li>
-                            <li>\(y\)-exponent: \(3r = 12\) ✓</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="step" id="slide-11-step-2">
-                <div class="step-box">
-                    <div class="step-label">Substitute \(r = 4\)</div>
-                    <div class="step-math">\[\binom{11}{4}(2x)^7(-3y^3)^4 = 330 \cdot 128x^7 \cdot 81y^{12}\]</div>
-                </div>
-            </div>
-            <div class="step" id="slide-11-step-3">
-                <div class="step-box dark">
-                    <div class="step-label">Answer</div>
-                    <div class="step-math">\[\text{Coefficient} = 3{,}421{,}440\]</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 <section class="slide grid-bg" id="slide-12">
             <div class="slide-header">
                 <div class="ref-label">Review</div>
@@ -1320,7 +1395,7 @@
                 { label: 'Pascal', slideId: 'slide-2' },
                 { label: 'Theorem', slideId: 'slide-4' },
                 { label: 'Terms', slideId: 'slide-7' },
-                { label: 'Coeffs', slideId: 'slide-10' },
+                { label: 'Coeffs', slideId: 'slide-8b' },
                 { label: 'Review', slideId: 'slide-12' }
             ];
             this._buildNav();

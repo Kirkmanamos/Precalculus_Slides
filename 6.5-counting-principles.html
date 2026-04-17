@@ -506,6 +506,18 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list { list-style: none; padding: 0; margin: 0.6rem 0; font-size: 1em; line-height: 2; }
+    .notes-list > li { position: relative; padding: 0.2em 0 0.2em 1.4em; }
+    .notes-list > li::before { content: "•"; position: absolute; left: 0.3em; top: 0.15em; color: var(--teal-accent); font-weight: 700; font-size: 1.2em; }
+    .fb { display: inline-block; vertical-align: baseline; line-height: 1; }
+    .fb .fb-blank { display: inline-block; min-width: 4.5em; padding: 0 0.4em; border-bottom: 2px dashed #94a3b8; color: #94a3b8; font-weight: 700; text-align: center; letter-spacing: 0.1em; }
+    .fb .fb-answer { display: none; }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer { display: inline-block; background: var(--orange-light); color: var(--orange-accent); padding: 0.08em 0.55em; border-radius: 5px; font-weight: 700; border: 1.5px solid var(--orange-accent); animation: fillIn 0.45s ease both; }
+    @keyframes fillIn { 0% { transform: scale(1.25); background: #fef3c7; } 60% { transform: scale(0.98); } 100% { transform: scale(1); background: var(--orange-light); } }
+    .notes-hint { font-size: 0.78em; color: #64748b; font-style: italic; margin-top: 0.3rem; }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -848,13 +860,27 @@
     <div class="title-objective">Objective: Use the counting principle, permutations, combinations, and non-distinct permutations to count outcomes efficiently.</div>
     <div class="identity-chips"><span class="chip">counting principle</span><span class="chip">permutations</span><span class="chip">combinations</span><span class="chip">order matters</span><span class="chip">non-distinct objects</span></div>
 </section>
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="3">
             <div class="slide-header">
                 <div class="concept-label">Concept</div>
                 <div class="slide-title">The Fundamental Counting Principle</div>
             </div>
             <div class="slide-body top-layout">
-                <div class="body-lead">If one choice can happen in \(m\) ways and the next choice can happen in \(n\) ways, then the two-step process can happen in \(mn\) ways.</div>
+                <div class="body-lead">Let \(A\) and \(B\) be two events.</div>
+                <ul class="notes-list">
+                    <li>The first event \(A\) can occur in
+                        <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(m\)</span></span>
+                        different ways.
+                    </li>
+                    <li>After \(A\) has occurred, \(B\) can occur in
+                        <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(n\)</span></span>
+                        different ways.
+                    </li>
+                    <li>The number of ways that the two events can occur is
+                        <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(m \times n\)</span></span>.
+                    </li>
+                </ul>
+                <div class="notes-hint">Fill in the blanks on your notes as we click.</div>
 <div class="diagram-shell">
     <svg class="diagram" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
         <style>
@@ -1000,7 +1026,7 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-3">
+<section class="slide grid-bg" id="slide-3" data-steps="1">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Permutations</div>
@@ -1021,7 +1047,12 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">A permutation is an arrangement in a specific order, so changing the order creates a different outcome.</div>
+        <ul class="notes-list">
+            <li>A permutation is an arrangement of objects in a
+                <span class="fb" id="slide-3-step-0"><span class="fb-blank">________</span><span class="fb-answer">specific order</span></span>
+                where changing the sequence creates a different result.
+            </li>
+        </ul>
 <div class="cards-grid"><div class="info-card orange">
     <div class="card-title">Ribbon Example</div>
     <div class="card-copy">Awarding blue, red, white, and yellow ribbons to four students gives \(4! = 24\) possible orders.</div>
@@ -1075,7 +1106,7 @@
                 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-5">
+<section class="slide grid-bg" id="slide-5" data-steps="1">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
                 <div class="slide-title">Combinations</div>
@@ -1096,7 +1127,11 @@
     </div>
 </div>
         </div>
-        <div class="formula-note">Use combinations when you are selecting a group, not arranging a lineup.</div>
+        <ul class="notes-list">
+            <li>A combination is a way of selecting items from a group where the order of selection
+                <span class="fb" id="slide-5-step-0"><span class="fb-blank">________</span><span class="fb-answer">does not matter</span></span>.
+            </li>
+        </ul>
 <div class="cards-grid"><div class="info-card green">
     <div class="card-title">Combination Examples</div>
     <div class="card-copy">Committees, pizza toppings, and lottery numbers are all combination situations.</div>

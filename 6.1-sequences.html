@@ -515,6 +515,18 @@
         padding-left: 0.9rem;
     }
 
+    /* Notes-aligned fill-in-the-blank reveal (mirrors \blank{} in the LaTeX notes) */
+    .notes-list { list-style: none; padding: 0; margin: 0.6rem 0; font-size: 1em; line-height: 2; }
+    .notes-list > li { position: relative; padding: 0.2em 0 0.2em 1.4em; }
+    .notes-list > li::before { content: "•"; position: absolute; left: 0.3em; top: 0.15em; color: var(--teal-accent); font-weight: 700; font-size: 1.2em; }
+    .fb { display: inline-block; vertical-align: baseline; line-height: 1; }
+    .fb .fb-blank { display: inline-block; min-width: 4.5em; padding: 0 0.4em; border-bottom: 2px dashed #94a3b8; color: #94a3b8; font-weight: 700; text-align: center; letter-spacing: 0.1em; }
+    .fb .fb-answer { display: none; }
+    .fb.visible .fb-blank { display: none; }
+    .fb.visible .fb-answer { display: inline-block; background: var(--orange-light); color: var(--orange-accent); padding: 0.08em 0.55em; border-radius: 5px; font-weight: 700; border: 1.5px solid var(--orange-accent); animation: fillIn 0.45s ease both; }
+    @keyframes fillIn { 0% { transform: scale(1.25); background: #fef3c7; } 60% { transform: scale(0.98); } 100% { transform: scale(1); background: var(--orange-light); } }
+    .notes-hint { font-size: 0.78em; color: #64748b; font-style: italic; margin-top: 0.3rem; }
+
     .summary-strip {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -860,13 +872,28 @@
 </section>
 
 <!-- ==================== SLIDE 1: CONCEPT — What Is a Sequence? ==================== -->
-<section class="slide grid-bg" id="slide-1">
+<section class="slide grid-bg" id="slide-1" data-steps="2">
     <div class="slide-header">
-        <div class="concept-label">Concept</div>
+        <div class="concept-label">Definition</div>
         <div class="slide-title">What Is a Sequence?</div>
     </div>
     <div class="slide-body top-layout">
-        <div class="body-lead">A sequence is an ordered list. Each term has a position, so subscript notation lets us talk about where a value appears.</div>
+        <div class="body-lead">Sequences are written using subscript notation: \(a_1,\ a_2,\ a_3,\ a_4,\ \dots,\ a_n,\ \dots\)</div>
+        <ul class="notes-list">
+            <li>The numbers in the sequence are the
+                <span class="fb" id="slide-1-step-0">
+                    <span class="fb-blank">________</span>
+                    <span class="fb-answer">terms</span>
+                </span>.
+            </li>
+            <li>The subscripts are the
+                <span class="fb" id="slide-1-step-1">
+                    <span class="fb-blank">__________</span>
+                    <span class="fb-answer">positions</span>
+                </span>
+                of the terms.
+            </li>
+        </ul>
         <div class="two-col">
             <div class="col"><div class="stack">
                 <div class="info-card">
@@ -883,10 +910,6 @@
                 </div>
             </div></div>
             <div class="col"><div class="stack">
-                <div class="note-box navy">
-                    <div class="note-title">Subscript Notation</div>
-                    <div class="note-copy">The numbers are the <strong>terms</strong>, and the subscripts record their <strong>positions</strong>.</div>
-                </div>
                 <div class="table-shell">
                     <table class="data-table">
                         <thead>
@@ -904,27 +927,29 @@
 </section>
 
 <!-- ==================== SLIDE 2: CONCEPT — Infinite Sequences (+ SVG visualization) ==================== -->
-<section class="slide grid-bg" id="slide-2">
+<section class="slide grid-bg" id="slide-2" data-steps="2">
     <div class="slide-header">
-        <div class="concept-label">Concept</div>
+        <div class="concept-label">Definition</div>
         <div class="slide-title">Infinite Sequences</div>
     </div>
     <div class="slide-body top-layout">
         <div class="body-lead">The big question for an infinite sequence is whether the terms settle near one value.</div>
-        <div class="cards-grid">
-            <div class="info-card green">
-                <div class="card-title">Convergent</div>
-                <div class="card-copy">If the terms approach a single number, the sequence is <strong>convergent</strong>.</div>
-            </div>
-            <div class="info-card orange">
-                <div class="card-title">Divergent</div>
-                <div class="card-copy">If the terms do not approach one value, the sequence is <strong>divergent</strong>.</div>
-            </div>
-            <div class="info-card teal">
-                <div class="card-title">Oscillation</div>
-                <div class="card-copy">Some divergent sequences bounce back and forth, such as \((-1)^n\).</div>
-            </div>
-        </div>
+        <ul class="notes-list">
+            <li>A
+                <span class="fb" id="slide-2-step-0">
+                    <span class="fb-blank">__________</span>
+                    <span class="fb-answer">convergent</span>
+                </span>
+                sequence is one where the terms get closer and closer to a single number as the sequence goes on. <em style="color:#16a34a;">e.g.</em> \(\tfrac12,\ \tfrac14,\ \tfrac18,\ \dots\)
+            </li>
+            <li>A
+                <span class="fb" id="slide-2-step-1">
+                    <span class="fb-blank">__________</span>
+                    <span class="fb-answer">divergent</span>
+                </span>
+                sequence is one where the terms do not approach a single number. <em style="color:#d97706;">e.g.</em> \(2,\ 3,\ 5,\ 7,\ 11,\ \dots\) or \(1,\ -1,\ 1,\ -1,\ \dots\)
+            </li>
+        </ul>
         <div class="diagram-shell">
             <svg viewBox="0 0 520 155" class="diagram" xmlns="http://www.w3.org/2000/svg">
                 <!-- LEFT: Convergent aₙ = 1/n -->
