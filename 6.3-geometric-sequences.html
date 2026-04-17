@@ -835,6 +835,136 @@
             padding-left: 10px !important;
         }
     }
+
+    /* ============================================================
+       RATIO PLAYGROUND — interactive explorer (slide-2b only)
+       Chart dominates the left; controls + sums live in sidebar.
+       ============================================================ */
+    .explorer {
+        display: grid;
+        grid-template-columns: 1fr 17rem;  /* chart | sidebar */
+        gap: 0.9rem;
+        flex: 1;
+        min-height: 0;
+        align-items: stretch;
+    }
+    .explorer-chart-shell {
+        background: #fbfdff;
+        border: 1px solid var(--slate-line);
+        border-radius: 12px;
+        padding: 0.5rem 0.7rem 0.4rem;
+        display: flex;
+        min-height: 0;
+    }
+    .explorer-chart-shell svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    /* Sidebar stacks controls → sums → hint vertically */
+    .explorer-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        min-height: 0;
+    }
+    .explorer-controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+    }
+    .explorer-control {
+        background: var(--blue-light);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.45em 0.85em 0.5em;
+    }
+    .explorer-control.teal {
+        background: var(--teal-light);
+        border-left-color: var(--teal-accent);
+    }
+    .explorer-control label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 0.4em;
+        font-size: 0.62em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .explorer-control label .ctrl-name { display: inline-flex; align-items: baseline; gap: 0.3em; }
+    .explorer-control label output {
+        font-family: 'Source Sans 3', sans-serif;
+        font-variant-numeric: tabular-nums;
+        font-size: 1.3em;
+        font-weight: 700;
+        color: var(--navy);
+        text-transform: none;
+        letter-spacing: 0;
+    }
+    .explorer-control input[type=range] {
+        width: 100%;
+        margin-top: 0.35em;
+        accent-color: var(--blue-accent);
+    }
+    .explorer-control.teal input[type=range] { accent-color: var(--teal-accent); }
+
+    .explorer-sums {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        flex: 1;         /* grow to fill remaining sidebar height */
+    }
+    .sum-card {
+        background: var(--green-light);
+        border-left: 4px solid var(--green-accent);
+        border-radius: 12px;
+        padding: 0.5em 0.85em 0.55em;
+        flex: 1;         /* share sidebar height equally */
+    }
+    .sum-card.inf {
+        background: var(--orange-light);
+        border-left-color: var(--orange-accent);
+    }
+    .sum-card.inf.diverges {
+        background: #fee2e2;
+        border-left-color: var(--red-accent);
+    }
+    .sum-label {
+        font-size: 0.58em;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .sum-value {
+        font-size: 1.7em;
+        font-weight: 700;
+        color: var(--navy);
+        font-variant-numeric: tabular-nums;
+        margin-top: 0.06em;
+        line-height: 1.1;
+    }
+    .sum-card.inf.diverges .sum-value { color: var(--red-accent); }
+    .sum-note {
+        margin-top: 0.18em;
+        font-size: 0.52em;
+        color: var(--text-muted);
+        line-height: 1.35;
+    }
+    .explorer-hint {
+        font-size: 0.55em;
+        color: var(--orange-accent);
+        font-weight: 600;
+        line-height: 1.4;
+        padding: 0.4em 0.6em;
+        border-left: 3px solid var(--orange-accent);
+        background: var(--orange-light);
+        border-radius: 0 6px 6px 0;
+    }
 </style>
 </head>
 <body>
@@ -944,6 +1074,51 @@
             </div>
         </div>
         <div class="formula-note">The geometric mean between two positive numbers \(a\) and \(b\) is \(\sqrt{ab}\).</div>
+    </div>
+</section>
+
+<section class="slide grid-bg" id="slide-2b">
+    <div class="slide-header">
+        <div class="concept-label">Explore</div>
+        <div class="slide-title">Ratio Playground</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="explorer" id="explorer-2b">
+            <div class="explorer-chart-shell">
+                <svg data-field="chart" viewBox="0 0 580 440" preserveAspectRatio="xMidYMid meet" aria-label="Bar chart of sequence terms"></svg>
+            </div>
+            <div class="explorer-sidebar">
+                <div class="explorer-controls">
+                    <div class="explorer-control teal">
+                        <label>
+                            <span class="ctrl-name">First term <em>a</em><sub>1</sub></span>
+                            <output data-field="a1-out">2.00</output>
+                        </label>
+                        <input type="range" data-field="a1" min="-5" max="5" step="0.25" value="2">
+                    </div>
+                    <div class="explorer-control">
+                        <label>
+                            <span class="ctrl-name">Common ratio <em>r</em></span>
+                            <output data-field="r-out">1.50</output>
+                        </label>
+                        <input type="range" data-field="r" min="-2" max="2" step="0.05" value="1.5">
+                    </div>
+                </div>
+                <div class="explorer-sums">
+                    <div class="sum-card">
+                        <div class="sum-label">Partial sum S<sub>8</sub></div>
+                        <div class="sum-value" data-field="sn">—</div>
+                        <div class="sum-note">Sum of the first 8 terms shown.</div>
+                    </div>
+                    <div class="sum-card inf" data-field="inf-card">
+                        <div class="sum-label" data-field="inf-label">Infinite sum S<sub>∞</sub></div>
+                        <div class="sum-value" data-field="sinf">—</div>
+                        <div class="sum-note" data-field="inf-note">Converges because |r| &lt; 1.</div>
+                    </div>
+                </div>
+                <div class="explorer-hint">Slide <em>r</em> past ±1 to watch the series switch from converging to diverging.</div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -1599,6 +1774,182 @@
     }
 
     new SlidePresentation();
+
+    // ============================================================
+    // RATIO PLAYGROUND — interactive geometric sequence explorer
+    // ============================================================
+    (function initExplorer() {
+        const root = document.getElementById('explorer-2b');
+        if (!root) return;
+
+        const N = 8;
+        const a1Input = root.querySelector('[data-field="a1"]');
+        const rInput  = root.querySelector('[data-field="r"]');
+        const a1Out   = root.querySelector('[data-field="a1-out"]');
+        const rOut    = root.querySelector('[data-field="r-out"]');
+        const snOut   = root.querySelector('[data-field="sn"]');
+        const sinfOut = root.querySelector('[data-field="sinf"]');
+        const infCard = root.querySelector('[data-field="inf-card"]');
+        const infLabel= root.querySelector('[data-field="inf-label"]');
+        const infNote = root.querySelector('[data-field="inf-note"]');
+        const svg     = root.querySelector('[data-field="chart"]');
+
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        const fmt = (v) => {
+            if (!isFinite(v)) return '∞';
+            const abs = Math.abs(v);
+            if (abs !== 0 && (abs < 0.01 || abs >= 10000)) return v.toExponential(2);
+            return (Math.round(v * 100) / 100).toFixed(2);
+        };
+
+        function update() {
+            const a1 = parseFloat(a1Input.value);
+            const r  = parseFloat(rInput.value);
+            a1Out.textContent = a1.toFixed(2);
+            rOut.textContent  = r.toFixed(2);
+
+            // Terms + partial sum
+            const terms = [];
+            let sum = 0;
+            let t = a1;
+            for (let i = 0; i < N; i++) {
+                terms.push(t);
+                sum += t;
+                t *= r;
+            }
+            snOut.textContent = fmt(sum);
+
+            // Infinite sum
+            const absR = Math.abs(r);
+            if (absR < 1) {
+                const sInf = a1 / (1 - r);
+                sinfOut.textContent = fmt(sInf);
+                infCard.classList.remove('diverges');
+                infLabel.innerHTML = 'Infinite sum S<sub>∞</sub>';
+                infNote.innerHTML = `Converges because |r| = ${absR.toFixed(2)} &lt; 1 &nbsp;→&nbsp; S<sub>∞</sub> = a<sub>1</sub>/(1−r)`;
+            } else {
+                sinfOut.textContent = 'diverges';
+                infCard.classList.add('diverges');
+                infLabel.innerHTML = 'Infinite sum S<sub>∞</sub>';
+                const why = absR === 1
+                    ? (r === 1 ? 'terms stay constant' : 'terms alternate in sign without shrinking')
+                    : 'terms grow without bound';
+                infNote.innerHTML = `Diverges because |r| = ${absR.toFixed(2)} ≥ 1 (${why}).`;
+            }
+
+            renderChart(terms);
+        }
+
+        function renderChart(terms) {
+            while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+            // Fixed coordinate space — SVG scales via preserveAspectRatio="xMidYMid meet"
+            const W = 580, H = 440;
+            const padL = 62, padR = 20, padT = 36, padB = 56;
+            const innerW = W - padL - padR;
+            const innerH = H - padT - padB;
+
+            let vMax = Math.max(0, ...terms);
+            let vMin = Math.min(0, ...terms);
+            if (vMax === vMin) { vMax = 1; vMin = -1; }
+            // Headroom so value labels never clip
+            const rangePad = (vMax - vMin) * 0.14;
+            vMax += rangePad;
+            if (vMin < 0) vMin -= rangePad;
+
+            const y = v => padT + (vMax - v) / (vMax - vMin) * innerH;
+            const yZero = y(0);
+
+            const mkText = (x, yPos, text, opts = {}) => {
+                const el = document.createElementNS(SVG_NS, 'text');
+                el.setAttribute('x', x);
+                el.setAttribute('y', yPos);
+                el.setAttribute('text-anchor', opts.anchor || 'middle');
+                el.setAttribute('font-size', opts.size || 14);
+                el.setAttribute('font-weight', opts.weight || 400);
+                el.setAttribute('fill', opts.fill || '#64748b');
+                el.setAttribute('font-family', 'Source Sans 3, sans-serif');
+                if (opts.italic) el.setAttribute('font-style', 'italic');
+                el.textContent = text;
+                svg.appendChild(el);
+                return el;
+            };
+
+            // Zero axis
+            const axis = document.createElementNS(SVG_NS, 'line');
+            axis.setAttribute('x1', padL);
+            axis.setAttribute('x2', W - padR);
+            axis.setAttribute('y1', yZero);
+            axis.setAttribute('y2', yZero);
+            axis.setAttribute('stroke', '#94a3b8');
+            axis.setAttribute('stroke-width', 1.25);
+            svg.appendChild(axis);
+
+            // Y-axis (vertical spine at left)
+            const ySpine = document.createElementNS(SVG_NS, 'line');
+            ySpine.setAttribute('x1', padL);
+            ySpine.setAttribute('x2', padL);
+            ySpine.setAttribute('y1', padT);
+            ySpine.setAttribute('y2', H - padB);
+            ySpine.setAttribute('stroke', '#cbd5e1');
+            ySpine.setAttribute('stroke-width', 1);
+            svg.appendChild(ySpine);
+
+            // Y-axis title (aₙ)
+            mkText(padL - 42, padT - 10, 'aₙ', { anchor: 'start', size: 16, italic: true, fill: '#334155', weight: 600 });
+
+            // Y-axis extrema labels
+            mkText(padL - 8, y(vMax) + 5, fmt(vMax), { anchor: 'end', size: 12 });
+            if (vMin < 0) mkText(padL - 8, y(vMin) + 5, fmt(vMin), { anchor: 'end', size: 12 });
+            mkText(padL - 8, yZero + 4, '0', { anchor: 'end', size: 12 });
+
+            // Bars + value labels
+            const slotW = innerW / N;
+            const barW = slotW * 0.58;
+            terms.forEach((t, i) => {
+                const cx = padL + slotW * (i + 0.5);
+                const bx = cx - barW / 2;
+                const yT = y(t);
+                const barY = Math.min(yZero, yT);
+                const barH = Math.max(1, Math.abs(yT - yZero));
+                const rect = document.createElementNS(SVG_NS, 'rect');
+                rect.setAttribute('x', bx);
+                rect.setAttribute('y', barY);
+                rect.setAttribute('width', barW);
+                rect.setAttribute('height', barH);
+                rect.setAttribute('rx', 3);
+                rect.setAttribute('fill', t >= 0 ? '#2563eb' : '#d97706');
+                rect.setAttribute('opacity', 0.9);
+                svg.appendChild(rect);
+
+                // Value label — above positive bars, below negative bars
+                const labelY = t >= 0 ? barY - 6 : (barY + barH) + 14;
+                mkText(cx, labelY, fmt(t), { size: 12, weight: 600, fill: t >= 0 ? '#1d4ed8' : '#c2410c' });
+
+                // n-axis index label (under the zero axis, pushed to bottom)
+                mkText(cx, H - padB + 16, i + 1, { size: 13 });
+                // aₙ subscript beneath the number
+                mkText(cx, H - padB + 30, 'a' + '₁₂₃₄₅₆₇₈'[i], { size: 11, fill: '#94a3b8' });
+            });
+
+            // X-axis title ("term number n")
+            mkText((padL + W - padR) / 2, H - 6, 'term number n', { size: 12, italic: true, fill: '#64748b' });
+        }
+
+        a1Input.addEventListener('input', update);
+        rInput.addEventListener('input', update);
+
+        // Prevent slide advance when interacting with controls
+        root.addEventListener('click', e => e.stopPropagation());
+        root.addEventListener('keydown', e => {
+            if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) {
+                e.stopPropagation();
+            }
+        });
+
+        update();
+    })();
 </script>
 </body>
 </html>
