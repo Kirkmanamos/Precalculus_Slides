@@ -239,6 +239,204 @@
         gap: 0.75rem;
     }
 
+    .cards-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+    }
+
+    .cards-grid-3 .info-card {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cards-grid-3 .card-copy {
+        font-size: 0.74em;
+    }
+
+    .cards-grid-3 .card-copy .katex-display {
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: 0.1em 0;
+    }
+
+    /* ---- Clickable info-cards ---- */
+    .info-card.clickable {
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        position: relative;
+    }
+
+    .info-card.clickable:hover,
+    .info-card.clickable:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 32px rgba(15, 23, 42, 0.14);
+        outline: none;
+    }
+
+    .card-action {
+        margin-top: auto;
+        padding-top: 0.4em;
+        font-size: 0.58em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--blue-accent);
+        line-height: 1.3;
+    }
+
+    .info-card.teal .card-action   { color: var(--teal-accent); }
+    .info-card.orange .card-action { color: #b45309; }
+    .info-card.navy .card-action   { color: #bfdbfe; }
+
+    /* ---- Modal overlay for expanded card content ---- */
+    .card-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.72);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 120;
+        padding: 2rem 1.25rem;
+        overflow-y: auto;
+        animation: modalFade 0.18s ease both;
+    }
+
+    .card-modal[hidden] { display: none; }
+
+    @keyframes modalFade {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
+
+    .card-modal-inner {
+        background: white;
+        border-radius: 16px;
+        max-width: min(880px, 96vw);
+        width: 100%;
+        max-height: 92vh;
+        overflow-y: auto;
+        padding: 1.6rem 1.8rem 1.4rem;
+        position: relative;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+        animation: modalRise 0.22s cubic-bezier(.2,.9,.3,1.1) both;
+    }
+
+    @keyframes modalRise {
+        from { opacity: 0; transform: translateY(18px) scale(0.98); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card-modal-close {
+        position: absolute;
+        top: 0.65rem;
+        right: 0.85rem;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 1px solid var(--slate-line);
+        background: #f1f5f9;
+        color: var(--navy);
+        font-size: 1.15rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    .card-modal-close:hover { background: #e2e8f0; }
+
+    .card-modal-title {
+        font-size: 1.05em;
+        font-weight: 700;
+        color: var(--navy);
+        margin: 0 2.5rem 0.25rem 0;
+        line-height: 1.3;
+    }
+
+    .card-modal-subtitle {
+        font-size: 0.74em;
+        color: var(--text-muted);
+        margin-bottom: 0.9rem;
+    }
+
+    .derivation-steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+    }
+
+    .derivation-steps > li {
+        background: var(--blue-light);
+        border-left: 4px solid var(--blue-accent);
+        border-radius: 10px;
+        padding: 0.55em 0.95em 0.6em;
+    }
+
+    .derivation-steps > li.teal   { background: var(--teal-light);   border-left-color: var(--teal-accent); }
+    .derivation-steps > li.green  { background: var(--green-light);  border-left-color: var(--green-accent); }
+    .derivation-steps > li.orange { background: var(--orange-light); border-left-color: var(--orange-accent); }
+    .derivation-steps > li.navy   { background: var(--navy); color: white; border-left-color: #60a5fa; }
+    .derivation-steps > li.navy .derivation-label { color: #bfdbfe; }
+    .derivation-steps > li.navy .derivation-note  { color: #dbeafe; border-left-color: #475569; }
+
+    .derivation-label {
+        font-size: 0.6em;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+        margin-bottom: 0.2rem;
+    }
+
+    .derivation-math {
+        font-size: 0.88em;
+        text-align: center;
+        margin: 0.15em 0 0.35em;
+    }
+
+    .derivation-note {
+        font-size: 0.74em;
+        line-height: 1.55;
+        color: #334155;
+        border-left: 2px solid #cbd5e1;
+        padding-left: 0.8em;
+    }
+
+    .derivation-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.74em;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 0.3rem 0;
+    }
+
+    .derivation-table th,
+    .derivation-table td {
+        border: 1px solid #cbd5e1;
+        padding: 0.35em 0.5em;
+        text-align: center;
+    }
+
+    .derivation-table th {
+        background: var(--navy);
+        color: white;
+        font-weight: 700;
+        font-size: 0.92em;
+    }
+
+    @media (max-width: 720px) {
+        .card-modal-inner { padding: 1.25rem 1.1rem 1rem; }
+        .derivation-math { font-size: 0.8em; }
+    }
+
     .info-card,
     .diagram-shell,
     .table-shell,
@@ -546,6 +744,20 @@
         width: 100%;
         height: auto;
         display: block;
+    }
+
+    .diagram-shell.compact {
+        padding: 0.5em 0.9em;
+    }
+
+    .diagram-shell.compact .diagram {
+        max-height: 150px;
+    }
+
+    /* On slide-8 the body-lead is fairly small so the chart + 3 cards + CTAs fit */
+    #slide-8 .body-lead {
+        font-size: 0.72em;
+        padding: 0.48em 0.85em;
     }
 
     .svg-line {
@@ -1278,12 +1490,12 @@
     </div>
     <div class="slide-body top-layout">
         <div class="body-lead">Multiplying a geometric sum by the common ratio makes almost every term line up, which is why the finite-sum formula works so cleanly.</div>
-        <div class="diagram-shell">
+        <div class="diagram-shell compact">
             <div class="diagram-title">Partial Sums Approaching a Limit (6 + 3 + 1.5 + 0.75 + …)</div>
-            <svg viewBox="0 0 440 115" class="diagram" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 440 115" class="diagram" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
                 <!-- Asymptote dashed line at S=12 -->
                 <line x1="40" y1="15" x2="420" y2="15" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6,3"/>
-                <text x="425" y="19" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#dc2626">S = 12</text>
+                <text x="418" y="11" text-anchor="end" font-size="11" font-weight="700" font-family="'Source Sans 3',sans-serif" fill="#dc2626">S = 12 (limit)</text>
                 <!-- x-axis -->
                 <line x1="40" y1="100" x2="420" y2="100" stroke="#cbd5e1" stroke-width="1"/>
                 <!-- Partial sum dots: S₁=6→y65, S₂=9→y40, S₃=10.5→y27, S₄=11.25→y21, S₅=11.625→y18 -->
@@ -1308,22 +1520,29 @@
                 <text x="360" y="112" text-anchor="middle" font-size="11" font-weight="600" font-family="'Source Sans 3',sans-serif" fill="#64748b">n=5</text>
             </svg>
         </div>
-        <div class="cards-grid">
-            <div class="info-card teal">
-                <div class="card-title">Finite Sum</div>
-                <div class="card-copy">\[S_n = a_1 + a_1r + a_1r^2 + \dots + a_1r^{n-1}\]</div>
+        <div class="cards-grid cards-grid-3">
+            <div class="info-card teal clickable" data-modal="finite-derivation" role="button" tabindex="0" aria-label="Open full derivation">
+                <div class="card-title">Finite Sum (derivation)</div>
+                <div class="card-copy">
+                    Multiply by \(r\) and subtract to collapse middle terms:
+                    \[(1-r)\,S_n = a_1 - a_1 r^n\]
+                    \[S_n = \dfrac{a_1\!\left(1 - r^n\right)}{1-r}\]
+                </div>
+                <div class="card-action">Click for full step-by-step derivation →</div>
             </div>
-            <div class="info-card green">
-                <div class="card-title">Subtract the Shifted Copy</div>
-                <div class="card-copy">\[(1-r)S_n = a_1 - a_1r^n\]</div>
+            <div class="info-card orange clickable" data-modal="convergence-limit" role="button" tabindex="0" aria-label="Open limit explanation">
+                <div class="card-title">Convergence (\(|r| &lt; 1\))</div>
+                <div class="card-copy">
+                    The partial sums \(S_n\) settle toward one single number — their <strong>limit</strong>:
+                    \[S = \dfrac{a_1}{1-r}\]
+                    \(S\) is the value \(S_n\) gets <em>as close to as we want</em> by taking enough terms.
+                </div>
+                <div class="card-action">Click to see what "limit" means →</div>
             </div>
-            <div class="info-card orange">
-                <div class="card-title">Convergence (\(|r| < 1\))</div>
-                <div class="card-copy">When \(|r|<1\), the term \(a_1r^n \to 0\), so the sum approaches a finite value: \(S = \dfrac{a_1}{1-r}\).</div>
-            </div>
-            <div class="info-card navy">
+            <div class="info-card navy clickable" data-modal="divergence-cases" role="button" tabindex="0" aria-label="Open divergence cases">
                 <div class="card-title">Divergence (\(|r| \ge 1\))</div>
-                <div class="card-copy">When \(|r| \ge 1\), the terms grow without bound — the series <strong>diverges</strong> and has no finite sum.</div>
+                <div class="card-copy">The terms do not shrink to zero, so the partial sums grow without bound (or oscillate). The series <strong>diverges</strong> — no finite sum exists.</div>
+                <div class="card-action">Click to see the three cases →</div>
             </div>
         </div>
     </div>
@@ -1951,5 +2170,202 @@
         update();
     })();
 </script>
+
+<!-- ============================================================
+     Expandable derivation / explanation modals for slide-8 cards
+     ============================================================ -->
+
+<div class="card-modal" id="modal-finite-derivation" hidden role="dialog" aria-modal="true" aria-labelledby="modal-finite-derivation-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-finite-derivation-title">Where does \(S_n = \dfrac{a_1(1-r^n)}{1-r}\) come from?</div>
+        <div class="card-modal-subtitle">A step-by-step derivation — the trick is to multiply by \(r\) and subtract.</div>
+        <ol class="derivation-steps">
+            <li class="teal">
+                <div class="derivation-label">Step 1 · Write the sum</div>
+                <div class="derivation-math">\[S_n = a_1 + a_1 r + a_1 r^2 + a_1 r^3 + \dots + a_1 r^{n-1}\]</div>
+                <div class="derivation-note">Every term is the previous one multiplied by \(r\). Count carefully: there are \(n\) terms, and the last one is \(a_1 r^{n-1}\) (not \(a_1 r^n\)).</div>
+            </li>
+            <li>
+                <div class="derivation-label">Step 2 · Multiply every term by \(r\)</div>
+                <div class="derivation-math">\[r S_n = a_1 r + a_1 r^2 + a_1 r^3 + \dots + a_1 r^{n-1} + a_1 r^{n}\]</div>
+                <div class="derivation-note">Each power of \(r\) shifts up by one. Notice how most of \(rS_n\) looks just like most of \(S_n\) — that's what makes the next step collapse.</div>
+            </li>
+            <li>
+                <div class="derivation-label">Step 3 · Subtract \(r S_n\) from \(S_n\) — middle terms cancel</div>
+                <div class="derivation-math">\[S_n - r S_n = a_1 + \underbrace{(a_1 r - a_1 r)}_{0} + \underbrace{(a_1 r^2 - a_1 r^2)}_{0} + \dots + \underbrace{(a_1 r^{n-1} - a_1 r^{n-1})}_{0} - a_1 r^n\]</div>
+                <div class="derivation-note">Every matching power of \(r\) between the two sums cancels. Only the very first term of \(S_n\) (which is \(a_1\)) and the very last term of \(rS_n\) (which is \(a_1 r^n\)) survive.</div>
+            </li>
+            <li class="green">
+                <div class="derivation-label">Step 4 · Factor both sides</div>
+                <div class="derivation-math">\[(1 - r)\, S_n = a_1 \left(1 - r^n\right)\]</div>
+                <div class="derivation-note">Pull \(S_n\) out on the left (it's in both terms on the left side). Pull \(a_1\) out on the right.</div>
+            </li>
+            <li class="navy">
+                <div class="derivation-label">Step 5 · Solve for \(S_n\)</div>
+                <div class="derivation-math">\[S_n = \dfrac{a_1 \left(1 - r^n\right)}{1 - r} \quad (r \ne 1)\]</div>
+                <div class="derivation-note">Divide both sides by \(1 - r\). <strong>Important:</strong> this is why the formula fails when \(r = 1\) — you'd be dividing by zero. If \(r = 1\), every term equals \(a_1\), so \(S_n = n \cdot a_1\) directly.</div>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="card-modal" id="modal-convergence-limit" hidden role="dialog" aria-modal="true" aria-labelledby="modal-convergence-limit-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-convergence-limit-title">What does "\(S\) is the limit of the partial sums" mean?</div>
+        <div class="card-modal-subtitle">Intuitive version — we'll formalize "limit" in calculus, but you already have the idea.</div>
+        <ol class="derivation-steps">
+            <li class="teal">
+                <div class="derivation-label">The setup</div>
+                <div class="derivation-math">\[S_n = a_1 + a_1 r + a_1 r^2 + \dots + a_1 r^{n-1}\]</div>
+                <div class="derivation-note">\(S_n\) is the sum of the <em>first \(n\)</em> terms — a partial sum. As \(n\) grows, we add more and more terms.</div>
+            </li>
+            <li>
+                <div class="derivation-label">Watch the partial sums for \(6 + 3 + 1.5 + 0.75 + \dots\) (\(a_1 = 6,\; r = \tfrac12\))</div>
+                <table class="derivation-table">
+                    <thead>
+                        <tr><th>\(n\)</th><th>1</th><th>2</th><th>3</th><th>5</th><th>10</th><th>20</th><th>50</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th>\(S_n\)</th><td>6</td><td>9</td><td>10.5</td><td>11.625</td><td>11.988</td><td>11.99999</td><td>\(\approx 12\)</td></tr>
+                        <tr><th>distance \(|12 - S_n|\)</th><td>6</td><td>3</td><td>1.5</td><td>0.375</td><td>0.012</td><td>0.00001</td><td>\(\approx 0\)</td></tr>
+                    </tbody>
+                </table>
+                <div class="derivation-note">Each new term cuts the remaining distance to 12 in half. The partial sums never actually <em>reach</em> 12 — but they get as close as you want.</div>
+            </li>
+            <li class="orange">
+                <div class="derivation-label">The intuitive meaning of "limit"</div>
+                <div class="derivation-note" style="border-left-color:#fb923c;">
+                    Saying "\(S_n\) has limit \(S\)" means: <strong>pick any target distance you like</strong> — maybe 0.1, or 0.0001, or \(10^{-50}\) — and you can always find a big enough \(n\) so that \(S_n\) is within that distance of \(S\), and stays there for every larger \(n\).
+                    <br><br>
+                    Think of zooming in: no matter how tight you make your target zone around \(S\), eventually all the \(S_n\) fall inside it.
+                </div>
+            </li>
+            <li class="green">
+                <div class="derivation-label">Why the formula \(S = \dfrac{a_1}{1-r}\) works when \(|r|&lt;1\)</div>
+                <div class="derivation-math">\[S_n = \dfrac{a_1(1 - r^n)}{1 - r} \;\; \xrightarrow{\;n \to \infty\;} \;\; \dfrac{a_1(1 - 0)}{1 - r} = \dfrac{a_1}{1 - r}\]</div>
+                <div class="derivation-note">Because \(|r| &lt; 1\), multiplying \(r\) by itself over and over makes \(r^n\) shrink toward 0. The only piece of the formula that was still depending on \(n\) vanishes, leaving a single finite number.</div>
+            </li>
+            <li class="navy">
+                <div class="derivation-label">For our example</div>
+                <div class="derivation-math">\[S = \dfrac{6}{1 - \tfrac12} = \dfrac{6}{\tfrac12} = 12\]</div>
+                <div class="derivation-note">So \(6 + 3 + 1.5 + 0.75 + \dots = 12\) — not as an arithmetic fact about any finite sum, but as the limit of the partial sums.</div>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<div class="card-modal" id="modal-divergence-cases" hidden role="dialog" aria-modal="true" aria-labelledby="modal-divergence-cases-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-divergence-cases-title">Why \(|r| \ge 1\) breaks the infinite sum</div>
+        <div class="card-modal-subtitle">The core reason: the terms themselves never shrink to zero, so the partial sums can't settle.</div>
+        <ol class="derivation-steps">
+            <li class="teal">
+                <div class="derivation-label">The test — always check \(|r|\) first</div>
+                <div class="derivation-math">\[\text{Infinite sum exists} \;\iff\; |r| &lt; 1\]</div>
+                <div class="derivation-note">If \(|r| \ge 1\), the terms \(a_1 r^n\) either stay the same size or grow, so the partial sums can never stop moving by less than \(|a_1|\) at a time.</div>
+            </li>
+            <li>
+                <div class="derivation-label">Case 1 · \(|r| &gt; 1\) — terms grow, sum blows up</div>
+                <div class="derivation-math">\[1 + 2 + 4 + 8 + 16 + \dots \quad (a_1 = 1,\; r = 2)\]</div>
+                <div class="derivation-note">After 10 terms: \(S_{10} = 1023\). After 20 terms: \(S_{20} = 1{,}048{,}575\). Each new term is bigger than <em>all</em> the previous ones combined, so the partial sums rocket to infinity. No finite sum.</div>
+            </li>
+            <li class="green">
+                <div class="derivation-label">Case 2 · \(r = 1\) — every term is the same</div>
+                <div class="derivation-math">\[a_1 + a_1 + a_1 + a_1 + \dots \;=\; n \cdot a_1\]</div>
+                <div class="derivation-note">Every term equals \(a_1\), so the partial sum is just \(n a_1\). If \(a_1 \ne 0\), this grows without bound. Also note: the formula \(\dfrac{a_1(1 - r^n)}{1 - r}\) divides by \(1 - r = 0\) here — that's why it fails.</div>
+            </li>
+            <li class="orange">
+                <div class="derivation-label">Case 3 · \(r \le -1\) — terms flip sign but don't shrink</div>
+                <div class="derivation-math">\[1 - 1 + 1 - 1 + 1 - 1 + \dots \quad (a_1 = 1,\; r = -1)\]</div>
+                <div class="derivation-note">The partial sums oscillate: \(S_1 = 1,\; S_2 = 0,\; S_3 = 1,\; S_4 = 0, \dots\) They bounce between 1 and 0 forever without settling on any single value. If \(r &lt; -1\) it's worse — the amplitude grows.</div>
+            </li>
+            <li class="navy">
+                <div class="derivation-label">The big idea</div>
+                <div class="derivation-note" style="color:#e2e8f0;">
+                    A convergent series needs its <strong>terms</strong> to shrink toward zero — that's the only way the partial sums can settle on a single value. For a geometric sequence, "terms shrink" happens <em>exactly</em> when \(|r| &lt; 1\). Anything else, and we're stuck.
+                </div>
+            </li>
+        </ol>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // CARD MODALS — render KaTeX inside modals, wire open/close
+    // (This script runs AFTER the modal HTML is parsed, so the
+    // auto-render call will see the math content.)
+    // ============================================================
+    (function initCardModals() {
+        // 1. Render KaTeX inside each modal (they were hidden at parse time
+        //    and are AFTER the global renderMathInElement call)
+        document.querySelectorAll('.card-modal').forEach(modal => {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(modal, {
+                    delimiters: [
+                        { left: '\\[', right: '\\]', display: true  },
+                        { left: '\\(', right: '\\)', display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+
+        // 2. Wire the cards
+        const cards = document.querySelectorAll('.info-card.clickable');
+
+        const openModal = (id) => {
+            const modal = document.getElementById('modal-' + id);
+            if (!modal) return;
+            modal.hidden = false;
+            const closeBtn = modal.querySelector('.card-modal-close');
+            if (closeBtn) closeBtn.focus();
+        };
+
+        const closeModal = (modal) => { modal.hidden = true; };
+
+        cards.forEach(card => {
+            card.addEventListener('click', e => {
+                e.stopPropagation();
+                openModal(card.dataset.modal);
+            });
+            card.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(card.dataset.modal);
+                }
+            });
+        });
+
+        // 3. Wire the modals
+        document.querySelectorAll('.card-modal').forEach(modal => {
+            modal.addEventListener('click', e => {
+                e.stopPropagation();
+                if (e.target === modal || e.target.classList.contains('card-modal-close')) {
+                    closeModal(modal);
+                }
+            });
+            modal.addEventListener('keydown', e => {
+                e.stopPropagation();
+                if (e.key === 'Escape') closeModal(modal);
+            });
+        });
+
+        // 4. Global Escape in capture phase (beats the slide nav handler)
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                const open = document.querySelectorAll('.card-modal:not([hidden])');
+                if (open.length) {
+                    open.forEach(m => m.hidden = true);
+                    e.stopPropagation();
+                }
+            }
+        }, true);
+    })();
+</script>
+
 </body>
 </html>
