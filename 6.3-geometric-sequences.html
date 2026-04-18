@@ -1187,6 +1187,168 @@
         button.innerHTML = '<span class="formula-button-mark" aria-hidden="true">fx</span><span>Formulas</span>';
         slide.appendChild(button);
     });
+
+    // ============================================================
+    // RATIO PLAYGROUND — interactive geometric sequence explorer
+    // ============================================================
+    (function initExplorer() {
+        const root = document.getElementById('explorer-2b');
+        if (!root) return;
+
+        const N = 8;
+        const a1Input = root.querySelector('[data-field="a1"]');
+        const rInput  = root.querySelector('[data-field="r"]');
+        const a1Out   = root.querySelector('[data-field="a1-out"]');
+        const rOut    = root.querySelector('[data-field="r-out"]');
+        const snOut   = root.querySelector('[data-field="sn"]');
+        const sinfOut = root.querySelector('[data-field="sinf"]');
+        const infCard = root.querySelector('[data-field="inf-card"]');
+        const infLabel= root.querySelector('[data-field="inf-label"]');
+        const infNote = root.querySelector('[data-field="inf-note"]');
+        const svg     = root.querySelector('[data-field="chart"]');
+
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        const fmt = (v) => {
+            if (!isFinite(v)) return '∞';
+            const abs = Math.abs(v);
+            if (abs !== 0 && (abs < 0.01 || abs >= 10000)) return v.toExponential(2);
+            return (Math.round(v * 100) / 100).toFixed(2);
+        };
+
+        function update() {
+            const a1 = parseFloat(a1Input.value);
+            const r  = parseFloat(rInput.value);
+            a1Out.textContent = a1.toFixed(2);
+            rOut.textContent  = r.toFixed(2);
+
+            const terms = [];
+            let sum = 0;
+            let t = a1;
+            for (let i = 0; i < N; i++) {
+                terms.push(t);
+                sum += t;
+                t *= r;
+            }
+            snOut.textContent = fmt(sum);
+
+            const absR = Math.abs(r);
+            if (absR < 1) {
+                const sInf = a1 / (1 - r);
+                sinfOut.textContent = fmt(sInf);
+                infCard.classList.remove('diverges');
+                infLabel.innerHTML = 'Infinite sum S<sub>∞</sub>';
+                infNote.innerHTML = `Converges because |r| = ${absR.toFixed(2)} &lt; 1 &nbsp;→&nbsp; S<sub>∞</sub> = a<sub>1</sub>/(1−r)`;
+            } else {
+                sinfOut.textContent = 'diverges';
+                infCard.classList.add('diverges');
+                infLabel.innerHTML = 'Infinite sum S<sub>∞</sub>';
+                const why = absR === 1
+                    ? (r === 1 ? 'terms stay constant' : 'terms alternate in sign without shrinking')
+                    : 'terms grow without bound';
+                infNote.innerHTML = `Diverges because |r| = ${absR.toFixed(2)} ≥ 1 (${why}).`;
+            }
+
+            renderChart(terms);
+        }
+
+        function renderChart(terms) {
+            while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+            const W = 580, H = 440;
+            const padL = 62, padR = 20, padT = 36, padB = 56;
+            const innerW = W - padL - padR;
+            const innerH = H - padT - padB;
+
+            let vMax = Math.max(0, ...terms);
+            let vMin = Math.min(0, ...terms);
+            if (vMax === vMin) { vMax = 1; vMin = -1; }
+            const rangePad = (vMax - vMin) * 0.14;
+            vMax += rangePad;
+            if (vMin < 0) vMin -= rangePad;
+
+            const y = v => padT + (vMax - v) / (vMax - vMin) * innerH;
+            const yZero = y(0);
+
+            const mkText = (x, yPos, text, opts = {}) => {
+                const el = document.createElementNS(SVG_NS, 'text');
+                el.setAttribute('x', x);
+                el.setAttribute('y', yPos);
+                el.setAttribute('text-anchor', opts.anchor || 'middle');
+                el.setAttribute('font-size', opts.size || 14);
+                el.setAttribute('font-weight', opts.weight || 400);
+                el.setAttribute('fill', opts.fill || '#64748b');
+                el.setAttribute('font-family', 'Source Sans 3, sans-serif');
+                if (opts.italic) el.setAttribute('font-style', 'italic');
+                el.textContent = text;
+                svg.appendChild(el);
+                return el;
+            };
+
+            const axis = document.createElementNS(SVG_NS, 'line');
+            axis.setAttribute('x1', padL);
+            axis.setAttribute('x2', W - padR);
+            axis.setAttribute('y1', yZero);
+            axis.setAttribute('y2', yZero);
+            axis.setAttribute('stroke', '#94a3b8');
+            axis.setAttribute('stroke-width', 1.25);
+            svg.appendChild(axis);
+
+            const ySpine = document.createElementNS(SVG_NS, 'line');
+            ySpine.setAttribute('x1', padL);
+            ySpine.setAttribute('x2', padL);
+            ySpine.setAttribute('y1', padT);
+            ySpine.setAttribute('y2', H - padB);
+            ySpine.setAttribute('stroke', '#cbd5e1');
+            ySpine.setAttribute('stroke-width', 1);
+            svg.appendChild(ySpine);
+
+            mkText(padL - 42, padT - 10, 'aₙ', { anchor: 'start', size: 16, italic: true, fill: '#334155', weight: 600 });
+            mkText(padL - 8, y(vMax) + 5, fmt(vMax), { anchor: 'end', size: 12 });
+            if (vMin < 0) mkText(padL - 8, y(vMin) + 5, fmt(vMin), { anchor: 'end', size: 12 });
+            mkText(padL - 8, yZero + 4, '0', { anchor: 'end', size: 12 });
+
+            const slotW = innerW / N;
+            const barW = slotW * 0.58;
+            terms.forEach((t, i) => {
+                const cx = padL + slotW * (i + 0.5);
+                const bx = cx - barW / 2;
+                const yT = y(t);
+                const barY = Math.min(yZero, yT);
+                const barH = Math.max(1, Math.abs(yT - yZero));
+                const rect = document.createElementNS(SVG_NS, 'rect');
+                rect.setAttribute('x', bx);
+                rect.setAttribute('y', barY);
+                rect.setAttribute('width', barW);
+                rect.setAttribute('height', barH);
+                rect.setAttribute('rx', 3);
+                rect.setAttribute('fill', t >= 0 ? '#2563eb' : '#d97706');
+                rect.setAttribute('opacity', 0.9);
+                svg.appendChild(rect);
+
+                const labelY = t >= 0 ? barY - 6 : (barY + barH) + 14;
+                mkText(cx, labelY, fmt(t), { size: 12, weight: 600, fill: t >= 0 ? '#1d4ed8' : '#c2410c' });
+
+                mkText(cx, H - padB + 16, i + 1, { size: 13 });
+                mkText(cx, H - padB + 30, 'a' + '₁₂₃₄₅₆₇₈'[i], { size: 11, fill: '#94a3b8' });
+            });
+
+            mkText((padL + W - padR) / 2, H - 6, 'term number n', { size: 12, italic: true, fill: '#64748b' });
+        }
+
+        a1Input.addEventListener('input', update);
+        rInput.addEventListener('input', update);
+
+        // Prevent slide advance when interacting with controls
+        root.addEventListener('click', e => e.stopPropagation());
+        root.addEventListener('keydown', e => {
+            if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) {
+                e.stopPropagation();
+            }
+        });
+
+        update();
+    })();
 </script>
 
 <!-- ============================================================
