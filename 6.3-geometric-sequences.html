@@ -969,6 +969,69 @@
         color: white;
     }
 
+    .formula-button {
+        position: absolute;
+        right: max(1.1rem, calc((100% - 1120px) / 2 + 0.2rem));
+        bottom: calc(1.05rem + env(safe-area-inset-bottom));
+        z-index: 105;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45em;
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 8px;
+        background: var(--navy);
+        color: white;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);
+        font-family: inherit;
+        font-size: 0.56em;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        line-height: 1;
+        padding: 0.64em 0.82em;
+        cursor: pointer;
+        transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .formula-button:hover,
+    .formula-button:focus-visible {
+        background: #0f2a4f;
+        transform: translateY(-2px);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.28);
+        outline: none;
+    }
+
+    .formula-button-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.7em;
+        height: 1.7em;
+        border-radius: 6px;
+        background: #60a5fa;
+        color: white;
+        font-size: 0.9em;
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .formula-modal .card-modal-inner {
+        max-width: min(790px, 96vw);
+        padding: 1.35rem 1.5rem 1.25rem;
+    }
+
+    .formula-modal .formula-grid {
+        gap: 0.52rem;
+    }
+
+    .formula-modal .formula-row {
+        padding: 0.48em 0.9em;
+    }
+
+    .formula-modal .formula-note {
+        margin-top: 0.62rem;
+    }
+
     .click-hint {
         position: fixed;
         bottom: 4.55rem;
@@ -1084,6 +1147,17 @@
         .slide-section-chip {
             font-size: 0.52em;
             padding: 0.54em 0.68em;
+        }
+
+        .formula-button {
+            right: calc(12px + env(safe-area-inset-right));
+            bottom: calc(12px + env(safe-area-inset-bottom));
+            font-size: 0.58em;
+            padding: 0.58em 0.72em;
+        }
+
+        .formula-modal .card-modal-inner {
+            padding: 1.2rem 1rem 1rem;
         }
 
         .nav-dots {
@@ -1890,6 +1964,34 @@
     </div>
 </section>
 </div>
+
+<div class="card-modal formula-modal" id="modal-formula-reference" hidden role="dialog" aria-modal="true" aria-labelledby="modal-formula-reference-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-formula-reference-title">Geometric Sequence Formulas</div>
+        <div class="card-modal-subtitle">Reference formulas from the formula slide.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">ratio</div>
+                <div class="fn-eq-stack"><div>\[r = \dfrac{a_n}{a_{n-1}}\]</div></div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">nth term</div>
+                <div class="fn-eq-stack"><div>\[a_n = a_1r^{\,n-1}\]</div></div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">finite sum</div>
+                <div class="fn-eq-stack"><div>\[S_n = \dfrac{a_1(1-r^n)}{1-r}, \quad r \ne 1\]</div></div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">infinite sum</div>
+                <div class="fn-eq-stack"><div>\[S_{\infty} = \dfrac{a_1}{1-r}, \quad |r| < 1\]</div></div>
+            </div>
+        </div>
+        <div class="formula-note">The geometric mean between two positive numbers \(a\) and \(b\) is \(\sqrt{ab}\).</div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script>
@@ -1935,6 +2037,7 @@
             ];
             this._buildNav();
             this._buildSectionNavs();
+            this._buildFormulaButtons();
             this._activate(0);
             this._bindEvents();
         }
@@ -1980,6 +2083,21 @@
 
                 slide.appendChild(nav);
             });
+        }
+
+        _buildFormulaButtons() {
+            this.slides
+                .filter(slide => slide.querySelector('.example-label'))
+                .forEach(slide => {
+                    const button = document.createElement('button');
+                    button.className = 'formula-button';
+                    button.type = 'button';
+                    button.setAttribute('aria-label', 'Open geometric sequence formulas');
+                    button.setAttribute('aria-haspopup', 'dialog');
+                    button.setAttribute('aria-controls', 'modal-formula-reference');
+                    button.innerHTML = '<span class="formula-button-mark" aria-hidden="true">fx</span><span>Formulas</span>';
+                    slide.appendChild(button);
+                });
         }
 
         _sync() {
@@ -2390,9 +2508,9 @@
     // auto-render call will see the math content.)
     // ============================================================
     (function initCardModals() {
-        // 1. Render KaTeX inside each modal (they were hidden at parse time
-        //    and are AFTER the global renderMathInElement call)
-        document.querySelectorAll('.card-modal').forEach(modal => {
+        // 1. Render KaTeX inside the derivation modals (they are AFTER the
+        //    global renderMathInElement call; the formula modal is before it).
+        document.querySelectorAll('.card-modal:not(#modal-formula-reference)').forEach(modal => {
             if (typeof renderMathInElement === 'function') {
                 renderMathInElement(modal, {
                     delimiters: [
@@ -2406,6 +2524,7 @@
 
         // 2. Wire the cards
         const cards = document.querySelectorAll('.info-card.clickable');
+        const formulaButtons = document.querySelectorAll('.formula-button');
 
         const openModal = (id) => {
             const modal = document.getElementById('modal-' + id);
@@ -2427,6 +2546,20 @@
                     e.preventDefault();
                     e.stopPropagation();
                     openModal(card.dataset.modal);
+                }
+            });
+        });
+
+        formulaButtons.forEach(button => {
+            button.addEventListener('click', e => {
+                e.stopPropagation();
+                openModal('formula-reference');
+            });
+            button.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal('formula-reference');
                 }
             });
         });
