@@ -6,9 +6,9 @@ This document is for any AI agent (Claude, Claude Code, ChatGPT, Gemini, Deepsee
 
 ## Core Philosophy
 
-1. **Zero Dependencies** -- Every presentation is a single self-contained HTML file with inline CSS and JS. No npm, no build tools, no frameworks. The only external resources allowed are font stylesheets (Google Fonts) and **KaTeX CDN** (math rendering).
+1. **Zero Build Step** -- Every presentation is a single HTML file. No npm, no build tools, no frameworks. Decks share `assets/slides-core.css` and `assets/slides-core.js` via plain `<link>` / `<script src=...>` (works on GitHub Pages). External CDN resources allowed: Google Fonts and **KaTeX**.
 
-2. **HoffMath Classroom Standard** -- All new presentations (and all updates to older ones) must follow the architecture established in `5.5-double-half-angle.html`. This is the **gold standard**. See [HTML Architecture](#html-architecture).
+2. **HoffMath Classroom Standard** -- All new presentations (and all updates to older ones) must follow the architecture established in `6.7-conditional-probability.html` (canonical for the shared-assets pattern; see also `5.5-double-half-angle.html` for legacy inline-style decks awaiting conversion). See [HTML Architecture](#html-architecture).
 
 3. **KaTeX for All Math** -- Every mathematical expression uses KaTeX via CDN. No HTML entities, no Unicode math, no monospace approximations. See [Math Rendering](#math-rendering).
 
@@ -60,11 +60,16 @@ These are **proven failures** — do not repeat them:
 ## File Structure
 
 ```
-presentation-name.html          # Self-contained single file
+presentation-name.html          # Single file — links shared assets/
 presentation-name-assets/       # Optional: images extracted from PPT conversions
+assets/
+    slides-core.css             # Shared baseline CSS (one source of truth)
+    slides-core.js              # Shared SlidePresentation engine (window.SlidesCore)
 ```
 
-All CSS and JS live inline within the HTML file. There are no shared stylesheets or script files across presentations.
+Layout, components (info-card, step-box, formula-row, fill-in-blank, etc.), navigation, and the slide engine all live in `assets/`. A deck's HTML file contains only its content plus a small inline `<style>` block for *deck-specific* additions (e.g. `.read-aloud` in 6.1, modal/explorer CSS in 6.3) and a one-line `SlidesCore.init({ sectionTargets: [...] })` call.
+
+When updating shared visuals (colors, typography, info-card style, step-reveal animation, etc.), edit `assets/slides-core.css` once and every deck inherits the change. Only edit a deck's inline `<style>` block when the rule is genuinely unique to that deck.
 
 ---
 

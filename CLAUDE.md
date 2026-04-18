@@ -22,7 +22,10 @@
 
 ```
 precalculus_slides/
-├── *.html                        HTML slide decks (self-contained, no build step)
+├── *.html                        HTML slide decks (no build step; load shared assets/)
+├── assets/
+│   ├── slides-core.css           Shared baseline CSS for all decks
+│   └── slides-core.js            Shared SlidePresentation engine (window.SlidesCore)
 ├── *-assets/                     Image assets extracted from source PPTs
 │
 ├── slidev/                       Slidev (Vue 3) interactive decks
@@ -67,11 +70,13 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 ## Output Format Rules (Summary)
 
 ### HTML Presentations
-- Single self-contained `.html` file. No npm, no build step, no frameworks.
-- All CSS and JS inline. External resources: Google Fonts + **KaTeX CDN** (math rendering).
+- Single `.html` file per deck. No npm, no build step, no frameworks.
+- Decks link the shared `assets/slides-core.css` + `assets/slides-core.js` (one source of truth for layout, components, and the slide engine).
+- Per-deck JS init: `<script>SlidesCore.init({ sectionTargets: [...] });</script>`.
+- Deck-specific CSS goes in a small inline `<style>` block AFTER the `<link>` (e.g. `.read-aloud` in 6.1, modals in 6.3, SVG `.exp-*` in 6.4).
 - All math rendered via KaTeX (`\[ \]` display, `\( \)` inline). No HTML entities or Unicode math.
 - Follow the HoffMath Classroom architecture in `agents.md` exactly.
-- Reference implementation: `5.5-double-half-angle.html`.
+- Reference implementation: `6.7-conditional-probability.html` (canonical for the new shared-assets pattern).
 
 ### Slidev / Vue Decks
 - Stack: Slidev v52.2.0, Vue 3, KaTeX for math, SVG for graphs.
