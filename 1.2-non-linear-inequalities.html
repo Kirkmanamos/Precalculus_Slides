@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.2 - Non-Linear Inequalities</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .number-line { display: block; margin: 0.6rem auto; max-width: 100%; height: auto; }
+        .number-line text { font-family: 'Source Sans 3', sans-serif; }
+        .sign-row { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1rem; align-items: center; font-size: 0.85em; }
+        .sign-row .label { font-weight: 600; color: #475569; font-size: 0.9em; white-space: nowrap; }
+        .sign-row .values { font-family: 'KaTeX_Main', 'Source Sans 3', serif; }
+        .sign-pos { color: #16a34a; font-weight: 700; }
+        .sign-neg { color: #dc2626; font-weight: 700; }
+        .sign-zero { color: #0369a1; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ============================================================
+     SLIDE 0 — TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.2 Non-Linear Inequalities</div>
+    <div class="title-objective">Objective: Solve absolute value, quadratic, and rational inequalities using sign diagrams and compound inequalities.</div>
+    <div class="identity-chips">
+        <span class="chip">absolute value</span>
+        <span class="chip">quadratic</span>
+        <span class="chip">rational</span>
+        <span class="chip">sign diagrams</span>
+        <span class="chip">interval notation</span>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1 — CONCEPT: What is an inequality?
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-1" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Inequalities</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">An <strong>inequality</strong> is a statement that two quantities or expressions are <em>not equal</em>. Example: \(2x + 3 > 11\).</div>
+
+        <div class="cards-grid" style="margin-top: 1rem;">
+            <div class="info-card teal">
+                <div class="card-title">Inequality symbols</div>
+                <div class="card-copy" style="line-height: 2; font-size: 1.05em;">
+                    \(<\) &nbsp;&nbsp;less than<br>
+                    \(>\) &nbsp;&nbsp;greater than<br>
+                    \(\le\) &nbsp;&nbsp;less than or equal to<br>
+                    \(\ge\) &nbsp;&nbsp;greater than or equal to
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">What it means to "solve"</div>
+                <div class="card-copy">To <strong>solve an inequality</strong> means to find all <span class="fb" id="slide-1-step-0"><span class="fb-blank">__________</span><span class="fb-answer">values of \(x\)</span></span> that make the inequality <span class="fb" id="slide-1-step-1"><span class="fb-blank">______</span><span class="fb-answer">true</span></span>.</div>
+            </div>
+        </div>
+
+        <div class="step" id="slide-1-step-2">
+            <div class="note-box navy">
+                <div class="note-title">Why non-linear?</div>
+                <div class="note-copy">Unlike linear inequalities, absolute value, quadratic, and rational inequalities can flip direction — solutions often come in <em>unions</em> of intervals, not single intervals.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — How to solve Absolute Value Inequalities
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-2" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Strategy</div>
+        <div class="slide-title">How to Solve an Absolute Value Inequality</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Case 1 · \(|mx+b| < a\)</div>
+                <div class="card-copy" style="line-height: 1.8;">
+                    <strong>1.</strong> Write an <em>AND</em> compound inequality:
+                    \[-a < mx + b < a\]
+                    <strong>2.</strong> Solve for \(x\).<br>
+                    <strong>3.</strong> Check your answer.
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Case 2 · \(|mx+b| > a\)</div>
+                <div class="card-copy" style="line-height: 1.8;">
+                    <strong>1.</strong> Write an <em>OR</em> compound inequality:
+                    \[mx+b > a \ \text{ or }\ mx+b < -a\]
+                    <strong>2.</strong> Solve for \(x\).<br>
+                    <strong>3.</strong> Check your answer.
+                </div>
+            </div>
+        </div>
+
+        <div class="step" id="slide-2-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Memory trick</div>
+                <div class="note-copy"><strong>"Less thAND, greatOR."</strong> Less-than gives AND (a sandwich). Greater-than gives OR (two pieces).</div>
+            </div>
+        </div>
+        <div class="step" id="slide-2-step-1">
+            <div class="note-box teal">
+                <div class="note-title">Always isolate first</div>
+                <div class="note-copy">Before you split into cases, the absolute value must be alone on one side. Multiply, divide, add, subtract — get \(|mx+b|\) by itself first.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — EXAMPLE 1: |x - 3| ≤ 5
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Solve \(|x - 3| \le 5\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">This is Case 1 (less than) — write an AND compound inequality.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Write compound inequality</div>
+                    <div class="step-math">\[-5 \le x - 3 \le 5\]
+                        <div class="annotation">Case 1 template: \(-a \le mx+b \le a\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Add 3 to all three parts</div>
+                    <div class="step-math">\[-2 \le x \le 8\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Solution · Interval notation</div>
+                    <div class="step-math">\[x \in [-2,\, 8]\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Number line</div>
+                    <svg class="number-line" viewBox="0 0 420 60" role="img" aria-label="Closed interval from -2 to 8">
+                        <line x1="20" y1="30" x2="400" y2="30" stroke="#cbd5e1" stroke-width="2"/>
+                        <line x1="130" y1="30" x2="290" y2="30" stroke="#4ade80" stroke-width="5"/>
+                        <circle cx="130" cy="30" r="6" fill="#4ade80" stroke="#fff" stroke-width="2"/>
+                        <circle cx="290" cy="30" r="6" fill="#4ade80" stroke="#fff" stroke-width="2"/>
+                        <text x="130" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">-2</text>
+                        <text x="290" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">8</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — EXAMPLE 2: 3|2x+3| + 1 > 28
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Solve \(3|2x + 3| + 1 > 28\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Isolate the absolute value first, then apply Case 2 (greater than).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Subtract 1, divide by 3</div>
+                    <div class="step-math">\[|2x + 3| > 9\]
+                        <div class="annotation">Isolate the absolute value before splitting cases.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · OR compound inequality</div>
+                    <div class="step-math">\[2x+3 > 9 \quad\text{or}\quad 2x+3 < -9\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Solve each branch</div>
+                    <div class="step-math">\[2x > 6 \quad\text{or}\quad 2x < -12\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[x > 3 \quad\text{or}\quad x < -6\]
+                        <div class="annotation">Interval: \((-\infty,\,-6) \cup (3,\,\infty)\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Number line</div>
+                    <svg class="number-line" viewBox="0 0 420 60" role="img" aria-label="Open rays x less than -6 or x greater than 3">
+                        <line x1="20" y1="30" x2="400" y2="30" stroke="#cbd5e1" stroke-width="2"/>
+                        <line x1="20" y1="30" x2="130" y2="30" stroke="#f472b6" stroke-width="5"/>
+                        <line x1="260" y1="30" x2="400" y2="30" stroke="#f472b6" stroke-width="5"/>
+                        <circle cx="130" cy="30" r="6" fill="#0f172a" stroke="#f472b6" stroke-width="3"/>
+                        <circle cx="260" cy="30" r="6" fill="#0f172a" stroke="#f472b6" stroke-width="3"/>
+                        <text x="130" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">-6</text>
+                        <text x="260" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">3</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — How to solve a Quadratic Inequality
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="1">
+    <div class="slide-header">
+        <div class="concept-label">Strategy</div>
+        <div class="slide-title">How to Solve a Quadratic Inequality</div>
+    </div>
+    <div class="slide-body top-layout">
+        <ol class="notes-list" style="font-size: 1.05em; line-height: 1.9;">
+            <li><strong>Rewrite</strong> the inequality with zero on one side and the quadratic on the other.</li>
+            <li><strong>Find the zeros</strong> by solving \(ax^2 + bx + c = 0\). These are the <em>critical values</em>.</li>
+            <li><strong>Use the zeros</strong> to divide a number line into intervals — this is the <em>sign diagram</em>.</li>
+            <li><strong>Test a value</strong> from each interval to see where the inequality holds true.</li>
+        </ol>
+        <div class="step" id="slide-5-step-0">
+            <div class="note-box orange">
+                <div class="note-title">Why this works</div>
+                <div class="note-copy">A polynomial can only change sign at its zeros. Between two consecutive zeros, the sign is constant — so testing one point per interval tells you the sign of the entire interval.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — EXAMPLE 3: x^2 - 3x - 10 > 0
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Solve \(x^2 - 3x - 10 > 0\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Already in standard form. Factor, then build a sign diagram.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Factor the quadratic</div>
+                    <div class="step-math">\[(x - 5)(x + 2) > 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Critical values</div>
+                    <div class="step-math">\[x = -2,\ \ x = 5\]
+                        <div class="annotation">These are the zeros where the expression can change sign.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Sign diagram · Test each interval</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">Test \(x=-3\):</div><div class="values">\((-3-5)(-3+2) = (-8)(-1) = \) <span class="sign-pos">+8 &gt; 0 ✓</span></div>
+                        <div class="label">Test \(x=0\):</div><div class="values">\((0-5)(0+2) = (-5)(2) = \) <span class="sign-neg">-10 &lt; 0 ✗</span></div>
+                        <div class="label">Test \(x=6\):</div><div class="values">\((6-5)(6+2) = (1)(8) = \) <span class="sign-pos">+8 &gt; 0 ✓</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[x < -2 \quad\text{or}\quad x > 5 \ \Rightarrow\ (-\infty,\,-2) \cup (5,\,\infty)\]
+                        <div class="annotation">Strict inequality (\(>\)), so endpoints are excluded.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Number line</div>
+                    <svg class="number-line" viewBox="0 0 420 60" role="img" aria-label="x less than -2 or x greater than 5">
+                        <line x1="20" y1="30" x2="400" y2="30" stroke="#cbd5e1" stroke-width="2"/>
+                        <line x1="20" y1="30" x2="160" y2="30" stroke="#4ade80" stroke-width="5"/>
+                        <line x1="290" y1="30" x2="400" y2="30" stroke="#4ade80" stroke-width="5"/>
+                        <circle cx="160" cy="30" r="6" fill="#0f172a" stroke="#4ade80" stroke-width="3"/>
+                        <circle cx="290" cy="30" r="6" fill="#0f172a" stroke="#4ade80" stroke-width="3"/>
+                        <text x="160" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">-2</text>
+                        <text x="290" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">5</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — EXAMPLE 4: 2x^2 - x ≤ 3
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-7" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Solve \(2x^2 - x \le 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Move everything to one side, factor, then build a sign diagram.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Set ≤ 0</div>
+                    <div class="step-math">\[2x^2 - x - 3 \le 0\]
+                        <div class="annotation">Subtract 3 from both sides first.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Factor</div>
+                    <div class="step-math">\[(2x - 3)(x + 1) \le 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Critical values</div>
+                    <div class="step-math">\[x = -1,\ \ x = \tfrac{3}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 · Sign diagram</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">Test \(x=-2\):</div><div class="values">\((2(-2)-3)(-2+1) = (-7)(-1) = \) <span class="sign-pos">+7 ✗</span></div>
+                        <div class="label">Test \(x=0\):</div><div class="values">\((2(0)-3)(0+1) = (-3)(1) = \) <span class="sign-neg">-3 ✓</span></div>
+                        <div class="label">Test \(x=2\):</div><div class="values">\((2(2)-3)(2+1) = (1)(3) = \) <span class="sign-pos">+3 ✗</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[-1 \le x \le \tfrac{3}{2} \ \Rightarrow\ \left[-1,\, \tfrac{3}{2}\right]\]
+                        <div class="annotation">Non-strict inequality (\(\le\)), so endpoints are included.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — How to solve a Rational Inequality
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="1">
+    <div class="slide-header">
+        <div class="concept-label">Strategy</div>
+        <div class="slide-title">How to Solve a Rational Inequality</div>
+    </div>
+    <div class="slide-body top-layout">
+        <ol class="notes-list" style="font-size: 1em; line-height: 1.8;">
+            <li><strong>Rewrite</strong> with zero on one side: \(\dfrac{P(x)}{Q(x)} < 0\) or \(\dfrac{P(x)}{Q(x)} > 0\).</li>
+            <li><strong>Find the zeros</strong> of both the numerator and denominator — all are <em>critical values</em>.</li>
+            <li><strong>Use the critical values</strong> to divide a number line into intervals (sign diagram).</li>
+            <li><strong>Test</strong> a value from each interval.</li>
+            <li><strong>Exclude</strong> values that make the denominator zero — always.</li>
+        </ol>
+        <div class="step" id="slide-8-step-0">
+            <div class="note-box orange">
+                <div class="note-title">Don't just multiply by the denominator</div>
+                <div class="note-copy">You don't know the <em>sign</em> of \(Q(x)\), so multiplying both sides could flip the inequality — invalid. Always move everything to one side first, then combine into a single fraction.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — EXAMPLE 5: (x+2)/(x-3) ≤ 0
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Solve \(\dfrac{x+2}{x-3} \le 0\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Already has zero on one side. Identify critical values and test.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Critical values</div>
+                    <div class="step-math">\[x = -2\ \text{(numerator zero)},\ \ x = 3\ \text{(excluded)}\]
+                        <div class="annotation">\(x = 3\) makes the denominator zero — never a solution.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Test each interval</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">\(x=-3\):</div><div class="values">\(\dfrac{-1}{-6} = \) <span class="sign-pos">+ ✗</span></div>
+                        <div class="label">\(x=0\):</div><div class="values">\(\dfrac{2}{-3} = \) <span class="sign-neg">− ✓</span></div>
+                        <div class="label">\(x=4\):</div><div class="values">\(\dfrac{6}{1} = \) <span class="sign-pos">+ ✗</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[-2 \le x < 3 \ \Rightarrow\ [-2,\, 3)\]
+                        <div class="annotation">Include \(-2\) (inequality is \(\le\)); exclude \(3\) (undefined).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Number line</div>
+                    <svg class="number-line" viewBox="0 0 420 60" role="img" aria-label="Closed at -2, open at 3">
+                        <line x1="20" y1="30" x2="400" y2="30" stroke="#cbd5e1" stroke-width="2"/>
+                        <line x1="160" y1="30" x2="260" y2="30" stroke="#22d3ee" stroke-width="5"/>
+                        <circle cx="160" cy="30" r="6" fill="#22d3ee" stroke="#fff" stroke-width="2"/>
+                        <circle cx="260" cy="30" r="6" fill="#0f172a" stroke="#22d3ee" stroke-width="3"/>
+                        <text x="160" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">-2</text>
+                        <text x="260" y="52" font-size="14" fill="#eef6ff" text-anchor="middle">3</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — EXAMPLE 6: (x^2+x)/(x^2-1) ≥ 0
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-10" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Solve \(\dfrac{x^2 + x}{x^2 - 1} \ge 0\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Factor first — common factors matter here.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Factor</div>
+                    <div class="step-math">\[\dfrac{x(x+1)}{(x-1)(x+1)} \ge 0\]
+                        <div class="annotation">Numerator: \(x^2+x = x(x+1)\). Denominator: \(x^2-1 = (x-1)(x+1)\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Critical values</div>
+                    <div class="step-math">\[x = -1,\ 0,\ 1\]
+                        <div class="annotation">\(x = -1\) and \(x = 1\) are excluded — they make the denominator zero.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Test each interval</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">\(x=-2\):</div><div class="values">\(\dfrac{(-2)(-1)}{(-3)(-1)} = \dfrac{2}{3}\) <span class="sign-pos">+ ✓</span></div>
+                        <div class="label">\(x=-\tfrac{1}{2}\):</div><div class="values">\(\dfrac{(-\tfrac12)(\tfrac12)}{(-\tfrac32)(\tfrac12)} = \dfrac{-1/4}{-3/4}\) <span class="sign-pos">+ ✓</span></div>
+                        <div class="label">\(x=\tfrac{1}{2}\):</div><div class="values">\(\dfrac{(\tfrac12)(\tfrac32)}{(-\tfrac12)(\tfrac32)}\) <span class="sign-neg">− ✗</span></div>
+                        <div class="label">\(x=2\):</div><div class="values">\(\dfrac{(2)(3)}{(1)(3)} = 2\) <span class="sign-pos">+ ✓</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Include x = 0?</div>
+                    <div class="step-math">\[\text{Yes — numerator is zero, denominator is } -1 \ne 0.\]
+                        <div class="annotation">\(\dfrac{0}{-1} = 0\), which satisfies \(\ge 0\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[(-\infty,\,-1) \cup (-1,\, 0] \cup (1,\,\infty)\]
+                        <div class="annotation">Exclude \(x=\pm 1\); include \(x=0\).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — EXAMPLE 7: (x+1)/(x+3) < 2
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-11" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Solve \(\dfrac{x+1}{x+3} < 2\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Need zero on one side — subtract 2 and combine.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Move 2 across</div>
+                    <div class="step-math">\[\dfrac{x+1}{x+3} - 2 < 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Common denominator</div>
+                    <div class="step-math">\[\dfrac{(x+1) - 2(x+3)}{x+3} < 0 \ \Rightarrow\ \dfrac{-x - 5}{x+3} < 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Multiply by \(-1\), flip sign</div>
+                    <div class="step-math">\[\dfrac{x+5}{x+3} > 0\]
+                        <div class="annotation">Flipping the inequality makes the numerator cleaner.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 · Sign diagram</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">\(x=-6\):</div><div class="values">\(\dfrac{-1}{-3}\) <span class="sign-pos">+ ✓</span></div>
+                        <div class="label">\(x=-4\):</div><div class="values">\(\dfrac{1}{-1}\) <span class="sign-neg">− ✗</span></div>
+                        <div class="label">\(x=0\):</div><div class="values">\(\dfrac{5}{3}\) <span class="sign-pos">+ ✓</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[x < -5 \ \text{or}\ x > -3 \ \Rightarrow\ (-\infty,\,-5) \cup (-3,\,\infty)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 12 — EXAMPLE 8: (x-1)/(x+2) > (x-3)/(x-4)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-12" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">Solve \(\dfrac{x-1}{x+2} > \dfrac{x-3}{x-4}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Two rational expressions — move everything to one side, combine over a single denominator.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Move and combine</div>
+                    <div class="step-math">\[\dfrac{x-1}{x+2} - \dfrac{x-3}{x-4} > 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Common denominator</div>
+                    <div class="step-math">\[\dfrac{(x-1)(x-4) - (x-3)(x+2)}{(x+2)(x-4)} > 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Expand numerator</div>
+                    <div class="step-math">\[\dfrac{(x^2 - 5x + 4) - (x^2 - x - 6)}{(x+2)(x-4)} > 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 · Simplify</div>
+                    <div class="step-math">\[\dfrac{-4x + 10}{(x+2)(x-4)} > 0 \ \Rightarrow\ \dfrac{2x - 5}{(x+2)(x-4)} < 0\]
+                        <div class="annotation">Factor out \(-2\) and flip the inequality.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 · Critical values &amp; sign test</div>
+                    <div class="sign-row" style="margin-top: 0.4rem;">
+                        <div class="label">\(x=-3\):</div><div class="values">\(\dfrac{-11}{(-1)(-7)}\) <span class="sign-neg">− ✓</span></div>
+                        <div class="label">\(x=0\):</div><div class="values">\(\dfrac{-5}{(2)(-4)}\) <span class="sign-pos">+ ✗</span></div>
+                        <div class="label">\(x=3\):</div><div class="values">\(\dfrac{1}{(5)(-1)}\) <span class="sign-neg">− ✓</span></div>
+                        <div class="label">\(x=5\):</div><div class="values">\(\dfrac{5}{(7)(1)}\) <span class="sign-pos">+ ✗</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-5">
+                <div class="step-box dark">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[(-\infty,\,-2) \cup \left(\tfrac{5}{2},\, 4\right)\]
+                        <div class="annotation">Critical values: \(-2,\ \tfrac{5}{2},\ 4\). Exclude \(-2\) and \(4\) (denominator zeros).</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 13 — REVIEW
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-13">
+    <div class="slide-header">
+        <div class="concept-label">Summary</div>
+        <div class="slide-title">Big Ideas · 1.2</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid three">
+            <div class="info-card teal">
+                <div class="card-title">Absolute value</div>
+                <div class="card-copy">Isolate first. Less-than → <em>AND</em> (sandwich). Greater-than → <em>OR</em> (two rays).</div>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Quadratic</div>
+                <div class="card-copy">Move to zero, factor to find critical values, test each interval on the sign diagram.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Rational</div>
+                <div class="card-copy">Never multiply by the denominator — combine into one fraction instead. Exclude denominator zeros.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Sign diagrams work</div>
+                <div class="card-copy">Because expressions only change sign at zeros (or undefined points), one test value per interval reveals the sign of the whole interval.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Endpoint rule</div>
+                <div class="card-copy">Strict (\(<,\,>\)) → open circle. Non-strict (\(\le,\,\ge\)) → closed circle, <em>unless</em> it makes the denominator zero.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Interval notation</div>
+                <div class="card-copy">Use \(\cup\) to join disjoint pieces. Parentheses for excluded endpoints, brackets for included.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',       slideId: 'slide-0' },
+            { label: 'Absolute Value', slideId: 'slide-2' },
+            { label: 'Quadratic',      slideId: 'slide-5' },
+            { label: 'Rational',       slideId: 'slide-8' },
+            { label: 'Review',         slideId: 'slide-13' }
+        ]
+    });
+</script>
+</body>
+</html>
