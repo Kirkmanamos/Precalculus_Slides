@@ -238,7 +238,7 @@ Use `v-click` for single items or `<v-clicks>` for lists.
 ### In HTML (HoffMath Classroom Standard)
 
 Steps use `display: none` → `display: block` with ID-based step finding.
-See `agents.md` for the full `SlidePresentation` controller.
+See `AGENTS.md` for the full `SlidePresentation` controller.
 
 ```css
 .step { display: none; }

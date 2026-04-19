@@ -12,7 +12,8 @@
 | Visual style (colors, fonts, themes) | `CONVENTIONS.md` |
 | What components/scenes already exist | `COMPONENT_REGISTRY.md` |
 | History of what was built and when | `CHANGELOG.md` |
-| HTML presentation rules | `agents.md` |
+| HTML presentation rules | `AGENTS.md` |
+| Cross-agent handoff notes | `AGENT_HANDOFF.md` |
 | Slidev/Vue skill (PPT conversion, interactive decks) | `SKILL.md` |
 | Style preset reference | `STYLE_PRESETS.md` |
 
@@ -43,7 +44,8 @@ precalculus_slides/
 ├── CONVENTIONS.md                Unified conventions: colors, naming, math, SVG
 ├── COMPONENT_REGISTRY.md         Catalog of all reusable Vue components + Manim scenes
 ├── CHANGELOG.md                  What was built, when, and current status
-├── agents.md                     HTML presentation architecture and patterns
+├── AGENTS.md                     HTML presentation architecture and patterns
+├── AGENT_HANDOFF.md              Current cross-agent handoff notes
 ├── SKILL.md                      Slidev skill prompt (PPT → Slidev conversion)
 └── STYLE_PRESETS.md              10 named visual styles with full specs
 ```
@@ -55,15 +57,16 @@ precalculus_slides/
 1. **Check `COMPONENT_REGISTRY.md`** — the component you need may already exist.
 2. **Check `CONVENTIONS.md`** — colors, naming, slider ranges, SVG rules.
 3. **Check `CHANGELOG.md`** — understand current project status and what's in progress.
-4. **Read the relevant skill** — `SKILL.md` for Slidev, `agents.md` for HTML.
+4. **Check `AGENT_HANDOFF.md`** — continue any active handoff before starting overlapping work.
+5. **Read the relevant skill** — `SKILL.md` for Slidev, `AGENTS.md` for HTML.
 
 ### Updating an Older HTML Presentation?
 
-> **Stop. Check `agents.md` → "Rebuild Checklist" first.**
+> **Stop. Check `AGENTS.md` → "Rebuild Checklist" first.**
 
 Presentations built before the 5.5 standard use a legacy architecture (scroll-snap, opacity transitions, HTML-entity math) that is **incompatible with CSS patches**. Attempting to restyle legacy presentations by tweaking CSS on top of the old structure will fail — font sizes compound incorrectly, steps clip KaTeX math, and content overflows.
 
-**If the presentation doesn't match the 5.5 architecture → rebuild it from scratch** using the skeleton in `agents.md`. This means extracting all content (text, math, SVGs) and re-assembling it in the current template. See `agents.md` for the full rebuild checklist and lessons learned.
+**If the presentation doesn't match the 5.5 architecture → rebuild it from scratch** using the skeleton in `AGENTS.md`. This means extracting all content (text, math, SVGs) and re-assembling it in the current template. See `AGENTS.md` for the full rebuild checklist and lessons learned.
 
 ---
 
@@ -75,7 +78,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 - Per-deck JS init: `<script>SlidesCore.init({ sectionTargets: [...] });</script>`.
 - Deck-specific CSS goes in a small inline `<style>` block AFTER the `<link>` (e.g. `.read-aloud` in 6.1, modals in 6.3, SVG `.exp-*` in 6.4).
 - All math rendered via KaTeX (`\[ \]` display, `\( \)` inline). No HTML entities or Unicode math.
-- Follow the HoffMath Classroom architecture in `agents.md` exactly.
+- Follow the HoffMath Classroom architecture in `AGENTS.md` exactly.
 - Reference implementation: `6.7-conditional-probability.html` (canonical for the new shared-assets pattern).
 
 ### Slidev / Vue Decks

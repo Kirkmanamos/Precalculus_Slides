@@ -16,6 +16,8 @@ This document is for any AI agent (Claude, Claude Code, ChatGPT, Gemini, Deepsee
 
 5. **Production Quality** -- Code must be well-commented, accessible, performant, and responsive on both projectors and laptops.
 
+6. **Agent Handoffs** -- When handing work from one assistant to another, update `AGENT_HANDOFF.md` with the current task, branch or worktree, files touched, checks run, known risks, and the single best next action. Always check it before continuing another agent's work.
+
 ---
 
 ## Rebuild Checklist: Updating Older Presentations
