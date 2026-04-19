@@ -97,6 +97,13 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 
 | Unit | Topic | HTML Status | Slidev Status |
 |---|---|---|---|
+| 1.1 | Slopes and Equations of Lines | ✅ Complete | — |
+| 1.2 | Non-Linear Inequalities | ✅ Complete | — |
+| 1.3 | Functions | ✅ Complete | — |
+| 1.4 | Graphs of Functions | ✅ Complete | — |
+| 1.5 | Transformations of Functions | ✅ Complete | — |
+| 1.6 | Operations with Functions | ✅ Complete | — |
+| 1.7 | Inverse Functions | ✅ Complete | — |
 | 3 | Rational Functions — Features | ✅ Complete | — |
 | 3 | Rational Functions — Graphing | ✅ Complete | — |
 | 4 | Trig Review (4.1–4.5) | ✅ Complete | — |
@@ -119,7 +126,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 6.6 | Probability | ✅ Complete | — |
 | 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Continue remaining precalculus HTML decks and add supporting review materials where needed.
+**Next up:** Unit 1 complete (1.1–1.7). Continue with remaining precalculus HTML decks and add supporting review materials where needed.
 
 ---
 
