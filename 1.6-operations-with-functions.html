@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.6 - Operations with Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .op-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem 1rem; align-items: center; }
+        .op-grid .oplabel { font-weight: 700; color: #0f172a; font-size: 0.95em; }
+        .op-grid .opform { font-size: 1.05em; color: #334155; }
+        .op-grid .op-sep { grid-column: 1 / -1; border-top: 1px solid #e2e8f0; margin: 0.15rem 0; }
+        .compose-table { width: 100%; border-collapse: collapse; margin-top: 0.3rem; }
+        .compose-table th, .compose-table td { padding: 0.5rem 0.7rem; border: 1px solid #e2e8f0; text-align: center; font-size: 0.95em; }
+        .compose-table th { background: #f1f5f9; color: #475569; font-weight: 700; }
+        .compose-table td.name { background: #f8fafc; font-weight: 600; color: #334155; }
+        .compose-table td.say { font-style: italic; color: #475569; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- SLIDE 0 — TITLE -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.6 Operations with Functions</div>
+    <div class="title-objective">Objective: Add, subtract, multiply, and divide functions, and find compositions of one function with another.</div>
+    <div class="identity-chips">
+        <span class="chip">\(f \pm g\)</span>
+        <span class="chip">\(f \cdot g\)</span>
+        <span class="chip">\(f / g\)</span>
+        <span class="chip">\(f \circ g\)</span>
+        <span class="chip">domains</span>
+    </div>
+</section>
+
+<!-- SLIDE 1 — Operations reference -->
+<section class="slide grid-bg" id="slide-1" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Reference</div>
+        <div class="slide-title">Four arithmetic operations on functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="step step-box teal" id="slide-1-step-0">
+            <div class="step-label">Addition</div>
+            <div class="step-math">\((f + g)(x) = f(x) + g(x)\)</div>
+        </div>
+        <div class="step step-box teal" id="slide-1-step-1">
+            <div class="step-label">Subtraction</div>
+            <div class="step-math">\((f - g)(x) = f(x) - g(x)\)</div>
+        </div>
+        <div class="step step-box blue" id="slide-1-step-2">
+            <div class="step-label">Multiplication</div>
+            <div class="step-math">\((f \cdot g)(x) = f(x)\cdot g(x)\)</div>
+        </div>
+        <div class="step step-box blue" id="slide-1-step-3">
+            <div class="step-label">Division</div>
+            <div class="step-math">\(\displaystyle\left(\tfrac{f}{g}\right)\!(x) = \frac{f(x)}{g(x)},\quad g(x)\neq 0\)</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 2 — Domain rule -->
+<section class="slide grid-bg" id="slide-2" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Domain of a combined function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box navy">
+            <div class="note-title">The rule</div>
+            <div class="note-copy">The domain of \(f \pm g\), \(f\cdot g\), and \(\tfrac{f}{g}\) is the <strong>intersection</strong> of the domains of \(f\) and \(g\) — every \(x\) that works for both.</div>
+        </div>
+        <div class="step step-box teal" id="slide-2-step-0">
+            <div class="step-label">Step 1</div>
+            <div class="step-math">Find the domain of \(f\) and the domain of \(g\) separately.</div>
+        </div>
+        <div class="step step-box blue" id="slide-2-step-1">
+            <div class="step-label">Step 2</div>
+            <div class="step-math">Intersect them.</div>
+        </div>
+        <div class="step step-box green" id="slide-2-step-2">
+            <div class="step-label">Step 3 · Division only</div>
+            <div class="step-math">Also exclude any \(x\) where \(g(x) = 0\).</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 3 — Example 1: (f - g)(x) -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Find \((f - g)(x)\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = 3x^2 + 7x\) and \(g(x) = 2x^2 - x - 1\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-3-step-0">
+                <div class="step-label">Set up</div>
+                <div class="step-math">\((f - g)(x) = (3x^2 + 7x) - (2x^2 - x - 1)\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-3-step-1">
+                <div class="step-label">Distribute the minus</div>
+                <div class="step-math">\(= 3x^2 + 7x - 2x^2 + x + 1\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-3-step-2">
+                <div class="step-label">Combine like terms</div>
+                <div class="step-math">\(= (3x^2 - 2x^2) + (7x + x) + 1\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-3-step-3">
+                <div class="step-label" style="color:#fbbf24;">Answer</div>
+                <div class="step-math">\((f - g)(x) = x^2 + 8x + 1\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 4 — Example 2: (f · g)(x) evaluated at 4 -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Find \((f\cdot g)(x)\), then evaluate at \(x = 4\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = 2x - 3\) and \(g(x) = x^2 - 1\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-4-step-0">
+                <div class="step-label">Set up the product</div>
+                <div class="step-math">\((f\cdot g)(x) = (2x - 3)(x^2 - 1)\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-4-step-1">
+                <div class="step-label">Distribute (FOIL style)</div>
+                <div class="step-math">\(= 2x\cdot x^2 - 2x\cdot 1 - 3\cdot x^2 + 3\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-4-step-2">
+                <div class="step-label">Simplify</div>
+                <div class="step-math">\((f\cdot g)(x) = 2x^3 - 3x^2 - 2x + 3\)</div>
+            </div>
+            <div class="step step-box green" id="slide-4-step-3">
+                <div class="step-label">Evaluate at \(x = 4\)</div>
+                <div class="step-math">\(2(64) - 3(16) - 2(4) + 3 = 128 - 48 - 8 + 3\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-4-step-4">
+                <div class="step-label" style="color:#fbbf24;">Answer</div>
+                <div class="step-math">\((f\cdot g)(4) = 75\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 5 — Example 3: (f/g)(x) with domain -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Find \(\left(\tfrac{f}{g}\right)(x)\) and state its domain</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = 3x^2 - 2x + 1\) and \(g(x) = x - 4\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-5-step-0">
+                <div class="step-label">Form the quotient</div>
+                <div class="step-math">\(\displaystyle\left(\tfrac{f}{g}\right)(x) = \frac{3x^2 - 2x + 1}{x - 4}\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-5-step-1">
+                <div class="step-label">Domains separately</div>
+                <div class="step-math">\(f\): all reals. \(\;g\): all reals.</div>
+            </div>
+            <div class="step step-box blue" id="slide-5-step-2">
+                <div class="step-label">Exclude zeros of \(g\)</div>
+                <div class="step-math">\(x - 4 = 0 \Rightarrow x = 4\). Since \(4\) makes the denominator \(0\), it is <strong>excluded</strong>.</div>
+            </div>
+            <div class="step step-box dark" id="slide-5-step-3">
+                <div class="step-label" style="color:#fbbf24;">Domain</div>
+                <div class="step-math">\(\{x \in \mathbb{R} : x \neq 4\}\), or \((-\infty,\,4) \cup (4,\,\infty)\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 6 — Example 4: (g/f)(x) with intersecting domain -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Find \(\left(\tfrac{g}{f}\right)(x)\) and its domain</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = \sqrt{x}\) and \(g(x) = \sqrt{4 - x^2}\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-6-step-0">
+                <div class="step-label">Form the quotient</div>
+                <div class="step-math">\(\displaystyle\left(\tfrac{g}{f}\right)(x) = \frac{\sqrt{4 - x^2}}{\sqrt{x}}\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-6-step-1">
+                <div class="step-label">Domain of \(f\)</div>
+                <div class="step-math">\(\sqrt{x}\) needs \(x \geq 0\). Also \(f(x) = \sqrt{x} = 0\) at \(x = 0\), and \(f\) is in the denominator → exclude \(0\). So \(x &gt; 0\).</div>
+            </div>
+            <div class="step step-box blue" id="slide-6-step-2">
+                <div class="step-label">Domain of \(g\)</div>
+                <div class="step-math">\(\sqrt{4 - x^2}\) needs \(4 - x^2 \geq 0\) → \(-2 \leq x \leq 2\).</div>
+            </div>
+            <div class="step step-box green" id="slide-6-step-3">
+                <div class="step-label">Intersect</div>
+                <div class="step-math">\((0,\,\infty)\,\cap\,[-2,\,2] = (0,\,2]\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-6-step-4">
+                <div class="step-label" style="color:#fbbf24;">Domain</div>
+                <div class="step-math">\((0,\,2]\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 7 — Composition notation -->
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Composition of functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <table class="compose-table">
+            <thead>
+                <tr><th></th><th>Write</th><th>Say</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="name">\(f\) composed with \(g\)</td><td>\((f \circ g)(x) = f(g(x))\)</td><td class="say">&ldquo;\(f\) of \(g\) of \(x\)&rdquo;</td></tr>
+                <tr><td class="name">\(g\) composed with \(f\)</td><td>\((g \circ f)(x) = g(f(x))\)</td><td class="say">&ldquo;\(g\) of \(f\) of \(x\)&rdquo;</td></tr>
+            </tbody>
+        </table>
+        <div class="step step-box orange" id="slide-7-step-0" style="margin-top:0.5rem;">
+            <div class="step-label">Not multiplication!</div>
+            <div class="step-math">\((f \circ g)(x)\) is <strong>not</strong> \(f(x)\cdot g(x)\). The small circle \(\circ\) means &ldquo;plug in.&rdquo;</div>
+        </div>
+        <div class="step step-box teal" id="slide-7-step-1">
+            <div class="step-label">How to evaluate</div>
+            <div class="step-math">Work from the <strong>inside out</strong>. Compute the inner function first, then feed its output into the outer.</div>
+        </div>
+        <div class="step step-box dark" id="slide-7-step-2">
+            <div class="step-label" style="color:#fbbf24;">Order matters</div>
+            <div class="step-math">Composition is <strong>not</strong> commutative. In general \((f\circ g)(x) \neq (g\circ f)(x)\).</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 8 — Example 5: numerical composition -->
+<section class="slide grid-bg" id="slide-8" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Evaluate \(f(g(1))\) and \(g(f(2))\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = 2x + 3\) and \(g(x) = x^2 - 1\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-8-step-0">
+                <div class="step-label">Part a · Inside first</div>
+                <div class="step-math">\(g(1) = (1)^2 - 1 = 0\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-8-step-1">
+                <div class="step-label">Feed into \(f\)</div>
+                <div class="step-math">\(f(g(1)) = f(0) = 2(0) + 3\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-8-step-2">
+                <div class="step-label" style="color:#fbbf24;">\(f(g(1)) =\)</div>
+                <div class="step-math">\(3\)</div>
+            </div>
+            <div class="step step-box teal" id="slide-8-step-3">
+                <div class="step-label">Part b · Inside first</div>
+                <div class="step-math">\(f(2) = 2(2) + 3 = 7\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-8-step-4">
+                <div class="step-label">Feed into \(g\)</div>
+                <div class="step-math">\(g(f(2)) = g(7) = (7)^2 - 1\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-8-step-5">
+                <div class="step-label" style="color:#fbbf24;">\(g(f(2)) =\)</div>
+                <div class="step-math">\(48\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 9 — Example 6: symbolic compositions -->
+<section class="slide grid-bg" id="slide-9" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Find \((f\circ g)(x)\) and \((g\circ f)(x)\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">Given</div>
+            <div class="note-copy">\(f(x) = x - 3\) and \(g(x) = 2x^2 - 1\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-9-step-0">
+                <div class="step-label">\((f\circ g)(x)\) · plug \(g\) into \(f\)</div>
+                <div class="step-math">\(f(g(x)) = f(2x^2 - 1) = (2x^2 - 1) - 3\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-9-step-1">
+                <div class="step-label" style="color:#fbbf24;">\((f\circ g)(x) =\)</div>
+                <div class="step-math">\(2x^2 - 4\)</div>
+            </div>
+            <div class="step step-box teal" id="slide-9-step-2">
+                <div class="step-label">\((g\circ f)(x)\) · plug \(f\) into \(g\)</div>
+                <div class="step-math">\(g(f(x)) = g(x - 3) = 2(x - 3)^2 - 1\)</div>
+            </div>
+            <div class="step step-box blue" id="slide-9-step-3">
+                <div class="step-label">Expand</div>
+                <div class="step-math">\(= 2(x^2 - 6x + 9) - 1 = 2x^2 - 12x + 17\)</div>
+            </div>
+            <div class="step step-box dark" id="slide-9-step-4">
+                <div class="step-label" style="color:#fbbf24;">Notice they&rsquo;re different</div>
+                <div class="step-math">\((f\circ g)(x) = 2x^2 - 4\) vs. \((g\circ f)(x) = 2x^2 - 12x + 17\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 10 — Example 7: decompose -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Write each as a composition \(y = f(g(x))\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box navy">
+            <div class="note-title">Strategy</div>
+            <div class="note-copy">Identify the <strong>inner</strong> expression (the part that is wrapped, inside a function). Then the <strong>outer</strong> is the function being applied to it.</div>
+        </div>
+        <div class="steps-area">
+            <div class="step step-box teal" id="slide-10-step-0">
+                <div class="step-label">a) \(y = \sqrt{5x - 4}\) · inner</div>
+                <div class="step-math">Inner: \(g(x) = 5x - 4\). Outer: \(f(u) = \sqrt{u}\).</div>
+            </div>
+            <div class="step step-box dark" id="slide-10-step-1">
+                <div class="step-label" style="color:#fbbf24;">a) answer</div>
+                <div class="step-math">\(y = f(g(x))\) where \(f(u) = \sqrt{u},\;g(x) = 5x - 4\)</div>
+            </div>
+            <div class="step step-box teal" id="slide-10-step-2">
+                <div class="step-label">b) \(y = 2^{\cos(x^2)}\) · inner</div>
+                <div class="step-math">Innermost: \(h(x) = x^2\). Middle: \(g(u) = \cos(u)\). Outer: \(f(v) = 2^v\).</div>
+            </div>
+            <div class="step step-box dark" id="slide-10-step-3">
+                <div class="step-label" style="color:#fbbf24;">b) answer</div>
+                <div class="step-math">\(y = f(g(h(x)))\) — three-function composition</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 11 — Summary -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Review</div>
+        <div class="slide-title">Operations cheat sheet</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="step step-box teal" id="slide-11-step-0">
+            <div class="step-label">Arithmetic</div>
+            <div class="step-math">Add, subtract, multiply, divide the outputs. Domain = intersection (and exclude zeros of the denominator for division).</div>
+        </div>
+        <div class="step step-box blue" id="slide-11-step-1">
+            <div class="step-label">Composition</div>
+            <div class="step-math">\((f\circ g)(x) = f(g(x))\). Work <strong>inside out</strong>. Not multiplication, not commutative.</div>
+        </div>
+        <div class="step step-box dark" id="slide-11-step-2" style="text-align:center;">
+            <div class="step-math" style="color: white;">Domain of \(f \circ g\) requires \(x\) in domain of \(g\) <em>and</em> \(g(x)\) in domain of \(f\).</div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'Operations',  slideId: 'slide-1' },
+            { label: 'Arithmetic',  slideId: 'slide-3' },
+            { label: 'Composition', slideId: 'slide-7' },
+            { label: 'Decompose',   slideId: 'slide-10' },
+            { label: 'Review',      slideId: 'slide-11' }
+        ]
+    });
+</script>
+</body>
+</html>
