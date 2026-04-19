@@ -5,6 +5,31 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-04-19
+
+### New HTML Deck Set - Unit 1: Functions and Their Graphs (1.1–1.7)
+
+Seven new decks covering the complete Unit 1 curriculum. All use the shared-assets architecture (`assets/slides-core.css` + `assets/slides-core.js`). Source material: Hoff Math "Functions and Their Graphs" PPT/PDF set.
+
+| File | Slides | Key patterns |
+|---|---|---|
+| `1.1-slopes-and-equations-of-lines.html` | 13 | SVG slope diagram with custom labels |
+| `1.2-non-linear-inequalities.html` | 14 | Sign-chart step-boxes, SVG number lines, `.sign-pos/.sign-neg` |
+| `1.3-functions.html` | 15 | VLT, mapping diagrams, piecewise, `.eq-card.is-fn/.not-fn` |
+| `1.4-graphs-of-functions.html` | 14 | Floor/ceiling paired reveals via `MutationObserver`, `.int-table` |
+| `1.5-transformations.html` | 12 | Parent gallery 3×2 SVG grid, D.R.S. color arc, `.ans-hide`/`g.svg-step` reveals |
+| `1.6-operations-with-functions.html` | 12 | Composition notation, domain intersection, `.compose-table` |
+| `1.7-inverse-functions.html` | 12 | SVG mapping diagram with `<tspan>` f⁻¹, HLT one-to-one, `.ll-card.yes/.no` |
+
+**New patterns introduced (documented in `AGENTS.md` Gotchas and `SKILL_HTML.md`):**
+- Table-cell reveals: `.ans-cell.ans-hide` (visibility-based, preserves table layout)
+- SVG group reveals: `g.svg-step` (opacity-based, preserves inline context)
+- `MutationObserver` for paired reveals (multiple elements per click)
+- D.R.S. palette: Dilate=orange, Reflect=blue, Shift=green
+- Rule: KaTeX auto-render does not walk into SVG `<text>` — use `<tspan>` for italic/superscript
+
+---
+
 ## 2026-04-17
 
 ### Fill-in-the-blank reveal pattern across Unit 6

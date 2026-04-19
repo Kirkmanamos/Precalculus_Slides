@@ -4,6 +4,9 @@
 
 [Precalculus Slides (GitHub Pages)](https://kirkmanamos.github.io/Precalculus_Slides/)
 
+## AI Agent Notes
+- Read `AGENTS.md` before changing slide decks, and use `AGENT_HANDOFF.md` when handing work between Codex, Claude, or another assistant.
+
 ## Status
 - Unit 4, Unit 5, and Unit 6 HTML slide decks now include a first-pass mobile phone layout patch.
 - Desktop and projector presentation behavior remains intact.
@@ -14,6 +17,16 @@
 - Create or update the project environment with `uv sync`.
 - Activate it with `source .venv/bin/activate`.
 - Prefer `uv run ...` and `uv pip ... --python .venv/bin/python` over plain `pip`.
+
+## Unit 1: Functions and Their Graphs
+
+- [1.1 Slopes and Equations of Lines](1.1-slopes-and-equations-of-lines.html)
+- [1.2 Non-Linear Inequalities](1.2-non-linear-inequalities.html)
+- [1.3 Functions](1.3-functions.html)
+- [1.4 Graphs of Functions](1.4-graphs-of-functions.html)
+- [1.5 Transformations of Functions](1.5-transformations.html)
+- [1.6 Operations with Functions](1.6-operations-with-functions.html)
+- [1.7 Inverse Functions](1.7-inverse-functions.html)
 
 ## Unit 3: Rational Functions
 - [Rational Features](RationalFeatures.html)

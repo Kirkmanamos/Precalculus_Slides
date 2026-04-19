@@ -768,6 +768,92 @@ See `CONVENTIONS.md` Section 8 for the complete table. Copy values from there �
 
 ---
 
+## Current Build Status
+
+Before starting any new deck, check this table so you don't rebuild something that already exists.
+
+| Section | Topic | HTML | Notes |
+|---|---|---|---|
+| 1.1 | Slopes and Equations of Lines | ✅ | `1.1-slopes-and-equations-of-lines.html` |
+| 1.2 | Non-Linear Inequalities | ✅ | `1.2-non-linear-inequalities.html` |
+| 1.3 | Functions | ✅ | `1.3-functions.html` |
+| 1.4 | Graphs of Functions | ✅ | `1.4-graphs-of-functions.html` |
+| 1.5 | Transformations of Functions | ✅ | `1.5-transformations.html` |
+| 1.6 | Operations with Functions | ✅ | `1.6-operations-with-functions.html` |
+| 1.7 | Inverse Functions | ✅ | `1.7-inverse-functions.html` |
+| 3 | Rational Functions — Features | ✅ | `RationalFeatures.html` (legacy arch) |
+| 3 | Rational Functions — Graphing | ✅ | `RationalGraphing.html` (legacy arch) |
+| 4.1–4.5 | Trig Review | ✅ | `trig-review.html` |
+| 4.6 | Graphs of Sine & Cosine | ✅ | `4.6-graphs-sine-cosine.html` |
+| 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ | `4.6b-graphs-sine-cosine-part2.html` |
+| 4.7 | Modeling with Sine & Cosine | ✅ | `4.7-modeling-sine-cosine.html` |
+| 4.8 | Other Trig Functions | ✅ | `4.8-graphs-other-trig-functions.html` |
+| 4.9 | Inverse Trig Functions | ✅ | `4.9-inverse-trig-functions.html` |
+| 5.1–5.5 | Trig Identities & Equations | ✅ | `5.1-` … `5.5-*.html` |
+| 6.1–6.7 | Sequences, Series, Probability | ✅ | `6.1-` … `6.7-*.html` |
+
+*Source PPTs/PDFs live at `~/Desktop/precalculus/` — one folder per unit.*
+
+---
+
+## Unit 1 Gotchas (proven failures from 1.1–1.7 build)
+
+These problems were hit during the Unit 1 build. Don't repeat them.
+
+### 1. Missing KaTeX JS scripts
+Including only `katex.min.css` but omitting the two JS files produces silently un-rendered `\(...\)` literal text. Always include all three in this order, **before** `slides-core.js`:
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+...
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+```
+
+### 2. KaTeX doesn't render inside SVG `<text>`
+`auto-render` does not walk into SVG. Use plain text with `<tspan>` for styling:
+```svg
+<text>Domain of <tspan font-style="italic">f</tspan></text>
+<text><tspan font-style="italic">f</tspan><tspan dy="-3" font-size="8">−1</tspan><tspan dy="3">(x)</tspan></text>
+```
+Use U+2212 `−` (minus sign), not a hyphen, in superscripts. Never write `\(f^{-1}\)` inside SVG.
+
+### 3. `text-transform: uppercase` breaks KaTeX math
+Don't apply `text-transform: uppercase` to any element that contains `\(...\)`. The transform mangles rendered math glyphs. Use `font-weight: 700; letter-spacing: 0.05em` instead for the uppercase look on `.step-label`.
+
+### 4. `.fb` must carry the step ID itself
+The fill-in-blank reveal relies on `.fb` being the element with `id="slide-N-step-M"`. Wrapping it in a separate `.step` div breaks the reveal:
+```html
+<!-- WRONG: .fb inside a separate .step -->
+<div class="step" id="slide-1-step-0"><span class="fb">...</span></div>
+
+<!-- CORRECT: .fb IS the step -->
+<span class="fb" id="slide-1-step-0"><span class="fb-blank">___</span><span class="fb-answer">answer</span></span>
+```
+
+### 5. `<td>` and `<g>` can't use `.step { display:block }`
+`display: block` on a `<td>` breaks table layout; on an SVG `<g>` it removes the element. Use visibility for cells, opacity for SVG groups:
+```css
+/* Table answer cells */
+.ans-cell.ans-hide { visibility: hidden; }
+.ans-cell.ans-hide.visible { visibility: visible; animation: stepReveal 0.4s ease both; }
+
+/* SVG groups */
+g.svg-step { opacity: 0; }
+g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
+```
+
+### 6. Paired reveals (same click, multiple elements)
+Use a `MutationObserver` when multiple elements should reveal on one click (e.g. paired floor/ceiling columns). Give followers synthetic IDs like `slide-N-step-Mb`:
+```javascript
+const obs = new MutationObserver(() => {
+    followers.forEach(f => f.classList.toggle('visible', primary.classList.contains('visible')));
+});
+obs.observe(primary, { attributes: true, attributeFilter: ['class'] });
+```
+
+---
+
 ## Modification Checklist
 
 Before delivering any change to a presentation:
