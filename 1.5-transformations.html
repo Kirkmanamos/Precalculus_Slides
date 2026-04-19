@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.5 - Transformations of Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .parent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
+        .parent-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.5rem; text-align: center; }
+        .parent-card .pname { font-weight: 700; color: #334155; font-size: 0.85em; margin-bottom: 0.2rem; }
+        .parent-card .peq { font-size: 0.9em; color: #475569; }
+        .parent-card svg { display: block; margin: 0.2rem auto; width: 100%; max-width: 160px; height: auto; }
+        .flavor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+        .flavor-card { border-radius: 12px; padding: 0.9rem; border: 2px solid; text-align: center; }
+        .flavor-card.trans { background: #ecfdf5; border-color: #16a34a; }
+        .flavor-card.refl  { background: #eff6ff; border-color: #2563eb; }
+        .flavor-card.dil   { background: #fff7ed; border-color: #ea580c; }
+        .flavor-card .fname { font-weight: 700; font-size: 1.05em; margin-bottom: 0.4rem; }
+        .flavor-card .fform { font-family: 'Source Sans 3', sans-serif; font-size: 0.95em; margin: 0.3rem 0; }
+        .flavor-card .fdesc { color: #475569; font-size: 0.85em; }
+        .ex-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 0.5rem; }
+        .ex-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.7rem 0.9rem; }
+        .ex-card .eq { font-size: 1.05em; text-align: center; margin-bottom: 0.3rem; }
+        .ex-card .parent { font-size: 0.8em; color: #64748b; text-align: center; margin-bottom: 0.25rem; }
+        .ex-card ul { margin: 0.2rem 0 0 1.2rem; padding: 0; font-size: 0.88em; color: #334155; }
+        .ex-card ul li { margin: 0.15rem 0; }
+        .drs-badge { display: inline-block; background: #0f172a; color: #fbbf24; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 8px; letter-spacing: 0.05em; }
+        .drs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.5rem; }
+        .drs-step { background: #f1f5f9; border-left: 4px solid #64748b; border-radius: 6px; padding: 0.5rem 0.8rem; }
+        .drs-step.d { border-color: #ea580c; background: #fff7ed; }
+        .drs-step.r { border-color: #2563eb; background: #eff6ff; }
+        .drs-step.s { border-color: #16a34a; background: #ecfdf5; }
+        .drs-step .k { font-weight: 700; font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.05em; color: #475569; }
+        .drs-step .v { font-size: 0.9em; color: #334155; margin-top: 0.15rem; }
+        .graph-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; align-items: start; }
+        .graph-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 0.5rem; }
+        .graph-card svg { display: block; margin: 0 auto; width: 100%; max-width: 320px; height: auto; }
+        .graph-card .ctitle { text-align: center; font-weight: 600; font-size: 0.85em; color: #475569; margin-bottom: 0.2rem; }
+        .point-tbl { width: 100%; border-collapse: collapse; margin-top: 0.4rem; font-size: 0.82em; }
+        .point-tbl th, .point-tbl td { padding: 0.3rem 0.4rem; border: 1px solid #e2e8f0; text-align: center; }
+        .point-tbl th { background: #f1f5f9; color: #475569; font-weight: 700; }
+        .point-tbl td.ans-cell { background: #fef3c7; color: #d97706; font-weight: 700; }
+        .point-tbl .ans-hide { visibility: hidden; }
+        .point-tbl .ans-hide.visible { visibility: visible; animation: stepReveal 0.4s ease both; }
+        g.svg-step { opacity: 0; }
+        g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- SLIDE 0 — TITLE -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.5 Transformations of Functions</div>
+    <div class="title-objective">Objective: Identify transformations of parent functions from equations and use transformations to sketch graphs.</div>
+    <div class="identity-chips">
+        <span class="chip">parent functions</span>
+        <span class="chip">translations</span>
+        <span class="chip">reflections</span>
+        <span class="chip">dilations</span>
+        <span class="chip">D.R.S.</span>
+    </div>
+</section>
+
+<!-- SLIDE 1 — PARENT FUNCTIONS -->
+<section class="slide grid-bg" id="slide-1" data-steps="0">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Parent functions you should know</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="parent-grid">
+            <div class="parent-card">
+                <div class="pname">Linear</div>
+                <div class="peq">\(f(x)=x\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="40" x2="110" y2="40" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <line x1="20" y1="70" x2="100" y2="10" stroke="#0891b2" stroke-width="2.5"/>
+                </svg>
+            </div>
+            <div class="parent-card">
+                <div class="pname">Quadratic</div>
+                <div class="peq">\(f(x)=x^2\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="70" x2="110" y2="70" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <path d="M 20 10 Q 60 130 100 10" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="parent-card">
+                <div class="pname">Cubic</div>
+                <div class="peq">\(f(x)=x^3\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="40" x2="110" y2="40" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <path d="M 22 75 C 55 72 65 8 98 5" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="parent-card">
+                <div class="pname">Absolute value</div>
+                <div class="peq">\(f(x)=|x|\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="70" x2="110" y2="70" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <polyline points="20,10 60,70 100,10" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="parent-card">
+                <div class="pname">Square root</div>
+                <div class="peq">\(f(x)=\sqrt{x}\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="70" x2="110" y2="70" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <path d="M 60 70 Q 70 20 108 12" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="parent-card">
+                <div class="pname">Cube root</div>
+                <div class="peq">\(f(x)=\sqrt[3]{x}\)</div>
+                <svg viewBox="0 0 120 80">
+                    <line x1="10" y1="40" x2="110" y2="40" stroke="#94a3b8"/>
+                    <line x1="60" y1="10" x2="60" y2="70" stroke="#94a3b8"/>
+                    <path d="M 15 72 Q 40 50 60 40 Q 80 30 105 8" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+        </div>
+        <div class="note-box orange" style="margin-top: 0.7rem;">
+            <div class="note-title">Why memorize them?</div>
+            <div class="note-copy">Every transformed graph in this section starts from one of these parents. Recognize the parent, then apply shifts, reflections, and stretches.</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 2 — 3 FLAVORS -->
+<section class="slide grid-bg" id="slide-2" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Three flavors of transformation</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="flavor-grid">
+            <div class="step flavor-card trans" id="slide-2-step-0">
+                <div class="fname">Translation</div>
+                <div class="fform">\(g(x) = f(x - h) + k\)</div>
+                <div class="fdesc">Slide the graph <strong>horizontally</strong> by \(h\) or <strong>vertically</strong> by \(k\). Size and shape don&rsquo;t change.</div>
+            </div>
+            <div class="step flavor-card refl" id="slide-2-step-1">
+                <div class="fname">Reflection</div>
+                <div class="fform">\(-f(x)\) or \(f(-x)\)</div>
+                <div class="fdesc">Flip across the \(x\)-axis (negate outside) or the \(y\)-axis (negate inside).</div>
+            </div>
+            <div class="step flavor-card dil" id="slide-2-step-2">
+                <div class="fname">Dilation</div>
+                <div class="fform">\(c\cdot f(x)\) or \(f(k x)\)</div>
+                <div class="fdesc">Stretch or shrink the graph vertically by \(c\) or horizontally by \(1/k\).</div>
+            </div>
+        </div>
+        <div class="note-box navy" style="margin-top: 0.8rem;">
+            <div class="note-title">Big idea</div>
+            <div class="note-copy">Changes <em>outside</em> \(f\) affect \(y\) and behave as you&rsquo;d expect. Changes <em>inside</em> \(f\) affect \(x\) and behave <strong>opposite</strong> of what they look like.</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 3 — TRANSLATION REFERENCE -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Reference · Translation</div>
+        <div class="slide-title">\(g(x) = f(x - h) + k\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="step step-box teal" id="slide-3-step-0">
+                <div class="step-label">Horizontal</div>
+                <div class="step-math">\(f(x - h)\) shifts the graph <span class="fb" id="slide-3-step-1"><span class="fb-blank">________</span><span class="fb-answer">right by \(h\)</span></span> when \(h&gt;0\).</div>
+            </div>
+            <div class="step step-box green" id="slide-3-step-2">
+                <div class="step-label">Vertical</div>
+                <div class="step-math">\(f(x) + k\) shifts the graph <span class="fb" id="slide-3-step-3"><span class="fb-blank">________</span><span class="fb-answer">up by \(k\)</span></span> when \(k&gt;0\).</div>
+            </div>
+        </div>
+        <div class="note-box orange" style="margin-top: 0.6rem;">
+            <div class="note-title">Watch the sign!</div>
+            <div class="note-copy">\((x - 3)\) means shift <strong>right 3</strong>. \((x + 3) = (x - (-3))\) means shift <strong>left 3</strong>. Read the sign that follows \(x\) and flip it.</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 4 — REFLECTION & DILATION REFERENCE -->
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Reference · Reflection &amp; Dilation</div>
+        <div class="slide-title">Outside vs. inside the function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="step step-box blue" id="slide-4-step-0">
+                <div class="step-label">\(-f(x)\) · outside</div>
+                <div class="step-math">Reflect over the <span class="fb" id="slide-4-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(x\)-axis</span></span>. Every \(y\) becomes \(-y\).</div>
+            </div>
+            <div class="step step-box blue" id="slide-4-step-2">
+                <div class="step-label">\(f(-x)\) · inside</div>
+                <div class="step-math">Reflect over the <span class="fb" id="slide-4-step-3"><span class="fb-blank">________</span><span class="fb-answer">\(y\)-axis</span></span>. Every \(x\) becomes \(-x\).</div>
+            </div>
+        </div>
+        <div class="ex-row" style="margin-top: 0.3rem;">
+            <div class="step-box" style="background:#fff7ed; border-color:#ea580c;">
+                <div class="step-label">\(c\cdot f(x)\) · vertical</div>
+                <div class="step-math">\(|c|&gt;1\): stretch away from \(x\)-axis. \(0&lt;|c|&lt;1\): shrink toward \(x\)-axis.</div>
+            </div>
+            <div class="step-box" style="background:#fff7ed; border-color:#ea580c;">
+                <div class="step-label">\(f(k x)\) · horizontal</div>
+                <div class="step-math">\(|k|&gt;1\): shrink toward \(y\)-axis. \(0&lt;|k|&lt;1\): stretch away from \(y\)-axis.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 5 — EXAMPLE 1 — describe transformations (2 parts) -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Describe the transformation from the parent</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="ex-card">
+                <div class="eq">1) \(g(x) = |x - 1| + 12\)</div>
+                <div class="parent">parent: \(|x|\)</div>
+                <div class="step" id="slide-5-step-0">
+                    <ul>
+                        <li>\((x - 1)\) → shift <strong>right 1</strong></li>
+                        <li>\(+\,12\) → shift <strong>up 12</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ex-card">
+                <div class="eq">2) \(h(x) = -\sqrt{x + 8}\)</div>
+                <div class="parent">parent: \(\sqrt{x}\)</div>
+                <div class="step" id="slide-5-step-1">
+                    <ul>
+                        <li>\((x + 8)\) → shift <strong>left 8</strong></li>
+                        <li>leading \(-\) → reflect over <strong>\(x\)-axis</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="ex-row">
+            <div class="ex-card">
+                <div class="eq">3) \(f(x) = 3(x - 7)^3\)</div>
+                <div class="parent">parent: \(x^3\)</div>
+                <div class="step" id="slide-5-step-2">
+                    <ul>
+                        <li>\((x - 7)\) → shift <strong>right 7</strong></li>
+                        <li>coefficient \(3\) → vertical <strong>stretch by 3</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ex-card">
+                <div class="eq">4) \(h(x) = \sqrt[3]{2x} - 9\)</div>
+                <div class="parent">parent: \(\sqrt[3]{x}\)</div>
+                <div class="step" id="slide-5-step-3">
+                    <ul>
+                        <li>inside \(2x\) → horizontal <strong>shrink by \(\tfrac{1}{2}\)</strong></li>
+                        <li>\(-\,9\) → shift <strong>down 9</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 6 — ORDER MATTERS · D.R.S. -->
+<section class="slide grid-bg" id="slide-6" data-steps="4">
+    <div class="slide-header">
+        <div class="tip-label">Tip</div>
+        <div class="slide-title">Order matters — use D.R.S.</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box navy">
+            <div class="note-title">When does order matter?</div>
+            <div class="note-copy">If a function has <strong>more than one</strong> transformation in the <em>same direction</em> (horizontal or vertical), the order you apply them matters. A shift must happen <strong>after</strong> a reflection or dilation in that direction.</div>
+        </div>
+        <div style="text-align: center; margin-top: 0.8rem;"><span class="drs-badge">D · R · S</span></div>
+        <div class="drs-grid">
+            <div class="step drs-step d" id="slide-6-step-0">
+                <div class="k">D · Dilate</div>
+                <div class="v">Apply stretches and shrinks <strong>first</strong>.</div>
+            </div>
+            <div class="step drs-step r" id="slide-6-step-1">
+                <div class="k">R · Reflect</div>
+                <div class="v">Then flip across axes.</div>
+            </div>
+            <div class="step drs-step s" id="slide-6-step-2">
+                <div class="k">S · Shift</div>
+                <div class="v">Translate <strong>last</strong>, after everything else.</div>
+            </div>
+        </div>
+        <div class="step" id="slide-6-step-3" style="margin-top: 0.6rem;">
+            <div class="step-box dark" style="text-align: center;">
+                <div class="step-math" style="color: white;">Dilate &rarr; Reflect &rarr; Shift. Always in that order.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 7 — VERTICAL STRETCH vs HORIZONTAL SHRINK -->
+<section class="slide grid-bg" id="slide-7" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Vertical stretch vs. horizontal shrink</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="note-box orange">
+            <div class="note-title">They can look the same!</div>
+            <div class="note-copy">Some graphs could be described as a vertical stretch <em>or</em> a horizontal shrink. Both stretch the same-looking curve — you pick based on the equation.</div>
+        </div>
+        <div class="graph-pair" style="margin-top: 0.7rem;">
+            <div class="graph-card">
+                <div class="ctitle">\(y = 4x^2\) · vertical stretch by 4</div>
+                <svg viewBox="0 0 200 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="50" y1="10" x2="50" y2="150"/>
+                        <line x1="150" y1="10" x2="150" y2="150"/>
+                        <line x1="10" y1="40" x2="190" y2="40"/>
+                        <line x1="10" y1="120" x2="190" y2="120"/>
+                    </g>
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <path d="M 60 80 Q 100 -80 140 80" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                    <path d="M 80 80 Q 100 -80 120 80" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                    <text x="100" y="148" font-size="9" fill="#64748b" text-anchor="middle">solid = stretched</text>
+                </svg>
+            </div>
+            <div class="graph-card">
+                <div class="ctitle">\(y = (2x)^2\) · horizontal shrink by \(\tfrac{1}{2}\)</div>
+                <svg viewBox="0 0 200 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="50" y1="10" x2="50" y2="150"/>
+                        <line x1="150" y1="10" x2="150" y2="150"/>
+                        <line x1="10" y1="40" x2="190" y2="40"/>
+                        <line x1="10" y1="120" x2="190" y2="120"/>
+                    </g>
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <path d="M 60 80 Q 100 -80 140 80" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="3 3"/>
+                    <path d="M 80 80 Q 100 -80 120 80" stroke="#ea580c" stroke-width="2.5" fill="none"/>
+                    <text x="100" y="148" font-size="9" fill="#64748b" text-anchor="middle">same shape, different cause</text>
+                </svg>
+            </div>
+        </div>
+        <div class="step step-box teal" id="slide-7-step-0" style="margin-top: 0.5rem;">
+            <div class="step-label">Key fact</div>
+            <div class="step-math">\((2x)^2 = 4x^2\). The graphs are <strong>identical</strong>. Either description is valid, but the equation tells you which.</div>
+        </div>
+        <div class="step step-box green" id="slide-7-step-1">
+            <div class="step-label">Rule of thumb</div>
+            <div class="step-math">Multiplier <strong>outside</strong> \(f\) → vertical. Multiplier <strong>inside</strong> \(f\) → horizontal.</div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 8 — EXAMPLE 5 — y = -2|x| + 1 -->
+<section class="slide grid-bg" id="slide-8" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Describe and graph \(y = -2|x| + 1\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="ex-card" style="grid-column: 1;">
+                <div class="parent" style="text-align:left; margin-bottom:0.3rem;"><strong>Parent:</strong> \(|x|\). Apply <strong>D &rarr; R &rarr; S</strong>.</div>
+                <div class="step drs-step d" id="slide-8-step-0">
+                    <div class="k">D · Dilate</div>
+                    <div class="v">Coefficient \(2\) outside → vertical <strong>stretch by 2</strong>.</div>
+                </div>
+                <div class="step drs-step r" id="slide-8-step-1" style="margin-top:0.3rem;">
+                    <div class="k">R · Reflect</div>
+                    <div class="v">Leading \(-\) → reflect over <strong>\(x\)-axis</strong>.</div>
+                </div>
+                <div class="step drs-step s" id="slide-8-step-2" style="margin-top:0.3rem;">
+                    <div class="k">S · Shift</div>
+                    <div class="v">\(+\,1\) → shift <strong>up 1</strong>.</div>
+                </div>
+            </div>
+            <div class="graph-card">
+                <div class="ctitle">Key points (parent → transformed)</div>
+                <table class="point-tbl">
+                    <tr><th>\(x\)</th><th>\(|x|\)</th><th>\(-2|x|+1\)</th></tr>
+                    <tr><td>\(-2\)</td><td>\(2\)</td><td class="ans-cell ans-hide" id="slide-8-step-3">\(-3\)</td></tr>
+                    <tr><td>\(-1\)</td><td>\(1\)</td><td class="ans-cell ans-hide" id="slide-8-step-3b">\(-1\)</td></tr>
+                    <tr><td>\(0\)</td><td>\(0\)</td><td class="ans-cell ans-hide" id="slide-8-step-3c">\(1\)</td></tr>
+                    <tr><td>\(1\)</td><td>\(1\)</td><td class="ans-cell ans-hide" id="slide-8-step-3d">\(-1\)</td></tr>
+                    <tr><td>\(2\)</td><td>\(2\)</td><td class="ans-cell ans-hide" id="slide-8-step-3e">\(-3\)</td></tr>
+                </table>
+                <svg viewBox="0 0 200 160" style="margin-top:0.4rem;">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="40" y1="10" x2="40" y2="150"/>
+                        <line x1="70" y1="10" x2="70" y2="150"/>
+                        <line x1="130" y1="10" x2="130" y2="150"/>
+                        <line x1="160" y1="10" x2="160" y2="150"/>
+                        <line x1="10" y1="40" x2="190" y2="40"/>
+                        <line x1="10" y1="110" x2="190" y2="110"/>
+                    </g>
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <text x="70" y="93" font-size="8" fill="#64748b">-2</text>
+                    <text x="130" y="93" font-size="8" fill="#64748b">2</text>
+                    <text x="103" y="43" font-size="8" fill="#64748b">2</text>
+                    <text x="103" y="113" font-size="8" fill="#64748b">-2</text>
+                    <g class="svg-step" id="slide-8-step-4">
+                        <polyline points="40,140 100,70 160,140" stroke="#ea580c" stroke-width="2.5" fill="none"/>
+                        <circle cx="100" cy="70" r="2.5" fill="#ea580c"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 9 — EXAMPLE 6 — y = sqrt(-2(x+3)) - 1 -->
+<section class="slide grid-bg" id="slide-9" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Describe and graph \(y = \sqrt{-2(x + 3)} - 1\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="ex-card" style="grid-column: 1;">
+                <div class="parent" style="text-align:left; margin-bottom:0.3rem;"><strong>Parent:</strong> \(\sqrt{x}\). Inside has both a coefficient and a shift.</div>
+                <div class="step drs-step d" id="slide-9-step-0">
+                    <div class="k">D · Dilate</div>
+                    <div class="v">Inside \(2\) → horizontal <strong>shrink by \(\tfrac{1}{2}\)</strong>.</div>
+                </div>
+                <div class="step drs-step r" id="slide-9-step-1" style="margin-top:0.3rem;">
+                    <div class="k">R · Reflect</div>
+                    <div class="v">Inside \(-\) → reflect over <strong>\(y\)-axis</strong>.</div>
+                </div>
+                <div class="step drs-step s" id="slide-9-step-2" style="margin-top:0.3rem;">
+                    <div class="k">S · Shift</div>
+                    <div class="v">\((x + 3)\) → <strong>left 3</strong>. \(-\,1\) → <strong>down 1</strong>.</div>
+                </div>
+            </div>
+            <div class="graph-card">
+                <div class="ctitle">Key points (parent → transformed)</div>
+                <table class="point-tbl">
+                    <tr><th>\(\sqrt{x}\)</th><th>D shrink</th><th>R reflect</th><th>S shift</th></tr>
+                    <tr><td>\((0,0)\)</td><td>\((0,0)\)</td><td>\((0,0)\)</td><td class="ans-cell ans-hide" id="slide-9-step-3">\((-3,-1)\)</td></tr>
+                    <tr><td>\((1,1)\)</td><td>\((\tfrac{1}{2},1)\)</td><td>\((-\tfrac{1}{2},1)\)</td><td class="ans-cell ans-hide" id="slide-9-step-3b">\((-3.5,0)\)</td></tr>
+                    <tr><td>\((4,2)\)</td><td>\((2,2)\)</td><td>\((-2,2)\)</td><td class="ans-cell ans-hide" id="slide-9-step-3c">\((-5,1)\)</td></tr>
+                </table>
+                <svg viewBox="0 0 240 160" style="margin-top:0.4rem;">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="40" y1="10" x2="40" y2="150"/>
+                        <line x1="80" y1="10" x2="80" y2="150"/>
+                        <line x1="160" y1="10" x2="160" y2="150"/>
+                        <line x1="200" y1="10" x2="200" y2="150"/>
+                        <line x1="10" y1="50" x2="230" y2="50"/>
+                        <line x1="10" y1="110" x2="230" y2="110"/>
+                    </g>
+                    <line x1="10" y1="80" x2="230" y2="80" stroke="#94a3b8"/>
+                    <line x1="180" y1="10" x2="180" y2="150" stroke="#94a3b8"/>
+                    <text x="40" y="93" font-size="8" fill="#64748b">-7</text>
+                    <text x="80" y="93" font-size="8" fill="#64748b">-5</text>
+                    <text x="120" y="93" font-size="8" fill="#64748b">-3</text>
+                    <text x="183" y="53" font-size="8" fill="#64748b">2</text>
+                    <g class="svg-step" id="slide-9-step-4">
+                        <path d="M 120 95 Q 95 70 80 50" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                        <circle cx="120" cy="95" r="2.5" fill="#0891b2"/>
+                        <circle cx="110" cy="80" r="2.5" fill="#0891b2"/>
+                        <circle cx="80" cy="50" r="2.5" fill="#0891b2"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 10 — EXAMPLE 7 — g(x) = -1/2 f(x - 1) + 3 -->
+<section class="slide grid-bg" id="slide-10" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Given \(y = f(x)\), graph \(g(x) = -\tfrac{1}{2}f(x - 1) + 3\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="graph-pair">
+            <div class="graph-card">
+                <div class="ctitle">Given \(y = f(x)\)</div>
+                <svg viewBox="0 0 220 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="20" y1="10" x2="20" y2="150"/>
+                        <line x1="60" y1="10" x2="60" y2="150"/>
+                        <line x1="140" y1="10" x2="140" y2="150"/>
+                        <line x1="180" y1="10" x2="180" y2="150"/>
+                        <line x1="10" y1="40" x2="210" y2="40"/>
+                        <line x1="10" y1="120" x2="210" y2="120"/>
+                    </g>
+                    <line x1="10" y1="80" x2="210" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <text x="20" y="93" font-size="8" fill="#64748b">-4</text>
+                    <text x="140" y="93" font-size="8" fill="#64748b">2</text>
+                    <text x="180" y="93" font-size="8" fill="#64748b">4</text>
+                    <polyline points="20,80 60,120 140,120 180,40" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                    <circle cx="20" cy="80" r="3" fill="#0891b2"/>
+                    <circle cx="60" cy="120" r="3" fill="#0891b2"/>
+                    <circle cx="140" cy="120" r="3" fill="#0891b2"/>
+                    <circle cx="180" cy="40" r="3" fill="#0891b2"/>
+                </svg>
+            </div>
+            <div class="ex-card">
+                <div class="parent" style="text-align:left;"><strong>Transformation summary</strong></div>
+                <div class="step drs-step d" id="slide-10-step-0">
+                    <div class="k">D · Dilate</div>
+                    <div class="v">\(\tfrac{1}{2}\) outside → vertical <strong>shrink by \(\tfrac{1}{2}\)</strong>.</div>
+                </div>
+                <div class="step drs-step r" id="slide-10-step-1" style="margin-top:0.3rem;">
+                    <div class="k">R · Reflect</div>
+                    <div class="v">Leading \(-\) → reflect over <strong>\(x\)-axis</strong>.</div>
+                </div>
+                <div class="step drs-step s" id="slide-10-step-2" style="margin-top:0.3rem;">
+                    <div class="k">S · Shift</div>
+                    <div class="v">\((x - 1)\) → <strong>right 1</strong>. \(+\,3\) → <strong>up 3</strong>.</div>
+                </div>
+            </div>
+        </div>
+        <div class="ex-row" style="margin-top:0.4rem;">
+            <div class="graph-card">
+                <div class="ctitle">Map the key points: \((a,b)\to(a+1,\,-\tfrac{b}{2}+3)\)</div>
+                <table class="point-tbl">
+                    <tr><th>on \(f\)</th><th>on \(g\)</th></tr>
+                    <tr><td>\((-4,\,0)\)</td><td class="ans-cell ans-hide" id="slide-10-step-3">\((-3,\,3)\)</td></tr>
+                    <tr><td>\((-2,\,-2)\)</td><td class="ans-cell ans-hide" id="slide-10-step-3b">\((-1,\,4)\)</td></tr>
+                    <tr><td>\((2,\,-2)\)</td><td class="ans-cell ans-hide" id="slide-10-step-3c">\((3,\,4)\)</td></tr>
+                    <tr><td>\((4,\,2)\)</td><td class="ans-cell ans-hide" id="slide-10-step-3d">\((5,\,2)\)</td></tr>
+                </table>
+            </div>
+            <div class="graph-card">
+                <div class="ctitle">Graph of \(g(x)\)</div>
+                <svg viewBox="0 0 220 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="20" y1="10" x2="20" y2="150"/>
+                        <line x1="60" y1="10" x2="60" y2="150"/>
+                        <line x1="140" y1="10" x2="140" y2="150"/>
+                        <line x1="180" y1="10" x2="180" y2="150"/>
+                        <line x1="10" y1="40" x2="210" y2="40"/>
+                        <line x1="10" y1="120" x2="210" y2="120"/>
+                    </g>
+                    <line x1="10" y1="80" x2="210" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <text x="140" y="93" font-size="8" fill="#64748b">2</text>
+                    <text x="180" y="93" font-size="8" fill="#64748b">4</text>
+                    <g class="svg-step" id="slide-10-step-4">
+                        <polyline points="40,50 80,30 160,30 200,60" stroke="#16a34a" stroke-width="2.5" fill="none"/>
+                        <circle cx="40" cy="50" r="3" fill="#16a34a"/>
+                        <circle cx="80" cy="30" r="3" fill="#16a34a"/>
+                        <circle cx="160" cy="30" r="3" fill="#16a34a"/>
+                        <circle cx="200" cy="60" r="3" fill="#16a34a"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLIDE 11 — SUMMARY -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Review</div>
+        <div class="slide-title">Transformation cheat sheet</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="ex-row">
+            <div class="step step-box teal" id="slide-11-step-0">
+                <div class="step-label">Recognize parent</div>
+                <div class="step-math" style="text-align:left; font-size:0.9em;">Before transforming, identify the parent: \(x\), \(x^2\), \(x^3\), \(|x|\), \(\sqrt{x}\), \(\sqrt[3]{x}\).</div>
+            </div>
+            <div class="step step-box blue" id="slide-11-step-1">
+                <div class="step-label">Outside vs. inside</div>
+                <div class="step-math" style="text-align:left; font-size:0.9em;">Outside \(f\) affects \(y\) (does what you expect). Inside \(f\) affects \(x\) (does the opposite).</div>
+            </div>
+        </div>
+        <div class="step step-box dark" id="slide-11-step-2" style="margin-top:0.5rem; text-align:center;">
+            <div class="step-math" style="color: white;">Apply in order: <strong>D</strong>ilate → <strong>R</strong>eflect → <strong>S</strong>hift.</div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'Parents',     slideId: 'slide-1' },
+            { label: 'Flavors',     slideId: 'slide-2' },
+            { label: 'Reference',   slideId: 'slide-3' },
+            { label: 'Describe',    slideId: 'slide-5' },
+            { label: 'D.R.S.',      slideId: 'slide-6' },
+            { label: 'Graph',       slideId: 'slide-8' },
+            { label: 'Review',      slideId: 'slide-11' }
+        ]
+    });
+
+    // Link paired step reveals (Example 2 & 3 table rows, Example 4 points)
+    document.addEventListener('DOMContentLoaded', () => {
+        const pairs = [
+            ['slide-8-step-3', ['slide-8-step-3b', 'slide-8-step-3c', 'slide-8-step-3d', 'slide-8-step-3e']],
+            ['slide-9-step-3', ['slide-9-step-3b', 'slide-9-step-3c']],
+            ['slide-10-step-3', ['slide-10-step-3b', 'slide-10-step-3c', 'slide-10-step-3d']]
+        ];
+        pairs.forEach(([primaryId, followerIds]) => {
+            const primary = document.getElementById(primaryId);
+            if (!primary) return;
+            const followers = followerIds.map(id => document.getElementById(id)).filter(Boolean);
+            const obs = new MutationObserver(() => {
+                const on = primary.classList.contains('visible');
+                followers.forEach(f => f.classList.toggle('visible', on));
+            });
+            obs.observe(primary, { attributes: true, attributeFilter: ['class'] });
+        });
+    });
+</script>
+</body>
+</html>
