@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 - Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .eq-check-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.8rem; margin-top: 0.6rem; }
+        .eq-card { background: #f8fafc; border-left: 4px solid #cbd5e1; border-radius: 10px; padding: 0.7rem 1rem; }
+        .eq-card.is-fn { border-color: #16a34a; background: #ecfdf5; }
+        .eq-card.not-fn { border-color: #dc2626; background: #fef2f2; }
+        .eq-card .eq-label { font-size: 0.78em; font-weight: 700; color: #64748b; letter-spacing: 0.04em; }
+        .eq-card .eq-body { font-size: 1em; margin: 0.15rem 0; }
+        .eq-card .eq-verdict { font-size: 0.85em; font-weight: 600; margin-top: 0.3rem; }
+        .eq-card.is-fn .eq-verdict { color: #16a34a; }
+        .eq-card.not-fn .eq-verdict { color: #dc2626; }
+        .vlt-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; }
+        .vlt-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.5rem; text-align: center; }
+        .vlt-card.is-fn { border-color: #16a34a; background: #ecfdf5; }
+        .vlt-card.not-fn { border-color: #dc2626; background: #fef2f2; }
+        .vlt-card svg { display: block; margin: 0 auto; }
+        .vlt-card .vlt-label { font-weight: 700; font-size: 0.85em; margin-bottom: 0.25rem; }
+        .vlt-card .vlt-verdict { margin-top: 0.3rem; font-size: 0.78em; font-weight: 600; }
+        .vlt-card.is-fn .vlt-verdict { color: #16a34a; }
+        .vlt-card.not-fn .vlt-verdict { color: #dc2626; }
+        .mapping-diagram { display: flex; justify-content: center; align-items: center; margin: 0.4rem 0; }
+        .piecewise-box { background: #f1f5f9; border-left: 4px solid #0891b2; border-radius: 10px; padding: 0.8rem 1.2rem; display: inline-block; margin: 0.4rem 0; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ============================================================
+     SLIDE 0 — TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.3 Functions</div>
+    <div class="title-objective">Objective: Decide whether a relation is a function, apply the vertical line test, and find the domain and range of various functions.</div>
+    <div class="identity-chips">
+        <span class="chip">relation vs function</span>
+        <span class="chip">vertical line test</span>
+        <span class="chip">domain &amp; range</span>
+        <span class="chip">evaluating</span>
+        <span class="chip">piecewise</span>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1 — CONCEPT: Relation vs Function
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-1" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Relation vs. Function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Relation</div>
+                <div class="card-copy">A <strong>relation</strong> is <span class="fb" id="slide-1-step-0"><span class="fb-blank">________________</span><span class="fb-answer">a correspondence</span></span> between two variables.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Function</div>
+                <div class="card-copy">A <strong>function</strong> is a relation where <span class="fb" id="slide-1-step-1"><span class="fb-blank">________________</span><span class="fb-answer">no two ordered pairs</span></span> have the same \(x\)-coordinate.</div>
+            </div>
+        </div>
+        <div class="step" id="slide-1-step-2">
+            <div class="note-box navy">
+                <div class="note-title">One input → one output</div>
+                <div class="note-copy">Every \(x\) has exactly <em>one</em> \(y\). Two points with the same \(x\) but different \(y\) values kill the "function" label.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — EXAMPLE 1: Equations that are / aren't functions
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-2" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Which equations represent functions?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">Solve each for \(y\). If you get exactly one value of \(y\) for each \(x\), it's a function.</div>
+        <div class="eq-check-grid" style="margin-top: 0.6rem;">
+            <div class="eq-card step" id="slide-2-step-0">
+                <div class="eq-label">a)</div>
+                <div class="eq-body">\[5x - 3y^2 = 9\]</div>
+            </div>
+            <div class="eq-card step" id="slide-2-step-1">
+                <div class="eq-label">b)</div>
+                <div class="eq-body">\[3y^3 + x = 1\]</div>
+            </div>
+            <div class="eq-card step" id="slide-2-step-2">
+                <div class="eq-label">c)</div>
+                <div class="eq-body">\[6|x| - 4x = y\]</div>
+            </div>
+            <div class="eq-card step" id="slide-2-step-3">
+                <div class="eq-label">d)</div>
+                <div class="eq-body">\[y = 5x^2 - 6x\]</div>
+            </div>
+            <div class="eq-card step" id="slide-2-step-4">
+                <div class="eq-label">e)</div>
+                <div class="eq-body">\[4x^2 + 4x - 3y^2 = 0\]</div>
+            </div>
+            <div class="eq-card step" id="slide-2-step-5">
+                <div class="eq-label">f)</div>
+                <div class="eq-body">\[x^2 = |y| + 6x\]</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — EXAMPLE 1 · Verdicts
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 1 · Verdicts</div>
+        <div class="slide-title">Solve for \(y\) and decide</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="eq-check-grid">
+            <div class="step" id="slide-3-step-0">
+                <div class="eq-card not-fn">
+                    <div class="eq-label">a) \(5x - 3y^2 = 9\)</div>
+                    <div class="eq-body">\(y = \pm\sqrt{\tfrac{5x-9}{3}}\)</div>
+                    <div class="eq-verdict">✗ Not a function — two values of \(y\)</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="eq-card is-fn">
+                    <div class="eq-label">b) \(3y^3 + x = 1\)</div>
+                    <div class="eq-body">\(y = \sqrt[3]{\tfrac{1-x}{3}}\)</div>
+                    <div class="eq-verdict">✓ Function — cube root is single-valued</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="eq-card is-fn">
+                    <div class="eq-label">c) \(6|x| - 4x = y\)</div>
+                    <div class="eq-body">\(y = 6|x| - 4x\)</div>
+                    <div class="eq-verdict">✓ Function — already solved for \(y\)</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="eq-card is-fn">
+                    <div class="eq-label">d) \(y = 5x^2 - 6x\)</div>
+                    <div class="eq-body">\(y = 5x^2 - 6x\)</div>
+                    <div class="eq-verdict">✓ Function — classic quadratic</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-4">
+                <div class="eq-card not-fn">
+                    <div class="eq-label">e) \(4x^2 + 4x - 3y^2 = 0\)</div>
+                    <div class="eq-body">\(y = \pm\sqrt{\tfrac{4x^2+4x}{3}}\)</div>
+                    <div class="eq-verdict">✗ Not a function — \(\pm\) gives two values</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-5">
+                <div class="eq-card not-fn">
+                    <div class="eq-label">f) \(x^2 = |y| + 6x\)</div>
+                    <div class="eq-body">\(|y| = x^2 - 6x\)</div>
+                    <div class="eq-verdict">✗ Not a function — \(|y|\) allows \(\pm\)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — CONCEPT: Vertical Line Test
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Vertical Line Test</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">If a vertical line crosses a curve in more than one place at the same time, then <span class="fb" id="slide-4-step-0"><span class="fb-blank">________________________</span><span class="fb-answer">the graph is not a function</span></span>.</div>
+
+        <div class="cards-grid" style="margin-top: 0.8rem;">
+            <div class="info-card green">
+                <div class="card-title">Passes (function)</div>
+                <svg viewBox="0 0 200 160" role="img" aria-label="Parabola opening up passes vertical line test">
+                    <line x1="20" y1="80" x2="180" y2="80" stroke="#94a3b8" stroke-width="1"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8" stroke-width="1"/>
+                    <path d="M 40 20 Q 100 180 160 20" stroke="#1e293b" stroke-width="3" fill="none"/>
+                    <line x1="70" y1="10" x2="70" y2="150" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 3"/>
+                    <line x1="130" y1="10" x2="130" y2="150" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 3"/>
+                </svg>
+                <div class="card-copy" style="font-size: 0.85em;">Each vertical line crosses the parabola at most once.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Fails (not a function)</div>
+                <svg viewBox="0 0 200 160" role="img" aria-label="Sideways parabola fails vertical line test">
+                    <line x1="20" y1="80" x2="180" y2="80" stroke="#94a3b8" stroke-width="1"/>
+                    <line x1="40" y1="10" x2="40" y2="150" stroke="#94a3b8" stroke-width="1"/>
+                    <path d="M 30 30 Q 200 80 30 130" stroke="#1e293b" stroke-width="3" fill="none"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#dc2626" stroke-width="2" stroke-dasharray="4 3"/>
+                </svg>
+                <div class="card-copy" style="font-size: 0.85em;">A vertical line crosses the sideways parabola twice.</div>
+            </div>
+        </div>
+
+        <div class="step" id="slide-4-step-1">
+            <div class="note-box teal">
+                <div class="note-title">Quick mental check</div>
+                <div class="note-copy">Slide an imaginary vertical line left to right. If it ever hits the graph more than once, it's not a function.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — EXAMPLE 2: VLT on five graphs
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Do these graphs represent functions?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">Apply the vertical line test to each.</div>
+        <div class="vlt-grid" style="margin-top: 0.5rem;">
+            <div class="step vlt-card" id="slide-5-step-0">
+                <div class="vlt-label">a)</div>
+                <svg viewBox="0 0 100 80">
+                    <line x1="5" y1="40" x2="95" y2="40" stroke="#94a3b8"/>
+                    <line x1="50" y1="5" x2="50" y2="75" stroke="#94a3b8"/>
+                    <path d="M 10 55 Q 30 15 50 40 T 90 35" stroke="#0891b2" stroke-width="2" fill="none"/>
+                </svg>
+                <div class="vlt-verdict">✓ Function</div>
+            </div>
+            <div class="step vlt-card" id="slide-5-step-1">
+                <div class="vlt-label">b)</div>
+                <svg viewBox="0 0 100 80">
+                    <line x1="5" y1="40" x2="95" y2="40" stroke="#94a3b8"/>
+                    <line x1="50" y1="5" x2="50" y2="75" stroke="#94a3b8"/>
+                    <path d="M 20 10 Q 70 40 20 70" stroke="#0891b2" stroke-width="2" fill="none"/>
+                </svg>
+                <div class="vlt-verdict">✗ Not a function</div>
+            </div>
+            <div class="step vlt-card" id="slide-5-step-2">
+                <div class="vlt-label">c)</div>
+                <svg viewBox="0 0 100 80">
+                    <line x1="5" y1="40" x2="95" y2="40" stroke="#94a3b8"/>
+                    <line x1="50" y1="5" x2="50" y2="75" stroke="#94a3b8"/>
+                    <path d="M 10 50 Q 30 20 50 40 Q 70 60 90 30" stroke="#0891b2" stroke-width="2" fill="none"/>
+                </svg>
+                <div class="vlt-verdict">✓ Function</div>
+            </div>
+            <div class="step vlt-card" id="slide-5-step-3">
+                <div class="vlt-label">d)</div>
+                <svg viewBox="0 0 100 80">
+                    <line x1="5" y1="40" x2="95" y2="40" stroke="#94a3b8"/>
+                    <line x1="50" y1="5" x2="50" y2="75" stroke="#94a3b8"/>
+                    <line x1="10" y1="55" x2="45" y2="55" stroke="#0891b2" stroke-width="2.5"/>
+                    <line x1="55" y1="25" x2="90" y2="25" stroke="#0891b2" stroke-width="2.5"/>
+                    <circle cx="45" cy="55" r="2.5" fill="#0891b2"/>
+                    <circle cx="55" cy="25" r="2.5" fill="#0f172a" stroke="#0891b2" stroke-width="1.5"/>
+                </svg>
+                <div class="vlt-verdict">✓ Function</div>
+            </div>
+            <div class="step vlt-card" id="slide-5-step-4">
+                <div class="vlt-label">e)</div>
+                <svg viewBox="0 0 100 80">
+                    <line x1="5" y1="40" x2="95" y2="40" stroke="#94a3b8"/>
+                    <line x1="50" y1="5" x2="50" y2="75" stroke="#94a3b8"/>
+                    <line x1="10" y1="55" x2="50" y2="55" stroke="#0891b2" stroke-width="2.5"/>
+                    <line x1="35" y1="25" x2="90" y2="25" stroke="#0891b2" stroke-width="2.5"/>
+                </svg>
+                <div class="vlt-verdict">✗ Not a function</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — CONCEPT: Independent/Dependent, Domain/Range
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Input, Output, Domain, Range</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Input · \(x\)</div>
+                <div class="card-copy" style="line-height: 1.9;">
+                    \(x\) is the <strong>input</strong> or <span class="fb" id="slide-6-step-0"><span class="fb-blank">___________</span><span class="fb-answer">independent</span></span> variable.<br>
+                    The \(x\)-values make up the <span class="fb" id="slide-6-step-1"><span class="fb-blank">_______</span><span class="fb-answer">domain</span></span>.
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Output · \(y\)</div>
+                <div class="card-copy" style="line-height: 1.9;">
+                    \(y\) is the <strong>output</strong> or <span class="fb" id="slide-6-step-2"><span class="fb-blank">___________</span><span class="fb-answer">dependent</span></span> variable.<br>
+                    The \(y\)-values make up the <span class="fb" id="slide-6-step-3"><span class="fb-blank">______</span><span class="fb-answer">range</span></span>.
+                </div>
+            </div>
+        </div>
+        <ul class="notes-list" style="margin-top: 0.8rem;">
+            <li><strong>Domain:</strong> every \(x\) you're allowed to plug in.</li>
+            <li><strong>Range:</strong> every \(y\) the function can produce.</li>
+            <li>Two usual restrictions: can't divide by zero, can't take an even root of a negative.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — EXAMPLE 3: Domain from mapping + rational
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Find the domain of each function</div>
+    </div>
+    <div class="slide-body">
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">a) Mapping diagram</div>
+                    <svg class="mapping-diagram" viewBox="0 0 320 160" width="320" height="160">
+                        <ellipse cx="80" cy="80" rx="50" ry="70" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+                        <ellipse cx="240" cy="80" rx="50" ry="70" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+                        <text x="80" y="50" text-anchor="middle" font-size="16" font-weight="600">-2</text>
+                        <text x="80" y="85" text-anchor="middle" font-size="16" font-weight="600">5</text>
+                        <text x="80" y="120" text-anchor="middle" font-size="16" font-weight="600">11</text>
+                        <text x="240" y="60" text-anchor="middle" font-size="16" font-weight="600">-13</text>
+                        <text x="240" y="100" text-anchor="middle" font-size="16" font-weight="600">4</text>
+                        <line x1="95" y1="50" x2="220" y2="60" stroke="#1e293b" stroke-width="1.5" marker-end="url(#arr)"/>
+                        <line x1="95" y1="85" x2="220" y2="100" stroke="#1e293b" stroke-width="1.5" marker-end="url(#arr)"/>
+                        <line x1="95" y1="120" x2="220" y2="100" stroke="#1e293b" stroke-width="1.5" marker-end="url(#arr)"/>
+                        <defs><marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><polygon points="0 0, 8 4, 0 8" fill="#1e293b"/></marker></defs>
+                    </svg>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box green">
+                    <div class="step-label">Domain of (a)</div>
+                    <div class="step-math">\[\{-2,\ 5,\ 11\}\]
+                        <div class="annotation">The domain is the set of inputs shown on the left.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">b) \(h(x) = \dfrac{1}{x+5}\)</div>
+                    <div class="step-math">\[x + 5 \ne 0 \quad\Rightarrow\quad x \ne -5\]
+                        <div class="annotation">Denominator can never be zero.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Domain of (b)</div>
+                    <div class="step-math">\[(-\infty,\,-5) \cup (-5,\,\infty)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — EXAMPLE 4: Domain and range from graphs
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Identify the domain and range</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid three">
+            <div class="info-card step" id="slide-8-step-0">
+                <div class="card-title">a) Line through origin</div>
+                <svg viewBox="0 0 140 110">
+                    <line x1="10" y1="55" x2="130" y2="55" stroke="#94a3b8"/>
+                    <line x1="70" y1="10" x2="70" y2="100" stroke="#94a3b8"/>
+                    <line x1="15" y1="100" x2="125" y2="10" stroke="#0891b2" stroke-width="2.5"/>
+                    <polygon points="125,10 118,15 123,20" fill="#0891b2"/>
+                    <polygon points="15,100 22,95 17,90" fill="#0891b2"/>
+                </svg>
+                <div class="card-copy" style="text-align:center; font-size: 0.95em;">
+                    \(D: (-\infty,\,\infty)\)<br>
+                    \(R: (-\infty,\,\infty)\)
+                </div>
+            </div>
+            <div class="info-card step" id="slide-8-step-1">
+                <div class="card-title">b) Continuous curve</div>
+                <svg viewBox="0 0 140 110">
+                    <line x1="10" y1="55" x2="130" y2="55" stroke="#94a3b8"/>
+                    <line x1="70" y1="10" x2="70" y2="100" stroke="#94a3b8"/>
+                    <path d="M 15 90 Q 40 30 70 60 Q 100 90 125 15" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+                <div class="card-copy" style="text-align:center; font-size: 0.95em;">
+                    \(D: (-\infty,\,\infty)\)<br>
+                    \(R: (-\infty,\,\infty)\)
+                </div>
+            </div>
+            <div class="info-card step" id="slide-8-step-2">
+                <div class="card-title">c) V-shape · vertex at \((0,-2)\)</div>
+                <svg viewBox="0 0 140 110">
+                    <line x1="10" y1="55" x2="130" y2="55" stroke="#94a3b8"/>
+                    <line x1="70" y1="10" x2="70" y2="100" stroke="#94a3b8"/>
+                    <line x1="20" y1="15" x2="70" y2="80" stroke="#0891b2" stroke-width="2.5"/>
+                    <line x1="70" y1="80" x2="120" y2="15" stroke="#0891b2" stroke-width="2.5"/>
+                    <text x="76" y="90" font-size="10" fill="#64748b">-2</text>
+                </svg>
+                <div class="card-copy" style="text-align:center; font-size: 0.95em;">
+                    \(D: (-\infty,\,\infty)\)<br>
+                    \(R: [-2,\,\infty)\)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — EXAMPLE 5: f(x) = √(9 - x²)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Domain and range of \(f(x) = \sqrt{9 - x^2}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The expression under the square root must be \(\ge 0\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Radicand ≥ 0</div>
+                    <div class="step-math">\[9 - x^2 \ge 0 \ \Rightarrow\ x^2 \le 9 \ \Rightarrow\ -3 \le x \le 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box green">
+                    <div class="step-label">Domain</div>
+                    <div class="step-math">\[[-3,\ 3]\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Find extreme outputs</div>
+                    <div class="step-math">\[\text{max at } x=0:\ \sqrt{9} = 3 \qquad \text{min at } x=\pm 3:\ 0\]
+                        <div class="annotation">This is the top half of a circle of radius 3.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Range</div>
+                    <div class="step-math">\[[0,\ 3]\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — EXAMPLE 6: Domain of √(x-2)/(x-4)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Find the domain of \(f(x) = \dfrac{\sqrt{x-2}}{x-4}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Two restrictions: radicand \(\ge 0\) <em>and</em> denominator \(\ne 0\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Radicand ≥ 0</div>
+                    <div class="step-math">\[x - 2 \ge 0 \ \Rightarrow\ x \ge 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Denominator ≠ 0</div>
+                    <div class="step-math">\[x - 4 \ne 0 \ \Rightarrow\ x \ne 4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Combine</div>
+                    <div class="step-math">\[x \ge 2 \ \text{and}\ x \ne 4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Domain</div>
+                    <div class="step-math">\[[2,\ 4) \cup (4,\ \infty)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — EXAMPLE 7: Baseball fence
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-11" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Will the baseball clear the fence?</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The height of a baseball hit is \(f(x) = -0.0032x^2 + x + 3\), where \(x\) is the horizontal distance from home plate (ft). Will it clear a 10-ft fence at \(x = 300\) ft?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Evaluate \(f(300)\)</div>
+                    <div class="step-math">\[f(300) = -0.0032(300)^2 + 300 + 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Compute</div>
+                    <div class="step-math">\[= -0.0032(90{,}000) + 303 = -288 + 303\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Height at 300 ft</div>
+                    <div class="step-math">\[f(300) = 15 \text{ feet}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[15 > 10 \ \Rightarrow\ \text{Yes, the ball clears the fence.}\]
+                        <div class="annotation">Clears by 5 feet.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 12 — EXAMPLE 8: Evaluating from a graph
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-12" data-steps="2">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">Evaluate \(f\) from the graph</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Piecewise graph of \(f\)</div>
+                <svg viewBox="0 0 220 200" width="220" height="200">
+                    <line x1="15" y1="150" x2="210" y2="150" stroke="#94a3b8"/>
+                    <line x1="40" y1="10" x2="40" y2="190" stroke="#94a3b8"/>
+                    <!-- grid -->
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="75" y1="10" x2="75" y2="190"/>
+                        <line x1="110" y1="10" x2="110" y2="190"/>
+                        <line x1="145" y1="10" x2="145" y2="190"/>
+                        <line x1="180" y1="10" x2="180" y2="190"/>
+                        <line x1="15" y1="115" x2="210" y2="115"/>
+                        <line x1="15" y1="80" x2="210" y2="80"/>
+                        <line x1="15" y1="45" x2="210" y2="45"/>
+                        <line x1="15" y1="180" x2="210" y2="180"/>
+                    </g>
+                    <!-- axis labels -->
+                    <text x="75" y="165" font-size="10" fill="#64748b" text-anchor="middle">1</text>
+                    <text x="110" y="165" font-size="10" fill="#64748b" text-anchor="middle">2</text>
+                    <text x="145" y="165" font-size="10" fill="#64748b" text-anchor="middle">3</text>
+                    <text x="30" y="115" font-size="10" fill="#64748b" text-anchor="end">1</text>
+                    <text x="30" y="80" font-size="10" fill="#64748b" text-anchor="end">2</text>
+                    <text x="30" y="45" font-size="10" fill="#64748b" text-anchor="end">3</text>
+                    <!-- function pieces -->
+                    <line x1="40" y1="115" x2="75" y2="115" stroke="#0891b2" stroke-width="2.5"/>
+                    <circle cx="40" cy="115" r="3.5" fill="#0891b2"/>
+                    <circle cx="75" cy="115" r="3.5" fill="#0891b2"/>
+                    <!-- f(2) = 3 closed dot -->
+                    <circle cx="110" cy="45" r="4" fill="#0891b2"/>
+                    <!-- ramp from (2,2) open going to (3,2) open? Actually matching description: a ramp or point -->
+                    <line x1="110" y1="80" x2="145" y2="80" stroke="#0891b2" stroke-width="2.5"/>
+                    <circle cx="110" cy="80" r="3.5" fill="#0f172a" stroke="#0891b2" stroke-width="1.5"/>
+                    <circle cx="145" cy="80" r="3.5" fill="#0f172a" stroke="#0891b2" stroke-width="1.5"/>
+                </svg>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Read the \(y\)-value</div>
+                <div class="card-copy" style="line-height: 2; font-size: 1.1em;">
+                    <div class="step" id="slide-12-step-0">\(f(1) = 1\) <span style="color:#64748b; font-size:0.75em;">(closed dot at \((1,1)\))</span></div>
+                    <div class="step" id="slide-12-step-1">\(f(2) = 3\) <span style="color:#64748b; font-size:0.75em;">(closed dot at \((2,3)\))</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 13 — EXAMPLE 9: Piecewise evaluation
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-13" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 9</div>
+        <div class="slide-title">Evaluate the piecewise function</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement" style="text-align:center;">
+            \[f(x) = \begin{cases} -(x+2)^2 + 4, & x \le -2 \\ \tfrac{1}{4}x + \tfrac{9}{2}, & x > -2 \end{cases}\]
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">a) \(f(-3)\) · which piece?</div>
+                    <div class="step-math">\[-3 \le -2 \ \Rightarrow\ \text{use top piece}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box green">
+                    <div class="step-label">a) \(f(-3)\)</div>
+                    <div class="step-math">\[-(-3+2)^2 + 4 = -(1) + 4 = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">b) \(f(8)\) · which piece?</div>
+                    <div class="step-math">\[8 > -2 \ \Rightarrow\ \text{use bottom piece}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-3">
+                <div class="step-box green">
+                    <div class="step-label">b) \(f(8)\)</div>
+                    <div class="step-math">\[\tfrac{1}{4}(8) + \tfrac{9}{2} = 2 + \tfrac{9}{2} = \tfrac{13}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-4">
+                <div class="step-box teal">
+                    <div class="step-label">c) \(f(-2)\) · boundary!</div>
+                    <div class="step-math">\[-2 \le -2 \ \Rightarrow\ \text{top piece (includes equality)}\]
+                        <div class="annotation">Watch the \(\le\) vs \(>\) — the boundary goes to whichever piece has the equals sign.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-5">
+                <div class="step-box dark">
+                    <div class="step-label">c) \(f(-2)\)</div>
+                    <div class="step-math">\[-(-2+2)^2 + 4 = -(0) + 4 = 4\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 14 — SUMMARY
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-14">
+    <div class="slide-header">
+        <div class="concept-label">Summary</div>
+        <div class="slide-title">Big Ideas · 1.3</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid three">
+            <div class="info-card teal">
+                <div class="card-title">Function test (algebra)</div>
+                <div class="card-copy">Solve for \(y\). If you get \(\pm\) or \(|y|\), it's not a function.</div>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Function test (graph)</div>
+                <div class="card-copy">The vertical line test: any vertical line hits the graph at most once.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Domain restrictions</div>
+                <div class="card-copy">No zero denominators. No negative radicands under even roots.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Range from graphs</div>
+                <div class="card-copy">Look at the lowest and highest \(y\)-values the curve reaches.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Evaluating piecewise</div>
+                <div class="card-copy">First pick the piece that contains your \(x\). Boundary goes to the piece with \(\le\) or \(\ge\).</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Real-world models</div>
+                <div class="card-copy">Plug in the question's \(x\), compute \(f(x)\), and compare to a threshold.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',       slideId: 'slide-0' },
+            { label: 'Functions',      slideId: 'slide-1' },
+            { label: 'Vertical Line',  slideId: 'slide-4' },
+            { label: 'Domain & Range', slideId: 'slide-6' },
+            { label: 'Evaluating',     slideId: 'slide-12' },
+            { label: 'Review',         slideId: 'slide-14' }
+        ]
+    });
+</script>
+</body>
+</html>
