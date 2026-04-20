@@ -47,6 +47,32 @@
         .point-tbl .ans-hide.visible { visibility: visible; animation: stepReveal 0.4s ease both; }
         g.svg-step { opacity: 0; }
         g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
+        .playground-embed {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .playground-frame-wrap {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+        }
+        .playground-frame {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: white;
+        }
+        .playground-slide .slide-body.top-layout {
+            overflow: hidden;
+            padding-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -368,6 +394,21 @@
     </div>
 </section>
 
+<!-- INTERACTIVE PLAYGROUND -->
+<section class="slide grid-bg playground-slide" id="slide-playground" data-steps="0">
+    <div class="slide-header">
+        <div class="concept-label">Interactive</div>
+        <div class="slide-title">Transformations Playground</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="playground-embed">
+            <div class="playground-frame-wrap">
+                <iframe class="playground-frame" src="1.5-transformations-playground.html" title="1.5 Transformations Playground" loading="eager"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- SLIDE 8 — EXAMPLE 5 — y = -2|x| + 1 -->
 <section class="slide grid-bg" id="slide-8" data-steps="5">
     <div class="slide-header">
@@ -607,6 +648,7 @@
             { label: 'Reference',   slideId: 'slide-3' },
             { label: 'Describe',    slideId: 'slide-5' },
             { label: 'D.R.S.',      slideId: 'slide-6' },
+            { label: 'Playground',  slideId: 'slide-playground' },
             { label: 'Graph',       slideId: 'slide-8' },
             { label: 'Review',      slideId: 'slide-11' }
         ]
