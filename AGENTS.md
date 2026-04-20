@@ -1,5 +1,7 @@
 # Agents Guide: HTML Slide Presentations
 
+> **Filename note**: This file is `AGENTS.md` (uppercase). Do not rename it to `agents.md` — `CLAUDE.md` and `README.md` reference it by its uppercase name, and git on case-insensitive filesystems (macOS) will silently accept the rename while Linux CI will break.
+
 This document is for any AI agent (Claude, Claude Code, ChatGPT, Gemini, Deepseek, Codex, Copilot, or others) working on HTML slide presentations in this repository. Read this entire file before making any modifications.
 
 ---

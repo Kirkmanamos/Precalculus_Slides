@@ -13,7 +13,27 @@ Use this file when one AI assistant needs to pause work and let another assistan
 
 ## Current Handoffs
 
-No active handoffs.
+### 2026-03-04 — Student Q&A Pilot (awaiting owner decision)
+
+- **Agent**: Codex
+- **Branch or worktree**: `codex/student-qa-pilot` (remote exists, never merged)
+- **Task**: Add a live student Q&A system to the 5.1 deck, with Supabase backend for submission, moderation, and teacher login.
+- **Files touched**:
+  - `5.1-fundamental-identities.html` — student modal, teacher panel, realtime sync
+  - `supabase/sql/qa_schema.sql`
+  - `supabase/functions/qa-submit/index.ts`
+  - `supabase/functions/qa-teacher-login/index.ts`
+  - `supabase/functions/qa-moderate/index.ts`
+  - `docs/student-qa-pilot-progress.md`
+  - `docs/student-qa-supabase-setup.md`
+- **Current state**: Complete and live-tested against hosted Supabase on 2026-03-05. Teacher unlock, student submission, realtime sync, rate limiting, and moderation all verified. Branch was never merged into `main`.
+- **Checks run**:
+  - Hosted Supabase deploy — passed
+  - Teacher unlock flow — passed
+  - Student submission — passed
+- **Known issues or risks**: The `5.1-fundamental-identities.html` on this branch is based on an older version of that file and would need rebasing onto current `main` before merging. The branch also removed several files present on `main` (Unit 1 decks, SKILL_HTML.md, etc.) — do NOT merge directly; cherry-pick or rebase the Supabase files only.
+- **Next action**: **Owner decides**: (A) abandon — close the PR, (B) continue — rebase onto main and integrate, or (C) extract — cherry-pick only the `supabase/` folder and docs onto a fresh branch.
+- **User-facing status**: This branch exists but was never discussed with the user in this session. User may not be aware it is still open.
 
 ## New Handoff Template
 
