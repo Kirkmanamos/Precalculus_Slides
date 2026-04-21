@@ -6,7 +6,310 @@
     <title>6.4 - The Binomial Theorem</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .specific-term-card { margin-top: 0; }
+        .specific-term-steps { padding-left: 1.1rem; font-size: 0.95em; line-height: 1.6; }
+        .exp-blue { font: 700 14px 'Source Sans 3', sans-serif; fill: #2563eb; text-anchor: middle; }
+        .exp-green { font: 700 14px 'Source Sans 3', sans-serif; fill: #16a34a; text-anchor: middle; }
+        .exp-term { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; text-anchor: middle; }
+        .exp-term tspan { font-family: 'Source Sans 3', sans-serif; }
+        .exp-muted { font: 600 11px 'Source Sans 3', sans-serif; fill: #64748b; text-anchor: middle; }
+        .exp-arrow { stroke: #64748b; stroke-width: 1.2; fill: none; marker-end: url(#arrowhead); }
+        #slide-12 .slide-body.top-layout { gap: 0.5rem; }
+        #slide-12 .body-lead { font-size: 0.72em; padding: 0.42em 0.75em; line-height: 1.35; }
+        #slide-12 .formula-note { margin-top: 0; font-size: 0.58em; padding: 0.38em 0.7em; }
+        .review-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.52rem;
+        }
+        .review-grid .info-card { padding: 0.48em 0.62em; border-radius: 8px; }
+        .review-grid .card-title { font-size: 0.48em; margin-bottom: 0.15rem; }
+        .review-grid .card-copy { font-size: 0.68em; line-height: 1.25; }
+
+        .term-table {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding: 0.55rem 0.5rem 0.4rem;
+        }
+        .tt-row {
+            display: grid;
+            grid-template-columns: 110px repeat(5, minmax(0, 1fr));
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .tt-title {
+            font-size: 0.55em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #64748b;
+            text-align: right;
+            padding-right: 0.35rem;
+        }
+        .tt-cell {
+            text-align: center;
+            font-size: 0.78em;
+            padding: 0.38em 0.25em;
+            border-radius: 8px;
+            line-height: 1.1;
+        }
+        .tt-terms-row .tt-cell {
+            font-size: 0.95em;
+            background: rgba(100, 116, 139, 0.08);
+            color: #1e293b;
+        }
+        .tt-num {
+            background: var(--teal-light);
+            color: var(--teal-accent);
+            font-weight: 700;
+            border: 1px solid rgba(8, 145, 178, 0.25);
+        }
+        .tt-rval {
+            background: var(--orange-light);
+            color: var(--orange-accent);
+            font-weight: 700;
+            border: 1px solid rgba(217, 119, 6, 0.3);
+        }
+        #slide-3b .cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+        #slide-3b .info-card { padding: 0.5em 0.7em; }
+        #slide-3b .card-title { font-size: 0.52em; margin-bottom: 0.2rem; }
+        #slide-3b .card-copy { font-size: 0.7em; line-height: 1.3; }
+
+        .combo-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            padding: 0.5rem 0.5rem 0.4rem;
+        }
+        .combo-row {
+            display: grid;
+            grid-template-columns: 110px repeat(5, minmax(0, 1fr));
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .combo-label {
+            font-size: 0.55em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #64748b;
+            text-align: right;
+            padding-right: 0.35rem;
+        }
+        .combo-cell {
+            text-align: center;
+            padding: 0.42em 0.3em;
+            border-radius: 8px;
+            line-height: 1.1;
+        }
+        .combo-pascal {
+            background: var(--blue-light);
+            color: var(--blue-accent);
+            font-weight: 700;
+            font-size: 0.95em;
+            border: 1px solid rgba(37, 99, 235, 0.25);
+        }
+        .combo-combo {
+            background: var(--green-light);
+            color: var(--green-accent);
+            font-weight: 600;
+            font-size: 0.95em;
+            border: 1px solid rgba(22, 163, 74, 0.25);
+        }
+        .combo-eq {
+            text-align: center;
+            font-size: 0.8em;
+            font-weight: 700;
+            color: #64748b;
+            padding: 0.1em 0;
+        }
+        #slide-2b .note-box { margin-top: 0.1rem; }
+
+        /* Reference modals + floating buttons */
+        .ref-buttons {
+            position: absolute;
+            right: max(1.1rem, calc((100% - 1120px) / 2 + 0.2rem));
+            bottom: calc(1.05rem + env(safe-area-inset-bottom));
+            z-index: 105;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .ref-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45em;
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 8px;
+            background: var(--navy);
+            color: white;
+            box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);
+            font-family: inherit;
+            font-size: 0.56em;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            line-height: 1;
+            padding: 0.64em 0.82em;
+            cursor: pointer;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+        }
+        .ref-button:hover,
+        .ref-button:focus-visible {
+            background: #0f2a4f;
+            transform: translateY(-2px);
+            box-shadow: 0 18px 36px rgba(15, 23, 42, 0.28);
+            outline: none;
+        }
+        .ref-button-mark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.7em;
+            height: 1.7em;
+            border-radius: 6px;
+            background: #60a5fa;
+            color: white;
+            font-size: 0.9em;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+        .card-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 120;
+            padding: 2rem 1.25rem;
+            overflow-y: auto;
+            animation: modalFade 0.18s ease both;
+        }
+        .card-modal[hidden] { display: none; }
+        @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+        .card-modal-inner {
+            background: white;
+            border-radius: 16px;
+            max-width: min(820px, 96vw);
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 1.45rem 1.6rem 1.3rem;
+            position: relative;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            animation: modalRise 0.22s cubic-bezier(.2,.9,.3,1.1) both;
+        }
+        @keyframes modalRise {
+            from { opacity: 0; transform: translateY(18px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .card-modal-close {
+            position: absolute;
+            top: 0.65rem;
+            right: 0.85rem;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            background: #f1f5f9;
+            color: var(--navy);
+            font-size: 1.15rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .card-modal-close:hover { background: #e2e8f0; }
+        .card-modal-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0 2.5rem 0.2rem 0;
+            line-height: 1.3;
+        }
+        .card-modal-subtitle {
+            font-size: 0.74em;
+            color: #64748b;
+            margin-bottom: 0.85rem;
+        }
+
+        /* Pascal modal specifics */
+        .pascal-modal .card-modal-inner { max-width: min(820px, 96vw); }
+        .pascal-big {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.38rem;
+            padding: 0.4rem 0 0.2rem;
+        }
+        .pascal-big-row {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        .pascal-big-index {
+            position: absolute;
+            left: 0.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 2.6rem;
+            font-size: 0.62em;
+            font-weight: 700;
+            color: #64748b;
+            text-align: right;
+            letter-spacing: 0.02em;
+        }
+        .pascal-big-values {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+        .pascal-big-cell {
+            flex: 0 0 2.2rem;
+            width: 2.2rem;
+            padding: 0.35em 0;
+            border-radius: 6px;
+            background: var(--blue-light);
+            color: var(--blue-accent);
+            font-weight: 700;
+            text-align: center;
+            font-size: 0.78em;
+            border: 1px solid rgba(37, 99, 235, 0.22);
+            line-height: 1;
+        }
+        .pascal-modal-note {
+            font-size: 0.72em;
+            color: #475569;
+            margin-top: 0.7rem;
+            padding: 0.45em 0.8em;
+            background: #f1f5f9;
+            border-left: 3px solid var(--blue-accent);
+            border-radius: 6px;
+        }
+
+        /* Formulas modal specifics */
+        .formula-modal .card-modal-inner { max-width: min(780px, 96vw); }
+        .formula-modal .formula-grid { gap: 0.52rem; }
+        .formula-modal .formula-row { padding: 0.48em 0.9em; }
+        .formula-modal .formula-note { margin-top: 0.62rem; }
+
+        @media (max-width: 768px) {
+            .ref-buttons {
+                right: calc(12px + env(safe-area-inset-right));
+                bottom: calc(12px + env(safe-area-inset-bottom));
+            }
+            .ref-button { font-size: 0.58em; padding: 0.58em 0.72em; }
+            .card-modal-inner { padding: 1.2rem 1rem 1rem; }
+            .pascal-big-cell { min-width: 1.7rem; font-size: 0.68em; }
+        }
+    </style>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
@@ -48,59 +351,51 @@
                     </li>
                 </ul>
                 <div class="notes-hint">Click or press space to fill in each blank — matches the "Patterns" definition in your notes.</div>
-<div class="note-box navy">
-    <div class="note-title">Sample Pattern</div>
-    <div class="note-copy">\[(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\]</div>
-</div>
-<div class="diagram-shell">
-    <div class="diagram-title">Exponent Pattern in \((a+b)^4\)</div>
-    <svg class="diagram" viewBox="0 0 480 100" xmlns="http://www.w3.org/2000/svg">
-        <style>
-            .exp-blue { font: 700 14px 'Source Sans 3', sans-serif; fill: #2563eb; text-anchor: middle; }
-            .exp-green { font: 700 14px 'Source Sans 3', sans-serif; fill: #16a34a; text-anchor: middle; }
-            .exp-term { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; text-anchor: middle; }
-            .exp-muted { font: 600 11px 'Source Sans 3', sans-serif; fill: #64748b; text-anchor: middle; }
-            .exp-arrow { stroke: #64748b; stroke-width: 1.2; fill: none; marker-end: url(#arrowhead); }
-        </style>
-        <defs>
-            <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
-                <polygon points="0 0, 6 2.5, 0 5" fill="#64748b"/>
-            </marker>
-        </defs>
-        <!-- a-exponent label -->
-        <text class="exp-muted" x="16" y="16">a exp</text>
-        <!-- b-exponent label -->
-        <text class="exp-muted" x="16" y="92">b exp</text>
-        <!-- Term 1 -->
-        <text class="exp-blue" x="96" y="16">4</text>
-        <text class="exp-term" x="96" y="52">a⁴b⁰</text>
-        <text class="exp-green" x="96" y="92">0</text>
-        <!-- Term 2 -->
-        <text class="exp-blue" x="168" y="16">3</text>
-        <text class="exp-term" x="168" y="52">a³b¹</text>
-        <text class="exp-green" x="168" y="92">1</text>
-        <!-- Term 3 -->
-        <text class="exp-blue" x="240" y="16">2</text>
-        <text class="exp-term" x="240" y="52">a²b²</text>
-        <text class="exp-green" x="240" y="92">2</text>
-        <!-- Term 4 -->
-        <text class="exp-blue" x="312" y="16">1</text>
-        <text class="exp-term" x="312" y="52">a¹b³</text>
-        <text class="exp-green" x="312" y="92">3</text>
-        <!-- Term 5 -->
-        <text class="exp-blue" x="384" y="16">0</text>
-        <text class="exp-term" x="384" y="52">a⁰b⁴</text>
-        <text class="exp-green" x="384" y="92">4</text>
-        <!-- Decreasing arrow (a exponents) -->
-        <line class="exp-arrow" x1="106" y1="13" x2="372" y2="13"/>
-        <text class="exp-muted" x="440" y="16">▼</text>
-        <!-- Increasing arrow (b exponents) -->
-        <line class="exp-arrow" x1="106" y1="89" x2="372" y2="89"/>
-        <text class="exp-muted" x="440" y="92">▲</text>
-        <!-- Sum note -->
-        <text class="exp-muted" x="240" y="72">each pair sums to 4</text>
-    </svg>
-</div>
+            </div>
+        </section>
+<section class="slide grid-bg" id="slide-1b">
+            <div class="slide-header">
+                <div class="concept-label">Concept</div>
+                <div class="slide-title">Reading the Power Pattern</div>
+            </div>
+            <div class="slide-body top-layout">
+                <div class="body-lead">For \((a+b)^4\), every term has total degree \(4\): the exponent on \(a\) plus the exponent on \(b\) is always \(4\).</div>
+                <div class="note-box navy">
+                    <div class="note-title">Sample Pattern</div>
+                    <div class="note-copy">\[(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\]</div>
+                </div>
+                <div class="diagram-shell">
+                    <div class="diagram-title">Exponent Pattern in \((a+b)^4\)</div>
+                    <svg class="diagram" viewBox="0 0 480 100" role="img" aria-label="The exponent on a decreases from 4 to 0 while the exponent on b increases from 0 to 4. Each pair of exponents sums to 4." xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+                                <polygon points="0 0, 6 2.5, 0 5" fill="#64748b"/>
+                            </marker>
+                        </defs>
+                        <text class="exp-muted" x="16" y="16">a exp</text>
+                        <text class="exp-muted" x="16" y="92">b exp</text>
+                        <text class="exp-blue" x="96" y="16">4</text>
+                        <text class="exp-term" x="96" y="52"><tspan font-style="italic">a</tspan><tspan dy="-4" font-size="9">4</tspan><tspan dy="4" font-style="italic">b</tspan><tspan dy="-4" font-size="9">0</tspan></text>
+                        <text class="exp-green" x="96" y="92">0</text>
+                        <text class="exp-blue" x="168" y="16">3</text>
+                        <text class="exp-term" x="168" y="52"><tspan font-style="italic">a</tspan><tspan dy="-4" font-size="9">3</tspan><tspan dy="4" font-style="italic">b</tspan><tspan dy="-4" font-size="9">1</tspan></text>
+                        <text class="exp-green" x="168" y="92">1</text>
+                        <text class="exp-blue" x="240" y="16">2</text>
+                        <text class="exp-term" x="240" y="52"><tspan font-style="italic">a</tspan><tspan dy="-4" font-size="9">2</tspan><tspan dy="4" font-style="italic">b</tspan><tspan dy="-4" font-size="9">2</tspan></text>
+                        <text class="exp-green" x="240" y="92">2</text>
+                        <text class="exp-blue" x="312" y="16">1</text>
+                        <text class="exp-term" x="312" y="52"><tspan font-style="italic">a</tspan><tspan dy="-4" font-size="9">1</tspan><tspan dy="4" font-style="italic">b</tspan><tspan dy="-4" font-size="9">3</tspan></text>
+                        <text class="exp-green" x="312" y="92">3</text>
+                        <text class="exp-blue" x="384" y="16">0</text>
+                        <text class="exp-term" x="384" y="52"><tspan font-style="italic">a</tspan><tspan dy="-4" font-size="9">0</tspan><tspan dy="4" font-style="italic">b</tspan><tspan dy="-4" font-size="9">4</tspan></text>
+                        <text class="exp-green" x="384" y="92">4</text>
+                        <line class="exp-arrow" x1="106" y1="13" x2="372" y2="13"/>
+                        <text class="exp-muted" x="440" y="16">▼</text>
+                        <line class="exp-arrow" x1="106" y1="89" x2="372" y2="89"/>
+                        <text class="exp-muted" x="440" y="92">▲</text>
+                        <text class="exp-muted" x="240" y="72">each pair sums to 4</text>
+                    </svg>
+                </div>
             </div>
         </section>
 <section class="slide grid-bg" id="slide-2">
@@ -109,25 +404,81 @@
                 <div class="slide-title">Pascal&#x27;s Triangle and Combinations</div>
             </div>
             <div class="slide-body top-layout">
-                <div class="diagram-shell">
-    <div class="diagram-title">Pascal's Triangle</div>
-    <div class="pascal-grid">
-        <div class="pascal-row"><span class="pascal-index">n = 0</span><div class="pascal-values"><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 1</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 2</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">2</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 3</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">3</span><span class="pascal-cell">3</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 4</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">4</span><span class="pascal-cell">6</span><span class="pascal-cell">4</span><span class="pascal-cell">1</span></div></div><div class="pascal-row"><span class="pascal-index">n = 5</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">5</span><span class="pascal-cell">10</span><span class="pascal-cell">10</span><span class="pascal-cell">5</span><span class="pascal-cell">1</span></div></div>
-    </div>
-    <div class="diagram-caption">Row <strong>n</strong> gives the coefficients of \((a+b)^n\).</div>
-</div>
-<div class="cards-grid"><div class="info-card teal">
-    <div class="card-title">Combination Formula</div>
-    <div class="card-copy">\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
-</div><div class="info-card green">
-    <div class="card-title">Calculator</div>
-    <div class="card-copy">On many calculators, use <strong>nCr</strong> to find \(\binom{n}{r}\).</div>
-</div><div class="info-card orange">
-    <div class="card-title">Row 4 Example</div>
-    <div class="card-copy">Row \(4\) gives \(1, 4, 6, 4, 1\), which are the coefficients of \((a+b)^4\).</div>
-</div></div>
+                <div class="two-col">
+                    <div class="col">
+                        <div class="diagram-shell">
+                            <div class="diagram-title">Pascal's Triangle</div>
+                            <div class="pascal-grid">
+                                <div class="pascal-row"><span class="pascal-index">n = 0</span><div class="pascal-values"><span class="pascal-cell">1</span></div></div>
+                                <div class="pascal-row"><span class="pascal-index">n = 1</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">1</span></div></div>
+                                <div class="pascal-row"><span class="pascal-index">n = 2</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">2</span><span class="pascal-cell">1</span></div></div>
+                                <div class="pascal-row"><span class="pascal-index">n = 3</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">3</span><span class="pascal-cell">3</span><span class="pascal-cell">1</span></div></div>
+                                <div class="pascal-row"><span class="pascal-index">n = 4</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">4</span><span class="pascal-cell">6</span><span class="pascal-cell">4</span><span class="pascal-cell">1</span></div></div>
+                                <div class="pascal-row"><span class="pascal-index">n = 5</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">5</span><span class="pascal-cell">10</span><span class="pascal-cell">10</span><span class="pascal-cell">5</span><span class="pascal-cell">1</span></div></div>
+                            </div>
+                            <div class="diagram-caption">Row <strong>n</strong> gives the coefficients of \((a+b)^n\).</div>
+                        </div>
+                    </div>
+                    <div class="col stack">
+                        <div class="info-card teal">
+                            <div class="card-title">Combination Formula</div>
+                            <div class="card-copy">\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
+                        </div>
+                        <div class="info-card green">
+                            <div class="card-title">Calculator</div>
+                            <div class="card-copy">On many calculators, use <strong>nCr</strong> to find \(\binom{n}{r}\).</div>
+                        </div>
+                        <div class="info-card orange">
+                            <div class="card-title">Row 4 Example</div>
+                            <div class="card-copy">Row \(4\) gives \(1, 4, 6, 4, 1\), which are the coefficients of \((a+b)^4\).</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-2b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Pascal's Triangle \(=\) Combinations</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Every number in Pascal's Triangle is a value of \(\binom{n}{r}\). Here is row \(4\) written both ways:</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Row \(4\) as Pascal Values and as Combinations</div>
+            <div class="combo-stack">
+                <div class="combo-row">
+                    <div class="combo-label">Pascal</div>
+                    <div class="combo-cell combo-pascal">1</div>
+                    <div class="combo-cell combo-pascal">4</div>
+                    <div class="combo-cell combo-pascal">6</div>
+                    <div class="combo-cell combo-pascal">4</div>
+                    <div class="combo-cell combo-pascal">1</div>
+                </div>
+                <div class="combo-row">
+                    <div class="combo-label"></div>
+                    <div class="combo-eq">=</div>
+                    <div class="combo-eq">=</div>
+                    <div class="combo-eq">=</div>
+                    <div class="combo-eq">=</div>
+                    <div class="combo-eq">=</div>
+                </div>
+                <div class="combo-row">
+                    <div class="combo-label">\(\binom{n}{r}\)</div>
+                    <div class="combo-cell combo-combo">\(\binom{4}{0}\)</div>
+                    <div class="combo-cell combo-combo">\(\binom{4}{1}\)</div>
+                    <div class="combo-cell combo-combo">\(\binom{4}{2}\)</div>
+                    <div class="combo-cell combo-combo">\(\binom{4}{3}\)</div>
+                    <div class="combo-cell combo-combo">\(\binom{4}{4}\)</div>
+                </div>
+            </div>
+            <div class="diagram-caption">Row \(n\), position \(r\) (counting from \(0\)) is exactly \(\binom{n}{r}\).</div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Proof by Computation — the \(r = 2\) Cell</div>
+            <div class="note-copy">\[\binom{4}{2} = \dfrac{4!}{2!\,(4-2)!} = \dfrac{24}{2\cdot 2} = 6 \;\;\checkmark\]</div>
+        </div>
+    </div>
+</section>
 <section class="slide grid-bg" id="slide-3" data-steps="3">
             <div class="slide-header">
                 <div class="example-label">Example 1</div>
@@ -168,6 +519,59 @@
                 </div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-3b">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Term Number vs. \(r\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Before using the formula, lock in the vocabulary with an expansion we already know: \((a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4\).</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Match each term to its \(r\) value</div>
+            <div class="term-table">
+                <div class="tt-row">
+                    <div class="tt-title">Term #</div>
+                    <div class="tt-cell tt-num">1</div>
+                    <div class="tt-cell tt-num">2</div>
+                    <div class="tt-cell tt-num">3</div>
+                    <div class="tt-cell tt-num">4</div>
+                    <div class="tt-cell tt-num">5</div>
+                </div>
+                <div class="tt-row tt-terms-row">
+                    <div class="tt-title">Term</div>
+                    <div class="tt-cell">\(a^4\)</div>
+                    <div class="tt-cell">\(4a^3b\)</div>
+                    <div class="tt-cell">\(6a^2b^2\)</div>
+                    <div class="tt-cell">\(4ab^3\)</div>
+                    <div class="tt-cell">\(b^4\)</div>
+                </div>
+                <div class="tt-row">
+                    <div class="tt-title">\(r\) value</div>
+                    <div class="tt-cell tt-rval">0</div>
+                    <div class="tt-cell tt-rval">1</div>
+                    <div class="tt-cell tt-rval">2</div>
+                    <div class="tt-cell tt-rval">3</div>
+                    <div class="tt-cell tt-rval">4</div>
+                </div>
+            </div>
+            <div class="diagram-caption">\(r\) starts at \(0\) and is always <strong>one less</strong> than the term number.</div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">\(n\) = the Power</div>
+                <div class="card-copy">For \((a+b)^4\), \(n = 4\). Every expansion of \((a+b)^n\) has \(n+1\) terms — here, \(5\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">\(r\) = a Counter From \(0\)</div>
+                <div class="card-copy">\(r\) is <strong>not</strong> the term number. It tracks the exponent on \(b\) and runs \(0, 1, 2, \ldots, n\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Term Number \(= r + 1\)</div>
+                <div class="card-copy">To find a specific term, use \(r = \text{term number} - 1\). That is why the general term is named \(T_{r+1}\).</div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="slide grid-bg" id="slide-4">
             <div class="slide-header">
                 <div class="ref-label">Reference</div>
@@ -190,10 +594,10 @@
 </div>
         </div>
         <div class="formula-note">The term number is always one more than \(r\), so the 6th term uses \(r=5\).</div>
-<div class="info-card teal" style="margin-top:0.7rem">
+<div class="info-card teal specific-term-card">
     <div class="card-title">How to Find a Specific Term</div>
     <div class="card-copy">
-        <ol style="padding-left:1.1rem; font-size:0.95em; line-height:1.6;">
+        <ol class="specific-term-steps">
             <li>Set \(r = \text{term number} - 1\)</li>
             <li>Plug \(a\), \(b\), \(n\), \(r\) into \(T_{r+1} = \binom{n}{r}a^{n-r}b^r\)</li>
             <li>Simplify powers and coefficients separately</li>
@@ -240,13 +644,12 @@
 </div><div class="step" id="slide-5-step-3">
     <div class="step-box orange">
         <div class="step-label">Watch Out</div>
-        <div class="step-copy" style="font-size:0.84em; line-height:1.6;">When \(b\) is negative, the signs <strong>alternate</strong>: \((-b)^0 = +\), \((-b)^1 = -\), \((-b)^2 = +\), \((-b)^3 = -\), …</div>
+        <div class="step-copy">When \(b\) is negative, the signs <strong>alternate</strong>: \((-b)^0 = +\), \((-b)^1 = -\), \((-b)^2 = +\), \((-b)^3 = -\), \(\ldots\)</div>
     </div>
 </div>
                 </div>
             </div>
         </section>
-<!-- NEW: Ex 3 — notes Ex 3 (second full expansion) -->
 <section class="slide grid-bg" id="slide-6" data-steps="3">
     <div class="slide-header">
         <div class="example-label">Example 3</div>
@@ -264,7 +667,12 @@
             <div class="step" id="slide-6-step-1">
                 <div class="step-box">
                     <div class="step-label">Apply the Theorem</div>
-                    <div class="step-math">\[(3x)^5 + 5(3x)^4(1) + 10(3x)^3(1)^2 + 10(3x)^2(1)^3 + 5(3x)(1)^4 + 1\]</div>
+                    <div class="step-math">\[
+                        \begin{aligned}
+                        (3x+1)^5 ={}& (3x)^5 + 5(3x)^4(1) + 10(3x)^3(1)^2 \\
+                        &+ 10(3x)^2(1)^3 + 5(3x)(1)^4 + 1
+                        \end{aligned}
+                    \]</div>
                 </div>
             </div>
             <div class="step" id="slide-6-step-2">
@@ -307,7 +715,6 @@
     </div>
 </section>
 
-<!-- NEW: Ex 5 — notes Ex 5 (second find-a-term problem) -->
 <section class="slide grid-bg" id="slide-8" data-steps="3">
     <div class="slide-header">
         <div class="example-label">Example 5</div>
@@ -338,8 +745,7 @@
     </div>
 </section>
 
-<!-- Example 6 — matches notes Ex 6 (two-variable coefficient) -->
-<section class="slide grid-bg" id="slide-8b" data-steps="4">
+<section class="slide grid-bg" id="slide-9" data-steps="4">
     <div class="slide-header">
         <div class="example-label">Example 6</div>
         <div class="slide-title">Two-Variable Coefficient</div>
@@ -347,30 +753,30 @@
     <div class="slide-body">
         <div class="problem-statement">Find the coefficient of \(x^7 y^{12}\) in the expansion of \((2x-3y^3)^{11}\).</div>
         <div class="steps-area">
-            <div class="step" id="slide-8b-step-0">
+            <div class="step" id="slide-9-step-0">
                 <div class="step-box teal">
                     <div class="step-label">Set Up the General Term</div>
                     <div class="step-math">\[T_{r+1} = \binom{11}{r}(2x)^{11-r}(-3y^3)^r\]</div>
                 </div>
             </div>
-            <div class="step" id="slide-8b-step-1">
+            <div class="step" id="slide-9-step-1">
                 <div class="step-box">
                     <div class="step-label">Match the Exponents</div>
                     <div class="step-copy">
                         <ul>
                             <li>\(x\)-exponent: \(11-r = 7 \implies r = 4\)</li>
-                            <li>\(y\)-exponent: \(3r = 12\) ✓</li>
+                            <li>\(y\)-exponent: \(3r = 12\), so the powers match.</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="step" id="slide-8b-step-2">
+            <div class="step" id="slide-9-step-2">
                 <div class="step-box">
                     <div class="step-label">Substitute \(r = 4\)</div>
                     <div class="step-math">\[\binom{11}{4}(2x)^7(-3y^3)^4 = 330 \cdot 128x^7 \cdot 81y^{12}\]</div>
                 </div>
             </div>
-            <div class="step" id="slide-8b-step-3">
+            <div class="step" id="slide-9-step-3">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[\text{Coefficient} = 3{,}421{,}440\]</div>
@@ -380,7 +786,7 @@
     </div>
 </section>
 
-<section class="slide grid-bg" id="slide-9" data-steps="2">
+<section class="slide grid-bg" id="slide-10" data-steps="2">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Finding a Specific Term</div>
@@ -388,13 +794,13 @@
     <div class="slide-body">
         <div class="problem-statement">Find the 3rd term of \((2x + 1)^7\).</div>
         <div class="steps-area">
-            <div class="step" id="slide-9-step-0">
+            <div class="step" id="slide-10-step-0">
                 <div class="step-box teal">
                     <div class="step-label">Hint</div>
                     <div class="step-copy">The 3rd term means \(r = 2\), because the general term is \(T_{r+1}\).</div>
                 </div>
             </div>
-            <div class="step" id="slide-9-step-1">
+            <div class="step" id="slide-10-step-1">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[T_3 = \binom{7}{2}(2x)^5(1)^2 = 21 \cdot 32x^5 = 672x^5\]</div>
@@ -404,7 +810,7 @@
     </div>
 </section>
 
-<section class="slide grid-bg" id="slide-10" data-steps="3">
+<section class="slide grid-bg" id="slide-11" data-steps="3">
     <div class="slide-header">
         <div class="practice-label">Your Turn</div>
         <div class="slide-title">Practice: Finding a Coefficient</div>
@@ -412,19 +818,19 @@
     <div class="slide-body">
         <div class="problem-statement">Find the coefficient of \(x^2\) in the expansion of \((2x + 3)^5\).</div>
         <div class="steps-area">
-            <div class="step" id="slide-10-step-0">
+            <div class="step" id="slide-11-step-0">
                 <div class="step-box teal">
                     <div class="step-label">Identify Which Power of \(3\) You Need</div>
                     <div class="step-math">\[x^2 \text{ means } 5-r = 2 \Rightarrow r = 3\]</div>
                 </div>
             </div>
-            <div class="step" id="slide-10-step-1">
+            <div class="step" id="slide-11-step-1">
                 <div class="step-box">
                     <div class="step-label">Use the Matching Term</div>
                     <div class="step-math">\[\binom{5}{3}(2x)^2(3)^3 = 10 \cdot 4x^2 \cdot 27\]</div>
                 </div>
             </div>
-            <div class="step" id="slide-10-step-2">
+            <div class="step" id="slide-11-step-2">
                 <div class="step-box dark">
                     <div class="step-label">Answer</div>
                     <div class="step-math">\[\text{Coefficient of }x^2 = 1080\]</div>
@@ -441,7 +847,7 @@
             </div>
             <div class="slide-body top-layout">
                 <div class="body-lead">Use this checklist to make sure you are choosing the right binomial-theorem move before you expand or isolate a term.</div>
-                <div class="cards-grid"><div class="info-card teal">
+                <div class="cards-grid review-grid"><div class="info-card teal">
     <div class="card-title">Spot the Pattern</div>
     <div class="card-copy">Recognize that \((a+b)^n\) has \(n+1\) terms, symmetric coefficients, and exponents that move in opposite directions.</div>
 </div><div class="info-card green">
@@ -464,6 +870,51 @@
             </div>
         </section>
 </div>
+
+<div class="card-modal formula-modal" id="modal-formula-reference" hidden role="dialog" aria-modal="true" aria-labelledby="modal-formula-reference-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-formula-reference-title">Binomial Theorem Formulas</div>
+        <div class="card-modal-subtitle">Quick reference for the theorem, general term, and combinations.</div>
+        <div class="formula-grid">
+            <div class="formula-row blue">
+                <div class="fn-label">theorem</div>
+                <div class="fn-eq-stack"><div>\[(a+b)^n = \sum_{r=0}^{n}\binom{n}{r}a^{\,n-r}b^r\]</div></div>
+            </div>
+            <div class="formula-row teal">
+                <div class="fn-label">term</div>
+                <div class="fn-eq-stack"><div>\[T_{r+1} = \binom{n}{r}a^{\,n-r}b^r\]</div></div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">combination</div>
+                <div class="fn-eq-stack"><div>\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div></div>
+            </div>
+        </div>
+        <div class="formula-note">Term number \(= r + 1\). To find a specific term, use \(r = \text{term number} - 1\).</div>
+    </div>
+</div>
+
+<div class="card-modal pascal-modal" id="modal-pascal-reference" hidden role="dialog" aria-modal="true" aria-labelledby="modal-pascal-reference-title">
+    <div class="card-modal-inner">
+        <button class="card-modal-close" aria-label="Close">×</button>
+        <div class="card-modal-title" id="modal-pascal-reference-title">Pascal's Triangle — Rows 0 to 9</div>
+        <div class="card-modal-subtitle">Row \(n\) gives the coefficients of \((a+b)^n\).</div>
+        <div class="pascal-big">
+            <div class="pascal-big-row" data-row="0"><div class="pascal-big-index">n = 0</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="1"><div class="pascal-big-index">n = 1</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="2"><div class="pascal-big-index">n = 2</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">2</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="3"><div class="pascal-big-index">n = 3</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">3</span><span class="pascal-big-cell">3</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="4"><div class="pascal-big-index">n = 4</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">4</span><span class="pascal-big-cell">6</span><span class="pascal-big-cell">4</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="5"><div class="pascal-big-index">n = 5</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">5</span><span class="pascal-big-cell">10</span><span class="pascal-big-cell">10</span><span class="pascal-big-cell">5</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="6"><div class="pascal-big-index">n = 6</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">6</span><span class="pascal-big-cell">15</span><span class="pascal-big-cell">20</span><span class="pascal-big-cell">15</span><span class="pascal-big-cell">6</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="7"><div class="pascal-big-index">n = 7</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">7</span><span class="pascal-big-cell">21</span><span class="pascal-big-cell">35</span><span class="pascal-big-cell">35</span><span class="pascal-big-cell">21</span><span class="pascal-big-cell">7</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="8"><div class="pascal-big-index">n = 8</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">8</span><span class="pascal-big-cell">28</span><span class="pascal-big-cell">56</span><span class="pascal-big-cell">70</span><span class="pascal-big-cell">56</span><span class="pascal-big-cell">28</span><span class="pascal-big-cell">8</span><span class="pascal-big-cell">1</span></div></div>
+            <div class="pascal-big-row" data-row="9"><div class="pascal-big-index">n = 9</div><div class="pascal-big-values"><span class="pascal-big-cell">1</span><span class="pascal-big-cell">9</span><span class="pascal-big-cell">36</span><span class="pascal-big-cell">84</span><span class="pascal-big-cell">126</span><span class="pascal-big-cell">126</span><span class="pascal-big-cell">84</span><span class="pascal-big-cell">36</span><span class="pascal-big-cell">9</span><span class="pascal-big-cell">1</span></div></div>
+        </div>
+        <div class="pascal-modal-note">Each cell equals \(\binom{n}{r}\) where \(r\) is the position from the left, starting at \(0\).</div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script src="assets/slides-core.js"></script>
@@ -475,10 +926,93 @@
             { label: 'Pascal',   slideId: 'slide-2' },
             { label: 'Theorem',  slideId: 'slide-4' },
             { label: 'Terms',    slideId: 'slide-7' },
-            { label: 'Coeffs',   slideId: 'slide-8b' },
+            { label: 'Coeffs',   slideId: 'slide-9' },
             { label: 'Review',   slideId: 'slide-12' }
         ]
     });
+
+    (function initReferenceModals() {
+        // Render KaTeX inside the modals (they sit after the global auto-render pass).
+        document.querySelectorAll('.card-modal').forEach(modal => {
+            if (typeof renderMathInElement === 'function') {
+                renderMathInElement(modal, {
+                    delimiters: [
+                        { left: '\\[', right: '\\]', display: true  },
+                        { left: '\\(', right: '\\)', display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        });
+
+        // Inject Formulas + Pascal buttons onto every example/practice slide.
+        document.querySelectorAll('.slide').forEach(slide => {
+            if (!slide.querySelector('.example-label') && !slide.querySelector('.practice-label')) return;
+            const wrap = document.createElement('div');
+            wrap.className = 'ref-buttons';
+
+            const mk = (label, mark, modalId, aria) => {
+                const b = document.createElement('button');
+                b.className = 'ref-button';
+                b.type = 'button';
+                b.setAttribute('aria-label', aria);
+                b.setAttribute('aria-haspopup', 'dialog');
+                b.setAttribute('aria-controls', modalId);
+                b.dataset.modal = modalId;
+                b.innerHTML = `<span class="ref-button-mark" aria-hidden="true">${mark}</span><span>${label}</span>`;
+                return b;
+            };
+
+            wrap.appendChild(mk('Pascal', '△', 'modal-pascal-reference', 'Open Pascal\'s Triangle reference'));
+            wrap.appendChild(mk('Formulas', 'fx', 'modal-formula-reference', 'Open binomial theorem formulas'));
+            slide.appendChild(wrap);
+        });
+
+        const openModal = (id) => {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.hidden = false;
+            modal.querySelector('.card-modal-close')?.focus();
+        };
+        const closeModal = (modal) => { modal.hidden = true; };
+
+        document.querySelectorAll('.ref-button').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.stopPropagation();
+                openModal(btn.dataset.modal);
+            });
+            btn.addEventListener('keydown', e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openModal(btn.dataset.modal);
+                }
+            });
+        });
+
+        document.querySelectorAll('.card-modal').forEach(modal => {
+            modal.addEventListener('click', e => {
+                e.stopPropagation();
+                if (e.target === modal || e.target.classList.contains('card-modal-close')) {
+                    closeModal(modal);
+                }
+            });
+            modal.addEventListener('keydown', e => {
+                e.stopPropagation();
+                if (e.key === 'Escape') closeModal(modal);
+            });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                const open = document.querySelectorAll('.card-modal:not([hidden])');
+                if (open.length) {
+                    open.forEach(m => m.hidden = true);
+                    e.stopPropagation();
+                }
+            }
+        }, true);
+    })();
 </script>
 </body>
 </html>

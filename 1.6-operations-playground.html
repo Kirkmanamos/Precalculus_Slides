@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.6 Function Operations Playground</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 48px rgba(15, 23, 42, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fafc;
+            background-size: 28px 28px;
+        }
+
+        button,
+        select,
+        input {
+            font: inherit;
+        }
+
+        .app {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: minmax(250px, 0.9fr) minmax(430px, 1.55fr) minmax(290px, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+
+        .panel {
+            min-width: 0;
+            min-height: 0;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(219, 234, 254, 0.95);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        .controls,
+        .inspector {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .brand,
+        .inspector-head {
+            padding: 18px 18px 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .section-label {
+            color: var(--teal);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1,
+        h2,
+        p {
+            margin: 0;
+        }
+
+        h1 {
+            color: var(--navy);
+            font-size: clamp(1.25rem, 2vw, 1.85rem);
+            line-height: 1.05;
+        }
+
+        .brand p,
+        .inspector-head p {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 0.86rem;
+            line-height: 1.25;
+        }
+
+        .control-scroll,
+        .readout-scroll {
+            overflow: auto;
+            padding: 14px;
+        }
+
+        .control-group,
+        .readout {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .control-group:first-child,
+        .readout:first-child {
+            border-top: 0;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        .group-title,
+        .readout-title {
+            color: #334155;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .select-row {
+            display: grid;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        select {
+            width: 100%;
+            min-height: 38px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: white;
+            color: var(--ink);
+            padding: 7px 10px;
+            font-weight: 700;
+        }
+
+        .preset-grid,
+        .operation-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .preset-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .operation-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .preset-btn,
+        .operation-btn {
+            min-height: 40px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: #334155;
+            font-weight: 850;
+            cursor: pointer;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+        }
+
+        .preset-btn {
+            text-align: left;
+            padding: 8px 10px;
+        }
+
+        .preset-btn:hover,
+        .operation-btn:hover {
+            transform: translateY(-1px);
+            border-color: var(--teal);
+        }
+
+        .preset-btn.active,
+        .operation-btn.active {
+            color: white;
+            border-color: var(--navy);
+            background: var(--navy);
+        }
+
+        .slider-row {
+            display: grid;
+            gap: 8px;
+        }
+
+        .slider-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        output {
+            color: var(--teal);
+            font-weight: 900;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--teal);
+        }
+
+        .stage {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+        }
+
+        .equation-strip {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            background: rgba(248, 250, 252, 0.92);
+        }
+
+        .equation-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .equation-title h2 {
+            color: var(--navy);
+            font-size: 1rem;
+        }
+
+        .pill-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .pill {
+            border-radius: 999px;
+            padding: 3px 10px;
+            background: var(--soft-teal);
+            color: #0f766e;
+            font-size: 0.72rem;
+            font-weight: 850;
+        }
+
+        .pill.orange {
+            background: var(--soft-orange);
+            color: var(--orange);
+        }
+
+        .equation-box {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: white;
+            color: var(--navy);
+            padding: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        .graph-wrap {
+            min-height: 0;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-svg {
+            width: min(100%, 760px);
+            height: min(100%, 620px);
+            min-height: 420px;
+            display: block;
+        }
+
+        .grid-line {
+            stroke: #e2e8f0;
+            stroke-width: 1;
+        }
+
+        .grid-major {
+            stroke: #cbd5e1;
+            stroke-width: 1.2;
+        }
+
+        .axis {
+            stroke: #475569;
+            stroke-width: 2;
+        }
+
+        .axis-label,
+        .tick-label {
+            fill: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .f-path,
+        .g-path {
+            fill: none;
+            stroke-width: 2.6;
+            stroke-dasharray: 8 7;
+            opacity: 0.75;
+        }
+
+        .f-path {
+            stroke: var(--teal);
+        }
+
+        .g-path {
+            stroke: var(--orange);
+        }
+
+        .result-path {
+            fill: none;
+            stroke: var(--blue);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .eval-line {
+            stroke: #94a3b8;
+            stroke-width: 1.6;
+            stroke-dasharray: 5 5;
+        }
+
+        .eval-point {
+            fill: var(--blue);
+            stroke: white;
+            stroke-width: 2.4;
+        }
+
+        .input-point {
+            fill: white;
+            stroke-width: 2.5;
+        }
+
+        .input-point.f {
+            stroke: var(--teal);
+        }
+
+        .input-point.g {
+            stroke: var(--orange);
+        }
+
+        .undefined-band {
+            fill: rgba(220, 38, 38, 0.07);
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .domain-box,
+        .value-box {
+            border-radius: 8px;
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+        }
+
+        .label {
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .value {
+            color: var(--navy);
+            font-weight: 850;
+            min-height: 26px;
+        }
+
+        .status-line {
+            margin-top: 8px;
+            border-radius: 8px;
+            padding: 9px 10px;
+            background: var(--soft-green);
+            color: #166534;
+            font-size: 0.86rem;
+            font-weight: 750;
+            line-height: 1.25;
+        }
+
+        .status-line.bad {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .operation-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .operation-table th,
+        .operation-table td {
+            border: 1px solid #e2e8f0;
+            padding: 7px 6px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .operation-table th {
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 900;
+        }
+
+        .operation-table td {
+            background: white;
+        }
+
+        .operation-table td.result-cell {
+            background: var(--soft-blue);
+            color: var(--navy);
+            font-weight: 850;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .swatch {
+            width: 22px;
+            height: 3px;
+            border-radius: 999px;
+            background: var(--blue);
+        }
+
+        .swatch.f {
+            background: repeating-linear-gradient(90deg, var(--teal) 0 8px, transparent 8px 14px);
+        }
+
+        .swatch.g {
+            background: repeating-linear-gradient(90deg, var(--orange) 0 8px, transparent 8px 14px);
+        }
+
+        .math-note {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.25;
+        }
+
+        @media (max-width: 1100px) {
+            .app {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .stage {
+                min-height: 680px;
+            }
+
+            .graph-svg {
+                min-height: 460px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app {
+                padding: 10px;
+            }
+
+            .operation-grid,
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .equation-title {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="app" aria-label="Function Operations Playground">
+        <section class="panel controls" aria-label="Controls">
+            <div class="brand">
+                <div class="section-label">Section 1.6</div>
+                <h1>Function Operations Playground</h1>
+                <p>Build \(f\), \(g\), arithmetic operations, quotients, and compositions with live domain checks.</p>
+            </div>
+            <div class="control-scroll">
+                <div class="control-group">
+                    <div class="group-title">Quick Setups</div>
+                    <div class="preset-grid" id="presetGrid"></div>
+                </div>
+
+                <div class="control-group">
+                    <div class="group-title">Choose Functions</div>
+                    <div class="select-row">
+                        <label for="fSelect">Function f</label>
+                        <select id="fSelect"></select>
+                    </div>
+                    <div class="select-row">
+                        <label for="gSelect">Function g</label>
+                        <select id="gSelect"></select>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="group-title">Operation</div>
+                    <div class="operation-grid" id="operationGrid"></div>
+                </div>
+
+                <div class="control-group">
+                    <div class="group-title">Evaluate</div>
+                    <div class="slider-row">
+                        <div class="slider-head">
+                            <label for="xInput">Input x</label>
+                            <output id="xOutput">1</output>
+                        </div>
+                        <input id="xInput" type="range" min="-6" max="6" step="1" value="1">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel stage" aria-label="Graph workspace">
+            <div class="equation-strip">
+                <div class="equation-title">
+                    <h2>Live Operation</h2>
+                    <div class="pill-row">
+                        <span class="pill" id="fPill">f</span>
+                        <span class="pill orange" id="gPill">g</span>
+                    </div>
+                </div>
+                <div class="equation-box" id="equationBox" aria-live="polite"></div>
+            </div>
+            <div class="graph-wrap">
+                <svg class="graph-svg" id="graphSvg" viewBox="0 0 720 620" role="img" aria-labelledby="graphTitle graphDesc">
+                    <title id="graphTitle">Function operation graph</title>
+                    <desc id="graphDesc">Dashed curves show f and g. The solid curve shows the selected operation.</desc>
+                </svg>
+            </div>
+        </section>
+
+        <aside class="panel inspector" aria-label="Operation details">
+            <div class="inspector-head">
+                <div class="section-label">Inspector</div>
+                <h2>Domain and Values</h2>
+                <p>Use the table to compare outputs at nearby integer inputs.</p>
+            </div>
+            <div class="readout-scroll">
+                <div class="readout">
+                    <div class="readout-title">Domains</div>
+                    <div class="domain-grid">
+                        <div class="domain-box">
+                            <div class="label">Domain of f</div>
+                            <div class="value" id="fDomain"></div>
+                        </div>
+                        <div class="domain-box">
+                            <div class="label">Domain of g</div>
+                            <div class="value" id="gDomain"></div>
+                        </div>
+                    </div>
+                    <div class="status-line" id="domainStatus"></div>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-title">At Selected x</div>
+                    <div class="value-box">
+                        <div class="label">Exact setup</div>
+                        <div class="value" id="valueBox"></div>
+                    </div>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-title">Nearby Inputs</div>
+                    <table class="operation-table">
+                        <thead>
+                            <tr>
+                                <th>\(x\)</th>
+                                <th>\(f(x)\)</th>
+                                <th>\(g(x)\)</th>
+                                <th>Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableRows"></tbody>
+                    </table>
+                </div>
+
+                <div class="readout">
+                    <div class="readout-title">Graph Legend</div>
+                    <div class="legend">
+                        <span class="legend-item"><span class="swatch f"></span>\(f(x)\)</span>
+                        <span class="legend-item"><span class="swatch g"></span>\(g(x)\)</span>
+                        <span class="legend-item"><span class="swatch"></span>operation</span>
+                    </div>
+                    <p class="math-note" style="margin-top: 8px;">For quotients, the graph breaks where the denominator is \(0\). For compositions, the inner output must be allowed by the outer function.</p>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script>
+        const wrap = arg => arg === "x" ? "x" : `\\left(${arg}\\right)`;
+
+        function formatNumber(value) {
+            const rounded = Math.round(value * 1000000) / 1000000;
+            if (Math.abs(rounded) < 1e-9) return "0";
+            if (Number.isInteger(rounded)) return String(rounded);
+            return rounded.toFixed(4).replace(/0+$/, "").replace(/\.$/, "");
+        }
+
+        function sqrtTex(n) {
+            if (n < 0) return "\\text{undefined}";
+            const root = Math.sqrt(n);
+            if (Number.isInteger(root)) return String(root);
+            return `\\sqrt{${n}}`;
+        }
+
+        const functions = {
+            lin23: {
+                name: "Linear: 2x+3",
+                shortName: "2x+3",
+                tex: "2x+3",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => 2 * x + 3,
+                expr: arg => `2${wrap(arg)} + 3`,
+                valueTex: x => formatNumber(2 * x + 3)
+            },
+            linM3: {
+                name: "Linear: x-3",
+                shortName: "x-3",
+                tex: "x-3",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => x - 3,
+                expr: arg => `${wrap(arg)} - 3`,
+                valueTex: x => formatNumber(x - 3)
+            },
+            linM4: {
+                name: "Linear: x-4",
+                shortName: "x-4",
+                tex: "x-4",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => x - 4,
+                expr: arg => `${wrap(arg)} - 4`,
+                valueTex: x => formatNumber(x - 4)
+            },
+            quadM1: {
+                name: "Quadratic: x^2-1",
+                shortName: "x^2-1",
+                tex: "x^2-1",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => x * x - 1,
+                expr: arg => `${wrap(arg)}^2 - 1`,
+                valueTex: x => formatNumber(x * x - 1)
+            },
+            quad2M1: {
+                name: "Quadratic: 2x^2-1",
+                shortName: "2x^2-1",
+                tex: "2x^2-1",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => 2 * x * x - 1,
+                expr: arg => `2${wrap(arg)}^2 - 1`,
+                valueTex: x => formatNumber(2 * x * x - 1)
+            },
+            polyA: {
+                name: "Polynomial: 3x^2+7x",
+                shortName: "3x^2+7x",
+                tex: "3x^2+7x",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => 3 * x * x + 7 * x,
+                expr: arg => `3${wrap(arg)}^2 + 7${wrap(arg)}`,
+                valueTex: x => formatNumber(3 * x * x + 7 * x)
+            },
+            polyB: {
+                name: "Polynomial: 2x^2-x-1",
+                shortName: "2x^2-x-1",
+                tex: "2x^2-x-1",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => 2 * x * x - x - 1,
+                expr: arg => `2${wrap(arg)}^2 - ${wrap(arg)} - 1`,
+                valueTex: x => formatNumber(2 * x * x - x - 1)
+            },
+            polyC: {
+                name: "Polynomial: 3x^2-2x+1",
+                shortName: "3x^2-2x+1",
+                tex: "3x^2-2x+1",
+                domainTex: "\\mathbb{R}",
+                domain: () => true,
+                fn: x => 3 * x * x - 2 * x + 1,
+                expr: arg => `3${wrap(arg)}^2 - 2${wrap(arg)} + 1`,
+                valueTex: x => formatNumber(3 * x * x - 2 * x + 1)
+            },
+            sqrtX: {
+                name: "Square root: sqrt(x)",
+                shortName: "\\sqrt{x}",
+                tex: "\\sqrt{x}",
+                domainTex: "[0,\\infty)",
+                domain: x => x >= -1e-9,
+                fn: x => Math.sqrt(x),
+                expr: arg => `\\sqrt{${arg}}`,
+                valueTex: x => sqrtTex(x)
+            },
+            semicircle: {
+                name: "Semicircle: sqrt(4-x^2)",
+                shortName: "\\sqrt{4-x^2}",
+                tex: "\\sqrt{4-x^2}",
+                domainTex: "[-2,2]",
+                domain: x => 4 - x * x >= -1e-9,
+                fn: x => Math.sqrt(Math.max(0, 4 - x * x)),
+                expr: arg => `\\sqrt{4 - ${wrap(arg)}^2}`,
+                valueTex: x => sqrtTex(4 - x * x)
+            }
+        };
+
+        const operations = {
+            add: {
+                label: "\\(f+g\\)",
+                title: "Sum",
+                equation: (f, g) => `(f+g)(x) = ${f.expr("x")} + ${g.expr("x")}`,
+                value: (fx, gx) => fx + gx,
+                valueTex: (fTex, gTex) => `${fTex} + ${gTex}`,
+                valid: (f, g, x, fx, gx) => fx !== null && gx !== null,
+                status: "Both functions must be defined."
+            },
+            subtract: {
+                label: "\\(f-g\\)",
+                title: "Difference",
+                equation: (f, g) => `(f-g)(x) = ${f.expr("x")} - \\left(${g.expr("x")}\\right)`,
+                value: (fx, gx) => fx - gx,
+                valueTex: (fTex, gTex) => `${fTex} - \\left(${gTex}\\right)`,
+                valid: (f, g, x, fx, gx) => fx !== null && gx !== null,
+                status: "Both functions must be defined."
+            },
+            multiply: {
+                label: "\\(f\\cdot g\\)",
+                title: "Product",
+                equation: (f, g) => `(f\\cdot g)(x) = \\left(${f.expr("x")}\\right)\\left(${g.expr("x")}\\right)`,
+                value: (fx, gx) => fx * gx,
+                valueTex: (fTex, gTex) => `\\left(${fTex}\\right)\\left(${gTex}\\right)`,
+                valid: (f, g, x, fx, gx) => fx !== null && gx !== null,
+                status: "Both functions must be defined."
+            },
+            quotient: {
+                label: "\\(f/g\\)",
+                title: "Quotient",
+                equation: (f, g) => `\\left(\\dfrac{f}{g}\\right)(x) = \\dfrac{${f.expr("x")}}{${g.expr("x")}}`,
+                value: (fx, gx) => fx / gx,
+                valueTex: (fTex, gTex) => `\\dfrac{${fTex}}{${gTex}}`,
+                valid: (f, g, x, fx, gx) => fx !== null && gx !== null && Math.abs(gx) > 1e-9,
+                status: "Both functions must be defined, and g(x) cannot equal 0."
+            },
+            fog: {
+                label: "\\(f\\circ g\\)",
+                title: "f composed with g",
+                equation: (f, g) => `(f\\circ g)(x) = f\\left(g(x)\\right) = ${f.expr(g.expr("x"))}`,
+                value: (fx, gx, f, g, x) => f.fn(gx),
+                valueTex: (fTex, gTex, f) => f.expr(gTex),
+                valid: (f, g, x, fx, gx) => gx !== null && f.domain(gx),
+                status: "The input must work in g, then g(x) must work in f."
+            },
+            gof: {
+                label: "\\(g\\circ f\\)",
+                title: "g composed with f",
+                equation: (f, g) => `(g\\circ f)(x) = g\\left(f(x)\\right) = ${g.expr(f.expr("x"))}`,
+                value: (fx, gx, f, g, x) => g.fn(fx),
+                valueTex: (fTex, gTex, f, g) => g.expr(fTex),
+                valid: (f, g, x, fx, gx) => fx !== null && g.domain(fx),
+                status: "The input must work in f, then f(x) must work in g."
+            }
+        };
+
+        const presets = [
+            {
+                id: "composition",
+                label: "Composition demo",
+                f: "lin23",
+                g: "quadM1",
+                operation: "fog",
+                x: 1
+            },
+            {
+                id: "difference",
+                label: "Difference example",
+                f: "polyA",
+                g: "polyB",
+                operation: "subtract",
+                x: 2
+            },
+            {
+                id: "quotient",
+                label: "Quotient restriction",
+                f: "polyC",
+                g: "linM4",
+                operation: "quotient",
+                x: 4
+            },
+            {
+                id: "radical",
+                label: "Radical domains",
+                f: "sqrtX",
+                g: "semicircle",
+                operation: "quotient",
+                x: 1
+            }
+        ];
+
+        const state = {
+            f: "lin23",
+            g: "quadM1",
+            operation: "fog",
+            x: 1,
+            preset: "composition"
+        };
+
+        const graph = {
+            xmin: -6,
+            xmax: 6,
+            ymin: -10,
+            ymax: 10,
+            left: 62,
+            top: 38,
+            width: 590,
+            height: 520
+        };
+
+        const els = {
+            presetGrid: document.getElementById("presetGrid"),
+            operationGrid: document.getElementById("operationGrid"),
+            fSelect: document.getElementById("fSelect"),
+            gSelect: document.getElementById("gSelect"),
+            xInput: document.getElementById("xInput"),
+            xOutput: document.getElementById("xOutput"),
+            equationBox: document.getElementById("equationBox"),
+            graphSvg: document.getElementById("graphSvg"),
+            fPill: document.getElementById("fPill"),
+            gPill: document.getElementById("gPill"),
+            fDomain: document.getElementById("fDomain"),
+            gDomain: document.getElementById("gDomain"),
+            domainStatus: document.getElementById("domainStatus"),
+            valueBox: document.getElementById("valueBox"),
+            tableRows: document.getElementById("tableRows")
+        };
+
+        function sx(x) {
+            return graph.left + ((x - graph.xmin) / (graph.xmax - graph.xmin)) * graph.width;
+        }
+
+        function sy(y) {
+            return graph.top + ((graph.ymax - y) / (graph.ymax - graph.ymin)) * graph.height;
+        }
+
+        function evaluateFunction(fn, x) {
+            if (!fn.domain(x)) return null;
+            const y = fn.fn(x);
+            return Number.isFinite(y) ? y : null;
+        }
+
+        function currentOperationValue(x) {
+            const f = functions[state.f];
+            const g = functions[state.g];
+            const op = operations[state.operation];
+            const fx = evaluateFunction(f, x);
+            const gx = evaluateFunction(g, x);
+            if (!op.valid(f, g, x, fx, gx)) return null;
+            const y = op.value(fx, gx, f, g, x);
+            return Number.isFinite(y) ? y : null;
+        }
+
+        function operationValueTex(x) {
+            const f = functions[state.f];
+            const g = functions[state.g];
+            const op = operations[state.operation];
+            const fx = evaluateFunction(f, x);
+            const gx = evaluateFunction(g, x);
+            const fTex = fx === null ? "\\text{undefined}" : f.valueTex(x);
+            const gTex = gx === null ? "\\text{undefined}" : g.valueTex(x);
+            if (!op.valid(f, g, x, fx, gx)) return "\\text{undefined}";
+            return op.valueTex(fTex, gTex, f, g);
+        }
+
+        function operationNameTex() {
+            if (state.operation === "add") return "f+g";
+            if (state.operation === "subtract") return "f-g";
+            if (state.operation === "multiply") return "f\\cdot g";
+            if (state.operation === "quotient") return "\\dfrac{f}{g}";
+            if (state.operation === "fog") return "f\\circ g";
+            return "g\\circ f";
+        }
+
+        function renderTex(el, tex, displayMode = false) {
+            if (window.katex) {
+                katex.render(tex, el, { displayMode, throwOnError: false });
+            } else {
+                el.textContent = tex;
+            }
+        }
+
+        function renderInlineMath(el) {
+            if (window.renderMathInElement) {
+                renderMathInElement(el, {
+                    delimiters: [
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "\\(", right: "\\)", display: false }
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        function gridMarkup() {
+            let html = `
+                <title id="graphTitle">Function operation graph</title>
+                <desc id="graphDesc">Dashed curves show f and g. The solid curve shows the selected operation.</desc>
+                <defs><clipPath id="plotClip"><rect x="${graph.left}" y="${graph.top}" width="${graph.width}" height="${graph.height}" rx="6"></rect></clipPath></defs>
+                <rect x="${graph.left}" y="${graph.top}" width="${graph.width}" height="${graph.height}" rx="6" fill="#ffffff"></rect>
+            `;
+
+            for (let x = graph.xmin; x <= graph.xmax; x++) {
+                const cls = x === 0 || x % 3 === 0 ? "grid-major" : "grid-line";
+                html += `<line class="${cls}" x1="${sx(x)}" y1="${graph.top}" x2="${sx(x)}" y2="${graph.top + graph.height}"></line>`;
+            }
+            for (let y = graph.ymin; y <= graph.ymax; y++) {
+                const cls = y === 0 || y % 5 === 0 ? "grid-major" : "grid-line";
+                html += `<line class="${cls}" x1="${graph.left}" y1="${sy(y)}" x2="${graph.left + graph.width}" y2="${sy(y)}"></line>`;
+            }
+
+            html += `<line class="axis" x1="${sx(graph.xmin)}" y1="${sy(0)}" x2="${sx(graph.xmax)}" y2="${sy(0)}"></line>`;
+            html += `<line class="axis" x1="${sx(0)}" y1="${sy(graph.ymin)}" x2="${sx(0)}" y2="${sy(graph.ymax)}"></line>`;
+            html += `<text class="axis-label" x="${sx(graph.xmax) - 12}" y="${sy(0) - 8}">x</text>`;
+            html += `<text class="axis-label" x="${sx(0) + 10}" y="${sy(graph.ymax) + 18}">y</text>`;
+
+            [-6, -3, 3, 6].forEach(t => {
+                html += `<text class="tick-label" x="${sx(t)}" y="${sy(0) + 18}" text-anchor="middle">${t}</text>`;
+            });
+            [-10, -5, 5, 10].forEach(t => {
+                html += `<text class="tick-label" x="${sx(0) - 10}" y="${sy(t) + 4}" text-anchor="end">${t}</text>`;
+            });
+            return html;
+        }
+
+        function pathFor(fn) {
+            let d = "";
+            let drawing = false;
+            let previousY = null;
+            const samples = 780;
+            for (let i = 0; i <= samples; i++) {
+                const x = graph.xmin + (i / samples) * (graph.xmax - graph.xmin);
+                const y = fn(x);
+                if (y === null || Math.abs(y) > 30 || (previousY !== null && Math.abs(y - previousY) > 18)) {
+                    drawing = false;
+                    previousY = null;
+                    continue;
+                }
+                d += `${drawing ? "L" : "M"} ${sx(x).toFixed(2)} ${sy(y).toFixed(2)} `;
+                drawing = true;
+                previousY = y;
+            }
+            return d.trim();
+        }
+
+        function renderGraph() {
+            const f = functions[state.f];
+            const g = functions[state.g];
+            const x = state.x;
+            const result = currentOperationValue(x);
+            let html = gridMarkup();
+
+            html += `<g clip-path="url(#plotClip)">`;
+            if (state.operation === "quotient") {
+                for (let t = Math.ceil(graph.xmin); t <= Math.floor(graph.xmax); t++) {
+                    const gv = evaluateFunction(g, t);
+                    if (gv !== null && Math.abs(gv) < 1e-9) {
+                        html += `<rect class="undefined-band" x="${sx(t) - 4}" y="${graph.top}" width="8" height="${graph.height}"></rect>`;
+                    }
+                }
+            }
+            html += `<path class="f-path" d="${pathFor(t => evaluateFunction(f, t))}"></path>`;
+            html += `<path class="g-path" d="${pathFor(t => evaluateFunction(g, t))}"></path>`;
+            html += `<path class="result-path" d="${pathFor(currentOperationValue)}"></path>`;
+            html += `</g>`;
+
+            html += `<line class="eval-line" x1="${sx(x)}" y1="${graph.top}" x2="${sx(x)}" y2="${graph.top + graph.height}"></line>`;
+            const fx = evaluateFunction(f, x);
+            const gx = evaluateFunction(g, x);
+            if (fx !== null && fx >= graph.ymin && fx <= graph.ymax) {
+                html += `<circle class="input-point f" cx="${sx(x)}" cy="${sy(fx)}" r="5"></circle>`;
+            }
+            if (gx !== null && gx >= graph.ymin && gx <= graph.ymax) {
+                html += `<circle class="input-point g" cx="${sx(x)}" cy="${sy(gx)}" r="5"></circle>`;
+            }
+            if (result !== null && result >= graph.ymin && result <= graph.ymax) {
+                html += `<circle class="eval-point" cx="${sx(x)}" cy="${sy(result)}" r="6"></circle>`;
+            }
+            els.graphSvg.innerHTML = html;
+        }
+
+        function currentDomainText() {
+            const op = operations[state.operation];
+            if (state.operation === "quotient") {
+                return `Domain rule: \\(D_f \\cap D_g\\), with \\(g(x) \\ne 0\\). ${op.status}`;
+            }
+            if (state.operation === "fog") {
+                return "Domain rule: \\(x\\in D_g\\) and \\(g(x)\\in D_f\\). The inner function runs first.";
+            }
+            if (state.operation === "gof") {
+                return "Domain rule: \\(x\\in D_f\\) and \\(f(x)\\in D_g\\). The inner function runs first.";
+            }
+            return `Domain rule: \\(D_f \\cap D_g\\). ${op.status}`;
+        }
+
+        function renderReadouts() {
+            const f = functions[state.f];
+            const g = functions[state.g];
+            const op = operations[state.operation];
+            const x = state.x;
+            const fx = evaluateFunction(f, x);
+            const gx = evaluateFunction(g, x);
+            const valid = op.valid(f, g, x, fx, gx);
+            const valueTex = operationValueTex(x);
+
+            els.fPill.innerHTML = `\\(f(x)=${f.tex}\\)`;
+            els.gPill.innerHTML = `\\(g(x)=${g.tex}\\)`;
+            renderInlineMath(els.fPill);
+            renderInlineMath(els.gPill);
+            renderTex(els.equationBox, op.equation(f, g), true);
+            renderTex(els.fDomain, f.domainTex);
+            renderTex(els.gDomain, g.domainTex);
+
+            els.domainStatus.classList.toggle("bad", !valid);
+            els.domainStatus.innerHTML = `${currentDomainText()} Current input: \\(x=${x}\\) is ${valid ? "defined" : "undefined"} for this operation.`;
+            renderInlineMath(els.domainStatus);
+
+            const valueStatement = valid
+                ? `\\left(${operationNameTex()}\\right)\\left(${x}\\right) = ${valueTex}`
+                : `\\left(${operationNameTex()}\\right)\\left(${x}\\right) = \\text{undefined}`;
+            renderTex(els.valueBox, valueStatement, true);
+        }
+
+        function tableXs(center) {
+            const values = [];
+            for (let x = center - 2; x <= center + 2; x++) {
+                if (x >= graph.xmin && x <= graph.xmax) values.push(x);
+            }
+            return values;
+        }
+
+        function renderTable() {
+            const f = functions[state.f];
+            const g = functions[state.g];
+            els.tableRows.innerHTML = tableXs(state.x).map(x => {
+                const fx = evaluateFunction(f, x);
+                const gx = evaluateFunction(g, x);
+                const fTex = fx === null ? "\\text{undefined}" : f.valueTex(x);
+                const gTex = gx === null ? "\\text{undefined}" : g.valueTex(x);
+                const resultTex = operationValueTex(x);
+                return `
+                    <tr>
+                        <td>\\(${x}\\)</td>
+                        <td>\\(${fTex}\\)</td>
+                        <td>\\(${gTex}\\)</td>
+                        <td class="result-cell">\\(${resultTex}\\)</td>
+                    </tr>
+                `;
+            }).join("");
+            renderInlineMath(els.tableRows);
+        }
+
+        function syncControls() {
+            els.fSelect.value = state.f;
+            els.gSelect.value = state.g;
+            els.xInput.value = state.x;
+            els.xOutput.textContent = state.x;
+            Array.from(els.operationGrid.querySelectorAll("button")).forEach(button => {
+                button.classList.toggle("active", button.dataset.operation === state.operation);
+                button.setAttribute("aria-pressed", String(button.dataset.operation === state.operation));
+            });
+            Array.from(els.presetGrid.querySelectorAll("button")).forEach(button => {
+                button.classList.toggle("active", button.dataset.preset === state.preset);
+                button.setAttribute("aria-pressed", String(button.dataset.preset === state.preset));
+            });
+        }
+
+        function update() {
+            syncControls();
+            renderGraph();
+            renderReadouts();
+            renderTable();
+        }
+
+        function setPreset(id) {
+            const preset = presets.find(item => item.id === id);
+            if (!preset) return;
+            Object.assign(state, {
+                f: preset.f,
+                g: preset.g,
+                operation: preset.operation,
+                x: preset.x,
+                preset: id
+            });
+            update();
+        }
+
+        function buildControls() {
+            els.fSelect.innerHTML = Object.entries(functions).map(([key, fn]) => `<option value="${key}">${fn.name}</option>`).join("");
+            els.gSelect.innerHTML = Object.entries(functions).map(([key, fn]) => `<option value="${key}">${fn.name}</option>`).join("");
+            els.operationGrid.innerHTML = Object.entries(operations).map(([key, op]) => `
+                <button class="operation-btn" type="button" data-operation="${key}" aria-pressed="false">${op.label}</button>
+            `).join("");
+            els.presetGrid.innerHTML = presets.map(preset => `
+                <button class="preset-btn" type="button" data-preset="${preset.id}" aria-pressed="false">${preset.label}</button>
+            `).join("");
+
+            els.operationGrid.querySelectorAll("button").forEach(button => {
+                button.addEventListener("click", () => {
+                    state.operation = button.dataset.operation;
+                    state.preset = "";
+                    update();
+                });
+            });
+            els.presetGrid.querySelectorAll("button").forEach(button => {
+                button.addEventListener("click", () => setPreset(button.dataset.preset));
+            });
+            renderInlineMath(els.operationGrid);
+        }
+
+        function bindControls() {
+            els.fSelect.addEventListener("change", () => {
+                state.f = els.fSelect.value;
+                state.preset = "";
+                update();
+            });
+            els.gSelect.addEventListener("change", () => {
+                state.g = els.gSelect.value;
+                state.preset = "";
+                update();
+            });
+            els.xInput.addEventListener("input", () => {
+                state.x = Number(els.xInput.value);
+                update();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            buildControls();
+            bindControls();
+            renderInlineMath(document.body);
+            update();
+        });
+    </script>
+</body>
+</html>

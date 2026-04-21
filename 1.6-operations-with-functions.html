@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1.6 - Operations with Functions</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <link rel="stylesheet" href="assets/slides-core.css">
     <style>
@@ -17,6 +17,32 @@
         .compose-table th { background: #f1f5f9; color: #475569; font-weight: 700; }
         .compose-table td.name { background: #f8fafc; font-weight: 600; color: #334155; }
         .compose-table td.say { font-style: italic; color: #475569; }
+        .playground-embed {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .playground-frame-wrap {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            border: 2px solid #dbeafe;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+        }
+        .playground-frame {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: 0;
+            background: white;
+        }
+        .playground-slide .slide-body.top-layout {
+            overflow: hidden;
+            padding-bottom: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -258,6 +284,21 @@
     </div>
 </section>
 
+<!-- INTERACTIVE PLAYGROUND -->
+<section class="slide grid-bg playground-slide" id="slide-playground" data-steps="0">
+    <div class="slide-header">
+        <div class="concept-label">Interactive</div>
+        <div class="slide-title">Function Operations Playground</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="playground-embed">
+            <div class="playground-frame-wrap">
+                <iframe class="playground-frame" src="1.6-operations-playground.html" title="1.6 Function Operations Playground" loading="eager"></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- SLIDE 8 — Example 5: numerical composition -->
 <section class="slide grid-bg" id="slide-8" data-steps="6">
     <div class="slide-header">
@@ -399,6 +440,7 @@
             { label: 'Operations',  slideId: 'slide-1' },
             { label: 'Arithmetic',  slideId: 'slide-3' },
             { label: 'Composition', slideId: 'slide-7' },
+            { label: 'Playground',  slideId: 'slide-playground' },
             { label: 'Decompose',   slideId: 'slide-10' },
             { label: 'Review',      slideId: 'slide-11' }
         ]
