@@ -127,6 +127,88 @@
         }
         #slide-2b .note-box { margin-top: 0.1rem; }
 
+        .intro-card-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.62rem;
+        }
+        .intro-card-grid .info-card {
+            padding: 0.6em 0.76em;
+        }
+        .intro-card-grid .card-title {
+            font-size: 0.52em;
+        }
+        .intro-card-grid .card-copy {
+            font-size: 0.72em;
+            line-height: 1.35;
+        }
+        .factor-strip {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.2rem 0.2rem;
+        }
+        .factor-box {
+            min-width: 4rem;
+            padding: 0.36em 0.7em;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 99, 235, 0.24);
+            background: var(--blue-light);
+            color: var(--navy);
+            font-size: 0.82em;
+            font-weight: 700;
+            text-align: center;
+        }
+        .factor-times {
+            color: #64748b;
+            font-size: 0.78em;
+            font-weight: 700;
+        }
+        .choice-table-shell {
+            padding: 0.42em 0.5em;
+        }
+        .choice-table-shell .data-table {
+            font-size: 0.64em;
+        }
+        .choice-table-shell .data-table th,
+        .choice-table-shell .data-table td {
+            padding: 0.42em 0.48em;
+        }
+        .choice-table-shell .choice-focus td {
+            background: var(--green-light);
+            color: #14532d;
+            font-weight: 700;
+        }
+        .choice-table-shell .choice-focus td:first-child {
+            color: var(--green-accent);
+        }
+        .combo-meaning-layout {
+            grid-template-columns: 1fr 1fr;
+            align-items: stretch;
+        }
+        .pair-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.42rem;
+            padding: 0.35rem 0.1rem 0.15rem;
+        }
+        .pair-chip {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 99, 235, 0.28);
+            background: var(--blue-light);
+            color: var(--blue-accent);
+            font-size: 0.82em;
+            font-weight: 700;
+        }
+        .combo-meaning-note {
+            margin-top: 0;
+        }
+
         .binomial-visual-wrap {
             overflow-x: auto;
             padding: 0.12rem 0 0.05rem;
@@ -190,6 +272,10 @@
             border-color: rgba(8, 145, 178, 0.28);
             color: var(--teal-accent);
             font-size: 0.6em;
+        }
+        .binomial-map.bridge-map {
+            grid-template-columns: 5.6rem repeat(4, minmax(4.8rem, 1fr));
+            min-width: 640px;
         }
         #slide-3 .step-box.visual-step {
             padding: 0.44em 0.72em;
@@ -385,6 +471,13 @@
             .pascal-big-cell { min-width: 1.7rem; font-size: 0.68em; }
             .binomial-map { min-width: 680px; }
             .binomial-cell { font-size: 0.62em; }
+            .intro-card-grid,
+            .combo-meaning-layout {
+                grid-template-columns: 1fr;
+            }
+            .pair-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
         }
     </style>
 </head>
@@ -398,6 +491,38 @@
     <div class="title-main">6.4 The Binomial Theorem</div>
     <div class="title-objective">Objective: Use Pascal&#x27;s Triangle, combinations, and the Binomial Theorem to expand expressions and find specific terms.</div>
     <div class="identity-chips"><span class="chip">Pascal&#x27;s Triangle</span><span class="chip">binomial coefficients</span><span class="chip">full expansions</span><span class="chip">specific terms</span><span class="chip">coefficients</span></div>
+</section>
+<section class="slide grid-bg" id="slide-0a">
+    <div class="slide-header">
+        <div class="concept-label">Warm-Up</div>
+        <div class="slide-title">What Happens When We Just Multiply It Out?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Before any formulas, expand two small powers of \((a+b)\) by hand and watch the coefficients appear.</div>
+        <div class="note-box navy">
+            <div class="note-title">Square: \((a+b)^2\)</div>
+            <div class="note-copy">\[(a+b)(a+b) = a^2 + ab + ab + b^2 = a^2 + \mathbf{2}ab + b^2\]</div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Cube: \((a+b)^3\)</div>
+            <div class="note-copy">\[(a+b)^3 = a^3 + \mathbf{3}a^2b + \mathbf{3}ab^2 + b^3\]</div>
+        </div>
+        <div class="cards-grid intro-card-grid">
+            <div class="info-card teal">
+                <div class="card-title">Coefficients</div>
+                <div class="card-copy">\(1, 2, 1\) for power \(2\); \(1, 3, 3, 1\) for power \(3\). Symmetric, with a \(1\) at each end.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Powers</div>
+                <div class="card-copy">Exponent on \(a\) decreases; exponent on \(b\) increases. Each term's exponents sum to the original power.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">The Problem</div>
+                <div class="card-copy">Expanding \((a+b)^4\), \((a+b)^5\), \((a+b)^{10}\) by hand gets painful fast. We need a shortcut.</div>
+            </div>
+        </div>
+        <div class="formula-note">Those coefficient patterns — \(1,2,1\) and \(1,3,3,1\) — are exactly what Pascal's Triangle stores.</div>
+    </div>
 </section>
 <section class="slide grid-bg" id="slide-1" data-steps="3">
             <div class="slide-header">
@@ -493,13 +618,13 @@
                                 <div class="pascal-row"><span class="pascal-index">n = 4</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">4</span><span class="pascal-cell">6</span><span class="pascal-cell">4</span><span class="pascal-cell">1</span></div></div>
                                 <div class="pascal-row"><span class="pascal-index">n = 5</span><div class="pascal-values"><span class="pascal-cell">1</span><span class="pascal-cell">5</span><span class="pascal-cell">10</span><span class="pascal-cell">10</span><span class="pascal-cell">5</span><span class="pascal-cell">1</span></div></div>
                             </div>
-                            <div class="diagram-caption">Row <strong>n</strong> gives the coefficients of \((a+b)^n\).</div>
+                            <div class="diagram-caption">Row <strong>n</strong> stores the combination counts \(\binom{n}{r}\), which become the coefficients of \((a+b)^n\).</div>
                         </div>
                     </div>
                     <div class="col stack">
                         <div class="info-card teal">
                             <div class="card-title">Combination Formula</div>
-                            <div class="card-copy">\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
+                            <div class="card-copy">\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\] This counts ways to choose \(r\) positions from \(n\) total positions.</div>
                         </div>
                         <div class="info-card green">
                             <div class="card-title">Calculator</div>
@@ -507,7 +632,7 @@
                         </div>
                         <div class="info-card orange">
                             <div class="card-title">Row 4 Example</div>
-                            <div class="card-copy">Row \(4\) gives \(1, 4, 6, 4, 1\), which are the coefficients of \((a+b)^4\).</div>
+                            <div class="card-copy">Row \(4\) is \(\binom{4}{0}\) through \(\binom{4}{4}\), so it gives \(1, 4, 6, 4, 1\).</div>
                         </div>
                     </div>
                 </div>
@@ -519,7 +644,7 @@
         <div class="slide-title">Pascal's Triangle \(=\) Combinations</div>
     </div>
     <div class="slide-body top-layout">
-        <div class="body-lead">Every number in Pascal's Triangle is a value of \(\binom{n}{r}\). Here is row \(4\) written both ways:</div>
+        <div class="body-lead">Pascal's Triangle is a precomputed table of combination values. Every number in row \(n\), position \(r\), is \(\binom{n}{r}\).</div>
         <div class="diagram-shell">
             <div class="diagram-title">Row \(4\) as Pascal Values and as Combinations</div>
             <div class="combo-stack">
@@ -551,8 +676,48 @@
             <div class="diagram-caption">Row \(n\), position \(r\) (counting from \(0\)) is exactly \(\binom{n}{r}\).</div>
         </div>
         <div class="note-box navy">
-            <div class="note-title">Proof by Computation — the \(r = 2\) Cell</div>
+            <div class="note-title">Proof by Computation - the \(r = 2\) Cell</div>
             <div class="note-copy">\[\binom{4}{2} = \dfrac{4!}{2!\,(4-2)!} = \dfrac{24}{2\cdot 2} = 6 \;\;\checkmark\]</div>
+        </div>
+    </div>
+</section>
+<section class="slide grid-bg" id="slide-2c">
+    <div class="slide-header">
+        <div class="concept-label">Bridge</div>
+        <div class="slide-title">Pascal's Row \(\times\) Power Pattern \(=\) Expansion</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Before Example 1, assemble an expansion you already know: \((a+b)^3 = a^3 + 3a^2b + 3ab^2 + b^3\).</div>
+        <div class="binomial-visual-wrap">
+            <div class="binomial-map bridge-map" role="table" aria-label="Pascal row 3 multiplied by the matching power pattern to rebuild (a+b)^3">
+                <div class="binomial-map-label">Term</div>
+                <div class="binomial-cell term-index">1st</div>
+                <div class="binomial-cell term-index">2nd</div>
+                <div class="binomial-cell term-index">3rd</div>
+                <div class="binomial-cell term-index">4th</div>
+
+                <div class="binomial-map-label">Pascal row 3</div>
+                <div class="binomial-cell coefficient">1</div>
+                <div class="binomial-cell coefficient">3</div>
+                <div class="binomial-cell coefficient">3</div>
+                <div class="binomial-cell coefficient">1</div>
+
+                <div class="binomial-map-label">Power pattern</div>
+                <div class="binomial-cell power-pattern">\(a^3b^0\)</div>
+                <div class="binomial-cell power-pattern">\(a^2b^1\)</div>
+                <div class="binomial-cell power-pattern">\(a^1b^2\)</div>
+                <div class="binomial-cell power-pattern">\(a^0b^3\)</div>
+
+                <div class="binomial-map-label">Term</div>
+                <div class="binomial-cell multiplication">\(a^3\)</div>
+                <div class="binomial-cell multiplication">\(3a^2b\)</div>
+                <div class="binomial-cell multiplication">\(3ab^2\)</div>
+                <div class="binomial-cell multiplication">\(b^3\)</div>
+            </div>
+        </div>
+        <div class="note-box green">
+            <div class="note-title">That's the Whole Move</div>
+            <div class="note-copy">Read Pascal's row, line it up with the power pattern, multiply straight down. Example 1 does the exact same thing for \((x+2)^4\) — just with \(a = x\) and \(b = 2\).</div>
         </div>
     </div>
 </section>
@@ -636,6 +801,101 @@
                 </div>
             </div>
         </section>
+<section class="slide grid-bg" id="slide-0b">
+    <div class="slide-header">
+        <div class="concept-label">Why It Works</div>
+        <div class="slide-title">Where Do the Coefficients Come From?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">In \((a+b)^4 = (a+b)(a+b)(a+b)(a+b)\), each term is built by picking \(a\) or \(b\) from each of the four factors. The coefficient counts how many different picks give the same power pattern.</div>
+        <div class="table-shell choice-table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>\(r\)</th>
+                        <th>Pick \(b\) From</th>
+                        <th>Power Pattern</th>
+                        <th>Number of Ways</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(0\)</td>
+                        <td>none of the \(4\) factors</td>
+                        <td>\(a^4b^0\)</td>
+                        <td>\(\binom{4}{0}=1\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(1\)</td>
+                        <td>\(1\) of the \(4\) factors</td>
+                        <td>\(a^3b^1\)</td>
+                        <td>\(\binom{4}{1}=4\)</td>
+                    </tr>
+                    <tr class="choice-focus">
+                        <td>\(2\)</td>
+                        <td>\(2\) of the \(4\) factors</td>
+                        <td>\(a^2b^2\)</td>
+                        <td>\(\binom{4}{2}=6\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(3\)</td>
+                        <td>\(3\) of the \(4\) factors</td>
+                        <td>\(a^1b^3\)</td>
+                        <td>\(\binom{4}{3}=4\)</td>
+                    </tr>
+                    <tr>
+                        <td>\(4\)</td>
+                        <td>all \(4\) factors</td>
+                        <td>\(a^0b^4\)</td>
+                        <td>\(\binom{4}{4}=1\)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="note-box green">
+            <div class="note-title">Coefficient Meaning</div>
+            <div class="note-copy">The middle coefficient \(6\) means there are \(6\) different ways to pick exactly \(2\) of the \(4\) factors to contribute the \(b\). That is why the middle term is \(6a^2b^2\) — and why Pascal's row \(4\) has a \(6\) in the middle.</div>
+        </div>
+    </div>
+</section>
+<section class="slide grid-bg" id="slide-0c">
+    <div class="slide-header">
+        <div class="concept-label">Why It Works</div>
+        <div class="slide-title">What Does \(\binom{n}{r}\) Count?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A combination \(\binom{n}{r}\) counts how many groups of \(r\) can be chosen from \(n\) total objects when order does not matter.</div>
+        <div class="two-col combo-meaning-layout">
+            <div class="col stack">
+                <div class="formula-row teal">
+                    <div class="fn-label">choose</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\binom{n}{r} = \dfrac{n!}{r!(n-r)!}\]</div>
+                    </div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Why Divide?</div>
+                    <div class="card-copy">The factorials remove repeated orders. Picking factors \(1\) and \(3\) is the same group as picking \(3\) and \(1\).</div>
+                </div>
+                <div class="formula-note combo-meaning-note">For binomial expansions, \(n\) is the power and \(r\) is the exponent on the second term.</div>
+            </div>
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Example: Pick \(2\) of \(4\) Factors</div>
+                    <div class="pair-grid" aria-label="The six pairs chosen from four factor positions">
+                        <div class="pair-chip">\(\{1,2\}\)</div>
+                        <div class="pair-chip">\(\{1,3\}\)</div>
+                        <div class="pair-chip">\(\{1,4\}\)</div>
+                        <div class="pair-chip">\(\{2,3\}\)</div>
+                        <div class="pair-chip">\(\{2,4\}\)</div>
+                        <div class="pair-chip">\(\{3,4\}\)</div>
+                    </div>
+                    <div class="diagram-caption">These \(6\) groups explain why \(\binom{4}{2}=6\), and why the \(a^2b^2\) term has coefficient \(6\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="slide grid-bg" id="slide-3b">
     <div class="slide-header">
         <div class="concept-label">Concept</div>
@@ -1039,6 +1299,7 @@
     SlidesCore.init({
         sectionTargets: [
             { label: 'Overview', slideId: 'slide-0' },
+            { label: 'Intro',    slideId: 'slide-0a' },
             { label: 'Patterns', slideId: 'slide-1' },
             { label: 'Pascal',   slideId: 'slide-2' },
             { label: 'Theorem',  slideId: 'slide-4' },

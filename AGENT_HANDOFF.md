@@ -21,15 +21,19 @@ Use this file when one AI assistant needs to pause work and let another assistan
 - **Files touched**:
   - `6.4-binomial-theorem.html`
   - `AGENT_HANDOFF.md`
-- **Current state**: Example 1 has been revised with a visual map that lines up Pascal row \(4\), the power pattern for \((x+2)^4\), and the coefficient-times-power products. The requested next feature work has not started yet.
+- **Current state**: Example 1 has been revised with a visual map that lines up Pascal row \(4\), the power pattern for \((x+2)^4\), and the coefficient-times-power products. The next learning-arc feature work is now implemented locally: three intro/bridge slides were added before the original patterns slide, and the Pascal/combinations wording was strengthened.
 - **Checks run**:
   - `git diff --check -- 6.4-binomial-theorem.html` - passed
   - Static Node check of `slide-3` - passed (`data-steps="4"`, four step elements, visual map present)
   - Headless Chromium desktop check via local Playwright - passed (KaTeX rendered, no console errors, no page-level horizontal overflow)
   - Headless Chromium mobile-width check via local Playwright - passed (visual map uses contained horizontal scroll; no page-level horizontal overflow)
-- **Known issues or risks**: Worktree also contains unrelated modified/untracked Manim files under `manim/scenes/`; do not stage or revert them unless the owner asks. The current 6.4 deck still needs the planned conceptual bridge before Example 1.
-- **Next action**: Add 2-3 early concept slides before the Pascal section: what the Binomial Theorem is for, why coefficients count choices, and how \(\binom{n}{r}\) matches entries in Pascal's Triangle.
-- **User-facing status**: User approved the learning-arc plan and asked to commit/push the current slide checkpoint before adding those new features.
+  - `git diff --check -- 6.4-binomial-theorem.html` after intro-slide additions - passed
+  - `python3` HTMLParser smoke check for `6.4-binomial-theorem.html` - passed
+  - Static Node check of slide IDs and section targets - passed (`slideCount: 19`, no duplicate slide IDs, no missing nav targets)
+  - Headless Chromium desktop/mobile checks of `slide-0a`, `slide-0b`, `slide-0c`, `slide-1`, `slide-2`, `slide-2b`, and `slide-3` - passed (KaTeX rendered, no console errors, no page-level horizontal overflow)
+- **Known issues or risks**: Worktree also contains unrelated modified/untracked Manim files under `manim/scenes/`; do not stage or revert them unless the owner asks. New intro slides are implemented but not committed yet.
+- **Next action**: Review the new intro/bridge slides in the browser, then commit `6.4-binomial-theorem.html` and `AGENT_HANDOFF.md` if approved. Consider whether Example 2 should also get a visual coefficient-times-power map.
+- **User-facing status**: User asked to start the next steps; Codex implemented the intro/bridge slides and is preparing the final summary.
 
 ### 2026-03-04 — Student Q&A Pilot (awaiting owner decision)
 
