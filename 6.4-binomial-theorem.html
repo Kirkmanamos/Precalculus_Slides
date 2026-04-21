@@ -127,6 +127,81 @@
         }
         #slide-2b .note-box { margin-top: 0.1rem; }
 
+        .binomial-visual-wrap {
+            overflow-x: auto;
+            padding: 0.12rem 0 0.05rem;
+        }
+        .binomial-map {
+            display: grid;
+            grid-template-columns: 5.6rem repeat(5, minmax(4.8rem, 1fr));
+            gap: 0.26rem;
+            align-items: stretch;
+            min-width: 760px;
+        }
+        .binomial-map-label {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.28rem;
+            color: #64748b;
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            line-height: 1.15;
+            text-align: right;
+            text-transform: uppercase;
+        }
+        .binomial-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 1.75rem;
+            padding: 0.28em 0.2em;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            background: white;
+            font-size: 0.68em;
+            font-weight: 700;
+            line-height: 1.18;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .binomial-cell.term-index {
+            min-height: 1.3rem;
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 0.54em;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .binomial-cell.coefficient {
+            background: var(--blue-light);
+            border-color: rgba(37, 99, 235, 0.28);
+            color: var(--blue-accent);
+            font-size: 0.86em;
+        }
+        .binomial-cell.power-pattern {
+            background: var(--orange-light);
+            border-color: rgba(217, 119, 6, 0.28);
+            color: var(--orange-accent);
+        }
+        .binomial-cell.multiplication {
+            background: var(--teal-light);
+            border-color: rgba(8, 145, 178, 0.28);
+            color: var(--teal-accent);
+            font-size: 0.6em;
+        }
+        #slide-3 .step-box.visual-step {
+            padding: 0.44em 0.72em;
+        }
+        #slide-3 .step-box.visual-step .step-label {
+            margin-left: 0.2rem;
+        }
+        #slide-3 .step-math.compact-line {
+            font-size: 0.78em;
+            line-height: 1.45;
+        }
+
         /* Reference modals + floating buttons */
         .ref-buttons {
             position: absolute;
@@ -308,6 +383,8 @@
             .ref-button { font-size: 0.58em; padding: 0.58em 0.72em; }
             .card-modal-inner { padding: 1.2rem 1rem 1rem; }
             .pascal-big-cell { min-width: 1.7rem; font-size: 0.68em; }
+            .binomial-map { min-width: 680px; }
+            .binomial-cell { font-size: 0.62em; }
         }
     </style>
 </head>
@@ -479,7 +556,7 @@
         </div>
     </div>
 </section>
-<section class="slide grid-bg" id="slide-3" data-steps="3">
+<section class="slide grid-bg" id="slide-3" data-steps="4">
             <div class="slide-header">
                 <div class="example-label">Example 1</div>
                 <div class="slide-title">Expanding with Pascal&#x27;s Triangle</div>
@@ -498,17 +575,57 @@
 
     </div>
 </div><div class="step" id="slide-3-step-1">
-    <div class="step-box">
-        <div class="step-label">Match the Power Pattern</div>
+    <div class="step-box visual-step">
+        <div class="step-label">Line Up the Coefficients With the Power Pattern</div>
 
-    <div class="step-math">
-        \[x^4\cdot 2^0,\ x^3\cdot 2^1,\ x^2\cdot 2^2,\ x\cdot 2^3,\ 2^4\]
+    <div class="binomial-visual-wrap">
+        <div class="binomial-map" role="table" aria-label="Pascal coefficients multiplied by matching power-pattern terms">
+            <div class="binomial-map-label">Term</div>
+            <div class="binomial-cell term-index">1st</div>
+            <div class="binomial-cell term-index">2nd</div>
+            <div class="binomial-cell term-index">3rd</div>
+            <div class="binomial-cell term-index">4th</div>
+            <div class="binomial-cell term-index">5th</div>
+
+            <div class="binomial-map-label">Pascal row 4</div>
+            <div class="binomial-cell coefficient">1</div>
+            <div class="binomial-cell coefficient">4</div>
+            <div class="binomial-cell coefficient">6</div>
+            <div class="binomial-cell coefficient">4</div>
+            <div class="binomial-cell coefficient">1</div>
+
+            <div class="binomial-map-label">Power pattern</div>
+            <div class="binomial-cell power-pattern">\(x^4\cdot 2^0\)</div>
+            <div class="binomial-cell power-pattern">\(x^3\cdot 2^1\)</div>
+            <div class="binomial-cell power-pattern">\(x^2\cdot 2^2\)</div>
+            <div class="binomial-cell power-pattern">\(x^1\cdot 2^3\)</div>
+            <div class="binomial-cell power-pattern">\(x^0\cdot 2^4\)</div>
+
+            <div class="binomial-map-label">Multiply</div>
+            <div class="binomial-cell multiplication">\(1(x^4\cdot 2^0)\)</div>
+            <div class="binomial-cell multiplication">\(4(x^3\cdot 2^1)\)</div>
+            <div class="binomial-cell multiplication">\(6(x^2\cdot 2^2)\)</div>
+            <div class="binomial-cell multiplication">\(4(x^1\cdot 2^3)\)</div>
+            <div class="binomial-cell multiplication">\(1(x^0\cdot 2^4)\)</div>
+        </div>
     </div>
 
     </div>
 </div><div class="step" id="slide-3-step-2">
+    <div class="step-box green">
+        <div class="step-label">Simplify Each Product</div>
+
+    <div class="step-math compact-line">
+        \[
+        x^4,\qquad 8x^3,\qquad 24x^2,\qquad 32x,\qquad 16
+        \]
+        <div class="annotation">Read left to right: each term comes from one coefficient times one power-pattern term.</div>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-3-step-3">
     <div class="step-box dark">
-        <div class="step-label">Multiply the Coefficients In</div>
+        <div class="step-label">Add the Terms</div>
 
     <div class="step-math">
         \[(x+2)^4 = x^4 + 8x^3 + 24x^2 + 32x + 16\]

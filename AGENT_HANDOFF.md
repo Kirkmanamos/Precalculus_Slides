@@ -13,6 +13,24 @@ Use this file when one AI assistant needs to pause work and let another assistan
 
 ## Current Handoffs
 
+### 2026-04-21 16:44 EDT - 6.4 Binomial theorem learning arc
+
+- **Agent**: Codex
+- **Branch or worktree**: `main` at `/Users/kirkmanamos/Documents/GitHub/precalculus_slides`
+- **Task**: Improve `6.4-binomial-theorem.html` into a stronger self-guided lesson, especially the intro to the Binomial Theorem and the relationship between combinations, Pascal's Triangle, and coefficients.
+- **Files touched**:
+  - `6.4-binomial-theorem.html`
+  - `AGENT_HANDOFF.md`
+- **Current state**: Example 1 has been revised with a visual map that lines up Pascal row \(4\), the power pattern for \((x+2)^4\), and the coefficient-times-power products. The requested next feature work has not started yet.
+- **Checks run**:
+  - `git diff --check -- 6.4-binomial-theorem.html` - passed
+  - Static Node check of `slide-3` - passed (`data-steps="4"`, four step elements, visual map present)
+  - Headless Chromium desktop check via local Playwright - passed (KaTeX rendered, no console errors, no page-level horizontal overflow)
+  - Headless Chromium mobile-width check via local Playwright - passed (visual map uses contained horizontal scroll; no page-level horizontal overflow)
+- **Known issues or risks**: Worktree also contains unrelated modified/untracked Manim files under `manim/scenes/`; do not stage or revert them unless the owner asks. The current 6.4 deck still needs the planned conceptual bridge before Example 1.
+- **Next action**: Add 2-3 early concept slides before the Pascal section: what the Binomial Theorem is for, why coefficients count choices, and how \(\binom{n}{r}\) matches entries in Pascal's Triangle.
+- **User-facing status**: User approved the learning-arc plan and asked to commit/push the current slide checkpoint before adding those new features.
+
 ### 2026-03-04 — Student Q&A Pilot (awaiting owner decision)
 
 - **Agent**: Codex
