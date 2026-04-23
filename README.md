@@ -45,6 +45,7 @@
 - [5.1 Using Fundamental Identities](5.1-fundamental-identities.html)
 - [5.2 Verifying Trig Identities](5.2-verifying-trig-identities.html)
 - [5.3 Solving Trig Equations](5.3-solving-trig-equations.html)
+- [5.3 Amplitude-Phase Form](5.3-amplitude-phase-form.html)
 - [5.4 Sum and Difference Identities](5.4-sum-and-difference.html)
 - [5.5 Double & Half Angle Identities](5.5-double-half-angle.html)
 

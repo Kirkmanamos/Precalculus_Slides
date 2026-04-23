@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.3 - Amplitude-Phase Form</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .phase-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            align-items: stretch;
+        }
+
+        .phase-card {
+            background: rgba(255,255,255,0.94);
+            border: 1px solid rgba(203,213,225,0.86);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 12px;
+            padding: 0.72em 0.9em;
+            box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+        }
+
+        .phase-card.teal { background: var(--teal-light); border-left-color: var(--teal-accent); }
+        .phase-card.green { background: var(--green-light); border-left-color: var(--green-accent); }
+        .phase-card.orange { background: var(--orange-light); border-left-color: var(--orange-accent); }
+        .phase-card.navy { background: var(--navy); border-left-color: #60a5fa; color: white; }
+        .phase-card.navy .phase-card-title,
+        .phase-card.navy .katex { color: white; }
+
+        .phase-card-title {
+            font-size: 0.58em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.28rem;
+        }
+
+        .phase-card-copy {
+            font-size: 0.78em;
+            line-height: 1.5;
+        }
+
+        .phase-card .katex-display { margin: 0.12em 0; }
+
+        .phase-mini-note {
+            font-size: 0.68em;
+            color: var(--text-muted);
+            line-height: 1.45;
+            margin-top: 0.4rem;
+        }
+
+        .phase-equivalence {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .equiv-arrow {
+            font-size: 1.5em;
+            color: var(--teal-accent);
+            font-weight: 700;
+        }
+
+        .exact-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .exact-tile {
+            background: white;
+            border: 1px solid rgba(203,213,225,0.86);
+            border-radius: 10px;
+            padding: 0.5em 0.65em;
+            text-align: center;
+            box-shadow: 0 8px 18px rgba(15,23,42,0.05);
+        }
+
+        .exact-tile-label {
+            font-size: 0.52em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.18rem;
+        }
+
+        .exact-tile-value {
+            font-size: 0.88em;
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .explorer-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+            gap: 0.85rem;
+            align-items: stretch;
+            min-height: 0;
+        }
+
+        .explorer-main,
+        .explorer-side {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .explorer-panel {
+            background: rgba(255,255,255,0.96);
+            border: 1px solid rgba(203,213,225,0.9);
+            border-left: 4px solid var(--teal-accent);
+            border-radius: 12px;
+            padding: 0.58em 0.72em;
+            box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.62rem;
+        }
+
+        .control-row {
+            display: grid;
+            gap: 0.25rem;
+            font-size: 0.62em;
+            color: var(--text);
+        }
+
+        .control-label-line {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            align-items: baseline;
+            font-weight: 700;
+        }
+
+        .control-value {
+            font-variant-numeric: tabular-nums;
+            color: var(--blue-accent);
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--blue-accent);
+        }
+
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+            font-size: 0.62em;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .toggle-row input {
+            width: 1rem;
+            height: 1rem;
+            accent-color: var(--teal-accent);
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.48rem;
+        }
+
+        .metric-card {
+            background: var(--blue-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            padding: 0.42em 0.5em;
+            min-width: 0;
+        }
+
+        .metric-label {
+            font-size: 0.48em;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin-bottom: 0.1rem;
+        }
+
+        .metric-value {
+            font-size: 0.68em;
+            color: var(--navy);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            overflow-wrap: anywhere;
+        }
+
+        .phase-graph-shell {
+            background: white;
+            border: 1px solid rgba(203,213,225,0.9);
+            border-radius: 12px;
+            padding: 0.35rem 0.45rem 0.15rem;
+        }
+
+        .phase-graph,
+        .vector-graph {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .svg-grid-line { stroke: #e2e8f0; stroke-width: 1; }
+        .svg-axis-line { stroke: #94a3b8; stroke-width: 1.5; }
+        .svg-original { fill: none; stroke: var(--navy); stroke-width: 3; }
+        .svg-phase { fill: none; stroke: var(--orange-accent); stroke-width: 2.4; stroke-dasharray: 8 7; }
+        .svg-marker { stroke: var(--teal-accent); stroke-width: 1.5; stroke-dasharray: 4 4; }
+        .svg-dot-original { fill: var(--navy); }
+        .svg-dot-phase { fill: white; stroke: var(--orange-accent); stroke-width: 2; }
+        .svg-vector { stroke: var(--navy); stroke-width: 4; stroke-linecap: round; }
+        .svg-component { stroke: var(--teal-accent); stroke-width: 2.2; stroke-dasharray: 5 4; }
+        .svg-angle { fill: none; stroke: var(--orange-accent); stroke-width: 3; }
+
+        .svg-text {
+            font: 600 13px 'Source Sans 3', sans-serif;
+            fill: #475569;
+        }
+
+        .svg-text-strong {
+            font: 700 15px 'Source Sans 3', sans-serif;
+            fill: #0f172a;
+        }
+
+        .test-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.48rem;
+        }
+
+        .test-card {
+            background: var(--green-light);
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 0.42em 0.5em;
+            font-size: 0.56em;
+            line-height: 1.35;
+        }
+
+        .test-card strong {
+            display: block;
+            color: var(--navy);
+            margin-bottom: 0.12rem;
+        }
+
+        .legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+            font-size: 0.54em;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .legend-swatch {
+            width: 1.2rem;
+            height: 0.16rem;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.25rem;
+            border-radius: 99px;
+            background: var(--navy);
+        }
+
+        .legend-swatch.orange {
+            background: repeating-linear-gradient(
+                90deg,
+                var(--orange-accent) 0,
+                var(--orange-accent) 7px,
+                transparent 7px,
+                transparent 13px
+            );
+            border: 1px solid var(--orange-accent);
+            height: 0.2rem;
+        }
+
+        .compact-copy {
+            font-size: 0.74em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 980px) {
+            .phase-map,
+            .phase-equivalence,
+            .explorer-layout,
+            .exact-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .equiv-arrow {
+                transform: rotate(90deg);
+                text-align: center;
+                line-height: 1;
+            }
+
+            .control-grid,
+            .metric-grid,
+            .test-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 5 · Analytic Trigonometry</div>
+        <div class="title-main">5.3 Amplitude-Phase Form</div>
+        <div class="title-objective">Objective: Rewrite \(a\sin x+b\cos x\) as one shifted sine wave and use that form to simplify equations.</div>
+        <div class="identity-chips">
+            <span class="chip">amplitude</span>
+            <span class="chip">phase angle</span>
+            <span class="chip">sum identity</span>
+            <span class="chip">coefficient vector</span>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-1" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">The One-Sine-Wave Form</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Any expression of the form \(a\sin x+b\cos x\) can be written as \(R\sin(x+\theta)\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-1-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Start with the sum identity</div>
+                        <div class="step-math">
+                            \[
+                            R\sin(x+\theta)
+                            =R\sin x\cos\theta+R\cos x\sin\theta
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-1-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Match coefficients</div>
+                        <div class="step-math">
+                            \[
+                            a=R\cos\theta
+                            \qquad\text{and}\qquad
+                            b=R\sin\theta
+                            \]
+                            <div class="annotation">The sine coefficient is the horizontal component. The cosine coefficient is the vertical component.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-1-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Compute the amplitude and phase angle</div>
+                        <div class="step-math">
+                            \[
+                            R=\sqrt{a^2+b^2},
+                            \qquad
+                            \theta=\operatorname{atan2}(b,a)
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-2" data-steps="5">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Rewrite as One Shifted Sine Wave</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Rewrite \(\sqrt{3}\sin x-\cos x\) in amplitude-phase form.
+            </div>
+            <div class="exact-summary">
+                <div class="exact-tile">
+                    <div class="exact-tile-label">Coefficients</div>
+                    <div class="exact-tile-value">\(a=\sqrt{3},\ b=-1\)</div>
+                </div>
+                <div class="exact-tile">
+                    <div class="exact-tile-label">Amplitude</div>
+                    <div class="exact-tile-value">\(R=2\)</div>
+                </div>
+                <div class="exact-tile">
+                    <div class="exact-tile-label">Phase angle</div>
+                    <div class="exact-tile-value">\(\theta=-\dfrac{\pi}{6}\)</div>
+                </div>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Identify the target form</div>
+                        <div class="step-math">
+                            \[
+                            \sqrt{3}\sin x-\cos x=R\sin(x+\theta)
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Find the amplitude</div>
+                        <div class="step-math">
+                            \[
+                            R=\sqrt{(\sqrt{3})^2+(-1)^2}=\sqrt{4}=2
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Find the phase angle</div>
+                        <div class="step-math">
+                            \[
+                            \cos\theta=\dfrac{\sqrt{3}}{2},
+                            \qquad
+                            \sin\theta=-\dfrac{1}{2}
+                            \quad\Rightarrow\quad
+                            \theta=-\dfrac{\pi}{6}
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Amplitude-phase form</div>
+                        <div class="step-math">
+                            \[
+                            \sqrt{3}\sin x-\cos x=2\sin\left(x-\dfrac{\pi}{6}\right)
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-4">
+                    <div class="step-box orange">
+                        <div class="step-label">Verification</div>
+                        <div class="step-math">
+                            \[
+                            2\sin\left(x-\dfrac{\pi}{6}\right)
+                            =2\left(\sin x\cdot\dfrac{\sqrt{3}}{2}-\cos x\cdot\dfrac{1}{2}\right)
+                            =\sqrt{3}\sin x-\cos x
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-3">
+        <div class="slide-header">
+            <div class="concept-label">Explorer</div>
+            <div class="slide-title">Changing the Coefficients</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="explorer-layout" data-no-advance>
+                <div class="explorer-main">
+                    <div class="explorer-panel">
+                        <div class="control-grid">
+                            <div class="control-row">
+                                <div class="control-label-line">
+                                    <label for="aRange">\(a\) in \(a\sin x\)</label>
+                                    <span class="control-value" id="aValue"></span>
+                                </div>
+                                <input id="aRange" type="range" min="-4" max="4" step="0.001" value="1.732">
+                            </div>
+                            <div class="control-row">
+                                <div class="control-label-line">
+                                    <label for="bRange">\(b\) in \(b\cos x\)</label>
+                                    <span class="control-value" id="bValue"></span>
+                                </div>
+                                <input id="bRange" type="range" min="-4" max="4" step="0.001" value="-1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">Amplitude</div>
+                            <div class="metric-value" id="rValue"></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Phase angle</div>
+                            <div class="metric-value" id="thetaValue"></div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Equivalent form</div>
+                            <div class="metric-value" id="formValue"></div>
+                        </div>
+                    </div>
+                    <div class="phase-graph-shell">
+                        <svg class="phase-graph" id="phaseGraph" viewBox="0 0 760 280" role="img" aria-label="Original sine cosine sum and equivalent shifted sine graph">
+                            <g id="gridLines"></g>
+                            <line id="xAxis" class="svg-axis-line" x1="0" y1="140" x2="760" y2="140"></line>
+                            <g id="xTicks"></g>
+                            <path id="originalPath" class="svg-original"></path>
+                            <path id="phasePath" class="svg-phase"></path>
+                            <line id="markerLine" class="svg-marker" x1="0" y1="0" x2="0" y2="280"></line>
+                            <circle id="originalDot" class="svg-dot-original" cx="0" cy="0" r="5"></circle>
+                            <circle id="phaseDot" class="svg-dot-phase" cx="0" cy="0" r="6"></circle>
+                        </svg>
+                    </div>
+                    <div class="legend-row" aria-hidden="true">
+                        <span><span class="legend-swatch"></span>\(a\sin x+b\cos x\)</span>
+                        <span><span class="legend-swatch orange"></span>\(R\sin(x+\theta)\)</span>
+                    </div>
+                    <div class="explorer-panel">
+                        <div class="control-row">
+                            <div class="control-label-line">
+                                <label for="xRange">Test value \(x\)</label>
+                                <span class="control-value" id="xValue"></span>
+                            </div>
+                            <input id="xRange" type="range" min="0" max="6.283185307179586" step="0.001" value="1.1">
+                        </div>
+                    </div>
+                    <div class="test-row">
+                        <div class="test-card">
+                            <strong>Original</strong>
+                            <span id="originalAtX"></span>
+                        </div>
+                        <div class="test-card">
+                            <strong>Shifted sine</strong>
+                            <span id="phaseAtX"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="explorer-side">
+                    <div class="explorer-panel">
+                        <div class="toggle-row">
+                            <label for="componentToggle">Show component legs</label>
+                            <input id="componentToggle" type="checkbox" checked>
+                        </div>
+                    </div>
+                    <div class="phase-graph-shell">
+                        <svg class="vector-graph" id="vectorGraph" viewBox="0 0 290 290" role="img" aria-label="Coefficient vector for amplitude and phase angle">
+                            <line class="svg-axis-line" x1="0" y1="145" x2="290" y2="145"></line>
+                            <line class="svg-axis-line" x1="145" y1="0" x2="145" y2="290"></line>
+                            <circle cx="145" cy="145" r="88" fill="none" stroke="#cbd5e1" stroke-width="2"></circle>
+                            <g id="componentLines">
+                                <line id="componentX" class="svg-component"></line>
+                                <line id="componentY" class="svg-component"></line>
+                            </g>
+                            <path id="angleArc" class="svg-angle"></path>
+                            <line id="vectorLine" class="svg-vector"></line>
+                            <circle id="vectorDot" class="svg-dot-original" r="5"></circle>
+                            <text id="vectorLabel" class="svg-text-strong"></text>
+                            <text id="angleLabel" class="svg-text">theta</text>
+                        </svg>
+                    </div>
+                    <div class="phase-card teal">
+                        <div class="phase-card-title">Coefficient vector</div>
+                        <div class="phase-card-copy">
+                            The point \((a,b)\) has radius \(R\). Its direction angle is \(\theta\), so \(a=R\cos\theta\) and \(b=R\sin\theta\).
+                        </div>
+                    </div>
+                    <div class="phase-card orange">
+                        <div class="phase-card-title">Phase shift sign</div>
+                        <div class="phase-card-copy">
+                            \(R\sin(x+\theta)=R\sin(x-C)\) where \(C=-\theta\). A negative \(\theta\) means a right shift.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-4" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">A Common Special Case</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Rewrite \(\sin x+\cos x\) in amplitude-phase form.
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Identify the coefficients</div>
+                        <div class="step-math">
+                            \[
+                            a=1,\qquad b=1
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Find the amplitude</div>
+                        <div class="step-math">
+                            \[
+                            R=\sqrt{1^2+1^2}=\sqrt{2}
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Find the phase angle</div>
+                        <div class="step-math">
+                            \[
+                            \cos\theta=\dfrac{1}{\sqrt{2}},
+                            \qquad
+                            \sin\theta=\dfrac{1}{\sqrt{2}}
+                            \quad\Rightarrow\quad
+                            \theta=\dfrac{\pi}{4}
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-3">
+                    <div class="step-box dark">
+                        <div class="step-label">Answer</div>
+                        <div class="step-math">
+                            \[
+                            \sin x+\cos x=\sqrt{2}\sin\left(x+\dfrac{\pi}{4}\right)
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-5" data-steps="5">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Use Phase Form to Solve</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Solve \(\sqrt{3}\sin x-\cos x=1\) on \(0\le x<2\pi\).
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Use the form from Example 1</div>
+                        <div class="step-math">
+                            \[
+                            \sqrt{3}\sin x-\cos x=2\sin\left(x-\dfrac{\pi}{6}\right)
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Set up a simple sine equation</div>
+                        <div class="step-math">
+                            \[
+                            2\sin\left(x-\dfrac{\pi}{6}\right)=1
+                            \quad\Rightarrow\quad
+                            \sin\left(x-\dfrac{\pi}{6}\right)=\dfrac{1}{2}
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-2">
+                    <div class="step-box">
+                        <div class="step-label">Solve for the shifted angle</div>
+                        <div class="step-math">
+                            \[
+                            x-\dfrac{\pi}{6}=\dfrac{\pi}{6}
+                            \quad\text{or}\quad
+                            x-\dfrac{\pi}{6}=\dfrac{5\pi}{6}
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-3">
+                    <div class="step-box">
+                        <div class="step-label">Add the phase shift back</div>
+                        <div class="step-math">
+                            \[
+                            x=\dfrac{\pi}{3}
+                            \quad\text{or}\quad
+                            x=\pi
+                            \]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-4">
+                    <div class="step-box dark">
+                        <div class="step-label">Solution set</div>
+                        <div class="step-math">
+                            \[
+                            \boxed{x=\dfrac{\pi}{3},\ \pi}
+                            \]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide grid-bg" id="slide-6">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">What to Remember</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="phase-equivalence">
+                <div class="phase-card navy">
+                    <div class="phase-card-title">Starting expression</div>
+                    <div class="phase-card-copy">
+                        \[
+                        a\sin x+b\cos x
+                        \]
+                    </div>
+                </div>
+                <div class="equiv-arrow">=</div>
+                <div class="phase-card green">
+                    <div class="phase-card-title">Amplitude-phase form</div>
+                    <div class="phase-card-copy">
+                        \[
+                        \sqrt{a^2+b^2}\,\sin(x+\theta)
+                        \]
+                    </div>
+                </div>
+            </div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Amplitude</div>
+                    <div class="card-copy">The new amplitude is \(R=\sqrt{a^2+b^2}\), the length of the coefficient vector.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Phase Angle</div>
+                    <div class="card-copy">Choose \(\theta\) so that \(\cos\theta=\dfrac{a}{R}\) and \(\sin\theta=\dfrac{b}{R}\).</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Sign Check</div>
+                    <div class="card-copy">In \(R\sin(x+\theta)\), the graph shift is \(C=-\theta\). Check the sign before graphing or solving.</div>
+                </div>
+            </div>
+            <div class="formula-note">Fast check: expand \(R\sin(x+\theta)\). If the sine and cosine coefficients match the original expression, the form is correct.</div>
+        </div>
+    </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    const TAU = Math.PI * 2;
+
+    function fmt(n, digits = 3) {
+        if (Math.abs(n) < 1e-10) return '0';
+        return n.toFixed(digits).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
+    }
+
+    function wrapAngle(theta) {
+        while (theta <= -Math.PI) theta += TAU;
+        while (theta > Math.PI) theta -= TAU;
+        return theta;
+    }
+
+    function prettyPi(theta) {
+        const wrapped = wrapAngle(theta);
+        const candidates = [1, 2, 3, 4, 6, 8, 12];
+        for (const d of candidates) {
+            for (let n = -24; n <= 24; n++) {
+                const val = (n * Math.PI) / d;
+                if (Math.abs(wrapped - val) < 0.03) {
+                    if (n === 0) return '0';
+                    const sign = n < 0 ? '-' : '';
+                    const an = Math.abs(n);
+                    if (d === 1) return `${sign}${an === 1 ? '' : an}pi`;
+                    if (an === d) return `${sign}pi`;
+                    return `${sign}${an === 1 ? '' : an}pi/${d}`;
+                }
+            }
+        }
+        return `${fmt(wrapped)} rad`;
+    }
+
+    function buildPath(fn, width, height, xMin, xMax, yMin, yMax, steps = 720) {
+        const pts = [];
+        for (let i = 0; i <= steps; i++) {
+            const x = xMin + (i / steps) * (xMax - xMin);
+            const y = fn(x);
+            const px = ((x - xMin) / (xMax - xMin)) * width;
+            const py = height - ((y - yMin) / (yMax - yMin)) * height;
+            pts.push(`${i === 0 ? 'M' : 'L'}${fmt(px, 2)},${fmt(py, 2)}`);
+        }
+        return pts.join(' ');
+    }
+
+    function axisX(x, width, xMin, xMax) {
+        return ((x - xMin) / (xMax - xMin)) * width;
+    }
+
+    function axisY(y, height, yMin, yMax) {
+        return height - ((y - yMin) / (yMax - yMin)) * height;
+    }
+
+    function initPhaseExplorer() {
+        const aRange = document.getElementById('aRange');
+        const bRange = document.getElementById('bRange');
+        const xRange = document.getElementById('xRange');
+        const componentToggle = document.getElementById('componentToggle');
+        if (!aRange || !bRange || !xRange || !componentToggle) return;
+
+        document.querySelectorAll('[data-no-advance]').forEach(el => {
+            ['click', 'pointerdown', 'touchstart', 'touchend', 'keydown'].forEach(type => {
+                el.addEventListener(type, event => event.stopPropagation());
+            });
+        });
+
+        const width = 760;
+        const height = 280;
+        const xMin = 0;
+        const xMax = TAU;
+        const graphEls = {
+            gridLines: document.getElementById('gridLines'),
+            xTicks: document.getElementById('xTicks'),
+            xAxis: document.getElementById('xAxis'),
+            originalPath: document.getElementById('originalPath'),
+            phasePath: document.getElementById('phasePath'),
+            markerLine: document.getElementById('markerLine'),
+            originalDot: document.getElementById('originalDot'),
+            phaseDot: document.getElementById('phaseDot')
+        };
+        const valueEls = {
+            a: document.getElementById('aValue'),
+            b: document.getElementById('bValue'),
+            r: document.getElementById('rValue'),
+            theta: document.getElementById('thetaValue'),
+            form: document.getElementById('formValue'),
+            x: document.getElementById('xValue'),
+            originalAtX: document.getElementById('originalAtX'),
+            phaseAtX: document.getElementById('phaseAtX')
+        };
+        const vectorEls = {
+            componentLines: document.getElementById('componentLines'),
+            componentX: document.getElementById('componentX'),
+            componentY: document.getElementById('componentY'),
+            angleArc: document.getElementById('angleArc'),
+            vectorLine: document.getElementById('vectorLine'),
+            vectorDot: document.getElementById('vectorDot'),
+            vectorLabel: document.getElementById('vectorLabel'),
+            angleLabel: document.getElementById('angleLabel')
+        };
+
+        function buildGrid(yMin, yMax) {
+            graphEls.gridLines.innerHTML = '';
+            graphEls.xTicks.innerHTML = '';
+            for (let k = 0; k <= 8; k++) {
+                const x = axisX(k * Math.PI / 4, width, xMin, xMax);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'svg-grid-line');
+                line.setAttribute('x1', x);
+                line.setAttribute('y1', 0);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', height);
+                graphEls.gridLines.appendChild(line);
+            }
+            for (let j = -4; j <= 4; j++) {
+                const y = axisY(j, height, yMin, yMax);
+                if (y < 0 || y > height) continue;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'svg-grid-line');
+                line.setAttribute('x1', 0);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', width);
+                line.setAttribute('y2', y);
+                graphEls.gridLines.appendChild(line);
+            }
+            const labels = ['0', 'pi/2', 'pi', '3pi/2', '2pi'];
+            labels.forEach((label, index) => {
+                const x = axisX(index * Math.PI / 2, width, xMin, xMax);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'svg-axis-line');
+                line.setAttribute('x1', x);
+                line.setAttribute('y1', height - 18);
+                line.setAttribute('x2', x);
+                line.setAttribute('y2', height - 10);
+                graphEls.xTicks.appendChild(line);
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('class', 'svg-text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', height - 6);
+                text.setAttribute('text-anchor', 'middle');
+                text.textContent = label;
+                graphEls.xTicks.appendChild(text);
+            });
+        }
+
+        function update() {
+            const a = parseFloat(aRange.value);
+            const b = parseFloat(bRange.value);
+            const xMarker = parseFloat(xRange.value);
+            const R = Math.hypot(a, b);
+            const theta = R < 1e-9 ? 0 : Math.atan2(b, a);
+            const yPad = Math.max(1.2, R + 0.5);
+            const yMin = -yPad;
+            const yMax = yPad;
+            const original = x => a * Math.sin(x) + b * Math.cos(x);
+            const phase = x => R * Math.sin(x + theta);
+            const xAxisY = axisY(0, height, yMin, yMax);
+            const markerX = axisX(xMarker, width, xMin, xMax);
+            const originalY = axisY(original(xMarker), height, yMin, yMax);
+            const phaseY = axisY(phase(xMarker), height, yMin, yMax);
+
+            buildGrid(yMin, yMax);
+            graphEls.xAxis.setAttribute('y1', xAxisY);
+            graphEls.xAxis.setAttribute('y2', xAxisY);
+            graphEls.originalPath.setAttribute('d', buildPath(original, width, height, xMin, xMax, yMin, yMax));
+            graphEls.phasePath.setAttribute('d', buildPath(phase, width, height, xMin, xMax, yMin, yMax));
+            graphEls.markerLine.setAttribute('x1', markerX);
+            graphEls.markerLine.setAttribute('x2', markerX);
+            graphEls.originalDot.setAttribute('cx', markerX);
+            graphEls.originalDot.setAttribute('cy', originalY);
+            graphEls.phaseDot.setAttribute('cx', markerX);
+            graphEls.phaseDot.setAttribute('cy', phaseY);
+
+            valueEls.a.textContent = fmt(a);
+            valueEls.b.textContent = fmt(b);
+            valueEls.r.textContent = `R = ${fmt(R)}`;
+            valueEls.theta.textContent = R < 1e-9 ? 'theta undefined' : `theta = ${prettyPi(theta)}`;
+            valueEls.form.textContent = R < 1e-9 ? '0' : `${fmt(R)} sin(x ${theta < 0 ? '-' : '+'} ${fmt(Math.abs(theta))})`;
+            valueEls.x.textContent = prettyPi(xMarker);
+            valueEls.originalAtX.textContent = `${fmt(a)} sin(x) + ${fmt(b)} cos(x) = ${fmt(original(xMarker))}`;
+            valueEls.phaseAtX.textContent = R < 1e-9 ? `0 = ${fmt(phase(xMarker))}` : `${fmt(R)} sin(x ${theta < 0 ? '-' : '+'} ${fmt(Math.abs(theta))}) = ${fmt(phase(xMarker))}`;
+
+            const c = 145;
+            const radius = 88;
+            const vectorRadius = R < 1e-9 ? 0 : radius;
+            const vx = c + vectorRadius * Math.cos(theta);
+            const vy = c - vectorRadius * Math.sin(theta);
+            vectorEls.componentLines.style.display = componentToggle.checked ? '' : 'none';
+            vectorEls.componentX.setAttribute('x1', c);
+            vectorEls.componentX.setAttribute('y1', c);
+            vectorEls.componentX.setAttribute('x2', vx);
+            vectorEls.componentX.setAttribute('y2', c);
+            vectorEls.componentY.setAttribute('x1', vx);
+            vectorEls.componentY.setAttribute('y1', c);
+            vectorEls.componentY.setAttribute('x2', vx);
+            vectorEls.componentY.setAttribute('y2', vy);
+            vectorEls.vectorLine.setAttribute('x1', c);
+            vectorEls.vectorLine.setAttribute('y1', c);
+            vectorEls.vectorLine.setAttribute('x2', vx);
+            vectorEls.vectorLine.setAttribute('y2', vy);
+            vectorEls.vectorDot.setAttribute('cx', vx);
+            vectorEls.vectorDot.setAttribute('cy', vy);
+            vectorEls.vectorLabel.setAttribute('x', vx + (vx >= c ? 8 : -8));
+            vectorEls.vectorLabel.setAttribute('y', vy + (vy >= c ? 18 : -8));
+            vectorEls.vectorLabel.setAttribute('text-anchor', vx >= c ? 'start' : 'end');
+            vectorEls.vectorLabel.textContent = R < 1e-9 ? '(0, 0)' : '(a/R, b/R)';
+            const arcRadius = 28;
+            const endX = c + arcRadius * Math.cos(theta);
+            const endY = c - arcRadius * Math.sin(theta);
+            const sweep = theta >= 0 ? 0 : 1;
+            const largeArc = Math.abs(theta) > Math.PI ? 1 : 0;
+            vectorEls.angleArc.setAttribute('d', `M ${c + arcRadius} ${c} A ${arcRadius} ${arcRadius} 0 ${largeArc} ${sweep} ${endX} ${endY}`);
+            vectorEls.angleArc.style.display = R < 1e-9 ? 'none' : '';
+            vectorEls.angleLabel.setAttribute('x', c + 42 * Math.cos(theta / 2));
+            vectorEls.angleLabel.setAttribute('y', c - 42 * Math.sin(theta / 2));
+            vectorEls.angleLabel.style.display = R < 1e-9 ? 'none' : '';
+        }
+
+        [aRange, bRange, xRange, componentToggle].forEach(input => input.addEventListener('input', update));
+        componentToggle.addEventListener('change', update);
+        update();
+    }
+
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview', slideId: 'slide-0' },
+            { label: 'Formula',  slideId: 'slide-1' },
+            { label: 'Exact',    slideId: 'slide-2' },
+            { label: 'Explorer', slideId: 'slide-3' },
+            { label: 'Solve',    slideId: 'slide-5' },
+            { label: 'Review',   slideId: 'slide-6' }
+        ]
+    });
+    initPhaseExplorer();
+</script>
+</body>
+</html>

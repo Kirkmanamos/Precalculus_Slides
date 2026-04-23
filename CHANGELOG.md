@@ -5,6 +5,17 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-04-22
+
+### New HTML Deck - 5.3 Amplitude-Phase Form
+
+Added `5.3-amplitude-phase-form.html`, a shared-assets HoffMath deck that
+replaces the broken raw React component saved as
+`5.3-ampliftude-phase-form.html`. The misspelled filename now redirects to the
+canonical deck. The new deck includes exact examples, a plain HTML/SVG/JS
+interactive coefficient explorer, and a solving example using
+\(a\sin x+b\cos x=R\sin(x+\theta)\).
+
 ## 2026-04-19
 
 ### New HTML Deck Set - Unit 1: Functions and Their Graphs (1.1–1.7)
