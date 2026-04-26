@@ -168,6 +168,41 @@ primitives.
 
 ## Manim Scenes
 
+### `AmplitudePhaseForm`
+
+**File:** `manim/scenes/5_4_amplitude_phase_form.py`
+**Class:** `AmplitudePhaseForm`
+**Status:** ✅ Working (rendered 2026-04-22, ManimCE v0.19.2)
+**Covers:** Amplitude-phase form for trig linear combinations.
+
+**What it does:**
+Conceptual animation explaining why `a sin(x) + b cos(x)` can be rewritten as
+`R sin(x + θ)`.
+
+1. Opens with the amplitude-phase question and color-coded formula.
+2. Uses the concrete example `√3 sin x − cos x = 2 sin(x − π/6)`.
+3. Overlays both graphs on shared axes, with a moving vertical guide showing equal outputs.
+4. Expands `R sin(x + θ)` and visually boxes the matched coefficients.
+5. Interprets `(a,b)` as a vector with magnitude `R` and angle `θ`, including `θ = atan2(b,a)`.
+6. Adds a focused phase-angle segment: `tan θ = b/a`, signs determine QIV, `θ = atan2(-1,√3) ≈ −0.524`, then exact `−π/6` if recognized.
+7. Returns to `(√3,-1)` to show `R = 2` and `θ = −π/6`.
+8. Ends with a plain-language summary and the final general formula, held for 7 seconds for classroom narration.
+
+**Color coding:**
+- Sine-related terms: `ACCENT_BLUE`
+- Cosine-related terms: `Q3_COLOR`
+- Amplitude `R`: `Q1_COLOR`
+- Phase angle `θ`: `Q4_COLOR`
+
+**Render:**
+```bash
+cd manim
+uv run manim -pql scenes/5_4_amplitude_phase_form.py AmplitudePhaseForm
+uv run manim -pqh scenes/5_4_amplitude_phase_form.py AmplitudePhaseForm
+```
+
+---
+
 ### `TanEquationGraphicalAnalysis`
 
 **File:** `manim/scenes/5_3_solving_trig_graphical.py`

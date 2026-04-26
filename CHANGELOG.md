@@ -16,6 +16,27 @@ canonical deck. The new deck includes exact examples, a plain HTML/SVG/JS
 interactive coefficient explorer, and a solving example using
 \(a\sin x+b\cos x=R\sin(x+\theta)\).
 
+### New Manim Scene - Amplitude-Phase Form
+
+Added a standalone ManimCE concept animation for rewriting a linear combination
+of sine and cosine as one shifted sine wave.
+
+- **`manim/scenes/5_4_amplitude_phase_form.py`** - `AmplitudePhaseForm`
+  - Starts from `√3 sin x − cos x = 2 sin(x − π/6)` as a concrete hook.
+  - Overlays both functions on shared axes and uses a moving vertical guide to
+    show matching outputs.
+  - Expands `R sin(x + θ)`, boxes matched coefficients, and connects
+    `R cos θ = a`, `R sin θ = b`.
+  - Builds vector diagrams for `(a,b)` and for `(√3,-1)`, emphasizing
+    rectangular-to-polar thinking.
+  - Adds a focused phase-angle explanation: use `θ = atan2(b,a)`, compute
+    `tan θ = b/a`, use signs to choose the quadrant, then recognize
+    `atan2(-1,√3) ≈ −0.524 = −π/6` when an exact special angle is available.
+  - Ends with a plain-language summary and the general formula, now held for
+    7 seconds so the video does not feel clipped.
+- Checks run: Python syntax compile passed; 1080p60 Manim render completed with
+  ManimCE v0.19.2.
+
 ## 2026-04-19
 
 ### New HTML Deck Set - Unit 1: Functions and Their Graphs (1.1–1.7)
