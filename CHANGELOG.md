@@ -5,6 +5,168 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-05-12
+
+### New HTML Decks - Unit 3 Exponential &amp; Logarithmic Functions (5 decks)
+
+Added the full Unit 3 sequence built against the shared-assets standard
+(`assets/slides-core.css` + `slides-core.js`, KaTeX, teacher-controlled
+step reveals). All five decks follow the HoffMath Classroom step-box
+pattern used in Unit 2.
+
+- **3.1 Exponential Functions &amp; Their Graphs** (`3.1-exponential-functions-and-their-graphs.html`) — 13 slides. Growth-vs-decay intro with both curve families plotted on one axis (\(y = 2^x, 3^x, 10^x, 1.3^x\) and \(y = (1/2)^x, (1/6)^x, (3/4)^x\)), parent-function reference table, transformation card for \(a(b)^{x-h}+k\), four full analyze-and-sketch examples (\((1/2)^x - 3\), \(4^{x-1} + 2\), find \(ab^x\) from two points, find \(ab^{-x}+c\) from HA and two points), the natural base \(e\) with \(y = e^x\) labeled at \((-1, 1/e), (0,1), (1, e)\), composition \((g\circ f)(0)\) for \(f(x) = e^{3x} - 2\), and the compound interest formulas with US-population and \$12{,}000 quarterly-vs-continuous worked examples.
+- **3.2 Logarithmic Functions &amp; Their Graphs** (`3.2-logarithmic-functions-and-their-graphs.html`) — 15 slides. Log definition + iff biconditional, parts-of-a-log diagram, conversion example, common/natural log definitions, basic properties table (\(\log_a 1, \log_a a, \log_a a^x, a^{\log_a x}\), one-to-one), four simplify/solve examples covering both common log and \(\ln\), inverse of \(g(x) = -2 + \log_{3}(x+1)\) via swap-and-solve, reflection-across-\(y=x\) visual for base 2 and base \(e\) pairs, three log curves on one axis (base 2, \(e\), 10), exp-vs-log comparison table, the seven-step "How to Graph a Log Function" recipe, and two analyze-and-sketch examples — \(\log_{6}(x-1) + 4\) and \(-\log_{3}(x+1) - 3\).
+- **3.3 Properties of Logarithms** (`3.3-properties-of-logarithms.html`) — 9 slides. Product/quotient/power/change-of-base reference card, red "NOT log identities" mistake card, simplify (Examples 1–3), condense (Examples 4–6 including the bracketed \(\tfrac{1}{3}[\ldots]\) case that ends with a cube root), expand (Examples 7–8 with \(\ln(3x^2 y^5)\) and \(\log(x^3 y^2/\sqrt{z+1})\)), write-in-terms-of (Examples 9–10), and change-of-base evaluations \(\log_7 8 \approx 1.068\) and \(\log_2 12 \approx 3.585\).
+- **3.4 Solving Exponential &amp; Log Equations** (`3.4-solving-exponential-and-log-equations.html`) — 11 slides. Three-strategy overview card (exponential, log, and "variable in two exponents"), then 9 worked examples — \(4e^{2x} - 3 = 2\), \(2(3^{2t-5}) - 4 = 11\), \(5^{2x+1} = 6^{x-2}\) (different bases, take \(\ln\)), \(4(2^x) + 8(2^{-x}) = 33\) and \((5^x - 5^{-x})/2 = 3\) (the \(u = b^x\) substitution trick, including a quadratic that gives one negative root to discard), \(5 + 2\ln x = 4\), \(\log_5(2x+3) = \log_5 11 + \log_5 5\), \(\log_2 x + \log_2(x+2) = 3\) (with explicit extraneous-root check on \(x = -4\)), and the challenge problem \(\log \sqrt[3]{x} = \sqrt{\log x}\) with substitution \(u = \sqrt{\log x}\).
+- **3.5 Exponential Applications** (`3.5-exponential-applications.html`) — 7 slides. Three-formula reference (compound, continuous, growth/decay), then five contextual applications — \$500 doubling at 6.75% continuous (\(t \approx 10.27\) years), tuition doubling under \(40000(1.072)^t\) (year ≈ 2030), world population reaching 10 billion under \(P = 7021.7 e^{0.01076 t}\) (year ≈ 2033, with care taken about \(t = 10\) representing 2010), bacteria with 40%/hr continuous growth (model, count at \(t = 10\), and time to reach 80,000), and Polonium-210 half-life of 140 days with mass decay to 200 mg (\(t \approx 81.9\) days).
+
+Each deck includes a small inline SVG plot helper (axes, gridlines, dashed
+asymptotes, polyline curves, labeled points, annotations) so the deck stays
+self-contained while still loading the shared assets — no new files added
+to `assets/`. Index, CLAUDE.md curriculum table, and the "Next up" line
+all updated. Pre-existing supplemental rational-functions decks remain
+linked under their own section.
+
+---
+
+### New HTML Deck - 2.8 Graphs of Rational Functions (Unit 2 complete)
+
+Added `2.8-graphs-of-rational-functions.html`, 9 slides covering the four-step
+graphing procedure (asymptotes → intercepts → test points → smooth curves)
+and five worked-graph examples — a simple parent-shifted hyperbola
+\(\tfrac{3}{x-2}\), a two-VA equal-degree case \(\tfrac{x^2}{x^2-x-2}\), a
+hole example \(\tfrac{x^2-9}{x^2-2x-3}\) with a visible open dot at
+\((3, \tfrac{3}{2})\), and two slant-asymptote cases
+\(\tfrac{x^2+x}{x-1}\) (slant \(y = x + 2\)) and \(\tfrac{x^3}{x^2-4}\)
+(slant \(y = x\), two VAs).
+
+- Extended the GraphBuilder helper with `slantAsym(m, b)` which clips the
+  slant line `y = mx + b` to the visible math window before drawing it.
+- This completes Unit 2.
+
+### New HTML Deck - 2.7 Rational Functions and Asymptotes
+
+Added `2.7-rational-functions-and-asymptotes.html`, 12 slides covering the
+definition of a rational function (simple and standard forms) with the
+parent \(1/x\) hyperbola sketched alongside its properties, a gallery of
+four representative shapes — \(\tfrac{3x}{x+1}\), \(\tfrac{x}{(x+1)(x-2)}\),
+\(\tfrac{3}{x^2+1}\), \(\tfrac{3}{(x+1)^2}\) — the vertical/horizontal
+asymptote definitions, the consolidated rules table (VA, two HA cases, hole,
+slant), behavior-near-singularity tables for \(\tfrac{1}{x-1}\), and six
+examples — including a hole from \((x+4)\) cancellation, a full analysis with
+hole + VA + HA + intercepts on \(\tfrac{x^2+x-6}{x^2-x-2}\), a cubic-over-
+cubic with non-real complex denominator roots, and a two-VA quartic
+\(\tfrac{x^2-16}{x^2+8x}\).
+
+- Extended the GraphBuilder helper with `asymptoteV` / `asymptoteH` (dashed
+  red/green guide lines), a `holeAt` open-circle method, and a `curve()`
+  variant that splits sampling around discontinuities so the curve doesn't
+  draw across a vertical asymptote.
+- Linked from `index.html`.
+
+### New HTML Deck - 2.6 Fundamental Theorem of Algebra
+
+Added `2.6-fundamental-theorem-of-algebra.html`, 9 slides covering the FTA
+statement with the linear-factorization corollary, a cubic complete-
+factorization example \(x^3 + x^2 - 4x + 6\) requiring quadratic-formula
+closure with complex roots, a quintic with a missing \(x^4\) term whose
+zeros include a double rational root and a pure-imaginary conjugate pair
+\(\pm 3i\), the complex-conjugate and irrational-conjugate zero theorems,
+a build-cubic from \(2,\sqrt{3}\) with \(g(4)=13\), a build-cubic from
+\(2,1-i\) with \(f(1)=3\), and a quartic with a given complex zero
+\(1+3i\) — long-divided by \(x^2-2x+10\) to reveal the second conjugate
+pair \(2\pm 5i\).
+
+- Reuses the `.synth` table styling from 2.4 for synthetic-division
+  layouts.
+- Linked from `index.html`.
+
+### New HTML Deck - 2.5 Complex Numbers
+
+Added `2.5-complex-numbers.html`, 14 slides covering the nested number-set
+hierarchy (Natural ⊂ Whole ⊂ Integer ⊂ Rational ⊂ Real ⊂ Complex, with
+Irrational and Imaginary as sibling sets at their levels), the standard form
+\(a + bi\), five arithmetic examples (sum-to-zero, sign distribution,
+monomial × binomial, binomial squared, and a radical-conversion product),
+complex conjugates and their real-valued product, dividing complex numbers
+by conjugation, two quadratic equations with complex roots (\(2x^2 + 50 = 0\)
+and \(5x^2 + 2x + 1 = 0\)), and building a quadratic from a complex zero
+pair \(3 \pm 2i\) using the conjugate-pair difference-of-squares trick.
+
+- Number-set diagram is a single nested-rectangle SVG with distinct colors
+  per set.
+- Linked from `index.html`.
+
+### New HTML Deck - 2.4 Dividing Polynomials
+
+Added `2.4-dividing-polynomials.html`, 14 slides covering the polynomial
+division algorithm (with integer-division analogy), two long-division
+examples (linear divisor and quadratic divisor), the mechanism of synthetic
+division, four synthetic-division examples — \((2x^3-3x^2-4x+2) \div (x+2)\),
+\(P(x) = 2x^4 - 8x^2 + 5x - 7\) divided by \((x-3)\) to demonstrate the
+Remainder Theorem, evaluating \(f(-1)\) via synthetic division, and verifying
+\((x-2)\) and \((x+3)\) as factors of \(2x^4 + 7x^3 - 4x^2 - 27x - 18\) —
+then the Remainder & Factor Theorems reference, the Rational Zero Theorem,
+and two zero-finding examples (factor-by-grouping cubic and an
+irrational-root cubic requiring the quadratic formula).
+
+- Introduces a `.synth` table style for synthetic-division layouts: red
+  divisor cell, products row in muted gray, bottom-row result with the
+  remainder cell highlighted in amber/red.
+- Reuses the standard shared-assets pattern (no new graph helper needed
+  since 2.4 is algebraic, not graphical).
+- Linked from `index.html`.
+
+### New HTML Deck - 2.3 Zeros of Polynomial Functions
+
+Added `2.3-zeros-of-polynomial-functions.html`, 13 slides covering the unifying
+vocabulary (zero / root / solution / factor / x-intercept), four factor-and-
+sketch examples — \(x^3-x^2-2x\), \((x-2)^2(x+2)\) with a tangent double-root,
+\(-2x^4-x^3+3x^2\) with a tangent at the origin, and the quadratic-type
+\(x^4-12x^2+27\) — two reverse-engineering examples (clearing fractional
+zeros and pairing conjugate radicals), the Intermediate Value Theorem with a
+diagrammatic explainer, an IVT application on \(x^4-4x+1\), and a visual
+confirmation graph showing the sign change.
+
+- Reuses the same `GraphBuilder` helper from 2.2 (and the trig decks) for
+  dense, gridded math graphs.
+- Linked from `index.html`.
+
+## 2026-05-11
+
+### New HTML Deck - 2.2 Graphs of Polynomial Functions
+
+Added `2.2-graphs-of-polynomial-functions.html`, 15 slides covering continuity
+& smoothness (four-panel example/counter-example diagram), monomial behavior
+(\(x^n\) for \(n=1..4\)), two factored-form warm-up sketches (quadratic and
+cubic), the zeros/turning-points ceiling, the four-case Leading Coefficient
+Test reference table (with inline sample SVGs), multiplicity (cross vs.
+tangent with mini-graphs), and the source PDF's seven examples — the \(-3x^4\)
+multiple choice, two end-behavior identifications, two factored-form sketches,
+the dual turning-point count, and writing the equation of a degree-4
+polynomial from its graph.
+
+- Uses the same shared-asset pattern as 2.1.
+- Reuses the deck-level pattern of stroke-only SVG classes + fill-only label
+  classes so text never renders outlined.
+- Linked from `index.html`.
+
+### New HTML Deck - 2.1 Quadratic Functions
+
+Added `2.1-quadratic-functions.html`, the first deck for Unit 2 (Polynomial &
+Rational Functions). Built on the shared-assets pattern (`assets/slides-core.css`
++ `assets/slides-core.js`), matching the 6.7 canonical reference.
+
+- 11 slides covering: polynomial classification by degree (constant through
+  quartic), anatomy of a parabola (custom labeled SVG with vertex, axis of
+  symmetry, intercepts), vertex form vs. standard form (key features table),
+  completing-the-square procedure, and four worked examples — convert to vertex
+  form & sketch, build the equation from vertex + point, taco-truck min-cost
+  application, and the quadratic-type substitution \(x^6+7x^3=8\).
+- Mirrors the original Hoff Math student handout (`original_notes/2.1
+  Quadratic Functions STUDENT.pdf`) so blanks/structure stay teacher-familiar.
+- Linked from `index.html` under a new Unit 2 section.
+
 ## 2026-04-22
 
 ### New HTML Deck - 5.3 Amplitude-Phase Form

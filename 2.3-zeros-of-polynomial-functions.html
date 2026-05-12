@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.3 - Zeros of Polynomial Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        .two-up-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: 0.55rem;
+        }
+        .two-up-block .ps-cell {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.85em;
+            font-size: 0.84em;
+            line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+            .two-up-block { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.3 Zeros of Polynomial Functions</div>
+    <div class="title-objective">Objective: Translate freely between five names for the same idea (zero, root, factor, \(x\)-intercept, solution), sketch polynomials from factored form, build a polynomial from given zeros, and use the Intermediate Value Theorem to locate hidden zeros.</div>
+    <div class="identity-chips">
+        <span class="chip">zeros</span>
+        <span class="chip">roots</span>
+        <span class="chip">factors</span>
+        <span class="chip">intercepts</span>
+        <span class="chip">IVT</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Vocabulary ===================== -->
+<section class="slide grid-bg" id="slide-1" data-steps="5">
+    <div class="slide-header">
+        <div class="ref-label">Vocabulary</div>
+        <div class="slide-title">Five Names, One Idea</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When the polynomial \(f(x)\) equals zero at \(x = a\), five different vocabulary words describe the same fact — depending on what object we're naming.</div>
+        <ul class="notes-list">
+            <li>\(x = a\) is a
+                <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">zero</span></span>
+                of the <strong>function</strong> \(f(x)\).
+            </li>
+            <li>\(x = a\) is a
+                <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">solution</span></span>
+                of the polynomial <strong>equation</strong> \(f(x) = 0\).
+            </li>
+            <li>\((x - a)\) is a
+                <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">factor</span></span>
+                of the <strong>polynomial</strong> \(f(x)\).
+            </li>
+            <li>\((a,\, 0)\) is an
+                <span class="fb" id="slide-1-step-3"><span class="fb-blank">________________</span><span class="fb-answer">\(x\)-intercept</span></span>
+                of the <strong>graph</strong> of \(f(x)\).
+            </li>
+            <li>Sometimes zeros are called
+                <span class="fb" id="slide-1-step-4"><span class="fb-blank">________</span><span class="fb-answer">roots</span></span>.
+            </li>
+        </ul>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Same Number, Different Object</div>
+                <div class="card-copy">All five expressions name the value \(a\). The vocabulary just changes when we change <em>what</em> we're talking about — function, equation, polynomial, or graph.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Read the Question Carefully</div>
+                <div class="card-copy">If the problem says "find the roots," "find the zeros," "find the solutions," or "find the \(x\)-intercepts" — it is asking for the same thing.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Bridge to Factoring</div>
+                <div class="card-copy">If \(a\) is a zero, then \((x - a)\) divides the polynomial. This connects the algebra of factoring to the geometry of crossing the \(x\)-axis.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Example 1 ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">\(f(x) = x^3 - x^2 - 2x\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the zeros, \(y\)-intercept, and end behavior to sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor</div>
+                    <div class="step-math">\[f(x) = x(x^2 - x - 2) = x(x - 2)(x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Zeros (each multiplicity 1)</div>
+                    <div class="step-math">\[x = 0,\; x = 2,\; x = -1 \quad(\text{all crossings})\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — \(y\)-intercept and end behavior</div>
+                    <div class="step-copy">\(f(0) = 0\), so the graph passes through the origin. Degree \(3\), leading coefficient \(+1\) &rArr; <strong>left &darr;, right &uarr;</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Sign check</div>
+                    <div class="step-copy">Between zeros, pick a test value: \(f(-2) &lt; 0\), \(f(-0.5) &gt; 0\), \(f(1) &lt; 0\), \(f(3) &gt; 0\). The curve weaves across the axis at each zero.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex1" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Cubic with zeros at negative 1, 0, and 2; left arm down, right arm up."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 2 ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">\(g(x) = x^3 - 2x^2 - 4x + 8\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the zeros, \(y\)-intercept, and end behavior to sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor by grouping</div>
+                    <div class="step-math">\[g(x) = x^2(x - 2) - 4(x - 2) = (x^2 - 4)(x - 2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Finish factoring</div>
+                    <div class="step-math">\[g(x) = (x - 2)(x + 2)(x - 2) = (x - 2)^2 (x + 2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Zeros and multiplicities</div>
+                    <div class="step-math">\[x = 2\;\; (\text{mult } 2,\text{ tangent}), \qquad x = -2\;\; (\text{mult } 1,\text{ crosses})\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — \(y\)-intercept</div>
+                    <div class="step-math">\[g(0) = 8 \quad\Rightarrow\quad (0,\, 8)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — End behavior</div>
+                    <div class="step-copy">Degree \(3\), leading coefficient \(+1\) &rArr; <strong>left &darr;, right &uarr;</strong>. The double root at \(x = 2\) means the curve touches and bounces back instead of crossing.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex2" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Cubic crossing at negative 2 and tangent to x-axis at 2."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Example 3 ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">\(f(x) = -2x^4 - x^3 + 3x^2\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the zeros, \(y\)-intercept, and end behavior to sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor out the GCF</div>
+                    <div class="step-math">\[f(x) = -x^2(2x^2 + x - 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Factor the trinomial</div>
+                    <div class="step-math">\[f(x) = -x^2(2x + 3)(x - 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Zeros and multiplicities</div>
+                    <div class="step-math">\[x = 0\;\;(\text{mult } 2), \qquad x = -\tfrac{3}{2}, \qquad x = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — End behavior and y-intercept</div>
+                    <div class="step-copy">Degree \(4\), leading coefficient \(-2\) &rArr; <strong>both ends &darr;</strong>. The double zero at the origin means the graph is tangent there. \(f(0) = 0\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex3" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Quartic with zeros at negative three-halves, tangent at the origin, and crossing at 1."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 4 ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">\(f(x) = x^4 - 12x^2 + 27\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the zeros, \(y\)-intercept, and end behavior to sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Quadratic-type substitution</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[\text{Let } u = x^2:\quad u^2 - 12u + 27 = 0\]</div>
+                        <div class="annotation">Exponents follow the quadratic-type pattern (4 is twice 2).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Factor and solve for \(u\)</div>
+                    <div class="step-math">\[(u - 3)(u - 9) = 0 \;\Longrightarrow\; u = 3 \;\text{ or }\; u = 9\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Back-substitute \(u = x^2\)</div>
+                    <div class="step-math">\[x^2 = 3 \;\Rightarrow\; x = \pm\sqrt{3}, \qquad x^2 = 9 \;\Rightarrow\; x = \pm 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — End behavior and \(y\)-intercept</div>
+                    <div class="step-copy">Degree \(4\), leading coefficient \(+1\) &rArr; <strong>both ends &uarr;</strong>. \(f(0) = 27\) — a tall \(y\)-intercept. Four distinct zeros: \(\pm\sqrt{3} \approx \pm 1.73\) and \(\pm 3\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex4" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Quartic with four zeros at plus or minus root 3 and plus or minus 3."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Concept — Reverse engineering ===================== -->
+<section class="slide grid-bg" id="slide-6">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Build a Polynomial from Its Zeros</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Reverse the process. If a polynomial has zeros \(r_1, r_2, \dots, r_n\), then we can construct it as a product of factors.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">construction</div>
+                <div class="fn-eq-stack">
+                    <div>\[f(x) = a\,(x - r_1)(x - r_2)\cdots(x - r_n)\]</div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Repeated Zero</div>
+                <div class="card-copy">A zero \(r\) listed twice contributes a factor \((x - r)^2\). The exponent is the multiplicity.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Fractional Zero</div>
+                <div class="card-copy">If a zero is \(-\tfrac{1}{2}\), use the factor \((2x + 1)\) instead of \((x + \tfrac{1}{2})\) to keep the coefficients whole.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Conjugate Radicals</div>
+                <div class="card-copy">If \(2 + \sqrt{3}\) is a zero, then so is \(2 - \sqrt{3}\). Multiplying conjugate factors gives a clean quadratic with rational coefficients.</div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Leading Coefficient</div>
+            <div class="note-copy">Without more information, set \(a = 1\). Use \(a\) to scale the function or fix its sign if additional conditions are given (a known point, end behavior, etc.).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 5 ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Zeros: \(-\tfrac{1}{2},\; 3,\; 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an equation of a polynomial function with the given zeros.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Turn each zero into a factor</div>
+                    <div class="step-math">\[\left(x + \tfrac{1}{2}\right),\quad (x - 3),\quad (x - 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Clear the fraction</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[\left(x + \tfrac{1}{2}\right) \cdot 2 = (2x + 1)\]</div>
+                        <div class="annotation">Multiplying a single factor by 2 only rescales the polynomial — it doesn't change the zeros.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Multiply out</div>
+                    <div class="step-math">\[f(x) = (2x + 1)(x - 3)^2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Expanded Form</div>
+                    <div class="step-math">\[f(x) = 2x^3 - 11x^2 + 12x + 9\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 6 ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Zeros: \(3,\; 2 + \sqrt{3},\; 2 - \sqrt{3}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an equation of a polynomial function with the given zeros.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Turn each zero into a factor</div>
+                    <div class="step-math">\[(x - 3),\quad \bigl(x - (2 + \sqrt{3})\bigr),\quad \bigl(x - (2 - \sqrt{3})\bigr)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Multiply the conjugate pair first</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[\bigl(x - (2 + \sqrt{3})\bigr)\bigl(x - (2 - \sqrt{3})\bigr) = \bigl((x - 2) - \sqrt{3}\bigr)\bigl((x - 2) + \sqrt{3}\bigr)\]</div>
+                        <div class="annotation">Group \((x - 2)\) together — the square roots will cancel via the difference-of-squares pattern.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Apply \((A - B)(A + B) = A^2 - B^2\)</div>
+                    <div class="step-math">\[= (x - 2)^2 - 3 = x^2 - 4x + 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Multiply by the remaining factor</div>
+                    <div class="step-math">\[f(x) = (x - 3)(x^2 - 4x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Expanded Form</div>
+                    <div class="step-math">\[f(x) = x^3 - 7x^2 + 13x - 3\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Concept — IVT ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Intermediate Value Theorem</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A continuous function cannot jump over the \(x\)-axis. If the function is positive at one place and negative at another, it must hit zero somewhere in between.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">statement</div>
+                <div class="fn-eq-stack">
+                    <div>If \(f\) is a polynomial and
+                        <span class="fb" id="slide-9-step-0"><span class="fb-blank">________________</span><span class="fb-answer">\(f(a) &lt; 0\)</span></span>
+                        while
+                        <span class="fb" id="slide-9-step-1"><span class="fb-blank">________________</span><span class="fb-answer">\(f(b) &gt; 0\)</span></span>
+                        (or vice versa), then \(f\) <strong>has at least one zero</strong> between \(a\) and \(b\).
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Picture</div>
+                <svg id="g-ivt" class="mini-graph" viewBox="0 0 260 180" role="img" aria-label="IVT diagram: continuous curve dropping from positive to negative crosses the x-axis at some point c."></svg>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">What It Proves</div>
+                <div class="card-copy">A zero <em>exists</em> in the interval \((a, b)\). The theorem doesn't tell you <em>where</em>, only <em>that</em>.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">When It Fails</div>
+                <div class="card-copy">IVT needs a sign change. If \(f(a)\) and \(f(b)\) have the same sign, the test is inconclusive — zeros may still exist, but IVT won't find them.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Example 7 ===================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Use IVT on \(f(x) = x^4 - 4x + 1\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Show that there is at least one zero of \(f(x) = x^4 - 4x + 1\) between \(x = 0\) and \(x = 1\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Evaluate at the endpoints</div>
+                    <div class="step-math">\[f(0) = 0^4 - 4(0) + 1 = 1\]</div>
+                    <div class="step-math">\[f(1) = 1^4 - 4(1) + 1 = -2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Note the sign change</div>
+                    <div class="step-copy">\(f(0) = 1 &gt; 0\) and \(f(1) = -2 &lt; 0\). The function values have opposite signs.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Cite continuity</div>
+                    <div class="step-copy">\(f\) is a polynomial, so it is continuous everywhere — in particular on \([0, 1]\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion (by IVT)</div>
+                    <div class="step-copy" style="text-align:center;">Because \(f\) is continuous on \([0, 1]\) and \(f(0)\) and \(f(1)\) have opposite signs, there exists at least one \(c \in (0, 1)\) with \(f(c) = 0\). \(\square\)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Visual confirmation of Ex 7 ===================== -->
+<section class="slide grid-bg" id="slide-11">
+    <div class="slide-header">
+        <div class="concept-label">Visual</div>
+        <div class="slide-title">Where Does \(f(x) = x^4 - 4x + 1\) Cross?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The IVT proves the zero exists; the picture shows roughly where. Notice the sign change happens in the highlighted strip between \(x = 0\) and \(x = 1\).</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">\(f(x) = x^4 - 4x + 1\) on \([-1.5,\, 2]\)</div>
+            <svg id="g-ex7" class="mini-graph" viewBox="0 0 540 280" role="img" aria-label="Graph of x to the fourth minus 4x plus 1, showing the sign change between 0 and 1."></svg>
+            <div class="diagram-caption">\(f(0) = 1\) (above the axis); \(f(1) = -2\) (below). The continuous curve must cross zero somewhere in between.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 12: Review ===================== -->
+<section class="slide grid-bg" id="slide-12">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to confirm you've mastered the section.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Translate the Vocabulary</div>
+                <div class="card-copy">Move freely between <em>zero</em>, <em>root</em>, <em>solution</em>, <em>factor</em>, and <em>\(x\)-intercept</em> — five words for the same number.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Sketch From Factors</div>
+                <div class="card-copy">Factor a polynomial, identify the multiplicity at each zero, anchor the \(y\)-intercept, and use end behavior to sweep the arms.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Recognize Quadratic Type</div>
+                <div class="card-copy">When you see \(x^4 - 12x^2 + 27\) or similar, substitute \(u = x^2\) and solve the quadratic for \(u\), then back-substitute.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Build From Zeros</div>
+                <div class="card-copy">Convert each zero into a factor, multiply, and clear fractions or radicals by pairing conjugates.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Pair Conjugate Radicals</div>
+                <div class="card-copy">Multiply \((x - (p + \sqrt{q}))(x - (p - \sqrt{q})) = (x - p)^2 - q\) — a tidy quadratic with no radicals.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Apply IVT</div>
+                <div class="card-copy">Check that \(f\) is continuous, find a sign change \(f(a) \cdot f(b) &lt; 0\), and conclude that a zero must live in \((a, b)\).</div>
+            </div>
+        </div>
+        <div class="formula-note">Every "find the zeros" question is the same: factor, then read each factor as a zero. Every "build the polynomial" question is the reverse: read each zero as a factor, then multiply.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview', slideId: 'slide-0' },
+            { label: 'Vocab',    slideId: 'slide-1' },
+            { label: 'Sketches', slideId: 'slide-2' },
+            { label: 'Build',    slideId: 'slide-6' },
+            { label: 'IVT',      slideId: 'slide-9' },
+            { label: 'Review',   slideId: 'slide-12' }
+        ]
+    });
+</script>
+
+<!-- ============================================================
+     Math-graph rendering (borrowed GraphBuilder; same conventions
+     as 2.2 and the trig decks).
+     ============================================================ -->
+<script>
+    class GraphBuilder {
+        constructor(svgId, viewBox) {
+            this.svg = document.getElementById(svgId);
+            if (!this.svg) return;
+            this.ns = 'http://www.w3.org/2000/svg';
+            const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+            this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+        }
+        setCoords(xMin, xMax, yMin, yMax, padL, padR, padT, padB) {
+            this.mathXMin = xMin; this.mathXMax = xMax;
+            this.mathYMin = yMin; this.mathYMax = yMax;
+            this.svgXMin = padL; this.svgXMax = this.vbW - padR;
+            this.svgYMin = padT; this.svgYMax = this.vbH - padB;
+        }
+        mx(v) { return this.svgXMin + (v - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+        my(v) { return this.svgYMax - (v - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
+        addGrid(spacing) {
+            const pat = document.createElementNS(this.ns, 'pattern');
+            const id  = 'grid-' + Math.random().toString(36).slice(2, 7);
+            pat.setAttribute('id', id);
+            pat.setAttribute('width',  spacing || 40);
+            pat.setAttribute('height', spacing || 40);
+            pat.setAttribute('patternUnits', 'userSpaceOnUse');
+            const p = document.createElementNS(this.ns, 'path');
+            p.setAttribute('d', `M ${spacing || 40} 0 L 0 0 0 ${spacing || 40}`);
+            p.setAttribute('fill', 'none');
+            p.setAttribute('stroke', '#e2e8f0');
+            p.setAttribute('stroke-width', '0.6');
+            pat.appendChild(p);
+            this.svg.appendChild(pat);
+            const r = document.createElementNS(this.ns, 'rect');
+            r.setAttribute('x', this.svgXMin);
+            r.setAttribute('y', this.svgYMin);
+            r.setAttribute('width',  this.svgXMax - this.svgXMin);
+            r.setAttribute('height', this.svgYMax - this.svgYMin);
+            r.setAttribute('fill', `url(#${id})`);
+            this.svg.appendChild(r);
+        }
+        line(x1, y1, x2, y2, color, w, dash) {
+            const l = document.createElementNS(this.ns, 'line');
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', color || '#1a365d');
+            l.setAttribute('stroke-width', w || 1);
+            if (dash) l.setAttribute('stroke-dasharray', dash);
+            this.svg.appendChild(l);
+            return l;
+        }
+        addAxes() {
+            const originY = this.my(0), originX = this.mx(0);
+            const ax = Math.max(this.svgYMin, Math.min(this.svgYMax, originY));
+            this.line(this.svgXMin, ax, this.svgXMax, ax, '#334155', 1.5);
+            const ay = Math.max(this.svgXMin, Math.min(this.svgXMax, originX));
+            this.line(ay, this.svgYMin, ay, this.svgYMax, '#334155', 1.5);
+            const arrow = (x, y, dir) => {
+                const p = document.createElementNS(this.ns, 'polygon');
+                let pts;
+                if (dir === 'right') pts = `${x},${y} ${x-7},${y-4} ${x-7},${y+4}`;
+                else if (dir === 'up')  pts = `${x},${y} ${x-4},${y+7} ${x+4},${y+7}`;
+                p.setAttribute('points', pts);
+                p.setAttribute('fill', '#334155');
+                this.svg.appendChild(p);
+            };
+            arrow(this.svgXMax, ax, 'right');
+            arrow(ay, this.svgYMin, 'up');
+        }
+        point(mx, my, color, r) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r',  r || 4.5);
+            c.setAttribute('fill', color || '#2563eb');
+            c.setAttribute('stroke', 'white');
+            c.setAttribute('stroke-width', '1.5');
+            this.svg.appendChild(c);
+            return c;
+        }
+        label(x, y, text, opts) {
+            const t = document.createElementNS(this.ns, 'text');
+            t.setAttribute('x', x); t.setAttribute('y', y);
+            t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+            t.setAttribute('font-size',   (opts && opts.size)   || '11');
+            t.setAttribute('fill',        (opts && opts.color)  || '#64748b');
+            t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+            if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+            t.textContent = text;
+            this.svg.appendChild(t);
+            return t;
+        }
+        addXLabels(labels) {
+            labels.forEach(lb => {
+                const sx = this.mx(lb.val);
+                const sy = Math.max(this.svgYMin + 12, Math.min(this.svgYMax - 4, this.my(0) + 14));
+                this.label(sx, sy, lb.text, { size: '11', anchor: 'middle', color: '#64748b' });
+            });
+        }
+        addYLabels(labels) {
+            labels.forEach(lb => {
+                const sx = Math.max(this.svgXMin + 4, Math.min(this.svgXMax - 4, this.mx(0) - 6));
+                this.label(sx, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end', color: '#64748b' });
+            });
+        }
+        curve(f, xStart, xEnd, steps, color, width) {
+            const segs = []; let seg = [];
+            const n = steps || 500;
+            const yRange = this.mathYMax - this.mathYMin;
+            const clip = yRange * 2;
+            for (let i = 0; i <= n; i++) {
+                const mx = xStart + (i / n) * (xEnd - xStart);
+                const my = f(mx);
+                if (!isFinite(my) || Math.abs(my) > Math.max(Math.abs(this.mathYMin), Math.abs(this.mathYMax)) + clip) {
+                    if (seg.length >= 2) segs.push(seg);
+                    seg = [];
+                    continue;
+                }
+                seg.push([this.mx(mx), this.my(my)]);
+            }
+            if (seg.length >= 2) segs.push(seg);
+            segs.forEach(s => {
+                let d = 'M ' + s[0][0].toFixed(2) + ' ' + s[0][1].toFixed(2);
+                for (let i = 1; i < s.length; i++) d += ' L ' + s[i][0].toFixed(2) + ' ' + s[i][1].toFixed(2);
+                const p = document.createElementNS(this.ns, 'path');
+                p.setAttribute('d', d);
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', color || '#2563eb');
+                p.setAttribute('stroke-width', width || 2.6);
+                p.setAttribute('stroke-linecap',  'round');
+                p.setAttribute('stroke-linejoin', 'round');
+                this.svg.appendChild(p);
+            });
+        }
+    }
+
+    function build(id, viewBox, cfg) {
+        const g = new GraphBuilder(id, viewBox);
+        if (!g.svg) return;
+        const padL = cfg.padL != null ? cfg.padL : 22;
+        const padR = cfg.padR != null ? cfg.padR : 18;
+        const padT = cfg.padT != null ? cfg.padT : 14;
+        const padB = cfg.padB != null ? cfg.padB : 22;
+        g.setCoords(cfg.xMin, cfg.xMax, cfg.yMin, cfg.yMax, padL, padR, padT, padB);
+        if (cfg.grid !== false) g.addGrid(cfg.gridSpacing || 40);
+        g.addAxes();
+        if (cfg.xticks) g.addXLabels(cfg.xticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        if (cfg.yticks) g.addYLabels(cfg.yticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        g.curve(cfg.fn, cfg.xMin, cfg.xMax, cfg.steps || 400, cfg.color || '#2563eb', cfg.width || 2.6);
+        (cfg.zeros || []).forEach(x => g.point(x, 0, '#16a34a', 4.5));
+        if (cfg.yint != null) g.point(0, cfg.yint, '#2563eb', 4);
+        (cfg.points || []).forEach(p => g.point(p.x, p.y, p.color || '#dc2626', p.r || 4.5));
+        (cfg.labels || []).forEach(l => g.label(
+            g.mx(l.x), g.my(l.y), l.text,
+            { color: l.color || '#0f172a', size: l.size || '12',
+              anchor: l.anchor || 'start', weight: l.weight || '600' }
+        ));
+        return g;
+    }
+
+    function buildAll() {
+        // Ex 1 — f(x) = x^3 - x^2 - 2x = x(x+1)(x-2). Zeros: -1, 0, 2
+        build('g-ex1', null, {
+            fn: x => x*x*x - x*x - 2*x,
+            xMin: -2.5, xMax: 3.5, yMin: -4, yMax: 4,
+            xticks: [-2, -1, 1, 2, 3],
+            yticks: [-3, -2, -1, 1, 2, 3],
+            zeros: [-1, 0, 2]
+        });
+        // Ex 2 — g(x) = (x-2)^2(x+2). Zeros: -2 (cross), 2 (tangent)
+        build('g-ex2', null, {
+            fn: x => Math.pow(x-2,2)*(x+2),
+            xMin: -3, xMax: 4, yMin: -6, yMax: 12,
+            xticks: [-3, -2, -1, 1, 2, 3],
+            yticks: [-4, 4, 8],
+            zeros: [-2, 2], yint: 8
+        });
+        // Ex 3 — f(x) = -2x^4 - x^3 + 3x^2 = -x^2(2x+3)(x-1). Zeros: -3/2, 0 (tangent), 1
+        build('g-ex3', null, {
+            fn: x => -2*x*x*x*x - x*x*x + 3*x*x,
+            xMin: -2.2, xMax: 1.6, yMin: -4, yMax: 2.5,
+            xticks: [{ val: -1.5, text: '-3/2' }, { val: -1, text: '-1' }, { val: 1, text: '1' }],
+            yticks: [-3, -2, -1, 1, 2],
+            zeros: [-1.5, 0, 1]
+        });
+        // Ex 4 — f(x) = x^4 - 12x^2 + 27 = (x^2-3)(x^2-9). Zeros: ±√3, ±3; y-int 27
+        build('g-ex4', null, {
+            fn: x => x*x*x*x - 12*x*x + 27,
+            xMin: -3.8, xMax: 3.8, yMin: -12, yMax: 30,
+            xticks: [-3, { val: -Math.sqrt(3), text: '-√3' }, { val: Math.sqrt(3), text: '√3' }, 3],
+            yticks: [-9, 9, 18, 27],
+            zeros: [-3, -Math.sqrt(3), Math.sqrt(3), 3], yint: 27
+        });
+        // IVT diagram (slide 9): a monotonic cubic crossing zero at the origin.
+        // a < 0 → f(a) < 0 (below axis); b > 0 → f(b) > 0 (above axis); c = 0.
+        const ivtFn = x => 0.5 * x * x * x + 0.2 * x;
+        build('g-ivt', null, {
+            fn: ivtFn,
+            xMin: -1.7, xMax: 1.7, yMin: -1.5, yMax: 1.5,
+            xticks: [{ val: -1.2, text: 'a' }, { val: 0, text: 'c' }, { val: 1.2, text: 'b' }],
+            grid: false, padL: 36, padR: 18, padT: 12, padB: 24,
+            color: '#2563eb'
+        });
+        // f(a) / f(b) callouts: dashed dropdowns + y-axis labels
+        (function () {
+            const g = new GraphBuilder('g-ivt', null);
+            if (!g.svg) return;
+            g.setCoords(-1.7, 1.7, -1.5, 1.5, 36, 18, 12, 24);
+            const ax = -1.2, bx = 1.2;
+            const ay = ivtFn(ax), by = ivtFn(bx);
+            // dashed verticals (from x-axis to curve)
+            g.line(g.mx(ax), g.my(0), g.mx(ax), g.my(ay), '#dc2626', 1.2, '4 3');
+            g.line(g.mx(bx), g.my(0), g.mx(bx), g.my(by), '#dc2626', 1.2, '4 3');
+            // dashed horizontals (from curve to y-axis)
+            g.line(g.mx(ax), g.my(ay), g.mx(0), g.my(ay), '#dc2626', 1.2, '4 3');
+            g.line(g.mx(bx), g.my(by), g.mx(0), g.my(by), '#dc2626', 1.2, '4 3');
+            // points where the curve crosses the verticals
+            g.point(ax, ay, '#dc2626', 3.5);
+            g.point(bx, by, '#dc2626', 3.5);
+            // y-axis value labels (left of the axis)
+            g.label(g.mx(0) - 6, g.my(ay) + 4, 'f(a)', { size: 12, color: '#dc2626', anchor: 'end', weight: 600 });
+            g.label(g.mx(0) - 6, g.my(by) + 4, 'f(b)', { size: 12, color: '#dc2626', anchor: 'end', weight: 600 });
+            // zero at c = 0
+            g.point(0, 0, '#16a34a', 5);
+        })();
+        // Slide 11 visual confirmation: f(x) = x^4 - 4x + 1
+        build('g-ex7', null, {
+            fn: x => x*x*x*x - 4*x + 1,
+            xMin: -1.5, xMax: 2, yMin: -4, yMax: 8,
+            xticks: [-1, 1, 2],
+            yticks: [-3, 1, 3, 6],
+            color: '#2563eb'
+        });
+        // Highlight strip + key points on g-ex7
+        (function () {
+            const g = new GraphBuilder('g-ex7', null);
+            if (!g.svg) return;
+            g.setCoords(-1.5, 2, -4, 8, 22, 18, 14, 22);
+            // shaded band from x=0 to x=1
+            const NS = 'http://www.w3.org/2000/svg';
+            const rect = document.createElementNS(NS, 'rect');
+            rect.setAttribute('x', g.mx(0));
+            rect.setAttribute('y', g.svgYMin);
+            rect.setAttribute('width', g.mx(1) - g.mx(0));
+            rect.setAttribute('height', g.svgYMax - g.svgYMin);
+            rect.setAttribute('fill', '#fde68a');
+            rect.setAttribute('opacity', '0.35');
+            g.svg.insertBefore(rect, g.svg.firstChild);
+            // mark (0, 1) and (1, -2)
+            g.point(0, 1, '#16a34a', 5);
+            g.point(1, -2, '#dc2626', 5);
+            g.label(g.mx(0) + 8, g.my(1) - 6, 'f(0) = 1', { color: '#15803d', weight: 700, size: 13, anchor: 'start' });
+            g.label(g.mx(1) + 8, g.my(-2) + 18, 'f(1) = −2', { color: '#b91c1c', weight: 700, size: 13, anchor: 'start' });
+        })();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+</script>
+</body>
+</html>

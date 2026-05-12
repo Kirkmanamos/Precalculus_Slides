@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.7 - Rational Functions and Asymptotes</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        /* Gallery of rational-function shapes */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.55rem;
+        }
+        .gallery .gallery-cell {
+            background: white;
+            border: 1px solid var(--slate-line);
+            border-radius: 10px;
+            padding: 0.4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .gallery .gallery-label {
+            font-size: 0.7em;
+            font-weight: 700;
+            color: var(--navy);
+            text-align: center;
+        }
+        @media (max-width: 900px) {
+            .gallery { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* Two-up problem statement */
+        .two-up-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: 0.55rem;
+        }
+        .two-up-block .ps-cell {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.85em;
+            font-size: 0.84em;
+            line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+            .two-up-block { grid-template-columns: 1fr; }
+        }
+        /* Compact "find asymptotes" table */
+        .asym-table { width: 100%; }
+        .asym-table td:first-child { font-weight: 700; color: var(--navy); width: 22%; }
+        .asym-table .blank-cell {
+            background: var(--blue-light);
+            font-weight: 600;
+            color: var(--blue-accent);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.7 Rational Functions and Asymptotes</div>
+    <div class="title-objective">Objective: Identify the domain, vertical and horizontal asymptotes, holes, and intercepts of any rational function by factoring its numerator and denominator and comparing degrees.</div>
+    <div class="identity-chips">
+        <span class="chip">rational function</span>
+        <span class="chip">vertical asymptote</span>
+        <span class="chip">horizontal asymptote</span>
+        <span class="chip">hole</span>
+        <span class="chip">degree comparison</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: What is a Rational Function ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">What is a Rational Function?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A rational function is a quotient of two polynomials. The denominator cannot equal zero — the points where it does are excluded from the domain.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">simple form</div>
+                <div class="fn-eq-stack">
+                    <div>\[y = \dfrac{a}{x - h} + k\]</div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">standard form</div>
+                <div class="fn-eq-stack">
+                    <div>\[f(x) = \dfrac{g(x)}{h(x)}\quad\text{with}\quad h(x) \neq 0\]</div>
+                </div>
+            </div>
+        </div>
+        <div class="two-up-block">
+            <div class="ps-cell" style="background:white;border-left-color:var(--teal-accent);">
+                <div style="font-weight:700;color:var(--teal-accent);margin-bottom:0.3em;">Parent Function</div>
+                <div style="text-align:center;font-size:1.05em;">\(f(x) = \dfrac{1}{x},\quad x \neq 0\)</div>
+                <svg id="g-parent" class="mini-graph" viewBox="0 0 280 200" role="img" aria-label="Graph of f of x equals 1 over x, a hyperbola with two branches."></svg>
+            </div>
+            <div class="ps-cell" style="background:white;border-left-color:var(--navy);">
+                <div style="font-weight:700;color:var(--navy);margin-bottom:0.3em;">Properties of \(f(x) = \tfrac{1}{x}\)</div>
+                <ul style="font-size:0.84em; line-height:1.7; padding-left:1.1em;">
+                    <li>Type of graph: <strong>hyperbola</strong></li>
+                    <li>Domain: \(\{x \in \mathbb{R} : x \neq 0\}\)</li>
+                    <li>Range: \(\{y \in \mathbb{R} : y \neq 0\}\)</li>
+                    <li>Decreasing on \((-\infty, 0)\) and \((0, \infty)\)</li>
+                    <li><strong>Odd</strong> function: \(f(-x) = -f(x)\)</li>
+                    <li>Symmetric about the <strong>origin</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Gallery of Shapes ===================== -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">A Gallery of Rational Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Different combinations of numerator and denominator produce wildly different shapes. Each shape is decoded by the same recipe — factor, then compare.</div>
+        <div class="gallery">
+            <div class="gallery-cell">
+                <div class="gallery-label">\(y = \dfrac{3x}{x + 1}\)</div>
+                <svg id="g-gal-1" viewBox="0 0 200 160" role="img" aria-label="Rational function with one vertical asymptote and a horizontal asymptote at y equals 3."></svg>
+            </div>
+            <div class="gallery-cell">
+                <div class="gallery-label">\(y = \dfrac{x}{(x + 1)(x - 2)}\)</div>
+                <svg id="g-gal-2" viewBox="0 0 200 160" role="img" aria-label="Rational function with two vertical asymptotes and horizontal asymptote at y equals zero."></svg>
+            </div>
+            <div class="gallery-cell">
+                <div class="gallery-label">\(y = \dfrac{3}{x^2 + 1}\)</div>
+                <svg id="g-gal-3" viewBox="0 0 200 160" role="img" aria-label="A bell-shaped curve with no vertical asymptotes."></svg>
+            </div>
+            <div class="gallery-cell">
+                <div class="gallery-label">\(y = \dfrac{3}{(x + 1)^2}\)</div>
+                <svg id="g-gal-4" viewBox="0 0 200 160" role="img" aria-label="Rational function with a single vertical asymptote and both branches positive."></svg>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Linear / Linear</div>
+                <div class="card-copy">Single VA where the denominator is zero. Horizontal asymptote determined by leading-coefficient ratio.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Multiple Roots in Denom</div>
+                <div class="card-copy">Multiple distinct denominator roots create multiple vertical asymptotes; the graph splits into separate branches.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">No Real Roots in Denom</div>
+                <div class="card-copy">If the denominator is never zero (like \(x^2 + 1\)), there are no vertical asymptotes — the graph is everywhere continuous.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: VA & HA Definitions ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Vertical and Horizontal Asymptotes — Definitions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <ul class="notes-list">
+            <li>If \(f(x) \to \pm\infty\) as \(x \to a\) from the left or right, then \(x = a\) is a
+                <span class="fb" id="slide-3-step-0"><span class="fb-blank">________________</span><span class="fb-answer">vertical asymptote</span></span>.
+            </li>
+            <li>If \(f(x) \to a\) as \(x \to \pm\infty\), then the line \(y = a\) is a
+                <span class="fb" id="slide-3-step-1"><span class="fb-blank">________________</span><span class="fb-answer">horizontal asymptote</span></span>.
+            </li>
+        </ul>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Vertical Asymptotes</div>
+                <div class="card-copy">A vertical line the graph <strong>approaches but never touches</strong> as inputs get close to a forbidden value (a zero of the denominator that doesn't cancel).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Horizontal Asymptotes</div>
+                <div class="card-copy">A horizontal line the graph levels off toward as \(x\) heads to \(\pm\infty\). Describes the function's long-run behavior.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Difference From Crossings</div>
+                <div class="card-copy">A graph can <em>cross</em> its horizontal asymptote in the middle and still approach it at the ends — the rule is only about the limits at infinity.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Asymptotes & Holes Rules ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Asymptotes &amp; Holes — The Rules</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Compare degrees and look for shared factors. Every feature follows from one of these four rules.</div>
+        <div class="table-shell">
+            <table class="data-table asym-table">
+                <thead>
+                    <tr><th>Feature</th><th>Condition</th><th>How to Find</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Vertical Asymptote</td>
+                        <td>Values that make
+                            <span class="fb" id="slide-4-step-0"><span class="fb-blank">________</span><span class="fb-answer">only</span></span>
+                            the denominator zero
+                        </td>
+                        <td>Set the denominator equal to \(0\), solve.</td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2">Horizontal Asymptote</td>
+                        <td>deg(num)
+                            <span class="fb" id="slide-4-step-1"><span class="fb-blank">____</span><span class="fb-answer">\(&lt;\)</span></span>
+                            deg(denom)
+                        </td>
+                        <td>\(y = 0\)</td>
+                    </tr>
+                    <tr>
+                        <td>deg(num)
+                            <span class="fb" id="slide-4-step-2"><span class="fb-blank">____</span><span class="fb-answer">\(=\)</span></span>
+                            deg(denom)
+                        </td>
+                        <td>\(y = \dfrac{\text{leading coef. of num}}{\text{leading coef. of denom}}\)</td>
+                    </tr>
+                    <tr>
+                        <td>Hole</td>
+                        <td>Common factors in
+                            <span class="fb" id="slide-4-step-3"><span class="fb-blank">________</span><span class="fb-answer">both</span></span>
+                            numerator and denominator
+                        </td>
+                        <td>Set the common factor equal to \(0\), solve.</td>
+                    </tr>
+                    <tr>
+                        <td>Slant Asymptote</td>
+                        <td>deg(num)
+                            <span class="fb" id="slide-4-step-4"><span class="fb-blank">____</span><span class="fb-answer">\(&gt;\)</span></span>
+                            deg(denom) (by exactly 1)
+                        </td>
+                        <td>Synthetic / long division; the quotient (ignoring remainder) is the slant asymptote.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="formula-note">Order of operations matters: <strong>factor first</strong>, cancel common factors to expose holes, then read off VAs from what remains. Compare degrees of the <em>original</em> rational function for HAs.</div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 1 — Behavior Tables ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Domain and Behavior of \(f(x) = \dfrac{1}{x - 1}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the domain of \(f\) and discuss the behavior of \(f\) near any excluded \(x\)-values.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Domain</div>
+                    <div class="step-math">\[x - 1 \neq 0 \;\Longrightarrow\; x \neq 1\]</div>
+                    <div class="step-math">\[\text{Domain: } (-\infty,\, 1) \cup (1,\, \infty)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Approach from the left (\(x \to 1^-\))</div>
+                    <div class="table-shell">
+                        <table class="data-table" style="font-size:0.85em;">
+                            <thead><tr><th>\(x\)</th><th>0.9</th><th>0.99</th><th>0.999</th><th>\(\to 1^-\)</th></tr></thead>
+                            <tbody><tr><td>\(f(x)\)</td><td>\(-10\)</td><td>\(-100\)</td><td>\(-1000\)</td><td>\(\to -\infty\)</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Approach from the right (\(x \to 1^+\))</div>
+                    <div class="table-shell">
+                        <table class="data-table" style="font-size:0.85em;">
+                            <thead><tr><th>\(x\)</th><th>\(\to 1^+\)</th><th>1.001</th><th>1.01</th><th>1.1</th></tr></thead>
+                            <tbody><tr><td>\(f(x)\)</td><td>\(\to +\infty\)</td><td>\(1000\)</td><td>\(100\)</td><td>\(10\)</td></tr></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Picture &amp; Conclusion</div>
+                    <svg id="g-ex1" class="mini-graph" viewBox="0 0 380 220" role="img" aria-label="Hyperbola y equals 1 over x minus 1 with vertical asymptote at x equals 1 and horizontal asymptote at y equals 0."></svg>
+                    <div class="step-copy" style="text-align:center;">The graph has a vertical asymptote at \(x = 1\) and a horizontal asymptote at \(y = 0\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 2 — Two Simple Cases ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Find the Asymptotes and/or Holes</div>
+    </div>
+    <div class="slide-body">
+        <div class="two-up-block">
+            <div class="ps-cell"><strong>(a)</strong> \(f(x) = \dfrac{1}{2x}\)</div>
+            <div class="ps-cell"><strong>(b)</strong> \(f(x) = \dfrac{2x^2}{x^2 - 1}\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Analyze \(\dfrac{1}{2x}\)</div>
+                    <div class="step-copy" style="text-align:center;">Set denominator \(2x = 0 \Rightarrow x = 0\). Degree of numerator (\(0\)) is less than degree of denominator (\(1\)).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">(a) Result</div>
+                    <div class="step-math">\[\text{VA: } x = 0, \quad \text{HA: } y = 0, \quad \text{no hole}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">(b) Analyze \(\dfrac{2x^2}{x^2 - 1}\)</div>
+                    <div class="step-math">\[\dfrac{2x^2}{(x - 1)(x + 1)}\]</div>
+                    <div class="step-copy" style="text-align:center;">Denominator zeros at \(x = \pm 1\). No common factors with numerator. Degrees are equal: \(2 = 2\). HA = ratio of leading coefficients = \(2/1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">(b) Result</div>
+                    <div class="step-math">\[\text{VA: } x = 1,\, x = -1, \quad \text{HA: } y = 2, \quad \text{no hole}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 3 — With and Without Hole ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Find the Asymptotes and/or Holes</div>
+    </div>
+    <div class="slide-body">
+        <div class="two-up-block">
+            <div class="ps-cell"><strong>(a)</strong> \(f(x) = \dfrac{3x}{2x^2 + 1}\)</div>
+            <div class="ps-cell"><strong>(b)</strong> \(y = \dfrac{(x + 4)(x - 2)}{(x - 3)(x + 4)}\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Analyze \(\dfrac{3x}{2x^2 + 1}\)</div>
+                    <div class="step-copy" style="text-align:center;">Denominator: \(2x^2 + 1 \geq 1 &gt; 0\) for every real \(x\). Denominator is <strong>never zero</strong> &rArr; no VA.</div>
+                    <div class="step-copy" style="text-align:center;">Degree of numerator (\(1\)) is less than degree of denominator (\(2\)).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">(a) Result</div>
+                    <div class="step-math">\[\text{VA: none}, \quad \text{HA: } y = 0, \quad \text{no hole}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">(b) Factor and look for common factors</div>
+                    <div class="step-math">\[\dfrac{(x + 4)(x - 2)}{(x - 3)(x + 4)}\]</div>
+                    <div class="step-copy" style="text-align:center;">\((x + 4)\) appears in both — that's a <strong>hole</strong> at \(x = -4\). After cancellation: \(\dfrac{x - 2}{x - 3}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box">
+                    <div class="step-label">(b) Read off VA and HA from the simplified form</div>
+                    <div class="step-copy" style="text-align:center;">VA at \(x = 3\). Degrees equal (\(1 = 1\)), HA = leading coef ratio = \(1/1 = 1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">(b) Result</div>
+                    <div class="step-math">\[\text{VA: } x = 3, \quad \text{HA: } y = 1, \quad \text{Hole at } \left(-4,\, \tfrac{6}{7}\right)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 4 — Full Analysis ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Full Analysis: \(y = \dfrac{x^2 + x - 6}{x^2 - x - 2}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Identify asymptotes and/or holes. (b) Write the domain. (c) Find the intercepts.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor numerator and denominator</div>
+                    <div class="step-math">\[\dfrac{(x + 3)(x - 2)}{(x - 2)(x + 1)}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Cancel common factor → hole</div>
+                    <div class="step-copy" style="text-align:center;">\((x - 2)\) cancels &rArr; <strong>hole at \(x = 2\)</strong>. Hole \(y\)-value: \(\dfrac{2 + 3}{2 + 1} = \dfrac{5}{3}\). Simplified form: \(\dfrac{x + 3}{x + 1}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Asymptotes from the simplified form</div>
+                    <div class="step-copy" style="text-align:center;">VA: \(x + 1 = 0 \Rightarrow x = -1\). HA: degrees equal, ratio of leading coefficients \(= 1/1 = 1 \Rightarrow y = 1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Domain</div>
+                    <div class="step-copy" style="text-align:center;">Excluded \(x\)-values are the zeros of the <em>original</em> denominator: \(x = 2\) (hole) and \(x = -1\) (VA).</div>
+                    <div class="step-math">\[\text{Domain: } x \neq 2,\; x \neq -1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x + 3 = 0 \Rightarrow x = -3 \;\;\Rightarrow\;\; (-3,\, 0)\]</div>
+                    <div class="step-math">\[y\text{-int: } y(0) = \dfrac{0 + 3}{0 + 1} = 3 \;\;\Rightarrow\;\; (0,\, 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Picture (VA: \(x=-1\), HA: \(y=1\), hole at \((2, \tfrac{5}{3})\))</div>
+                    <svg id="g-ex4" class="mini-graph" viewBox="0 0 420 240" role="img" aria-label="Rational function with vertical asymptote at x equals negative 1, horizontal asymptote at y equals 1, and a hole at 2 comma 5 thirds."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Example 5 — Cubic over Cubic ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">\(f(x) = \dfrac{3x^3 + 7x^2 + 2}{-2x^3 + 16}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Identify asymptotes and/or holes. (b) Write the domain.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor the denominator</div>
+                    <div class="step-math">\[-2x^3 + 16 = -2(x^3 - 8) = -2(x - 2)(x^2 + 2x + 4)\]</div>
+                    <div class="step-copy" style="text-align:center;">The quadratic \(x^2 + 2x + 4\) has discriminant \(4 - 16 = -12 &lt; 0\), so it contributes <strong>no real zeros</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Test for a hole at \(x = 2\)</div>
+                    <div class="step-math">\[3(2)^3 + 7(2)^2 + 2 = 24 + 28 + 2 = 54 \neq 0\]</div>
+                    <div class="step-copy" style="text-align:center;">Numerator is non-zero at \(x = 2\), so \((x - 2)\) is <em>not</em> a common factor — no hole.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Vertical asymptote</div>
+                    <div class="step-math">\[x = 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Horizontal asymptote</div>
+                    <div class="step-copy" style="text-align:center;">Degrees equal: numerator and denominator both have degree \(3\). HA = ratio of leading coefficients.</div>
+                    <div class="step-math">\[y = \dfrac{3}{-2} = -\dfrac{3}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Result</div>
+                    <div class="step-math">\[\text{VA: } x = 2, \quad \text{HA: } y = -\tfrac{3}{2}, \quad \text{no hole}\]</div>
+                    <div class="step-math">\[\text{Domain: } x \neq 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Example 6 — Two VAs ===================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">\(f(x) = \dfrac{x^2 - 16}{x^2 + 8x}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Identify asymptotes and/or holes. (b) Write the domain. (c) Find the intercepts.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor</div>
+                    <div class="step-math">\[\dfrac{(x - 4)(x + 4)}{x(x + 8)}\]</div>
+                    <div class="step-copy" style="text-align:center;">Zeros of numerator: \(\pm 4\). Zeros of denominator: \(0,\, -8\). <strong>No common factors</strong> — no holes.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Vertical asymptotes</div>
+                    <div class="step-math">\[x = 0 \quad\text{and}\quad x = -8\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Horizontal asymptote</div>
+                    <div class="step-copy" style="text-align:center;">Degrees equal (\(2 = 2\)). HA = \(1/1 = 1\).</div>
+                    <div class="step-math">\[y = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Domain</div>
+                    <div class="step-math">\[x \neq 0,\quad x \neq -8\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x^2 - 16 = 0 \Rightarrow x = \pm 4 \;\;\Rightarrow\;\; (-4,\,0),\; (4,\,0)\]</div>
+                    <div class="step-math">\[y\text{-int: } f(0) \text{ is undefined } \Rightarrow \text{no }y\text{-intercept}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Picture (VAs at \(x=-8\) and \(x=0\); HA at \(y=1\); \(x\)-ints at \(\pm 4\))</div>
+                    <svg id="g-ex6" class="mini-graph" viewBox="0 0 480 260" role="img" aria-label="Rational function with vertical asymptotes at x equals 0 and x equals negative 8, horizontal asymptote at y equals 1."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Review ===================== -->
+<section class="slide grid-bg" id="slide-11">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to confirm you can decode any rational function.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Factor First</div>
+                <div class="card-copy">Factor numerator and denominator before doing anything else. The features are hidden inside the factors.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Spot Holes</div>
+                <div class="card-copy">Common factors in numerator and denominator produce holes — not vertical asymptotes. Set the cancelled factor to zero for the \(x\)-coordinate, then plug into the simplified form for the \(y\)-coordinate.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Find Vertical Asymptotes</div>
+                <div class="card-copy">Set the <em>remaining</em> denominator (after cancellation) equal to zero. Those \(x\)-values are the VAs.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Compare Degrees for HA</div>
+                <div class="card-copy">Lower numerator degree &rArr; \(y = 0\). Equal degrees &rArr; \(y = \) ratio of leading coefficients. Greater numerator degree &rArr; slant asymptote (next section).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Build the Domain</div>
+                <div class="card-copy">Exclude every \(x\)-value that makes the <em>original</em> denominator zero — both VAs and holes — even after cancellation.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Find Intercepts</div>
+                <div class="card-copy">\(x\)-intercepts come from zeros of the numerator (after cancelling holes). The \(y\)-intercept is \(f(0)\), provided \(0\) is in the domain.</div>
+            </div>
+        </div>
+        <div class="formula-note">A rational function tells its full story in factored form: cancellations are holes, leftover denominator zeros are vertical asymptotes, leftover numerator zeros are \(x\)-intercepts, and the degree comparison decides the horizontal asymptote.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Definitions', slideId: 'slide-1' },
+            { label: 'Rules',     slideId: 'slide-4' },
+            { label: 'Examples',  slideId: 'slide-5' },
+            { label: 'Big Three', slideId: 'slide-8' },
+            { label: 'Review',    slideId: 'slide-11' }
+        ]
+    });
+</script>
+
+<!-- ============================================================
+     Math-graph rendering (same GraphBuilder helper as 2.2/2.3)
+     ============================================================ -->
+<script>
+    class GraphBuilder {
+        constructor(svgId, viewBox) {
+            this.svg = document.getElementById(svgId);
+            if (!this.svg) return;
+            this.ns = 'http://www.w3.org/2000/svg';
+            const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+            this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+        }
+        setCoords(xMin, xMax, yMin, yMax, padL, padR, padT, padB) {
+            this.mathXMin = xMin; this.mathXMax = xMax;
+            this.mathYMin = yMin; this.mathYMax = yMax;
+            this.svgXMin = padL; this.svgXMax = this.vbW - padR;
+            this.svgYMin = padT; this.svgYMax = this.vbH - padB;
+        }
+        mx(v) { return this.svgXMin + (v - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+        my(v) { return this.svgYMax - (v - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
+        addGrid(spacing) {
+            const pat = document.createElementNS(this.ns, 'pattern');
+            const id  = 'grid-' + Math.random().toString(36).slice(2, 7);
+            pat.setAttribute('id', id);
+            pat.setAttribute('width',  spacing || 40);
+            pat.setAttribute('height', spacing || 40);
+            pat.setAttribute('patternUnits', 'userSpaceOnUse');
+            const p = document.createElementNS(this.ns, 'path');
+            p.setAttribute('d', `M ${spacing || 40} 0 L 0 0 0 ${spacing || 40}`);
+            p.setAttribute('fill', 'none');
+            p.setAttribute('stroke', '#e2e8f0');
+            p.setAttribute('stroke-width', '0.6');
+            pat.appendChild(p);
+            this.svg.appendChild(pat);
+            const r = document.createElementNS(this.ns, 'rect');
+            r.setAttribute('x', this.svgXMin);
+            r.setAttribute('y', this.svgYMin);
+            r.setAttribute('width',  this.svgXMax - this.svgXMin);
+            r.setAttribute('height', this.svgYMax - this.svgYMin);
+            r.setAttribute('fill', `url(#${id})`);
+            this.svg.appendChild(r);
+        }
+        line(x1, y1, x2, y2, color, w, dash) {
+            const l = document.createElementNS(this.ns, 'line');
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', color || '#1a365d');
+            l.setAttribute('stroke-width', w || 1);
+            if (dash) l.setAttribute('stroke-dasharray', dash);
+            this.svg.appendChild(l);
+            return l;
+        }
+        addAxes() {
+            const originY = this.my(0), originX = this.mx(0);
+            const ax = Math.max(this.svgYMin, Math.min(this.svgYMax, originY));
+            this.line(this.svgXMin, ax, this.svgXMax, ax, '#334155', 1.5);
+            const ay = Math.max(this.svgXMin, Math.min(this.svgXMax, originX));
+            this.line(ay, this.svgYMin, ay, this.svgYMax, '#334155', 1.5);
+        }
+        asymptoteV(mathX, color, dash) {
+            this.line(this.mx(mathX), this.svgYMin, this.mx(mathX), this.svgYMax, color || '#dc2626', 1.4, dash || '6 4');
+        }
+        asymptoteH(mathY, color, dash) {
+            this.line(this.svgXMin, this.my(mathY), this.svgXMax, this.my(mathY), color || '#059669', 1.4, dash || '6 4');
+        }
+        point(mx, my, color, r) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r',  r || 4.5);
+            c.setAttribute('fill', color || '#2563eb');
+            c.setAttribute('stroke', 'white');
+            c.setAttribute('stroke-width', '1.5');
+            this.svg.appendChild(c);
+            return c;
+        }
+        holeAt(mx, my, color) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r', '5');
+            c.setAttribute('fill', 'white');
+            c.setAttribute('stroke', color || '#dc2626');
+            c.setAttribute('stroke-width', '2');
+            this.svg.appendChild(c);
+        }
+        label(x, y, text, opts) {
+            const t = document.createElementNS(this.ns, 'text');
+            t.setAttribute('x', x); t.setAttribute('y', y);
+            t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+            t.setAttribute('font-size',   (opts && opts.size)   || '11');
+            t.setAttribute('fill',        (opts && opts.color)  || '#64748b');
+            t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+            if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+            t.textContent = text;
+            this.svg.appendChild(t);
+            return t;
+        }
+        addXLabels(labels) {
+            labels.forEach(lb => {
+                const sx = this.mx(lb.val);
+                const sy = Math.max(this.svgYMin + 12, Math.min(this.svgYMax - 4, this.my(0) + 14));
+                this.label(sx, sy, lb.text, { size: '11', anchor: 'middle', color: '#64748b' });
+            });
+        }
+        addYLabels(labels) {
+            labels.forEach(lb => {
+                const sx = Math.max(this.svgXMin + 4, Math.min(this.svgXMax - 4, this.mx(0) - 6));
+                this.label(sx, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end', color: '#64748b' });
+            });
+        }
+        /* Curve sampling that splits across asymptotes specified in cfg.discontinuities. */
+        curve(f, xStart, xEnd, opts) {
+            opts = opts || {};
+            const steps = opts.steps || 600;
+            const color = opts.color || '#2563eb';
+            const width = opts.width || 2.6;
+            const breaks = (opts.discontinuities || []).slice().sort((a, b) => a - b);
+            // Break the interval into pieces around each discontinuity
+            const pieces = [];
+            let lo = xStart;
+            for (const b of breaks) {
+                if (b > lo && b < xEnd) {
+                    pieces.push([lo, b - 1e-4]);
+                    pieces.push([b + 1e-4, null]); // resume after gap
+                    pieces[pieces.length - 1][0] = b + 1e-4;
+                    lo = b + 1e-4;
+                }
+            }
+            pieces.push([lo, xEnd]);
+
+            pieces.forEach(([a, b]) => {
+                if (b === null || a >= b) return;
+                let seg = [];
+                const n = Math.max(20, Math.floor(steps * (b - a) / (xEnd - xStart)));
+                for (let i = 0; i <= n; i++) {
+                    const mx = a + (i / n) * (b - a);
+                    const my = f(mx);
+                    if (!isFinite(my) || Math.abs(my) > 1e5) continue;
+                    seg.push([this.mx(mx), this.my(my)]);
+                }
+                if (seg.length < 2) return;
+                let d = 'M ' + seg[0][0].toFixed(2) + ' ' + seg[0][1].toFixed(2);
+                for (let i = 1; i < seg.length; i++) d += ' L ' + seg[i][0].toFixed(2) + ' ' + seg[i][1].toFixed(2);
+                const p = document.createElementNS(this.ns, 'path');
+                p.setAttribute('d', d);
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', color);
+                p.setAttribute('stroke-width', width);
+                p.setAttribute('stroke-linecap',  'round');
+                p.setAttribute('stroke-linejoin', 'round');
+                this.svg.appendChild(p);
+            });
+        }
+    }
+
+    function buildRational(id, cfg) {
+        const g = new GraphBuilder(id);
+        if (!g.svg) return null;
+        const padL = cfg.padL != null ? cfg.padL : 22;
+        const padR = cfg.padR != null ? cfg.padR : 18;
+        const padT = cfg.padT != null ? cfg.padT : 14;
+        const padB = cfg.padB != null ? cfg.padB : 22;
+        g.setCoords(cfg.xMin, cfg.xMax, cfg.yMin, cfg.yMax, padL, padR, padT, padB);
+        if (cfg.grid !== false) g.addGrid(cfg.gridSpacing || 40);
+        // Asymptotes BEHIND axes
+        (cfg.vasym || []).forEach(x => g.asymptoteV(x));
+        (cfg.hasym || []).forEach(y => g.asymptoteH(y));
+        g.addAxes();
+        if (cfg.xticks) g.addXLabels(cfg.xticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        if (cfg.yticks) g.addYLabels(cfg.yticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        g.curve(cfg.fn, cfg.xMin, cfg.xMax, {
+            steps: cfg.steps || 600,
+            color: cfg.color || '#2563eb',
+            width: cfg.width || 2.6,
+            discontinuities: cfg.vasym || []
+        });
+        (cfg.zeros || []).forEach(x => g.point(x, 0, '#16a34a', 4.5));
+        if (cfg.yint != null) g.point(0, cfg.yint, '#2563eb', 4);
+        (cfg.holes || []).forEach(h => g.holeAt(h.x, h.y, h.color || '#dc2626'));
+        (cfg.points || []).forEach(p => g.point(p.x, p.y, p.color || '#dc2626', p.r || 4.5));
+        (cfg.labels || []).forEach(l => g.label(
+            g.mx(l.x), g.my(l.y), l.text,
+            { color: l.color || '#0f172a', size: l.size || '12',
+              anchor: l.anchor || 'start', weight: l.weight || '600' }
+        ));
+        return g;
+    }
+
+    function buildAll() {
+        // Parent function y = 1/x
+        buildRational('g-parent', {
+            fn: x => 1 / x,
+            xMin: -4, xMax: 4, yMin: -4, yMax: 4,
+            xticks: [-3, -2, -1, 1, 2, 3],
+            yticks: [-3, -2, -1, 1, 2, 3],
+            vasym: [0],
+            gridSpacing: 30
+        });
+
+        // Gallery — 4 representative shapes
+        buildRational('g-gal-1', {
+            fn: x => 3 * x / (x + 1),
+            xMin: -6, xMax: 4, yMin: -5, yMax: 8,
+            vasym: [-1], hasym: [3],
+            grid: false, padL: 10, padR: 10, padT: 8, padB: 14
+        });
+        buildRational('g-gal-2', {
+            fn: x => x / ((x + 1) * (x - 2)),
+            xMin: -4, xMax: 4, yMin: -4, yMax: 4,
+            vasym: [-1, 2], hasym: [0],
+            grid: false, padL: 10, padR: 10, padT: 8, padB: 14
+        });
+        buildRational('g-gal-3', {
+            fn: x => 3 / (x * x + 1),
+            xMin: -4, xMax: 4, yMin: -1, yMax: 3.4,
+            hasym: [0],
+            grid: false, padL: 10, padR: 10, padT: 8, padB: 14
+        });
+        buildRational('g-gal-4', {
+            fn: x => 3 / ((x + 1) * (x + 1)),
+            xMin: -6, xMax: 4, yMin: -1, yMax: 6,
+            vasym: [-1], hasym: [0],
+            grid: false, padL: 10, padR: 10, padT: 8, padB: 14
+        });
+
+        // Ex 1: y = 1/(x-1)
+        buildRational('g-ex1', {
+            fn: x => 1 / (x - 1),
+            xMin: -2, xMax: 4, yMin: -5, yMax: 5,
+            xticks: [-1, 1, 2, 3],
+            yticks: [-4, -2, 2, 4],
+            vasym: [1], hasym: [0],
+            gridSpacing: 35
+        });
+
+        // Ex 4: y = (x^2+x-6)/(x^2-x-2) = (x+3)/(x+1) for x != 2
+        buildRational('g-ex4', {
+            fn: x => (x + 3) / (x + 1),
+            xMin: -6, xMax: 5, yMin: -5, yMax: 7,
+            xticks: [-5, -3, -1, 2, 3],
+            yticks: [-4, -2, 1, 3, 5],
+            vasym: [-1], hasym: [1],
+            zeros: [-3], yint: 3,
+            holes: [{ x: 2, y: 5/3 }],
+            gridSpacing: 35,
+            labels: [{ x: 2.2, y: 1.95, text: 'hole (2, 5/3)', color: '#dc2626', size: 12, anchor: 'start', weight: 700 }]
+        });
+
+        // Ex 6: y = (x^2-16)/(x^2+8x) with VAs at x=0 and x=-8
+        buildRational('g-ex6', {
+            fn: x => (x * x - 16) / (x * x + 8 * x),
+            xMin: -12, xMax: 6, yMin: -5, yMax: 5,
+            xticks: [-10, -8, -6, -4, -2, 2, 4],
+            yticks: [-4, -2, 1, 2, 4],
+            vasym: [-8, 0], hasym: [1],
+            zeros: [-4, 4],
+            gridSpacing: 40
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+</script>
+</body>
+</html>

@@ -107,8 +107,21 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 1.5 | Transformations of Functions | ✅ Complete | — |
 | 1.6 | Operations with Functions | ✅ Complete | — |
 | 1.7 | Inverse Functions | ✅ Complete | — |
-| 3 | Rational Functions — Features | ✅ Complete | — |
-| 3 | Rational Functions — Graphing | ✅ Complete | — |
+| 2.1 | Quadratic Functions | ✅ Complete | — |
+| 2.2 | Graphs of Polynomial Functions | ✅ Complete | — |
+| 2.3 | Zeros of Polynomial Functions | ✅ Complete | — |
+| 2.4 | Dividing Polynomials | ✅ Complete | — |
+| 2.5 | Complex Numbers | ✅ Complete | — |
+| 2.6 | Fundamental Theorem of Algebra | ✅ Complete | — |
+| 2.7 | Rational Functions and Asymptotes | ✅ Complete | — |
+| 2.8 | Graphs of Rational Functions | ✅ Complete | — |
+| 3.1 | Exponential Functions &amp; Their Graphs | ✅ Complete | — |
+| 3.2 | Logarithmic Functions &amp; Their Graphs | ✅ Complete | — |
+| 3.3 | Properties of Logarithms | ✅ Complete | — |
+| 3.4 | Solving Exponential &amp; Log Equations | ✅ Complete | — |
+| 3.5 | Exponential Applications | ✅ Complete | — |
+| 3 (suppl.) | Rational Functions — Features | ✅ Complete | — |
+| 3 (suppl.) | Rational Functions — Graphing | ✅ Complete | — |
 | 4 | Trig Review (4.1–4.5) | ✅ Complete | — |
 | 4 | Spaghetti Trig Activity | ✅ Complete | — |
 | 4.6 | Graphs of Sine & Cosine | ✅ Complete | 🔄 Prototype |
@@ -129,7 +142,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 6.6 | Probability | ✅ Complete | — |
 | 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Unit 1 complete (1.1–1.7). Continue with remaining precalculus HTML decks and add supporting review materials where needed.
+**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**. Pre-existing supplemental Rational Functions (Features &amp; Graphing) decks remain in place. Continue with new units or supplemental review materials as needed.
 
 ---
 

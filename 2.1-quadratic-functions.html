@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.1 - Quadratic Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific SVG styling for parabola anatomy + sketch graphs.
+         * IMPORTANT: keep stroke-only rules and fill-only rules on separate
+         * classes — applying `.curve` to text or arrowheads would outline them. */
+        .parabola-svg { max-width: 680px; max-height: 320px; display: block; margin: 0.3rem auto; }
+        .parabola-svg .axis     { stroke: #475569; stroke-width: 2; fill: none; }
+        .parabola-svg .gridline { stroke: #e2e8f0; stroke-width: 1; }
+        .parabola-svg .curve    { stroke: #2563eb; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .parabola-svg .axsym    { stroke: #dc2626; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+        .parabola-svg .arrowhead { fill: #2563eb; stroke: none; }
+        .parabola-svg .pt-vertex { fill: #dc2626; stroke: white; stroke-width: 1.5; }
+        .parabola-svg .pt-xint   { fill: #16a34a; stroke: white; stroke-width: 1.5; }
+        .parabola-svg .pt-yint   { fill: #2563eb; stroke: white; stroke-width: 1.5; }
+        .parabola-svg .feature-label {
+            font: 700 14px 'Source Sans 3', sans-serif;
+            fill: #0f172a;
+            stroke: none;
+        }
+        .parabola-svg .lbl-curve  { fill: #1d4ed8; }
+        .parabola-svg .lbl-axsym  { fill: #dc2626; }
+        .parabola-svg .lbl-vertex { fill: #dc2626; }
+        .parabola-svg .lbl-xint   { fill: #15803d; }
+        .parabola-svg .lbl-yint   { fill: #1d4ed8; }
+        .parabola-svg .leader { stroke-width: 1.2; fill: none; }
+        .parabola-svg .leader-blue  { stroke: #93c5fd; }
+        .parabola-svg .leader-red   { stroke: #fca5a5; }
+        .parabola-svg .leader-green { stroke: #86efac; }
+        .parabola-svg .tick-label {
+            font: 500 11px 'Source Sans 3', sans-serif;
+            fill: #64748b;
+        }
+        /* Two-up layout for example 1 (work on the left, sketch on the right) */
+        .two-up {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 0.9rem;
+            align-items: start;
+        }
+        .two-up .work-col { display: flex; flex-direction: column; gap: 0.45rem; }
+        @media (max-width: 900px) {
+            .two-up { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.1 Quadratic Functions</div>
+    <div class="title-objective">Objective: Classify polynomial functions, identify the key features of a parabola, convert between vertex form and standard form, and solve quadratic-type equations.</div>
+    <div class="identity-chips">
+        <span class="chip">polynomial degree</span>
+        <span class="chip">parabola</span>
+        <span class="chip">vertex form</span>
+        <span class="chip">standard form</span>
+        <span class="chip">completing the square</span>
+        <span class="chip">quadratic-type</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Polynomial classification ===================== -->
+<section class="slide grid-bg" id="slide-1" data-steps="10">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Polynomial Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A polynomial function is classified by its <strong>degree</strong> — the largest exponent on the variable.</div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Equation</th><th>Degree</th><th>Type</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(f(x) = c\)</td>
+                        <td><span class="fb" id="slide-1-step-0"><span class="fb-blank">____</span><span class="fb-answer">0</span></span></td>
+                        <td><span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">constant</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>\(f(x) = mx + b\)</td>
+                        <td><span class="fb" id="slide-1-step-2"><span class="fb-blank">____</span><span class="fb-answer">1</span></span></td>
+                        <td><span class="fb" id="slide-1-step-3"><span class="fb-blank">________</span><span class="fb-answer">linear</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>\(f(x) = ax^2 + bx + c\)</td>
+                        <td><span class="fb" id="slide-1-step-4"><span class="fb-blank">____</span><span class="fb-answer">2</span></span></td>
+                        <td><span class="fb" id="slide-1-step-5"><span class="fb-blank">________</span><span class="fb-answer">quadratic</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>\(f(x) = ax^3 + bx^2 + cx + d\)</td>
+                        <td><span class="fb" id="slide-1-step-6"><span class="fb-blank">____</span><span class="fb-answer">3</span></span></td>
+                        <td><span class="fb" id="slide-1-step-7"><span class="fb-blank">________</span><span class="fb-answer">cubic</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>\(f(x) = ax^4 + bx^3 + cx^2 + dx + e\)</td>
+                        <td><span class="fb" id="slide-1-step-8"><span class="fb-blank">____</span><span class="fb-answer">4</span></span></td>
+                        <td><span class="fb" id="slide-1-step-9"><span class="fb-blank">________</span><span class="fb-answer">quartic</span></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Leading Coefficient</div>
+                <div class="card-copy">The coefficient \(a\) on the highest-degree term. It controls end behavior and (for quadratics) whether the parabola opens up or down.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Constant Term</div>
+                <div class="card-copy">The term with no variable. It is always the \(y\)-intercept of the polynomial: \(f(0)\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">This Section</div>
+                <div class="card-copy">We focus on <strong>degree-2</strong> polynomials — quadratic functions. Their graphs are parabolas.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Anatomy of a Parabola ===================== -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Anatomy of a Parabola</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The graph of every quadratic function is a <strong>parabola</strong>. It has five features worth naming.</div>
+        <div class="diagram-shell">
+            <div class="diagram-title">Key Features</div>
+            <svg class="diagram parabola-svg" viewBox="0 0 600 280" role="img" aria-label="Labeled parabola showing vertex, axis of symmetry, x-intercepts, and y-intercept.">
+                <!-- Axes: x-axis at y=180; y-axis at x=340 (slightly right of axis-of-symmetry) -->
+                <line class="axis" x1="40"  y1="180" x2="560" y2="180" />
+                <line class="axis" x1="340" y1="20"  x2="340" y2="265" />
+                <!-- Axis of symmetry (dashed red) at x=320 -->
+                <line class="axsym" x1="320" y1="20" x2="320" y2="265" />
+                <!-- Parabola y_s = 220 - 0.015(x_s - 320)^2 — densely sampled so the curve is smooth -->
+                <polyline class="curve" points="204,18 230,99 250,147 268,180 280,196 300,214 310,219 320,220 330,219 340,214 360,196 372,180 390,147 410,99 436,18" />
+                <!-- Filled arrowheads on parabola arms -->
+                <polygon class="arrowhead" points="204,8 198,24 210,24" />
+                <polygon class="arrowhead" points="436,8 430,24 442,24" />
+                <!-- Feature points -->
+                <circle class="pt-vertex" cx="320" cy="220" r="6" />
+                <circle class="pt-xint"   cx="268" cy="180" r="5" />
+                <circle class="pt-xint"   cx="372" cy="180" r="5" />
+                <circle class="pt-yint"   cx="340" cy="214" r="5" />
+                <!-- Labels with subtle leader lines.  Italic x / y use <tspan font-style="italic">
+                     because KaTeX delimiters don't render inside <text>. -->
+                <!-- parabola — leader lands on the left arm at (237, 118) -->
+                <line class="leader leader-blue" x1="92" y1="76" x2="237" y2="118" />
+                <text class="feature-label lbl-curve" x="34" y="80">parabola</text>
+                <!-- axis of symmetry -->
+                <line class="leader leader-red" x1="288" y1="34" x2="318" y2="38" />
+                <text class="feature-label lbl-axsym" x="170" y="38">axis of symmetry</text>
+                <!-- vertex -->
+                <line class="leader leader-red" x1="280" y1="258" x2="316" y2="226" />
+                <text class="feature-label lbl-vertex" x="230" y="262">vertex</text>
+                <!-- x-intercepts (single label with two leaders bracketing both dots) -->
+                <line class="leader leader-green" x1="455" y1="146" x2="377" y2="180" />
+                <line class="leader leader-green" x1="455" y1="146" x2="272" y2="184" />
+                <text class="feature-label lbl-xint" x="460" y="150"><tspan font-style="italic">x</tspan>-intercepts</text>
+                <!-- y-intercept -->
+                <line class="leader leader-blue" x1="455" y1="232" x2="346" y2="216" />
+                <text class="feature-label lbl-yint" x="460" y="236"><tspan font-style="italic">y</tspan>-intercept</text>
+            </svg>
+            <div class="diagram-caption">Vertex (red) sits on the axis of symmetry. The parabola crosses the <em>x</em>-axis at the <em>x</em>-intercepts (green) and the <em>y</em>-axis at the <em>y</em>-intercept (blue).</div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Opens Up vs. Down</div>
+                <div class="card-copy">If \(a &gt; 0\), the parabola opens up and the vertex is a <strong>minimum</strong>. If \(a &lt; 0\), it opens down and the vertex is a <strong>maximum</strong>.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Wide vs. Narrow</div>
+                <div class="card-copy">The larger \(|a|\) is, the narrower the parabola. The smaller \(|a|\) is, the wider.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Symmetry</div>
+                <div class="card-copy">Every parabola is a mirror image across its axis of symmetry. Two points equidistant from the axis share the same \(y\)-value.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Forms reference ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="7">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Forms of a Quadratic Function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">vertex form</div>
+                <div class="fn-eq-stack">
+                    <div>\[f(x) = a(x-h)^2 + k\]</div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">standard form</div>
+                <div class="fn-eq-stack">
+                    <div>\[f(x) = ax^2 + bx + c\]</div>
+                </div>
+            </div>
+        </div>
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Feature</th><th>Vertex Form \(\;a(x-h)^2 + k\)</th><th>Standard Form \(\;ax^2 + bx + c\)</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>vertex</td>
+                        <td><span class="fb" id="slide-3-step-0"><span class="fb-blank">________</span><span class="fb-answer">\((h,\, k)\)</span></span></td>
+                        <td><span class="fb" id="slide-3-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(\left(-\tfrac{b}{2a},\; f\!\left(-\tfrac{b}{2a}\right)\right)\)</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>axis of symmetry</td>
+                        <td><span class="fb" id="slide-3-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(x = h\)</span></span></td>
+                        <td><span class="fb" id="slide-3-step-3"><span class="fb-blank">________</span><span class="fb-answer">\(x = -\tfrac{b}{2a}\)</span></span></td>
+                    </tr>
+                    <tr>
+                        <td>\(y\)-intercept</td>
+                        <td><span class="fb" id="slide-3-step-4"><span class="fb-blank">________</span><span class="fb-answer">\((0,\; ah^2 + k)\)</span></span></td>
+                        <td><span class="fb" id="slide-3-step-5"><span class="fb-blank">________</span><span class="fb-answer">\((0,\; c)\)</span></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <ul class="notes-list">
+            <li>To change from standard form to vertex form you must
+                <span class="fb" id="slide-3-step-6"><span class="fb-blank">________________________</span><span class="fb-answer">complete the square</span></span>.
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Completing the square (concept) ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Standard Form \(\to\) Vertex Form</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Goal: rewrite \(ax^2 + bx + c\) as \(a(x-h)^2 + k\). The procedure is <strong>completing the square</strong>.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor out \(a\) from the \(x\)-terms</div>
+                    <div class="step-math">\[ax^2 + bx + c = a\!\left(x^2 + \tfrac{b}{a}x\right) + c\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Take half the inner coefficient, square it</div>
+                    <div class="step-math">\[\text{half of }\tfrac{b}{a} \;=\; \tfrac{b}{2a}, \qquad \left(\tfrac{b}{2a}\right)^{\!2} = \tfrac{b^2}{4a^2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Add and subtract it inside the parentheses</div>
+                    <div class="step-math">\[a\!\left(x^2 + \tfrac{b}{a}x + \tfrac{b^2}{4a^2} - \tfrac{b^2}{4a^2}\right) + c\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 — Factor the perfect-square trinomial</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[a\!\left(x + \tfrac{b}{2a}\right)^{\!2} - \tfrac{b^2}{4a} + c\]</div>
+                        <div class="annotation">The first three terms inside form a perfect square. The leftover \(-\tfrac{b^2}{4a^2}\) gets multiplied by \(a\) on the way out.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Result — Vertex Form</div>
+                    <div class="step-math">\[f(x) = a(x-h)^2 + k \quad\text{with}\quad h = -\tfrac{b}{2a},\quad k = c - \tfrac{b^2}{4a}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 1 ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Convert to Vertex Form and Sketch</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Given \(f(x) = 2x^2 + 8x + 7\), write the function in vertex form, identify the vertex, and sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor 2 from the \(x\)-terms</div>
+                    <div class="step-math">\[f(x) = 2(x^2 + 4x) + 7\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Complete the square</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[f(x) = 2(x^2 + 4x + 4 - 4) + 7\]</div>
+                        <div class="annotation">Half of \(4\) is \(2\); squared is \(4\). Add and subtract \(4\) inside the parentheses.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Factor and distribute</div>
+                    <div class="step-math">\[f(x) = 2(x+2)^2 - 8 + 7\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Vertex Form</div>
+                    <div class="step-math">\[f(x) = 2(x+2)^2 - 1, \qquad \text{vertex} = (-2,\, -1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch — opens up, narrow (\(a = 2\))</div>
+                    <div class="diagram-shell" style="border-left:none; background:transparent; padding:0;">
+                        <svg class="diagram parabola-svg" viewBox="0 0 420 260" role="img" aria-label="Sketch of f of x equals 2 x plus 2 squared minus 1 with vertex at negative 2, negative 1.">
+                            <!-- Light grid -->
+                            <g class="gridline">
+                                <line x1="40" y1="40"  x2="380" y2="40"  />
+                                <line x1="40" y1="80"  x2="380" y2="80"  />
+                                <line x1="40" y1="120" x2="380" y2="120" />
+                                <line x1="40" y1="160" x2="380" y2="160" />
+                                <line x1="40" y1="200" x2="380" y2="200" />
+                                <line x1="40" y1="240" x2="380" y2="240" />
+                                <line x1="80"  y1="20" x2="80"  y2="240" />
+                                <line x1="120" y1="20" x2="120" y2="240" />
+                                <line x1="160" y1="20" x2="160" y2="240" />
+                                <line x1="200" y1="20" x2="200" y2="240" />
+                                <line x1="240" y1="20" x2="240" y2="240" />
+                                <line x1="280" y1="20" x2="280" y2="240" />
+                                <line x1="320" y1="20" x2="320" y2="240" />
+                                <line x1="360" y1="20" x2="360" y2="240" />
+                            </g>
+                            <!-- Axes (origin at x=280, y=200; one unit = 40px) -->
+                            <line class="axis" x1="40" y1="200" x2="380" y2="200" />
+                            <line class="axis" x1="280" y1="20" x2="280" y2="240" />
+                            <!-- Tick labels -->
+                            <text class="tick-label" x="80"  y="216">-5</text>
+                            <text class="tick-label" x="120" y="216">-4</text>
+                            <text class="tick-label" x="160" y="216">-3</text>
+                            <text class="tick-label" x="200" y="216" fill="#dc2626" font-weight="700">-2</text>
+                            <text class="tick-label" x="240" y="216">-1</text>
+                            <text class="tick-label" x="320" y="216">1</text>
+                            <text class="tick-label" x="360" y="216">2</text>
+                            <text class="tick-label" x="288" y="44">5</text>
+                            <text class="tick-label" x="288" y="84">4</text>
+                            <text class="tick-label" x="288" y="124">3</text>
+                            <text class="tick-label" x="288" y="164">2</text>
+                            <text class="tick-label" x="288" y="244">-1</text>
+                            <!-- Parabola f(x) = 2(x+2)^2 - 1
+                                 Screen mapping: x_s = 280 + 40x ; y_s = 240 - 80(x+2)^2
+                                 Visible range: clip arms at y = 5 (top of viewBox) → x ≈ -3.73 and -0.27
+                                 Densely sampled so the polyline traces the actual parabola. -->
+                            <polyline class="curve" points="131,0 136,35 144,83 152,125 160,160 168,189 176,211 184,228 192,237 200,240 208,237 216,228 224,211 232,189 240,160 248,125 256,83 264,35 269,0" />
+                            <!-- Vertex point + label -->
+                            <circle class="pt-vertex" cx="200" cy="240" r="5" />
+                            <text class="feature-label vertex" x="146" y="258">vertex \((-2,\,-1)\)</text>
+                            <!-- y-intercept (0, 7) is above the visible window — annotate -->
+                            <text class="feature-label yint" x="296" y="84">\(y\)-int: \((0,\,7)\)</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 2 ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Find the Equation from Vertex and a Point</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the standard form of the equation of the parabola whose vertex is \((1,\, 2)\) and that passes through the point \((3,\, -6)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Start in vertex form</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[f(x) = a(x-1)^2 + 2\]</div>
+                        <div class="annotation">We know \(h=1\) and \(k=2\) from the vertex. The leading coefficient \(a\) is the unknown.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Use the point \((3, -6)\) to find \(a\)</div>
+                    <div class="step-math">\[-6 = a(3-1)^2 + 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Solve for \(a\)</div>
+                    <div class="step-math">\[-6 = 4a + 2 \;\Longrightarrow\; 4a = -8 \;\Longrightarrow\; a = -2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 — Vertex form</div>
+                    <div class="step-math">\[f(x) = -2(x-1)^2 + 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Standard Form — Expand</div>
+                    <div class="step-math">\[f(x) = -2(x^2 - 2x + 1) + 2 = -2x^2 + 4x\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 3 — Application ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Application — Sophia's Food Truck</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sophia has a food truck and sells tacos. Her daily costs are approximated by \(C(x) = x^2 - 40x + 610\), where \(C(x)\) is the cost in dollars to sell \(x\) tacos. (a) Find the number of tacos she must sell to minimize her cost. (b) What is the minimum cost?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify the Setup</div>
+                    <div class="step-copy">\(C(x)\) is a parabola with \(a = 1 &gt; 0\), so it opens up and the vertex is the <strong>minimum</strong>. The \(x\)-coordinate of the vertex tells us how many tacos minimize cost.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">(a) Find the vertex \(x\)-coordinate</div>
+                    <div class="step-math">\[x = -\frac{b}{2a} = -\frac{-40}{2(1)} = \frac{40}{2} = 20\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer (a)</div>
+                    <div class="step-math">\[\text{Sophia must sell } 20 \text{ tacos to minimize cost.}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box">
+                    <div class="step-label">(b) Evaluate \(C(20)\)</div>
+                    <div class="step-math">\[C(20) = (20)^2 - 40(20) + 610 = 400 - 800 + 610 = 210\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Answer (b)</div>
+                    <div class="step-math">\[\text{Minimum cost} = \$210\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Quadratic-type equations ===================== -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Quadratic-Type Equations</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A polynomial that <em>isn't</em> degree 2 can still factor like one. Look for the pattern, then substitute.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">examples</div>
+                <div class="fn-eq-stack">
+                    <div>\[x^{10} + 11x^5 + 28 = (x^5 + 4)(x^5 + 7)\]</div>
+                    <div>\[x^{26} - 2x^{13} + 1 = (x^{13} - 1)(x^{13} - 1)\]</div>
+                    <div>\[x^{100} + 3x^{50} - 10 = (x^{50} + 5)(x^{50} - 2)\]</div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Clue 1 — Three Terms</div>
+                <div class="card-copy">The equation has exactly three terms (a trinomial).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Clue 2 — Exponent Pattern</div>
+                <div class="card-copy">The exponent on the first term is <strong>twice</strong> the exponent on the second term.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Clue 3 — Constant Tail</div>
+                <div class="card-copy">The third term is a constant (no variable).</div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Strategy</div>
+            <div class="note-copy">Substitute \(u\) for the middle-term variable expression (e.g., \(u = x^5\)). The equation becomes \(au^2 + bu + c = 0\) — a familiar quadratic. Solve for \(u\), then back-substitute to solve for \(x\).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Example 4 — Solve quadratic-type ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Solve a Quadratic-Type Equation</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Solve \(x^6 + 7x^3 = 8\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Set equal to zero</div>
+                    <div class="step-math">\[x^6 + 7x^3 - 8 = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Recognize the pattern</div>
+                    <div class="step-math has-annotation">
+                        <div class="step-eq">\[\underbrace{x^6}_{(x^3)^2} + 7\underbrace{x^3}_{x^3} - 8 = 0\]</div>
+                        <div class="annotation">The first exponent (\(6\)) is twice the second (\(3\)). Quadratic in \(x^3\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Substitute \(u = x^3\)</div>
+                    <div class="step-math">\[u^2 + 7u - 8 = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Factor and solve for \(u\)</div>
+                    <div class="step-math">\[(u + 8)(u - 1) = 0 \;\Longrightarrow\; u = -8 \;\text{ or }\; u = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Step 5 — Back-substitute \(u = x^3\)</div>
+                    <div class="step-math">\[x^3 = -8 \;\Longrightarrow\; x = -2 \qquad x^3 = 1 \;\Longrightarrow\; x = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-5">
+                <div class="step-box dark">
+                    <div class="step-label">Solution</div>
+                    <div class="step-math">\[x = -2,\; 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Review ===================== -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to confirm you've mastered the section.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Classify by Degree</div>
+                <div class="card-copy">Identify whether a polynomial is constant, linear, quadratic, cubic, or quartic — by counting the highest power.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Name the Features</div>
+                <div class="card-copy">Locate the vertex, axis of symmetry, \(x\)-intercepts, and \(y\)-intercept on any parabola.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Convert Forms</div>
+                <div class="card-copy">Take a quadratic in standard form and rewrite it in vertex form by completing the square.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Build From a Vertex</div>
+                <div class="card-copy">Start from \(a(x-h)^2 + k\), use a known point to solve for \(a\), and expand to standard form.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Apply to Max/Min</div>
+                <div class="card-copy">Use \(x = -\tfrac{b}{2a}\) to find the input that minimizes (or maximizes) a real-world quadratic, then evaluate to find the optimal value.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Spot Quadratic Type</div>
+                <div class="card-copy">Recognize the three-term pattern with doubled exponents, substitute \(u\), solve, then back-substitute.</div>
+            </div>
+        </div>
+        <div class="formula-note">Vertex form tells you <em>where</em> the parabola sits. Standard form tells you where it crosses the \(y\)-axis. Both describe the same parabola — pick the form that matches the question.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Forms',     slideId: 'slide-3' },
+            { label: 'Convert',   slideId: 'slide-4' },
+            { label: 'Examples',  slideId: 'slide-5' },
+            { label: 'App',       slideId: 'slide-7' },
+            { label: 'Qd-Type',   slideId: 'slide-8' },
+            { label: 'Review',    slideId: 'slide-10' }
+        ]
+    });
+</script>
+</body>
+</html>

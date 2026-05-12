@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.1 — Exponential Functions and Their Graphs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        .gd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+        .gd-card { background: white; border: 1px solid rgba(203,213,225,0.86); border-radius: 12px; padding: 0.6em 0.8em; box-shadow: 0 8px 20px rgba(15,23,42,0.05); }
+        .gd-card.growth  { border-left: 5px solid var(--green-accent); }
+        .gd-card.decay   { border-left: 5px solid var(--orange-accent); }
+        .gd-title { font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.35rem; }
+        .gd-title.growth { color: var(--green-accent); }
+        .gd-title.decay  { color: var(--orange-accent); }
+        .gd-blank { display: inline-block; background: var(--orange-light); color: var(--orange-accent); border: 1.5px solid var(--orange-accent); padding: 0.05em 0.5em; border-radius: 5px; font-weight: 700; }
+        .traits-table { width: 100%; border-collapse: collapse; font-size: 0.78em; }
+        .traits-table th, .traits-table td { border: 1px solid #cbd5e1; padding: 0.45em 0.6em; text-align: center; }
+        .traits-table th { background: var(--navy); color: white; font-weight: 700; }
+        .traits-table td.row-label { background: #f1f5f9; font-weight: 700; text-align: left; color: var(--navy); }
+        .traits-table td.has-graph { padding: 0; }
+        .traits-table td.has-graph svg { display: block; margin: 0 auto; }
+        .analyze-table { width: 100%; border-collapse: collapse; font-size: 0.8em; margin-bottom: 0.5rem; }
+        .analyze-table td { border: 1px solid #cbd5e1; padding: 0.4em 0.7em; }
+        .analyze-table td.k { background: #f1f5f9; font-weight: 700; color: var(--navy); width: 42%; }
+        .two-col-ex { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; align-items: start; }
+        .e-card { background: var(--navy); color: white; border-radius: 12px; padding: 0.85em 1.1em; }
+        .e-card .e-title { font-size: 0.7em; text-transform: uppercase; letter-spacing: 0.08em; color: #bfdbfe; font-weight: 700; margin-bottom: 0.4rem; }
+        .e-card .e-val   { font-size: 1.2em; font-weight: 700; letter-spacing: 0.02em; }
+        .e-card .e-copy  { font-size: 0.72em; color: #cbd5e1; margin-top: 0.45rem; line-height: 1.5; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 3 · Exponential &amp; Logarithmic Functions</div>
+    <div class="title-main">3.1 Exponential Functions &amp; Their Graphs</div>
+    <div class="title-objective">Objective: Recognize exponential growth vs. decay, graph parent and transformed exponential functions, work with the natural base \(e\), and apply compound interest.</div>
+    <div class="identity-chips">
+        <span class="chip">growth vs. decay</span>
+        <span class="chip">parent functions</span>
+        <span class="chip">transformations</span>
+        <span class="chip">natural base \(e\)</span>
+        <span class="chip">compound interest</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Growth vs Decay (intro) ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Big Idea</div>
+        <div class="slide-title">Exponential Growth vs. Exponential Decay</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A quantity changes <em>exponentially</em> when its rate of change is proportional to how much is already there — bigger amounts grow (or shrink) faster.</div>
+        <div class="gd-grid">
+            <div class="gd-card growth">
+                <div class="gd-title growth">Exponential Growth</div>
+                <div style="font-size:0.82em; line-height:1.55;">A quantity <span class="gd-blank">grows</span> exponentially when its <span class="gd-blank">rate of growth</span> is proportional to what is already there.</div>
+                <svg class="mini-graph" viewBox="0 0 380 230" id="g-growth" role="img" aria-label="Growth curves y = 2^x, 3^x, 10^x, 1.3^x"></svg>
+                <div style="font-size:0.7em; color:var(--text-muted); text-align:center; margin-top:0.2rem;">all of the form \(y = b^x\) with \(b &gt; 1\)</div>
+            </div>
+            <div class="gd-card decay">
+                <div class="gd-title decay">Exponential Decay</div>
+                <div style="font-size:0.82em; line-height:1.55;">A quantity <span class="gd-blank">decays</span> exponentially when its <span class="gd-blank">rate of decay</span> is proportional to what is already there.</div>
+                <svg class="mini-graph" viewBox="0 0 380 230" id="g-decay" role="img" aria-label="Decay curves y = (1/2)^x, (1/6)^x, (3/4)^x"></svg>
+                <div style="font-size:0.7em; color:var(--text-muted); text-align:center; margin-top:0.2rem;">all of the form \(y = b^x\) with \(0 &lt; b &lt; 1\)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Parent Function Table ===================== -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Parent Exponential Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <table class="traits-table">
+            <thead>
+                <tr><th style="width:22%;"></th><th>Growth</th><th>Decay</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="row-label">parent function</td><td>\(f(x) = b^x,\ b &gt; 1\)</td><td>\(f(x) = b^x,\ 0 &lt; b &lt; 1\)</td></tr>
+                <tr><td class="row-label">domain</td><td>\((-\infty, \infty)\)</td><td>\((-\infty, \infty)\)</td></tr>
+                <tr><td class="row-label">range</td><td>\((0, \infty)\)</td><td>\((0, \infty)\)</td></tr>
+                <tr><td class="row-label">asymptote</td><td>\(y = 0\)</td><td>\(y = 0\)</td></tr>
+                <tr><td class="row-label">\(y\)-intercept</td><td>\((0,\ 1)\)</td><td>\((0,\ 1)\)</td></tr>
+                <tr>
+                    <td class="row-label">graph</td>
+                    <td class="has-graph"><svg id="g-parent-growth" viewBox="0 0 260 160" width="260" height="160" role="img" aria-label="Parent growth curve"></svg></td>
+                    <td class="has-graph"><svg id="g-parent-decay"  viewBox="0 0 260 160" width="260" height="160" role="img" aria-label="Parent decay curve"></svg></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Transformations ===================== -->
+<section class="slide grid-bg" id="slide-3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Transformations of Exponential Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead" style="text-align:center;">\[f(x) = a\,(b)^{x - h} + k\]</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">\(h\) — Horizontal Translation</div>
+                <div class="card-copy">Shifts the graph <strong>right</strong> by \(h\) (or left if \(h\) is negative). The horizontal asymptote is unchanged.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">\(k\) — Vertical Translation</div>
+                <div class="card-copy">Shifts the graph <strong>up</strong> by \(k\) (down if negative). The new horizontal asymptote is \(y = k\).</div>
+            </div>
+        </div>
+        <div class="cards-grid" style="margin-top:0.6rem;">
+            <div class="info-card orange">
+                <div class="card-title">\(a &lt; 0\)</div>
+                <div class="card-copy">Reflection across the \(x\)-axis (curve flips below the asymptote).</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">\(|a| &gt; 1\)</div>
+                <div class="card-copy">Vertical stretch by factor \(|a|\).</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">\(0 &lt; |a| &lt; 1\)</div>
+                <div class="card-copy">Vertical compression by factor \(|a|\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Example 1 — analyze (1/2)^x - 3 ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Analyze and sketch \(f(x) = \left(\tfrac{1}{2}\right)^x - 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Identify growth/decay, the horizontal asymptote, \(y\)-intercept, transformation, domain, and range. Then sketch.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Recognize the parent</div>
+                    <div class="step-copy" style="text-align:center;">Base \(\tfrac{1}{2}\) is between \(0\) and \(1\) &rArr; <strong>decay</strong>. The \(-3\) shifts the parent <strong>down 3</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Key features</div>
+                    <table class="analyze-table">
+                        <tr><td class="k">growth or decay</td><td>decay</td></tr>
+                        <tr><td class="k">horizontal asymptote</td><td>\(y = -3\)</td></tr>
+                        <tr><td class="k">\(y\)-intercept</td><td>\(f(0) = 1 - 3 = -2 \Rightarrow (0, -2)\)</td></tr>
+                        <tr><td class="k">transformation</td><td>vertical shift down 3</td></tr>
+                        <tr><td class="k">domain</td><td>\((-\infty, \infty)\)</td></tr>
+                        <tr><td class="k">range</td><td>\((-3, \infty)\)</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Plot a few key points</div>
+                    <div class="step-math">\[(-2,\,1),\ (-1,\,-1),\ (0,\,-2),\ (1,\,-\tfrac{5}{2})\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex1" class="mini-graph" viewBox="0 0 420 280" role="img" aria-label="Graph of (1/2)^x minus 3"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 2 — analyze 4^(x-1) + 2 ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Analyze and sketch \(f(x) = 4^{\,x - 1} + 2\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Identify growth/decay, asymptote, \(y\)-intercept, transformation, domain, and range. Then sketch.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Recognize the parent</div>
+                    <div class="step-copy" style="text-align:center;">Base \(4 &gt; 1\) &rArr; <strong>growth</strong>. The \((x - 1)\) shifts <strong>right 1</strong>; the \(+2\) shifts <strong>up 2</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Key features</div>
+                    <table class="analyze-table">
+                        <tr><td class="k">growth or decay</td><td>growth</td></tr>
+                        <tr><td class="k">horizontal asymptote</td><td>\(y = 2\)</td></tr>
+                        <tr><td class="k">\(y\)-intercept</td><td>\(f(0) = 4^{-1} + 2 = \tfrac{9}{4} \Rightarrow \left(0, \tfrac{9}{4}\right)\)</td></tr>
+                        <tr><td class="k">transformation</td><td>right 1, up 2</td></tr>
+                        <tr><td class="k">domain</td><td>\((-\infty, \infty)\)</td></tr>
+                        <tr><td class="k">range</td><td>\((2, \infty)\)</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Plot a few key points</div>
+                    <div class="step-math">\[\left(0, \tfrac{9}{4}\right),\ (1,\,3),\ (2,\,6)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex2" class="mini-graph" viewBox="0 0 420 280" role="img" aria-label="Graph of 4^(x-1) plus 2"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 3 — find f from two points ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Find \(f(x) = ab^x\) given \(f(1) = -6\) and \(f(2) = -18\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the values of \(a\) and \(b\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Set up two equations</div>
+                    <div class="step-math">\[ab^{1} = -6 \qquad \text{and} \qquad ab^{2} = -18\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Divide to eliminate \(a\)</div>
+                    <div class="step-math">\[\frac{ab^{2}}{ab^{1}} = \frac{-18}{-6} \ \Longrightarrow\ b = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Back-substitute for \(a\)</div>
+                    <div class="step-math">\[a(3) = -6 \ \Longrightarrow\ a = -2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[f(x) = -2 \cdot 3^{x}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 4 — find ab^-x + c ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Find \(f(x) = ab^{-x} + c\) with HA \(y = 32\) through \((0, 122)\) and \((2, 72)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find \(a\), \(b\), and \(c\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Use the asymptote to find \(c\)</div>
+                    <div class="step-copy" style="text-align:center;">As \(x \to \infty\), \(b^{-x} \to 0\), so the HA is \(y = c\). Therefore \(c = 32\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Use \((0, 122)\) to find \(a\)</div>
+                    <div class="step-math">\[a \cdot b^{0} + 32 = 122 \ \Longrightarrow\ a + 32 = 122 \ \Longrightarrow\ a = 90\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Use \((2, 72)\) to find \(b\)</div>
+                    <div class="step-math">\[90\,b^{-2} + 32 = 72 \ \Longrightarrow\ \frac{90}{b^{2}} = 40 \ \Longrightarrow\ b^{2} = \tfrac{9}{4} \ \Longrightarrow\ b = \tfrac{3}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[f(x) = 90 \left(\tfrac{3}{2}\right)^{-x} + 32 \ =\ 90 \left(\tfrac{2}{3}\right)^{x} + 32\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: The Natural Base e ===================== -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="concept-label">Definition</div>
+        <div class="slide-title">The Natural Base \(e\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="two-col-ex">
+            <div>
+                <div class="e-card">
+                    <div class="e-title">Natural Base</div>
+                    <div class="e-val">\(e = 2.7182818\ldots\)</div>
+                    <div class="e-copy">An irrational, transcendental constant — the most "natural" base for exponential growth. It appears whenever a quantity grows continuously at a rate proportional to itself.</div>
+                </div>
+                <div class="info-card teal" style="margin-top:0.7rem;">
+                    <div class="card-title">Natural Exponential Function</div>
+                    <div class="card-copy" style="text-align:center;">\[f(x) = e^{x}\]Same shape as any growth exponential, but its slope at every point equals its height.</div>
+                </div>
+                <div class="info-card" style="margin-top:0.6rem;">
+                    <div class="card-title">Key Points on \(y = e^x\)</div>
+                    <div class="card-copy" style="text-align:center;">\[\left(-1,\ \tfrac{1}{e}\right),\quad (0,\,1),\quad (1,\,e)\]</div>
+                </div>
+            </div>
+            <div>
+                <svg id="g-e" class="mini-graph" viewBox="0 0 360 320" role="img" aria-label="Graph of y equals e to the x"></svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Example 5 — composition with e ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Let \(f(x) = e^{3x} - 2\) and \(g(x) = 2x^{3} + 3\). Find \((g \circ f)(0)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate the composition \(g(f(0))\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Inner first — evaluate \(f(0)\)</div>
+                    <div class="step-math">\[f(0) = e^{3(0)} - 2 = e^{0} - 2 = 1 - 2 = -1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Now apply \(g\) to that output</div>
+                    <div class="step-math">\[g(-1) = 2(-1)^{3} + 3 = -2 + 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[(g \circ f)(0) = 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Compound Interest Formulas ===================== -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Compound Interest</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">\(n\) Compoundings per Year</div>
+                <div class="card-copy" style="text-align:center;">\[A = P\!\left(1 + \frac{r}{n}\right)^{nt}\]</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Continuous Compounding</div>
+                <div class="card-copy" style="text-align:center;">\[A = P\,e^{\,rt}\]</div>
+            </div>
+        </div>
+        <div class="info-card navy" style="margin-top:0.7rem;">
+            <div class="card-title" style="color:#bfdbfe;">Variables</div>
+            <div class="card-copy" style="color:#e2e8f0;">
+                \(A\) = balance after \(t\) years &nbsp;·&nbsp; \(P\) = principal &nbsp;·&nbsp; \(r\) = annual rate (as a decimal) &nbsp;·&nbsp; \(n\) = compoundings per year &nbsp;·&nbsp; \(t\) = years
+            </div>
+        </div>
+        <div class="info-card orange" style="margin-top:0.6rem;">
+            <div class="card-title">Connection</div>
+            <div class="card-copy">As \(n \to \infty\), the discrete formula \(\left(1 + \tfrac{r}{n}\right)^{nt}\) approaches the continuous one \(e^{rt}\). Continuous compounding is the "limit" of compounding more and more often.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Example 6 — US population ===================== -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">U.S. Population in 2040</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The U.S. had a population of \(331.5\) million in 2020 and grows continuously at \(0.79\%\) per year, so \(P(t) = 331.5\,e^{0.0079t}\). Estimate the population in 2040.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Identify \(t\)</div>
+                    <div class="step-copy" style="text-align:center;">\(t\) is years since 2020, so \(2040 \Rightarrow t = 20\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Substitute and compute</div>
+                    <div class="step-math">\[P(20) = 331.5\,e^{0.0079(20)} = 331.5\,e^{0.158}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[P(20) \approx 331.5(1.1712) \approx 388.2 \text{ million}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 12: Example 7 — $12,000 at 3% ===================== -->
+<section class="slide grid-bg" id="slide-12" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">$12,000 invested at 3% for 4 years</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the balance after \(4\) years if the interest is compounded (a) quarterly and (b) continuously.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Known values</div>
+                    <div class="step-math">\[P = 12000,\quad r = 0.03,\quad t = 4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">(a) Quarterly &mdash; substitute \(n = 4\)</div>
+                    <div class="step-math">\[A = 12000\!\left(1 + \frac{0.03}{4}\right)^{4(4)} = 12000(1.0075)^{16}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box green">
+                    <div class="step-label">(a) Quarterly answer</div>
+                    <div class="step-math">\[A \approx 12000(1.12700) \approx \$13{,}523.91\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box">
+                    <div class="step-label">(b) Continuous &mdash; use \(A = P e^{rt}\)</div>
+                    <div class="step-math">\[A = 12000\,e^{(0.03)(4)} = 12000\,e^{0.12}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-4">
+                <div class="step-box green">
+                    <div class="step-label">(b) Continuous answer</div>
+                    <div class="step-math">\[A \approx 12000(1.12750) \approx \$13{,}529.96\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',       slideId: 'slide-0' },
+            { label: 'Growth/Decay',   slideId: 'slide-1' },
+            { label: 'Parents',        slideId: 'slide-2' },
+            { label: 'Transforms',     slideId: 'slide-3' },
+            { label: 'Examples',       slideId: 'slide-4' },
+            { label: 'Natural \\(e\\)',slideId: 'slide-8' },
+            { label: 'Compound',       slideId: 'slide-10' }
+        ]
+    });
+</script>
+
+<!-- ============================================================
+     Graph rendering: tiny exponential-plot helper
+     ============================================================ -->
+<script>
+(function(){
+    const NS = 'http://www.w3.org/2000/svg';
+    function el(name, attrs) {
+        const e = document.createElementNS(NS, name);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        return e;
+    }
+
+    function plot(svgId, opts) {
+        const svg = document.getElementById(svgId);
+        if (!svg) return;
+        const vb = svg.viewBox.baseVal;
+        const W = vb.width, H = vb.height;
+        const pad = opts.pad || { l: 30, r: 14, t: 14, b: 22 };
+        const xMin = opts.xMin, xMax = opts.xMax, yMin = opts.yMin, yMax = opts.yMax;
+        const xScale = x => pad.l + (x - xMin) / (xMax - xMin) * (W - pad.l - pad.r);
+        const yScale = y => H - pad.b - (y - yMin) / (yMax - yMin) * (H - pad.t - pad.b);
+
+        // light grid
+        if (opts.grid !== false) {
+            const stepX = opts.gridX || 1;
+            const stepY = opts.gridY || 1;
+            for (let x = Math.ceil(xMin); x <= xMax; x += stepX) {
+                svg.appendChild(el('line', { x1: xScale(x), y1: pad.t, x2: xScale(x), y2: H - pad.b,
+                    stroke: '#e2e8f0', 'stroke-width': 1 }));
+            }
+            for (let y = Math.ceil(yMin); y <= yMax; y += stepY) {
+                svg.appendChild(el('line', { x1: pad.l, y1: yScale(y), x2: W - pad.r, y2: yScale(y),
+                    stroke: '#e2e8f0', 'stroke-width': 1 }));
+            }
+        }
+
+        // axes (only if 0 is in range)
+        if (xMin <= 0 && xMax >= 0) {
+            svg.appendChild(el('line', { x1: xScale(0), y1: pad.t, x2: xScale(0), y2: H - pad.b,
+                stroke: '#475569', 'stroke-width': 1.5 }));
+        }
+        if (yMin <= 0 && yMax >= 0) {
+            svg.appendChild(el('line', { x1: pad.l, y1: yScale(0), x2: W - pad.r, y2: yScale(0),
+                stroke: '#475569', 'stroke-width': 1.5 }));
+        }
+
+        // tick labels
+        (opts.xticks || []).forEach(t => {
+            const tx = xScale(t.v ?? t);
+            const ty = yScale(0);
+            svg.appendChild(el('line', { x1: tx, y1: ty - 3, x2: tx, y2: ty + 3, stroke: '#475569', 'stroke-width': 1 }));
+            const txt = el('text', { x: tx, y: ty + 14, 'font-size': 10, 'text-anchor': 'middle', fill: '#475569' });
+            txt.textContent = t.label ?? String(t.v ?? t);
+            svg.appendChild(txt);
+        });
+        (opts.yticks || []).forEach(t => {
+            const ty = yScale(t.v ?? t);
+            const tx = (xMin <= 0 && xMax >= 0) ? xScale(0) : pad.l;
+            svg.appendChild(el('line', { x1: tx - 3, y1: ty, x2: tx + 3, y2: ty, stroke: '#475569', 'stroke-width': 1 }));
+            const txt = el('text', { x: tx - 6, y: ty + 3, 'font-size': 10, 'text-anchor': 'end', fill: '#475569' });
+            txt.textContent = t.label ?? String(t.v ?? t);
+            svg.appendChild(txt);
+        });
+
+        // horizontal asymptote
+        (opts.hasym || []).forEach(y => {
+            svg.appendChild(el('line', { x1: pad.l, y1: yScale(y), x2: W - pad.r, y2: yScale(y),
+                stroke: '#dc2626', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }));
+        });
+
+        // curves
+        (opts.curves || []).forEach(c => {
+            const N = 240;
+            const pts = [];
+            for (let i = 0; i <= N; i++) {
+                const x = xMin + (xMax - xMin) * i / N;
+                const y = c.fn(x);
+                if (!isFinite(y) || y < yMin - 1 || y > yMax + 1) continue;
+                pts.push(xScale(x) + ',' + yScale(y));
+            }
+            svg.appendChild(el('polyline', {
+                points: pts.join(' '),
+                fill: 'none',
+                stroke: c.color || '#2563eb',
+                'stroke-width': c.width || 2.4,
+                'stroke-linejoin': 'round',
+                'stroke-linecap': 'round'
+            }));
+            if (c.label) {
+                const lp = c.labelPt || { x: xMax * 0.7, y: c.fn(xMax * 0.7) };
+                const t = el('text', {
+                    x: xScale(lp.x), y: yScale(lp.y),
+                    'font-size': c.labelSize || 11,
+                    'font-style': 'italic',
+                    fill: c.color || '#2563eb',
+                    'text-anchor': c.labelAnchor || 'start'
+                });
+                t.textContent = c.label;
+                svg.appendChild(t);
+            }
+        });
+
+        // labeled points
+        (opts.points || []).forEach(p => {
+            svg.appendChild(el('circle', { cx: xScale(p.x), cy: yScale(p.y), r: 3.2,
+                fill: p.color || '#2563eb' }));
+            if (p.label) {
+                const t = el('text', {
+                    x: xScale(p.x) + (p.dx || 6),
+                    y: yScale(p.y) + (p.dy || -6),
+                    'font-size': 10, fill: '#1e293b'
+                });
+                t.textContent = p.label;
+                svg.appendChild(t);
+            }
+        });
+
+        // arbitrary annotations
+        (opts.annotations || []).forEach(a => {
+            const t = el('text', { x: xScale(a.x), y: yScale(a.y),
+                'font-size': a.size || 11,
+                fill: a.color || '#1e293b',
+                'text-anchor': a.anchor || 'start',
+                'font-weight': a.weight || 400,
+                'font-style': a.italic ? 'italic' : 'normal'
+            });
+            t.textContent = a.text;
+            svg.appendChild(t);
+        });
+    }
+
+    function buildAll() {
+        // -------- growth (intro) --------
+        plot('g-growth', {
+            xMin: -3, xMax: 3.6, yMin: -0.5, yMax: 8,
+            pad: { l: 26, r: 60, t: 10, b: 22 },
+            xticks: [-2, 2], yticks: [2, 4, 6],
+            curves: [
+                { fn: x => Math.pow(10,  x), color: '#7c3aed', label: 'y = 10ˣ',  labelPt: { x: 0.9, y: 8 } },
+                { fn: x => Math.pow(3,   x), color: '#2563eb', label: 'y = 3ˣ',   labelPt: { x: 1.55, y: 6.0 } },
+                { fn: x => Math.pow(2,   x), color: '#dc2626', label: 'y = 2ˣ',   labelPt: { x: 2.5, y: 5.2 } },
+                { fn: x => Math.pow(1.3, x), color: '#0891b2', label: 'y = 1.3ˣ', labelPt: { x: 3.05, y: 2.6 } }
+            ]
+        });
+        // -------- decay (intro) --------
+        plot('g-decay', {
+            xMin: -3.6, xMax: 3, yMin: -0.5, yMax: 8,
+            pad: { l: 26, r: 60, t: 10, b: 22 },
+            xticks: [-2, 2], yticks: [2, 4, 6],
+            curves: [
+                { fn: x => Math.pow(1/6, x), color: '#2563eb', label: 'y = (1/6)ˣ', labelPt: { x: -2.0, y: 6.8 } },
+                { fn: x => Math.pow(1/2, x), color: '#dc2626', label: 'y = (1/2)ˣ', labelPt: { x: -1.4, y: 3.5 } },
+                { fn: x => Math.pow(3/4, x), color: '#7c3aed', label: 'y = (3/4)ˣ', labelPt: { x: 1.4,  y: 1.2 } }
+            ]
+        });
+        // -------- parent growth --------
+        plot('g-parent-growth', {
+            xMin: -3, xMax: 3, yMin: -1, yMax: 6,
+            pad: { l: 22, r: 14, t: 8, b: 16 },
+            grid: false,
+            curves: [{ fn: x => Math.pow(2, x), color: '#2563eb', width: 2.6 }],
+            points: [{ x: 0, y: 1, color: '#dc2626' }]
+        });
+        // -------- parent decay --------
+        plot('g-parent-decay', {
+            xMin: -3, xMax: 3, yMin: -1, yMax: 6,
+            pad: { l: 22, r: 14, t: 8, b: 16 },
+            grid: false,
+            curves: [{ fn: x => Math.pow(0.5, x), color: '#2563eb', width: 2.6 }],
+            points: [{ x: 0, y: 1, color: '#dc2626' }]
+        });
+        // -------- Example 1: (1/2)^x - 3 --------
+        plot('g-ex1', {
+            xMin: -3, xMax: 4, yMin: -4, yMax: 5,
+            pad: { l: 30, r: 16, t: 14, b: 24 },
+            xticks: [-2, -1, 1, 2, 3], yticks: [-3, -2, -1, 1, 2, 3, 4],
+            hasym: [-3],
+            curves: [{ fn: x => Math.pow(0.5, x) - 3, color: '#2563eb' }],
+            points: [
+                { x: -2, y: 1, label: '(−2, 1)', dx: 6, dy: -8 },
+                { x: -1, y: -1, label: '(−1, −1)', dx: 6, dy: -8 },
+                { x: 0, y: -2, label: '(0, −2)', dx: 6, dy: -8 }
+            ],
+            annotations: [
+                { x: 3.7, y: -2.6, text: 'y = −3', color: '#dc2626', italic: true, size: 11, anchor: 'end' }
+            ]
+        });
+        // -------- Example 2: 4^(x-1) + 2 --------
+        plot('g-ex2', {
+            xMin: -3, xMax: 3, yMin: -1, yMax: 8,
+            pad: { l: 30, r: 16, t: 14, b: 24 },
+            xticks: [-2, -1, 1, 2], yticks: [2, 3, 4, 5, 6, 7],
+            hasym: [2],
+            curves: [{ fn: x => Math.pow(4, x - 1) + 2, color: '#2563eb' }],
+            points: [
+                { x: 0, y: 2.25, label: '(0, 9/4)', dx: 6, dy: -6 },
+                { x: 1, y: 3,    label: '(1, 3)',   dx: 6, dy: -8 },
+                { x: 2, y: 6,    label: '(2, 6)',   dx: -8, dy: -6 }
+            ],
+            annotations: [
+                { x: 2.85, y: 2.5, text: 'y = 2', color: '#dc2626', italic: true, size: 11, anchor: 'end' }
+            ]
+        });
+        // -------- Natural base e graph --------
+        plot('g-e', {
+            xMin: -3, xMax: 3, yMin: -1, yMax: 7,
+            pad: { l: 30, r: 16, t: 14, b: 24 },
+            xticks: [-2, -1, 1, 2], yticks: [1, 2, 3, 4, 5, 6],
+            curves: [{ fn: x => Math.exp(x), color: '#7c3aed', width: 2.8, label: 'y = eˣ', labelPt: { x: 1.5, y: 6.2 } }],
+            points: [
+                { x: -1, y: 1/Math.E, label: '(−1, 1/e)', dx: 6, dy: -6, color: '#7c3aed' },
+                { x: 0,  y: 1,        label: '(0, 1)',    dx: 6, dy: -6, color: '#7c3aed' },
+                { x: 1,  y: Math.E,   label: '(1, e)',    dx: 6, dy: -6, color: '#7c3aed' }
+            ]
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.2 — Logarithmic Functions and Their Graphs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        .iff-block { background: var(--blue-light); border-left: 5px solid var(--blue-accent); border-radius: 10px; padding: 0.6em 1em; font-size: 0.9em; text-align: center; }
+        .iff-arrow { color: var(--blue-accent); font-weight: 700; padding: 0 0.6em; }
+        .parts-diagram { display: flex; justify-content: center; align-items: flex-start; gap: 0; margin: 1.1rem 0 0.5rem; }
+        .parts-token { font-size: 1.6em; font-weight: 600; }
+        .parts-labels { display: grid; grid-template-columns: repeat(3, max-content); gap: 0.4rem 1.6rem; justify-content: center; margin-top: 0.4rem; }
+        .parts-labels .pl { text-align: center; font-size: 0.7em; }
+        .parts-labels .pl .name { font-weight: 700; color: var(--navy); }
+        .parts-labels .pl .sub  { color: var(--text-muted); font-size: 0.95em; }
+        .arrow-up { font-size: 1.3em; color: var(--text-muted); display: block; line-height: 1; }
+        .props-table { width: 100%; border-collapse: collapse; font-size: 0.78em; }
+        .props-table th, .props-table td { border: 1px solid #cbd5e1; padding: 0.5em 0.8em; vertical-align: middle; }
+        .props-table th { background: var(--navy); color: white; font-weight: 700; }
+        .props-table td.k { background: #f1f5f9; font-weight: 700; color: var(--navy); }
+        .compare-table { width: 100%; border-collapse: collapse; font-size: 0.78em; }
+        .compare-table th, .compare-table td { border: 1px solid #cbd5e1; padding: 0.5em 0.7em; text-align: center; }
+        .compare-table th { background: var(--navy); color: white; }
+        .compare-table td.k { background: #f1f5f9; font-weight: 700; color: var(--navy); text-align: left; }
+        .analyze-table { width: 100%; border-collapse: collapse; font-size: 0.8em; margin-bottom: 0.5rem; }
+        .analyze-table td { border: 1px solid #cbd5e1; padding: 0.4em 0.7em; }
+        .analyze-table td.k { background: #f1f5f9; font-weight: 700; color: var(--navy); width: 42%; }
+        .two-col-ex { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; align-items: start; }
+        .sub-parts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem 1.2rem; font-size: 0.85em; }
+        .sub-parts .sp { background: white; border: 1px solid #cbd5e1; border-left: 4px solid var(--blue-accent); border-radius: 8px; padding: 0.35em 0.7em; }
+        .sub-parts .sp .label { font-size: 0.74em; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 3 · Exponential &amp; Logarithmic Functions</div>
+    <div class="title-main">3.2 Logarithmic Functions &amp; Their Graphs</div>
+    <div class="title-objective">Objective: Define the logarithm as the inverse of an exponential, convert between forms, evaluate using basic properties, and graph logarithmic functions (with transformations).</div>
+    <div class="identity-chips">
+        <span class="chip">inverse of exp</span>
+        <span class="chip">common &amp; natural log</span>
+        <span class="chip">basic properties</span>
+        <span class="chip">graphs</span>
+        <span class="chip">transformations</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Definition ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Definition</div>
+        <div class="slide-title">Logarithm with Base \(b\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A logarithm answers the question: <em>“to what power do I raise \(b\) to get \(n\)?”</em> It is the inverse operation of an exponential.</div>
+        <div class="info-card teal">
+            <div class="card-title">Definition</div>
+            <div class="card-copy" style="text-align:center;">For \(b &gt; 0,\ b \neq 1\):</div>
+            <div class="iff-block" style="margin-top:0.5rem;">
+                \(\log_{b} n = p\) <span class="iff-arrow">⇔</span> \(b^{p} = n\)
+            </div>
+        </div>
+        <div class="info-card orange" style="margin-top:0.5rem;">
+            <div class="card-title">Read it as</div>
+            <div class="card-copy">“Log base \(b\) of \(n\) equals \(p\)” — i.e., \(p\) is the <strong>exponent</strong> you put on \(b\) to get \(n\). A log <em>is</em> an exponent.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Parts and Restrictions ===================== -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="ref-label">Anatomy</div>
+        <div class="slide-title">Parts of a Logarithm</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="info-card teal">
+            <div class="card-title">Example</div>
+            <div class="card-copy" style="text-align:center;">
+                <div class="parts-diagram"><span class="parts-token">\(\log_{2} 8 = 3\)</span></div>
+                <div class="parts-labels">
+                    <div class="pl"><span class="arrow-up">↑</span><div class="name">base</div></div>
+                    <div class="pl"><span class="arrow-up">↑</span><div class="name">argument</div><div class="sub">(input)</div></div>
+                    <div class="pl"><span class="arrow-up">↑</span><div class="name">answer</div><div class="sub">(output)</div></div>
+                </div>
+            </div>
+        </div>
+        <div class="info-card orange" style="margin-top:0.6rem;">
+            <div class="card-title">Restrictions</div>
+            <div class="card-copy">
+                <ul>
+                    <li>Base \(b &gt; 0\) and \(b \neq 1\).</li>
+                    <li>Argument must be <strong>positive</strong>: you can take \(\log\) of a positive number only.</li>
+                    <li>Output \(p\) can be any real number.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 1 — Conversions ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="2">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Conversion between log and exponential form</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Write \(\log_{m} p = q\) in exponential form. &nbsp;(b) Write \(z^{y} = w\) in logarithmic form.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box">
+                    <div class="step-label">(a) log → exponential</div>
+                    <div class="step-math">\[\log_{m} p = q \quad\Longleftrightarrow\quad m^{q} = p\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">(b) exponential → log</div>
+                    <div class="step-math">\[z^{y} = w \quad\Longleftrightarrow\quad \log_{z} w = y\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Common log and Natural log ===================== -->
+<section class="slide grid-bg" id="slide-4">
+    <div class="slide-header">
+        <div class="concept-label">Definitions</div>
+        <div class="slide-title">Common Log and Natural Log</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Common Log</div>
+                <div class="card-copy">
+                    <ul>
+                        <li>The log function with <strong>base 10</strong>.</li>
+                        <li>When the base is 10, it is <strong>not necessary</strong> to write the base.</li>
+                    </ul>
+                    <div class="iff-block" style="margin-top:0.45rem;">\(\log x = \log_{10} x\)</div>
+                </div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Natural Log</div>
+                <div class="card-copy">
+                    <ul>
+                        <li>The log function with <strong>base \(e\)</strong>.</li>
+                        <li>The natural log is written \(\ln x\).</li>
+                    </ul>
+                    <div class="iff-block" style="margin-top:0.45rem;">\(\ln x = \log_{e} x\)</div>
+                </div>
+            </div>
+        </div>
+        <div class="info-card" style="margin-top:0.6rem;">
+            <div class="card-title">Natural Log Definition</div>
+            <div class="card-copy" style="text-align:center;">\(\ln m = p \quad\Longleftrightarrow\quad e^{p} = m\)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Basic Properties ===================== -->
+<section class="slide grid-bg" id="slide-5">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Basic Logarithmic Properties</div>
+    </div>
+    <div class="slide-body top-layout">
+        <table class="props-table">
+            <thead>
+                <tr><th>All Logarithms</th><th>Natural Logarithms</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>\(\log_{a} 1 = 0\)</td><td>\(\ln 1 = 0\)</td></tr>
+                <tr><td>\(\log_{a} a = 1\)</td><td>\(\ln e = 1\)</td></tr>
+                <tr><td>\(\log_{a} a^{x} = x\)</td><td>\(\ln e^{x} = x\)</td></tr>
+                <tr><td>\(a^{\log_{a} x} = x\)</td><td>\(e^{\ln x} = x\)</td></tr>
+                <tr><td>If \(\log_{a} x = \log_{a} y\), then \(x = y\)</td><td>If \(\ln m = \ln n\), then \(m = n\)</td></tr>
+            </tbody>
+        </table>
+        <div class="info-card orange" style="margin-top:0.6rem;">
+            <div class="card-title">Why these work</div>
+            <div class="card-copy">The last two are pure “inverse cancellation”: \(\log\) and the matching exponential undo each other. The “one-to-one” rule lets you drop matching logs on both sides of an equation.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 2 — Simplify (log) ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Simplify</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) \(\log_{2} 2^{5}\) &nbsp; (b) \(7^{\log_{7} 14}\) &nbsp; (c) \(\log 10\) &nbsp; (d) Solve \(\log_{2} x = \log_{2} 3\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box">
+                    <div class="step-label">(a) inverse cancellation</div>
+                    <div class="step-math">\[\log_{2} 2^{5} = 5\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">(b) the other inverse cancellation</div>
+                    <div class="step-math">\[7^{\log_{7} 14} = 14\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">(c) \(\log a = 1\) when \(a\) is the base</div>
+                    <div class="step-math">\[\log 10 = \log_{10} 10 = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box green">
+                    <div class="step-label">(d) one-to-one property</div>
+                    <div class="step-math">\[\log_{2} x = \log_{2} 3 \ \Longrightarrow\ x = 3\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 3 — Simplify (ln) ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Simplify natural logs</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) \(\ln \tfrac{1}{e}\) &nbsp; (b) \(e^{\ln 5}\) &nbsp; (c) \(4 \ln 1\) &nbsp; (d) \(2 \ln e\)</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box">
+                    <div class="step-label">(a) rewrite \(\tfrac{1}{e}\) as \(e^{-1}\)</div>
+                    <div class="step-math">\[\ln \tfrac{1}{e} = \ln e^{-1} = -1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">(b) inverse cancellation</div>
+                    <div class="step-math">\[e^{\ln 5} = 5\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">(c) \(\ln 1 = 0\)</div>
+                    <div class="step-math">\[4 \ln 1 = 4(0) = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box green">
+                    <div class="step-label">(d) \(\ln e = 1\)</div>
+                    <div class="step-math">\[2 \ln e = 2(1) = 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 4 — Inverse of g(x) = -2 + log_3(x+1) ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Find the inverse of \(g(x) = -2 + \log_{3}(x + 1)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the swap-and-solve strategy: rewrite \(y = g(x)\), swap \(x\) and \(y\), then solve for \(y\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Rewrite</div>
+                    <div class="step-math">\[y = -2 + \log_{3}(x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Swap \(x\) and \(y\)</div>
+                    <div class="step-math">\[x = -2 + \log_{3}(y + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Isolate the log</div>
+                    <div class="step-math">\[x + 2 = \log_{3}(y + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box">
+                    <div class="step-label">Convert to exponential form</div>
+                    <div class="step-math">\[3^{\,x + 2} = y + 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Solve for \(y\) (the inverse)</div>
+                    <div class="step-math">\[g^{-1}(x) = 3^{\,x + 2} - 1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Graphs of Exponential and Log (reflection) ===================== -->
+<section class="slide grid-bg" id="slide-9">
+    <div class="slide-header">
+        <div class="concept-label">Visual</div>
+        <div class="slide-title">Graphs of Exponential and Log Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">An exponential and its log inverse are <strong>reflections of each other across \(y = x\)</strong>. Whatever happens to the exponential horizontally happens to the log vertically (and vice-versa).</div>
+        <div class="two-col-ex">
+            <div class="info-card teal">
+                <div class="card-title">Base 2</div>
+                <svg id="g-pair-2" class="mini-graph" viewBox="0 0 360 280" role="img" aria-label="y = 2^x and y = log base 2 x reflected across y = x"></svg>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Base \(e\)</div>
+                <svg id="g-pair-e" class="mini-graph" viewBox="0 0 360 280" role="img" aria-label="y = e^x and y = ln x reflected across y = x"></svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Graphs of log functions ===================== -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Graphs of \(f(x) = \log_{b} x\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="two-col-ex">
+            <div>
+                <svg id="g-logs" class="mini-graph" viewBox="0 0 380 300" role="img" aria-label="log base 2, log base e, log base 10 curves"></svg>
+            </div>
+            <div>
+                <div class="info-card teal">
+                    <div class="card-title">Shared features (any base \(b &gt; 1\))</div>
+                    <div class="card-copy">
+                        <ul>
+                            <li>Domain: \((0, \infty)\)</li>
+                            <li>Range: \((-\infty, \infty)\)</li>
+                            <li>Vertical asymptote: \(x = 0\)</li>
+                            <li>\(x\)-intercept: \((1, 0)\)</li>
+                            <li>Passes through \((b, 1)\)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-card orange" style="margin-top:0.55rem;">
+                    <div class="card-title">Effect of the base</div>
+                    <div class="card-copy">Larger base ⇒ <strong>flatter</strong> growth. \(\log_{2}\) rises fastest, \(\log\) (base 10) rises slowest of the three shown.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Exponential vs Logarithmic table ===================== -->
+<section class="slide grid-bg" id="slide-11">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Exponential vs. Logarithmic Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <table class="compare-table">
+            <thead>
+                <tr><th></th><th>\(f(x) = b^{x}\)</th><th>\(f(x) = \log_{b} x\)</th></tr>
+            </thead>
+            <tbody>
+                <tr><td class="k">domain</td><td>\(\mathbb{R}\)</td><td>\((0,\infty)\)</td></tr>
+                <tr><td class="k">range</td><td>\((0,\infty)\)</td><td>\(\mathbb{R}\)</td></tr>
+                <tr><td class="k">asymptote</td><td>\(y = 0\) (horizontal)</td><td>\(x = 0\) (vertical)</td></tr>
+                <tr><td class="k">intercept</td><td>\((0,\,1)\)</td><td>\((1,\,0)\)</td></tr>
+                <tr><td class="k">passes through</td><td>\((1,\,b)\)</td><td>\((b,\,1)\)</td></tr>
+            </tbody>
+        </table>
+        <div class="info-card navy" style="margin-top:0.7rem;">
+            <div class="card-title" style="color:#bfdbfe;">Inverse swap</div>
+            <div class="card-copy" style="color:#e2e8f0;">Notice every feature swaps \(x \leftrightarrow y\). Domain becomes range. Horizontal asymptote becomes vertical. \((0, 1)\) becomes \((1, 0)\). That’s the geometric meaning of inverse.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 12: Transformations + How to Graph ===================== -->
+<section class="slide grid-bg" id="slide-12">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Transformations of Log Functions &amp; Graphing Strategy</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead" style="text-align:center;">\[f(x) = a \cdot \log_{b}(x - h) + k\]</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">\(h\) — Horizontal Translation</div>
+                <div class="card-copy">Shifts right by \(h\). The vertical asymptote moves to \(x = h\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">\(k\) — Vertical Translation</div>
+                <div class="card-copy">Shifts up by \(k\) (down if negative). The VA is unchanged.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">\(a &lt; 0\)</div>
+                <div class="card-copy">Reflection across the \(x\)-axis.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">\(|a| &gt; 1\)</div>
+                <div class="card-copy">Vertical stretch by factor \(|a|\).</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">\(0 &lt; |a| &lt; 1\)</div>
+                <div class="card-copy">Vertical compression by factor \(|a|\).</div>
+            </div>
+        </div>
+        <div class="info-card navy" style="margin-top:0.6rem;">
+            <div class="card-title" style="color:#bfdbfe;">How to Graph a Log Function</div>
+            <div class="card-copy" style="color:#e2e8f0;">
+                <ol style="margin-left:1.1rem; line-height:1.55;">
+                    <li>Identify and draw the vertical asymptote \(x = h\).</li>
+                    <li>Identify the transformations from \(a, h, k\).</li>
+                    <li>Write the parent’s exponential inverse (e.g., parent \(\log_{2} x\) ⇒ inverse \(y = 2^{x}\)).</li>
+                    <li>Make a t-table for the inverse using \(x = -1, 0, 1\).</li>
+                    <li><strong>Swap</strong> the t-table columns to get the parent log’s points.</li>
+                    <li>Adjust each \((x, y)\) for the transformations.</li>
+                    <li>Plot the points and sketch the curve.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 13: Example 5 — analyze log_6(x-1) + 4 ===================== -->
+<section class="slide grid-bg" id="slide-13" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Analyze and sketch \(g(x) = \log_{6}(x - 1) + 4\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Identify the vertical asymptote, transformations, domain, and range. Then sketch.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Read off the form</div>
+                    <div class="step-copy" style="text-align:center;">Compare to \(a \log_{b}(x - h) + k\): \(a = 1,\ h = 1,\ k = 4\). Right 1, up 4. No reflection.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Key features</div>
+                    <table class="analyze-table">
+                        <tr><td class="k">vertical asymptote</td><td>\(x = 1\)</td></tr>
+                        <tr><td class="k">transformations</td><td>right 1, up 4</td></tr>
+                        <tr><td class="k">domain</td><td>\((1, \infty)\)</td></tr>
+                        <tr><td class="k">range</td><td>\((-\infty, \infty)\)</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box">
+                    <div class="step-label">Parent-log key points → shifted</div>
+                    <div class="step-math">\[(1,\,0)\to(2,\,4),\quad (6,\,1)\to(7,\,5),\quad \left(\tfrac{1}{6},\,-1\right)\to\left(\tfrac{7}{6},\,3\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex5" class="mini-graph" viewBox="0 0 420 280" role="img" aria-label="Graph of log base 6 of x minus 1 plus 4"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 14: Example 6 — analyze -log_3(x+1) - 3 ===================== -->
+<section class="slide grid-bg" id="slide-14" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Analyze and sketch \(g(x) = -\log_{3}(x + 1) - 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Identify the vertical asymptote, transformations, domain, and range. Then sketch.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-14-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Read off the form</div>
+                    <div class="step-copy" style="text-align:center;">\(a = -1,\ h = -1,\ k = -3\). Reflection across the \(x\)-axis, left 1, down 3.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-1">
+                <div class="step-box">
+                    <div class="step-label">Key features</div>
+                    <table class="analyze-table">
+                        <tr><td class="k">vertical asymptote</td><td>\(x = -1\)</td></tr>
+                        <tr><td class="k">transformations</td><td>reflect across \(x\)-axis, left 1, down 3</td></tr>
+                        <tr><td class="k">domain</td><td>\((-1, \infty)\)</td></tr>
+                        <tr><td class="k">range</td><td>\((-\infty, \infty)\)</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-2">
+                <div class="step-box">
+                    <div class="step-label">Key points</div>
+                    <div class="step-math">\[(1,\,0)\to(0,\,-3),\quad (3,\,1)\to(2,\,-4),\quad \left(\tfrac{1}{3},\,-1\right)\to\left(-\tfrac{2}{3},\,-2\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex6" class="mini-graph" viewBox="0 0 420 280" role="img" aria-label="Graph of negative log base 3 of x plus 1 minus 3"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Definition',   slideId: 'slide-1' },
+            { label: 'Common/Nat',   slideId: 'slide-4' },
+            { label: 'Properties',   slideId: 'slide-5' },
+            { label: 'Examples',     slideId: 'slide-6' },
+            { label: 'Graphs',       slideId: 'slide-9' },
+            { label: 'Transforms',   slideId: 'slide-12' }
+        ]
+    });
+</script>
+
+<script>
+(function(){
+    const NS = 'http://www.w3.org/2000/svg';
+    function el(name, attrs) {
+        const e = document.createElementNS(NS, name);
+        for (const k in attrs) e.setAttribute(k, attrs[k]);
+        return e;
+    }
+    function plot(svgId, opts) {
+        const svg = document.getElementById(svgId);
+        if (!svg) return;
+        const vb = svg.viewBox.baseVal;
+        const W = vb.width, H = vb.height;
+        const pad = opts.pad || { l: 30, r: 14, t: 14, b: 22 };
+        const xMin = opts.xMin, xMax = opts.xMax, yMin = opts.yMin, yMax = opts.yMax;
+        const X = x => pad.l + (x - xMin) / (xMax - xMin) * (W - pad.l - pad.r);
+        const Y = y => H - pad.b - (y - yMin) / (yMax - yMin) * (H - pad.t - pad.b);
+
+        if (opts.grid !== false) {
+            const stepX = opts.gridX || 1, stepY = opts.gridY || 1;
+            for (let x = Math.ceil(xMin); x <= xMax; x += stepX) {
+                svg.appendChild(el('line', { x1: X(x), y1: pad.t, x2: X(x), y2: H - pad.b,
+                    stroke: '#e2e8f0', 'stroke-width': 1 }));
+            }
+            for (let y = Math.ceil(yMin); y <= yMax; y += stepY) {
+                svg.appendChild(el('line', { x1: pad.l, y1: Y(y), x2: W - pad.r, y2: Y(y),
+                    stroke: '#e2e8f0', 'stroke-width': 1 }));
+            }
+        }
+        if (xMin <= 0 && xMax >= 0) svg.appendChild(el('line', { x1: X(0), y1: pad.t, x2: X(0), y2: H - pad.b, stroke: '#475569', 'stroke-width': 1.5 }));
+        if (yMin <= 0 && yMax >= 0) svg.appendChild(el('line', { x1: pad.l, y1: Y(0), x2: W - pad.r, y2: Y(0), stroke: '#475569', 'stroke-width': 1.5 }));
+
+        (opts.xticks || []).forEach(t => {
+            const v = t.v ?? t;
+            const tx = X(v), ty = Y(0);
+            svg.appendChild(el('line', { x1: tx, y1: ty - 3, x2: tx, y2: ty + 3, stroke: '#475569', 'stroke-width': 1 }));
+            const txt = el('text', { x: tx, y: ty + 14, 'font-size': 10, 'text-anchor': 'middle', fill: '#475569' });
+            txt.textContent = t.label ?? String(v);
+            svg.appendChild(txt);
+        });
+        (opts.yticks || []).forEach(t => {
+            const v = t.v ?? t;
+            const ty = Y(v), tx = (xMin <= 0 && xMax >= 0) ? X(0) : pad.l;
+            svg.appendChild(el('line', { x1: tx - 3, y1: ty, x2: tx + 3, y2: ty, stroke: '#475569', 'stroke-width': 1 }));
+            const txt = el('text', { x: tx - 6, y: ty + 3, 'font-size': 10, 'text-anchor': 'end', fill: '#475569' });
+            txt.textContent = t.label ?? String(v);
+            svg.appendChild(txt);
+        });
+
+        (opts.hasym || []).forEach(y => {
+            svg.appendChild(el('line', { x1: pad.l, y1: Y(y), x2: W - pad.r, y2: Y(y), stroke: '#dc2626', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }));
+        });
+        (opts.vasym || []).forEach(x => {
+            svg.appendChild(el('line', { x1: X(x), y1: pad.t, x2: X(x), y2: H - pad.b, stroke: '#dc2626', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }));
+        });
+        (opts.refLines || []).forEach(r => {
+            svg.appendChild(el('line', {
+                x1: X(r.x1), y1: Y(r.y1), x2: X(r.x2), y2: Y(r.y2),
+                stroke: r.color || '#94a3b8', 'stroke-width': r.width || 1.2,
+                'stroke-dasharray': r.dash || '4 4'
+            }));
+        });
+
+        (opts.curves || []).forEach(c => {
+            const N = 280, pts = [];
+            const a = c.xMin ?? xMin, b = c.xMax ?? xMax;
+            for (let i = 0; i <= N; i++) {
+                const x = a + (b - a) * i / N;
+                const y = c.fn(x);
+                if (!isFinite(y) || y < yMin - 1 || y > yMax + 1) { if (pts.length) { svg.appendChild(el('polyline', { points: pts.join(' '), fill: 'none', stroke: c.color || '#2563eb', 'stroke-width': c.width || 2.4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' })); pts.length = 0; } continue; }
+                pts.push(X(x) + ',' + Y(y));
+            }
+            if (pts.length) svg.appendChild(el('polyline', { points: pts.join(' '), fill: 'none', stroke: c.color || '#2563eb', 'stroke-width': c.width || 2.4, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+            if (c.label) {
+                const lp = c.labelPt;
+                const t = el('text', { x: X(lp.x), y: Y(lp.y), 'font-size': c.labelSize || 11, 'font-style': 'italic', fill: c.color || '#2563eb', 'text-anchor': c.labelAnchor || 'start' });
+                t.textContent = c.label;
+                svg.appendChild(t);
+            }
+        });
+        (opts.points || []).forEach(p => {
+            svg.appendChild(el('circle', { cx: X(p.x), cy: Y(p.y), r: 3.2, fill: p.color || '#2563eb' }));
+            if (p.label) {
+                const t = el('text', { x: X(p.x) + (p.dx || 6), y: Y(p.y) + (p.dy || -6), 'font-size': 10, fill: '#1e293b' });
+                t.textContent = p.label;
+                svg.appendChild(t);
+            }
+        });
+        (opts.annotations || []).forEach(a => {
+            const t = el('text', { x: X(a.x), y: Y(a.y), 'font-size': a.size || 11, fill: a.color || '#1e293b', 'text-anchor': a.anchor || 'start', 'font-weight': a.weight || 400, 'font-style': a.italic ? 'italic' : 'normal' });
+            t.textContent = a.text;
+            svg.appendChild(t);
+        });
+    }
+
+    function buildAll() {
+        // Pair: y = 2^x and y = log_2 x with y=x line
+        plot('g-pair-2', {
+            xMin: -3, xMax: 6, yMin: -3, yMax: 6,
+            pad: { l: 28, r: 14, t: 12, b: 22 },
+            xticks: [-2, 2, 4], yticks: [-2, 2, 4],
+            refLines: [{ x1: -3, y1: -3, x2: 6, y2: 6, color: '#16a34a', dash: '6 5', width: 1.5 }],
+            curves: [
+                { fn: x => Math.pow(2, x), color: '#dc2626', label: 'y = 2ˣ',     labelPt: { x: 2.2, y: 5.4 } },
+                { fn: x => Math.log2(x), xMin: 0.05, color: '#2563eb', label: 'y = log₂ x', labelPt: { x: 4.4, y: 2.6 } }
+            ],
+            annotations: [
+                { x: 5.7, y: 5.0, text: 'y = x', color: '#16a34a', italic: true, size: 11, anchor: 'end' }
+            ]
+        });
+        plot('g-pair-e', {
+            xMin: -3, xMax: 6, yMin: -3, yMax: 6,
+            pad: { l: 28, r: 14, t: 12, b: 22 },
+            xticks: [-2, 2, 4], yticks: [-2, 2, 4],
+            refLines: [{ x1: -3, y1: -3, x2: 6, y2: 6, color: '#16a34a', dash: '6 5', width: 1.5 }],
+            curves: [
+                { fn: x => Math.exp(x), color: '#dc2626', label: 'y = eˣ',  labelPt: { x: 1.6, y: 5.3 } },
+                { fn: x => Math.log(x), xMin: 0.04, color: '#2563eb', label: 'y = ln x', labelPt: { x: 4.6, y: 1.7 } }
+            ],
+            annotations: [
+                { x: 5.7, y: 5.0, text: 'y = x', color: '#16a34a', italic: true, size: 11, anchor: 'end' }
+            ]
+        });
+        // Three log curves
+        plot('g-logs', {
+            xMin: -1, xMax: 9, yMin: -4, yMax: 4,
+            pad: { l: 28, r: 60, t: 12, b: 22 },
+            xticks: [2, 4, 6, 8], yticks: [-2, 2],
+            curves: [
+                { fn: x => Math.log2(x), xMin: 0.05, color: '#dc2626', label: 'y = log₂ x', labelPt: { x: 8.4, y: 3.3 } },
+                { fn: x => Math.log(x),  xMin: 0.05, color: '#16a34a', label: 'y = ln x',   labelPt: { x: 8.4, y: 2.2 } },
+                { fn: x => Math.log10(x),xMin: 0.05, color: '#7c3aed', label: 'y = log x',  labelPt: { x: 8.4, y: 1.0 } }
+            ]
+        });
+        // Example 5: log_6(x-1) + 4 -- VA x=1
+        plot('g-ex5', {
+            xMin: -1, xMax: 8, yMin: -1, yMax: 7,
+            pad: { l: 30, r: 16, t: 14, b: 24 },
+            xticks: [1, 2, 3, 4, 5, 6, 7], yticks: [1, 2, 3, 4, 5, 6],
+            vasym: [1],
+            curves: [{ fn: x => Math.log(x - 1) / Math.log(6) + 4, xMin: 1.001, color: '#2563eb' }],
+            points: [
+                { x: 2, y: 4, label: '(2, 4)', dx: 6, dy: -6 },
+                { x: 7, y: 5, label: '(7, 5)', dx: -8, dy: -6 }
+            ],
+            annotations: [
+                { x: 1.05, y: 6.6, text: 'x = 1', color: '#dc2626', italic: true, size: 11, anchor: 'start' }
+            ]
+        });
+        // Example 6: -log_3(x+1) - 3 -- VA x = -1, reflected
+        plot('g-ex6', {
+            xMin: -2, xMax: 7, yMin: -7, yMax: 1,
+            pad: { l: 32, r: 16, t: 14, b: 24 },
+            xticks: [-1, 1, 2, 3, 4, 5, 6], yticks: [-6, -5, -4, -3, -2, -1],
+            vasym: [-1],
+            curves: [{ fn: x => -Math.log(x + 1) / Math.log(3) - 3, xMin: -0.999, color: '#2563eb' }],
+            points: [
+                { x: 0, y: -3, label: '(0, −3)', dx: 6, dy: -6 },
+                { x: 2, y: -4, label: '(2, −4)', dx: 6, dy: -6 }
+            ],
+            annotations: [
+                { x: -0.95, y: 0.6, text: 'x = −1', color: '#dc2626', italic: true, size: 11, anchor: 'start' }
+            ]
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+})();
+</script>
+</body>
+</html>

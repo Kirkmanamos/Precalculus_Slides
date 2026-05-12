@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.6 - Fundamental Theorem of Algebra</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Synthetic-division table (carried over from 2.4) */
+        .synth-wrap { display: flex; justify-content: center; margin: 0.4em 0; }
+        .synth {
+            border-collapse: collapse;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 1.05em;
+        }
+        .synth td {
+            padding: 0.22em 0.65em;
+            text-align: center;
+            min-width: 2.6em;
+        }
+        .synth td.c {
+            color: #dc2626;
+            font-weight: 700;
+            text-align: right;
+            border-right: 2px solid #334155;
+            padding-right: 0.5em;
+        }
+        .synth tr.products td { color: #64748b; }
+        .synth tr.result td:not(.c) {
+            border-top: 2px solid #334155;
+            padding-top: 0.32em;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .synth td.remainder {
+            background: #fef3c7;
+            color: #b91c1c !important;
+            border-radius: 6px;
+            border-top: 2px solid #b91c1c !important;
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.6 Fundamental Theorem of Algebra</div>
+    <div class="title-objective">Objective: Use the Fundamental Theorem of Algebra to count zeros, factor any polynomial completely over the complex numbers, apply the conjugate-zero theorems to recover missing zeros, and build polynomials with given zeros and an additional condition.</div>
+    <div class="identity-chips">
+        <span class="chip">FTA</span>
+        <span class="chip">linear factorization</span>
+        <span class="chip">complex conjugates</span>
+        <span class="chip">irrational conjugates</span>
+        <span class="chip">build from zeros</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: FTA Statement ===================== -->
+<section class="slide grid-bg" id="slide-1" data-steps="3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">The Fundamental Theorem of Algebra</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A polynomial with degree \(n \geq 1\) is guaranteed to have a complete set of zeros — provided we look in the complex numbers.</div>
+        <ul class="notes-list">
+            <li>Every polynomial equation with degree greater than zero has
+                <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">exactly \(n\)</span></span>
+                <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">solutions</span></span>
+                in the set of complex numbers (counting multiplicity).
+            </li>
+            <li>The polynomial therefore factors completely as a product of
+                <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(n\) linear factors</span></span>
+                over \(\mathbb{C}\).
+            </li>
+        </ul>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">consequence</div>
+                <div class="fn-eq-stack">
+                    <div>\[f(x) = a\,(x - r_1)(x - r_2)\,\cdots\,(x - r_n)\]</div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Counting Rule</div>
+                <div class="card-copy">A degree-\(n\) polynomial has \(n\) zeros in \(\mathbb{C}\). A repeated zero of multiplicity \(k\) counts as \(k\) of those zeros.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Why Complex Matters</div>
+                <div class="card-copy">Over the real numbers a polynomial can have fewer than \(n\) zeros. Over \(\mathbb{C}\), the count is exact — no zeros are ever missing.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Real Coefficients</div>
+                <div class="card-copy">If the coefficients are real, any non-real zero must come paired with its complex conjugate. So the complex zeros always appear in pairs.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Example 1 ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Factor Completely: \(P(x) = x^3 + x^2 - 4x + 6\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find all zeros and the complete factorization of \(P(x)\) over the complex numbers.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Hunt rational zeros</div>
+                    <div class="step-copy" style="text-align:center;">Possible rational zeros: \(\pm 1,\, \pm 2,\, \pm 3,\, \pm 6\). Test until one works.</div>
+                    <div class="step-math">\[P(-3) = -27 + 9 + 12 + 6 = 0\;\;\checkmark\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Synthetic divide by \((x + 3)\)</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-3 │</td><td>1</td><td>1</td><td>-4</td><td>6</td></tr>
+                            <tr class="products"><td></td><td></td><td>-3</td><td>6</td><td>-6</td></tr>
+                            <tr class="result"><td></td><td>1</td><td>-2</td><td>2</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-math">\[P(x) = (x + 3)(x^2 - 2x + 2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Quadratic Formula on the remaining factor</div>
+                    <div class="step-math">\[x = \dfrac{2 \pm \sqrt{4 - 8}}{2} = \dfrac{2 \pm \sqrt{-4}}{2} = \dfrac{2 \pm 2i}{2} = 1 \pm i\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">All Three Zeros</div>
+                    <div class="step-math">\[x = -3,\quad x = 1 + i,\quad x = 1 - i\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Complete Factorization</div>
+                    <div class="step-math">\[P(x) = (x + 3)\bigl(x - (1 + i)\bigr)\bigl(x - (1 - i)\bigr)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 2 — Degree 5 ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Find All Zeros: \(f(x) = x^5 + 6x^3 + 2x^2 - 27x + 18\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">List the possible rational zeros, then find all zeros. Note the missing \(x^4\) term — write \(0\) for its coefficient in synthetic division.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Rational candidates</div>
+                    <div class="step-copy" style="text-align:center;">Constant \(18\) has factors \(\pm 1, 2, 3, 6, 9, 18\); leading coefficient \(1\). Candidates: \(\pm 1, \pm 2, \pm 3, \pm 6, \pm 9, \pm 18\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Try \(x = 1\)</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">1 │</td><td>1</td><td>0</td><td>6</td><td>2</td><td>-27</td><td>18</td></tr>
+                            <tr class="products"><td></td><td></td><td>1</td><td>1</td><td>7</td><td>9</td><td>-18</td></tr>
+                            <tr class="result"><td></td><td>1</td><td>1</td><td>7</td><td>9</td><td>-18</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Remainder \(0\) &rArr; \(x = 1\) is a zero.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Try \(x = 1\) again on the new quotient</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">1 │</td><td>1</td><td>1</td><td>7</td><td>9</td><td>-18</td></tr>
+                            <tr class="products"><td></td><td></td><td>1</td><td>2</td><td>9</td><td>18</td></tr>
+                            <tr class="result"><td></td><td>1</td><td>2</td><td>9</td><td>18</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Remainder \(0\) again &rArr; \(x = 1\) has multiplicity \(2\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Try \(x = -2\) on the new quotient</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-2 │</td><td>1</td><td>2</td><td>9</td><td>18</td></tr>
+                            <tr class="products"><td></td><td></td><td>-2</td><td>0</td><td>-18</td></tr>
+                            <tr class="result"><td></td><td>1</td><td>0</td><td>9</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-math">\[\text{New factor: } x^2 + 9\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Solve \(x^2 + 9 = 0\)</div>
+                    <div class="step-math">\[x^2 = -9 \;\Longrightarrow\; x = \pm 3i\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-5">
+                <div class="step-box dark">
+                    <div class="step-label">All Five Zeros</div>
+                    <div class="step-math">\[x = 1\;(\text{mult } 2),\quad x = -2,\quad x = 3i,\quad x = -3i\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Conjugate-Zero Theorems ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Conjugate-Zero Theorems</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When a polynomial has <strong>real coefficients</strong>, non-real and irrational zeros never come alone — they come paired with their conjugates.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Complex Conjugate Zeros</div>
+                <div class="fn-eq-stack">
+                    <div>If \(a + bi\) is a zero, then
+                        <span class="fb" id="slide-4-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(a - bi\)</span></span>
+                        is also a zero.
+                    </div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">Irrational Conjugates</div>
+                <div class="fn-eq-stack">
+                    <div>If \(a + \sqrt{b}\) is a zero, then
+                        <span class="fb" id="slide-4-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(a - \sqrt{b}\)</span></span>
+                        is also a zero.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Counting Pairs</div>
+                <div class="card-copy">Non-real zeros always pair up. A degree-\(n\) polynomial with real coefficients has an <strong>even</strong> number of non-real zeros.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Building Real Factors</div>
+                <div class="card-copy">Multiplying a conjugate pair gives a quadratic with real coefficients: \[(x - (a + bi))(x - (a - bi)) = (x - a)^2 + b^2\]</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Real Coefficients Required</div>
+                <div class="card-copy">Both theorems assume the polynomial has real coefficients. With non-real coefficients, conjugate pairings don't have to hold.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 3 — Build with √3 ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Build a Cubic from Zeros \(2,\; \sqrt{3}\) with \(g(4) = 13\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write the cubic polynomial \(g\) with real coefficients that has zeros \(2\) and \(\sqrt{3}\) and where \(g(4) = 13\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Identify the third zero</div>
+                    <div class="step-copy" style="text-align:center;">By the Irrational Conjugates Theorem, since \(\sqrt{3}\) is a zero, so is \(-\sqrt{3}\). Three zeros: \(2,\, \sqrt{3},\, -\sqrt{3}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Write the factored form</div>
+                    <div class="step-math">\[g(x) = a\,(x - 2)(x - \sqrt{3})(x + \sqrt{3})\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Multiply the conjugate pair</div>
+                    <div class="step-math">\[(x - \sqrt{3})(x + \sqrt{3}) = x^2 - 3\]</div>
+                    <div class="step-math">\[g(x) = a\,(x - 2)(x^2 - 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Use \(g(4) = 13\) to solve for \(a\)</div>
+                    <div class="step-math">\[g(4) = a(4 - 2)(16 - 3) = a(2)(13) = 26a = 13 \;\Longrightarrow\; a = \tfrac{1}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Cubic Polynomial</div>
+                    <div class="step-math">\[g(x) = \tfrac{1}{2}(x - 2)(x^2 - 3) = \tfrac{1}{2}x^3 - x^2 - \tfrac{3}{2}x + 3\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 4 — Build with 1 - i ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Build a Cubic from Zeros \(2,\; 1 - i\) with \(f(1) = 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find a cubic polynomial \(f\) with real coefficients that has \(2\) and \(1 - i\) as zeros and \(f(1) = 3\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Identify the third zero</div>
+                    <div class="step-copy" style="text-align:center;">By the Complex Conjugate Zeros Theorem, since \(1 - i\) is a zero, so is \(1 + i\). Three zeros: \(2,\, 1 - i,\, 1 + i\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Write the factored form</div>
+                    <div class="step-math">\[f(x) = a\,(x - 2)\bigl(x - (1 - i)\bigr)\bigl(x - (1 + i)\bigr)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Multiply the conjugate pair</div>
+                    <div class="step-math">\[\bigl((x - 1) + i\bigr)\bigl((x - 1) - i\bigr) = (x - 1)^2 - i^2 = (x - 1)^2 + 1\]</div>
+                    <div class="step-math">\[= x^2 - 2x + 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Use \(f(1) = 3\) to solve for \(a\)</div>
+                    <div class="step-math">\[f(x) = a\,(x - 2)(x^2 - 2x + 2)\]</div>
+                    <div class="step-math">\[f(1) = a\,(1 - 2)(1 - 2 + 2) = a(-1)(1) = -a = 3 \;\Longrightarrow\; a = -3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Cubic Polynomial</div>
+                    <div class="step-math">\[f(x) = -3(x - 2)(x^2 - 2x + 2)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 5 — Find All Zeros with Given Complex Zero ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Given \(1 + 3i\) is a Zero: Find All Zeros of \(f(x) = x^4 - 6x^3 + 47x^2 - 98x + 290\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A quartic with real coefficients has \(1 + 3i\) as a zero. Find the remaining three zeros.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Use the conjugate pair</div>
+                    <div class="step-copy" style="text-align:center;">By CCZ, \(1 - 3i\) is also a zero. Multiply this conjugate pair to get a real quadratic factor.</div>
+                    <div class="step-math">\[\bigl((x - 1) - 3i\bigr)\bigl((x - 1) + 3i\bigr) = (x - 1)^2 + 9 = x^2 - 2x + 10\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Long divide \(f(x)\) by \(x^2 - 2x + 10\)</div>
+                    <div class="step-copy" style="text-align:center;">First term: \(x^4 \div x^2 = x^2\). Multiply back, subtract.</div>
+                    <div class="step-math">\[(x^4 - 6x^3 + 47x^2) - (x^4 - 2x^3 + 10x^2) = -4x^3 + 37x^2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Next term: \(-4x^3 \div x^2 = -4x\)</div>
+                    <div class="step-copy" style="text-align:center;">Multiply: \(-4x(x^2 - 2x + 10) = -4x^3 + 8x^2 - 40x\). Subtract.</div>
+                    <div class="step-math">\[(-4x^3 + 37x^2 - 98x) - (-4x^3 + 8x^2 - 40x) = 29x^2 - 58x\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Final term: \(29x^2 \div x^2 = 29\)</div>
+                    <div class="step-copy" style="text-align:center;">Multiply: \(29(x^2 - 2x + 10) = 29x^2 - 58x + 290\). Subtract — remainder is \(0\).</div>
+                    <div class="step-math">\[\text{Quotient: } x^2 - 4x + 29\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Solve \(x^2 - 4x + 29 = 0\) with the Quadratic Formula</div>
+                    <div class="step-math">\[x = \dfrac{4 \pm \sqrt{16 - 116}}{2} = \dfrac{4 \pm \sqrt{-100}}{2} = \dfrac{4 \pm 10i}{2} = 2 \pm 5i\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-5">
+                <div class="step-box dark">
+                    <div class="step-label">All Four Zeros</div>
+                    <div class="step-math">\[x = 1 + 3i,\quad 1 - 3i,\quad 2 + 5i,\quad 2 - 5i\]</div>
+                    <div class="step-copy" style="text-align:center; margin-top:0.3em;">Two complex conjugate pairs — a quartic with real coefficients and four non-real zeros.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Review ===================== -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to confirm you can hunt down every zero of any polynomial.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Count Zeros</div>
+                <div class="card-copy">A degree-\(n\) polynomial has exactly \(n\) zeros over the complex numbers, counting multiplicity.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Factor Completely</div>
+                <div class="card-copy">Hunt rational zeros, divide them out, and use the Quadratic Formula on whatever quadratic factor remains.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Use Conjugate Pairs</div>
+                <div class="card-copy">With real coefficients, \(a + bi\) and \(a + \sqrt{b}\) always pair with their conjugates. One given non-real zero secretly delivers two.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Build Quadratic Factors</div>
+                <div class="card-copy">Pair the conjugate factors first — the radicals or imaginary parts cancel by difference of squares, leaving a tidy quadratic with real coefficients.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Build From Conditions</div>
+                <div class="card-copy">Use given zeros to write the factored form. Use a known function value (like \(f(1) = 3\)) to solve for the leading coefficient \(a\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Divide by a Known Factor</div>
+                <div class="card-copy">When given a complex zero, multiply the conjugate pair into a real quadratic, then long-divide to reduce the polynomial by two degrees at once.</div>
+            </div>
+        </div>
+        <div class="formula-note">Over the real numbers, polynomials can hide zeros. Over the complex numbers, every degree-\(n\) polynomial has exactly \(n\) zeros — no exceptions, no missing roots.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'FTA',       slideId: 'slide-1' },
+            { label: 'Factor All',slideId: 'slide-2' },
+            { label: 'Conjugates',slideId: 'slide-4' },
+            { label: 'Build',     slideId: 'slide-5' },
+            { label: 'Find All',  slideId: 'slide-7' },
+            { label: 'Review',    slideId: 'slide-8' }
+        ]
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3.4 — Solving Exponential and Log Equations</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .check-strip { background: #fff7ed; border-left: 4px solid var(--orange-accent); border-radius: 8px; padding: 0.45em 0.85em; font-size: 0.74em; color: var(--orange-accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 3 · Exponential &amp; Logarithmic Functions</div>
+    <div class="title-main">3.4 Solving Exponential &amp; Logarithmic Equations</div>
+    <div class="title-objective">Objective: Solve exponential and logarithmic equations using the one-to-one property, inverse properties, log rules, and substitution. Check for extraneous solutions.</div>
+    <div class="identity-chips">
+        <span class="chip">isolate the exponential</span>
+        <span class="chip">take the log</span>
+        <span class="chip">condense both sides</span>
+        <span class="chip">substitution \(u = b^x\)</span>
+        <span class="chip">check the domain</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Strategy overview ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="ref-label">Strategy</div>
+        <div class="slide-title">Three Recurring Moves</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Exponential Equations</div>
+                <div class="card-copy">
+                    <ol style="margin-left:1.1rem;">
+                        <li>Isolate the exponential expression.</li>
+                        <li>Take a log (\(\ln\) if base is \(e\), otherwise common log or \(\log_b\)).</li>
+                        <li>Use \(\log_b b^{x} = x\) to drop the exponent.</li>
+                        <li>Solve linearly.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Logarithmic Equations</div>
+                <div class="card-copy">
+                    <ol style="margin-left:1.1rem;">
+                        <li>Use log rules to write each side as a <em>single</em> log.</li>
+                        <li>Apply the one-to-one property (drop the logs) <em>or</em> exponentiate both sides.</li>
+                        <li>Solve, then <strong>check</strong>: discard any solution that makes an argument \(\le 0\).</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">When variables appear in two exponents</div>
+                <div class="card-copy">Either substitute \(u = b^{x}\) (turns it into a polynomial in \(u\)), or take \(\ln\) of both sides and distribute.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Example 1 — 4e^(2x) - 3 = 2 ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Solve \(4e^{2x} - 3 = 2\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Round to the nearest thousandth.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Isolate the exponential</div>
+                    <div class="step-math">\[4e^{2x} = 5 \;\Longrightarrow\; e^{2x} = \tfrac{5}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">Take \(\ln\) of both sides</div>
+                    <div class="step-math">\[\ln e^{2x} = \ln \tfrac{5}{4} \;\Longrightarrow\; 2x = \ln \tfrac{5}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(x\)</div>
+                    <div class="step-math">\[x = \tfrac{1}{2} \ln \tfrac{5}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Approximate</div>
+                    <div class="step-math">\[x \approx \tfrac{1}{2}(0.22314) \approx 0.112\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 2 — 2(3^(2t-5)) - 4 = 11 ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Solve \(2\!\left(3^{\,2t - 5}\right) - 4 = 11\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Round to the nearest thousandth.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Isolate the exponential</div>
+                    <div class="step-math">\[2\!\left(3^{\,2t-5}\right) = 15 \;\Longrightarrow\; 3^{\,2t-5} = \tfrac{15}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Take \(\ln\) (or use change of base)</div>
+                    <div class="step-math">\[(2t - 5)\ln 3 = \ln \tfrac{15}{2} \;\Longrightarrow\; 2t - 5 = \dfrac{\ln 7.5}{\ln 3}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(t\)</div>
+                    <div class="step-math">\[2t = 5 + \dfrac{\ln 7.5}{\ln 3} \;\Longrightarrow\; t = \tfrac{1}{2}\!\left(5 + \dfrac{\ln 7.5}{\ln 3}\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Approximate</div>
+                    <div class="step-math">\[t \approx \tfrac{1}{2}(5 + 1.83399) \approx 3.417\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Example 3 — 5^(2x+1) = 6^(x-2) ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Solve \(5^{\,2x + 1} = 6^{\,x - 2}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Variables in two different bases — take logs of both sides.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Take \(\ln\) of both sides</div>
+                    <div class="step-math">\[(2x + 1)\ln 5 = (x - 2)\ln 6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Distribute</div>
+                    <div class="step-math">\[2x \ln 5 + \ln 5 = x \ln 6 - 2 \ln 6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Collect \(x\)-terms on one side</div>
+                    <div class="step-math">\[x(2\ln 5 - \ln 6) = -2\ln 6 - \ln 5\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(x\)</div>
+                    <div class="step-math">\[x = \dfrac{-2\ln 6 - \ln 5}{2\ln 5 - \ln 6}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Approximate</div>
+                    <div class="step-math">\[x \approx \dfrac{-5.193}{1.427} \approx -3.639\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 4 — 4(2^x) + 8(2^-x) = 33 ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Solve \(4(2^{x}) + 8(2^{-x}) = 33\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Variable appears as \(2^{x}\) and \(2^{-x}\) — use the substitution \(u = 2^{x}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Substitute \(u = 2^{x}\) (so \(2^{-x} = 1/u\))</div>
+                    <div class="step-math">\[4u + \dfrac{8}{u} = 33\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Multiply by \(u\) and rearrange</div>
+                    <div class="step-math">\[4u^{2} - 33u + 8 = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Quadratic formula (or factor: \((4u - 1)(u - 8) = 0\))</div>
+                    <div class="step-math">\[u = 8 \quad \text{or} \quad u = \tfrac{1}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box">
+                    <div class="step-label">Undo the substitution</div>
+                    <div class="step-math">\[2^{x} = 8 = 2^{3} \;\Rightarrow\; x = 3 \qquad \text{or} \qquad 2^{x} = \tfrac{1}{4} = 2^{-2} \;\Rightarrow\; x = -2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[x = -2 \quad \text{or} \quad x = 3\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 5 — (5^x - 5^-x)/2 = 3 ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Solve \(\dfrac{5^{x} - 5^{-x}}{2} = 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Same substitution trick as before: let \(u = 5^{x}\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Clear the denominator</div>
+                    <div class="step-math">\[5^{x} - 5^{-x} = 6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(u = 5^{x}\) and multiply by \(u\)</div>
+                    <div class="step-math">\[u - \tfrac{1}{u} = 6 \;\Longrightarrow\; u^{2} - 6u - 1 = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Quadratic formula</div>
+                    <div class="step-math">\[u = \dfrac{6 \pm \sqrt{36 + 4}}{2} = 3 \pm \sqrt{10}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box">
+                    <div class="step-label">Keep only \(u &gt; 0\) (since \(u = 5^{x} &gt; 0\))</div>
+                    <div class="step-math">\[5^{x} = 3 + \sqrt{10} \;\Longrightarrow\; x = \dfrac{\ln(3 + \sqrt{10})}{\ln 5}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Approximate</div>
+                    <div class="step-math">\[x \approx \dfrac{\ln 6.162}{\ln 5} \approx \dfrac{1.818}{1.609} \approx 1.130\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 6 — 5 + 2 ln x = 4 ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Solve \(5 + 2\ln x = 4\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Round to the nearest thousandth.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Isolate the log</div>
+                    <div class="step-math">\[2 \ln x = -1 \;\Longrightarrow\; \ln x = -\tfrac{1}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Exponentiate (apply \(e^{(\cdot)}\) to both sides)</div>
+                    <div class="step-math">\[e^{\ln x} = e^{-1/2} \;\Longrightarrow\; x = e^{-1/2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Approximate</div>
+                    <div class="step-math">\[x \approx 0.607\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Check the domain</div>
+                    <div class="step-copy" style="text-align:center;">\(x \approx 0.607 &gt; 0\) ✓ — valid input for \(\ln x\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 7 — log_5(2x+3) = log_5 11 + log_5 5 ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Solve \(\log_{5}(2x + 3) = \log_{5} 11 + \log_{5} 5\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Same base on both sides — condense, then use the one-to-one property.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Condense the right side (product property)</div>
+                    <div class="step-math">\[\log_{5}(2x + 3) = \log_{5}(11 \cdot 5) = \log_{5} 55\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Drop the logs (one-to-one)</div>
+                    <div class="step-math">\[2x + 3 = 55\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Solve for \(x\)</div>
+                    <div class="step-math">\[2x = 52 \;\Longrightarrow\; x = 26\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Check &amp; answer</div>
+                    <div class="step-copy" style="text-align:center;">Argument \(2(26) + 3 = 55 &gt; 0\) ✓ &nbsp; \(\Rightarrow\) \(x = 26\)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Example 8 — log_2 x + log_2(x+2) = 3 ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">Solve \(\log_{2} x + \log_{2}(x + 2) = 3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Watch for an extraneous solution at the end.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Condense the left side</div>
+                    <div class="step-math">\[\log_{2}\!\left[x(x + 2)\right] = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Rewrite in exponential form</div>
+                    <div class="step-math">\[x(x + 2) = 2^{3} = 8\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Solve the quadratic</div>
+                    <div class="step-math">\[x^{2} + 2x - 8 = 0 \;\Longrightarrow\; (x + 4)(x - 2) = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box orange">
+                    <div class="step-label">Check both candidates</div>
+                    <div class="step-copy" style="text-align:center;">\(x = -4\): \(\log_{2}(-4)\) is undefined &nbsp;<strong>extraneous</strong>. &nbsp; \(x = 2\): both arguments positive ✓</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[x = 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Example 9 — log ∛x = √(log x) ===================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 9</div>
+        <div class="slide-title">Solve \(\log \sqrt[3]{x} = \sqrt{\log x}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Challenge — combine the power property with a substitution.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Bring the radical down using the power property</div>
+                    <div class="step-math">\[\tfrac{1}{3} \log x = \sqrt{\log x}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Substitute \(u = \sqrt{\log x}\), so \(u^{2} = \log x\)</div>
+                    <div class="step-math">\[\tfrac{1}{3} u^{2} = u \;\Longrightarrow\; u^{2} - 3u = 0 \;\Longrightarrow\; u(u - 3) = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Back-substitute</div>
+                    <div class="step-math">\[u = 0 \Rightarrow \log x = 0 \Rightarrow x = 1 \qquad u = 3 \Rightarrow \log x = 9 \Rightarrow x = 10^{9}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box">
+                    <div class="step-label">Check each candidate</div>
+                    <div class="step-copy" style="text-align:center;">\(x = 1\): \(\log 1 = 0\), \(\sqrt{0} = 0\) ✓ &nbsp;&nbsp; \(x = 10^{9}\): \(\tfrac{1}{3}(9) = 3 = \sqrt{9}\) ✓</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[x = 1 \quad \text{or} \quad x = 10^{9}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Strategy',  slideId: 'slide-1' },
+            { label: 'Exp Eqs',   slideId: 'slide-2' },
+            { label: 'Two Bases', slideId: 'slide-4' },
+            { label: 'Substitute',slideId: 'slide-5' },
+            { label: 'Log Eqs',   slideId: 'slide-7' },
+            { label: 'Challenge', slideId: 'slide-10' }
+        ]
+    });
+</script>
+</body>
+</html>

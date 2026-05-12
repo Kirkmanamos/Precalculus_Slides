@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.4 - Dividing Polynomials</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Synthetic-division table layout */
+        .synth-wrap { display: flex; justify-content: center; margin: 0.4em 0; }
+        .synth {
+            border-collapse: collapse;
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 1.05em;
+        }
+        .synth td {
+            padding: 0.22em 0.65em;
+            text-align: center;
+            min-width: 2.6em;
+        }
+        .synth td.c {
+            color: #dc2626;
+            font-weight: 700;
+            text-align: right;
+            border-right: 2px solid #334155;
+            padding-right: 0.5em;
+        }
+        .synth tr.products td {
+            color: #64748b;
+        }
+        .synth tr.result td:not(.c) {
+            border-top: 2px solid #334155;
+            padding-top: 0.32em;
+            font-weight: 700;
+            color: #2563eb;
+        }
+        .synth td.remainder {
+            background: #fef3c7;
+            color: #b91c1c !important;
+            border-radius: 6px;
+            border-top: 2px solid #b91c1c !important;
+        }
+        /* Long division step display: side-by-side dividend / multiplied / subtracted */
+        .longdiv {
+            font-family: 'IBM Plex Mono', 'Courier New', monospace;
+            font-size: 1.0em;
+            line-height: 1.5;
+            display: inline-block;
+            text-align: left;
+            background: white;
+            border: 1px solid var(--slate-line);
+            border-radius: 8px;
+            padding: 0.55em 0.8em;
+            margin: 0.25em auto;
+        }
+        .longdiv .quot { color: #2563eb; font-weight: 700; }
+        .longdiv .mul  { color: #64748b; }
+        .longdiv .rem  { color: #b91c1c; font-weight: 700; }
+        .longdiv .line { border-top: 1.5px solid #334155; }
+        /* Two-up layout for problem-statement pairs (used in ex 4) */
+        .two-up-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: 0.55rem;
+        }
+        .two-up-block .ps-cell {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.85em;
+            font-size: 0.84em;
+            line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+            .two-up-block { grid-template-columns: 1fr; }
+        }
+        /* Rational-zeros candidates pill list */
+        .pill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            justify-content: center;
+            margin: 0.5rem 0;
+        }
+        .pill-list .pill {
+            background: var(--blue-light);
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            padding: 0.15em 0.7em;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--navy);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+        .pill-list .pill.tested-bad { background: #fef2f2; border-color: #fecaca; color: #b91c1c; text-decoration: line-through; }
+        .pill-list .pill.tested-good { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.4 Dividing Polynomials</div>
+    <div class="title-objective">Objective: Divide polynomials by long division and synthetic division, apply the Remainder and Factor Theorems to evaluate functions and verify factors, and use the Rational Zero Theorem to find rational zeros.</div>
+    <div class="identity-chips">
+        <span class="chip">long division</span>
+        <span class="chip">synthetic division</span>
+        <span class="chip">Remainder Theorem</span>
+        <span class="chip">Factor Theorem</span>
+        <span class="chip">Rational Zeros</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Division Algorithm ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">The Division Algorithm</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Polynomial division mirrors the integer division you've known since elementary school. Compare them side by side.</div>
+        <div class="two-up-block">
+            <div class="ps-cell" style="background:white;border-left-color:var(--navy);">
+                <div style="font-weight:700;color:var(--navy);margin-bottom:0.3em;">Integer Example</div>
+                <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:1.05em;line-height:1.55;">
+                    \(250 = 3(83) + 1\)<br><br>
+                    \[\dfrac{250}{3} = 83 + \dfrac{1}{3}\]
+                </div>
+                <div style="margin-top:0.4em;font-size:0.86em;line-height:1.55;">
+                    <strong>250</strong> is the dividend, <strong>3</strong> the divisor,
+                    <strong>83</strong> the quotient, <strong>1</strong> the remainder.
+                </div>
+            </div>
+            <div class="ps-cell" style="background:white;border-left-color:var(--green-accent);">
+                <div style="font-weight:700;color:var(--green-accent);margin-bottom:0.3em;">Polynomial Form</div>
+                <div style="text-align:center;font-size:1.0em;line-height:1.7;">
+                    \[\text{dividend} = (\text{divisor})(\text{quotient}) + \text{remainder}\]
+                    \[\dfrac{\text{dividend}}{\text{divisor}} = \text{quotient} + \dfrac{\text{remainder}}{\text{divisor}}\]
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Same Four Names</div>
+                <div class="card-copy">Dividend, divisor, quotient, remainder. The polynomial division algorithm uses identical vocabulary.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Stop Condition</div>
+                <div class="card-copy">Long division stops when the remainder has lower degree than the divisor (just like the remainder must be less than the divisor for integers).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Two Methods</div>
+                <div class="card-copy">Use <strong>long division</strong> for any divisor. Use <strong>synthetic division</strong> when the divisor is linear, of the form \((x - c)\) — it's faster and avoids the bookkeeping.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Example 1 — Long Division ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Long Division: \((4x^3 + x^2 - 16x - 4) \div (x + 2)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Divide the dividend by the divisor using polynomial long division.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Divide leading terms</div>
+                    <div class="step-math">\[\dfrac{4x^3}{x} = 4x^2\]</div>
+                    <div class="step-copy" style="text-align:center;">Multiply back: \(4x^2(x+2) = 4x^3 + 8x^2\). Subtract from the dividend.</div>
+                    <div class="step-math">\[(4x^3 + x^2 - 16x - 4) - (4x^3 + 8x^2) = -7x^2 - 16x - 4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Repeat on the new dividend</div>
+                    <div class="step-math">\[\dfrac{-7x^2}{x} = -7x\]</div>
+                    <div class="step-copy" style="text-align:center;">Multiply back: \(-7x(x+2) = -7x^2 - 14x\). Subtract.</div>
+                    <div class="step-math">\[(-7x^2 - 16x - 4) - (-7x^2 - 14x) = -2x - 4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — One more time</div>
+                    <div class="step-math">\[\dfrac{-2x}{x} = -2\]</div>
+                    <div class="step-copy" style="text-align:center;">Multiply back: \(-2(x+2) = -2x - 4\). Subtract.</div>
+                    <div class="step-math">\[(-2x - 4) - (-2x - 4) = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Result</div>
+                    <div class="step-math">\[\text{Quotient} = 4x^2 - 7x - 2, \qquad \text{Remainder} = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[\dfrac{4x^3 + x^2 - 16x - 4}{x + 2} = 4x^2 - 7x - 2\]</div>
+                    <div class="step-copy" style="text-align:center;">The remainder is \(0\), so \((x+2)\) divides the dividend evenly &mdash; \((x+2)\) is a <strong>factor</strong>.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 2 — Long Division (Quadratic Divisor) ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">\((2x^4 + 4x^3 + 3x - 2) \div (x^2 + 2x - 3)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Divide a quartic by a quadratic. Watch for the missing \(x^2\) term in the dividend — write \(2x^4 + 4x^3 + 0x^2 + 3x - 2\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Divide leading terms</div>
+                    <div class="step-math">\[\dfrac{2x^4}{x^2} = 2x^2\]</div>
+                    <div class="step-copy" style="text-align:center;">Multiply: \(2x^2(x^2 + 2x - 3) = 2x^4 + 4x^3 - 6x^2\). Subtract.</div>
+                    <div class="step-math">\[(2x^4 + 4x^3 + 0x^2 + 3x - 2) - (2x^4 + 4x^3 - 6x^2) = 6x^2 + 3x - 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Repeat</div>
+                    <div class="step-math">\[\dfrac{6x^2}{x^2} = 6\]</div>
+                    <div class="step-copy" style="text-align:center;">Multiply: \(6(x^2 + 2x - 3) = 6x^2 + 12x - 18\). Subtract.</div>
+                    <div class="step-math">\[(6x^2 + 3x - 2) - (6x^2 + 12x - 18) = -9x + 16\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Stop</div>
+                    <div class="step-copy" style="text-align:center;">The remainder \(-9x + 16\) has degree \(1\), lower than the divisor's degree \(2\). We're done.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Result</div>
+                    <div class="step-math">\[\dfrac{2x^4 + 4x^3 + 3x - 2}{x^2 + 2x - 3} = 2x^2 + 6 + \dfrac{-9x + 16}{x^2 + 2x - 3}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Synthetic Division Setup ===================== -->
+<section class="slide grid-bg" id="slide-4">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Synthetic Division — A Shortcut for \((x - c)\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When the divisor is a linear factor \((x - c)\), the entire long-division algorithm collapses into a tidy three-row table. Only the coefficients matter.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Step 1 — Write Coefficients</div>
+                <div class="card-copy">List the coefficients of the dividend in descending order of powers. <strong>Use 0 for any missing term.</strong></div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Step 2 — Use \(c\), Not \((x - c)\)</div>
+                <div class="card-copy">If the divisor is \((x + 2)\), then \(c = -2\). Always flip the sign of the constant in the divisor.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Step 3 — Bring Down, Multiply, Add</div>
+                <div class="card-copy">Bring down the first coefficient. Multiply by \(c\), write under the next coefficient, add. Repeat across the row.</div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Reading the Result</div>
+            <div class="note-copy">The bottom row gives you the coefficients of the quotient (degree one less than the dividend). The <strong>last number</strong> in the bottom row is the remainder.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Example 3 — Synthetic Division ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Synthetic Division: \((2x^3 - 3x^2 - 4x + 2) \div (x + 2)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use synthetic division. Since the divisor is \((x + 2)\), use \(c = -2\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Set up</div>
+                    <div class="step-copy" style="text-align:center;">Coefficients of \(2x^3 - 3x^2 - 4x + 2\): \(2,\; -3,\; -4,\; 2\). Divisor \((x+2) \Rightarrow c = -2\).</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-2 │</td><td>2</td><td>-3</td><td>-4</td><td>2</td></tr>
+                            <tr class="products"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="result"><td></td><td>2</td><td></td><td></td><td></td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Bring down the first coefficient: \(\mathbf{2}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Multiply &amp; add</div>
+                    <div class="step-copy" style="text-align:center;">\(2 \cdot (-2) = -4\). Write under \(-3\); add: \(-3 + (-4) = -7\).</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-2 │</td><td>2</td><td>-3</td><td>-4</td><td>2</td></tr>
+                            <tr class="products"><td></td><td></td><td>-4</td><td></td><td></td></tr>
+                            <tr class="result"><td></td><td>2</td><td>-7</td><td></td><td></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Repeat</div>
+                    <div class="step-copy" style="text-align:center;">\(-7 \cdot (-2) = 14\). Write under \(-4\); add: \(-4 + 14 = 10\).</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-2 │</td><td>2</td><td>-3</td><td>-4</td><td>2</td></tr>
+                            <tr class="products"><td></td><td></td><td>-4</td><td>14</td><td></td></tr>
+                            <tr class="result"><td></td><td>2</td><td>-7</td><td>10</td><td></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Final column</div>
+                    <div class="step-copy" style="text-align:center;">\(10 \cdot (-2) = -20\). Write under \(2\); add: \(2 + (-20) = -18\).</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-2 │</td><td>2</td><td>-3</td><td>-4</td><td>2</td></tr>
+                            <tr class="products"><td></td><td></td><td>-4</td><td>14</td><td>-20</td></tr>
+                            <tr class="result"><td></td><td>2</td><td>-7</td><td>10</td><td class="remainder">-18</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Read the answer</div>
+                    <div class="step-math">\[\text{Quotient: } 2x^2 - 7x + 10, \quad \text{Remainder: } -18\]</div>
+                    <div class="step-math">\[\dfrac{2x^3 - 3x^2 - 4x + 2}{x + 2} = 2x^2 - 7x + 10 + \dfrac{-18}{x + 2}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 4 — Synthetic Division → Remainder Theorem ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">\(P(x) = 2x^4 - 8x^2 + 5x - 7\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Divide \(P(x)\) by \((x - 3)\). &nbsp; (b) Find \(P(3)\) and compare to the remainder.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Set up — note the missing \(x^3\) term!</div>
+                    <div class="step-copy" style="text-align:center;">Coefficients of \(2x^4 + 0x^3 - 8x^2 + 5x - 7\): \(2,\; 0,\; -8,\; 5,\; -7\). Divisor \((x - 3) \Rightarrow c = 3\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">(a) Run synthetic division</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">3 │</td><td>2</td><td>0</td><td>-8</td><td>5</td><td>-7</td></tr>
+                            <tr class="products"><td></td><td></td><td>6</td><td>18</td><td>30</td><td>105</td></tr>
+                            <tr class="result"><td></td><td>2</td><td>6</td><td>10</td><td>35</td><td class="remainder">98</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">(a) Read off the answer</div>
+                    <div class="step-math">\[\text{Quotient: } 2x^3 + 6x^2 + 10x + 35, \quad \text{Remainder: } 98\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box">
+                    <div class="step-label">(b) Compute \(P(3)\) directly</div>
+                    <div class="step-math">\[P(3) = 2(81) - 8(9) + 5(3) - 7 = 162 - 72 + 15 - 7 = 98\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Observation — the Remainder Theorem</div>
+                    <div class="step-copy" style="text-align:center;">The remainder when dividing by \((x - 3)\) <strong>equals \(P(3)\)</strong>. This isn't a coincidence — it's the <strong>Remainder Theorem</strong>.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Remainder & Factor Theorems ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Remainder &amp; Factor Theorems</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Remainder Thm.</div>
+                <div class="fn-eq-stack">
+                    <div>If a polynomial \(f(x)\) is divided by a linear factor of the form
+                        <span class="fb" id="slide-7-step-0"><span class="fb-blank">________</span><span class="fb-answer">\((x - c)\)</span></span>,
+                        then the remainder is equal to
+                        <span class="fb" id="slide-7-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(f(c)\)</span></span>.
+                    </div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">Factor Thm.</div>
+                <div class="fn-eq-stack">
+                    <div>If
+                        <span class="fb" id="slide-7-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(f(c) = 0\)</span></span>
+                        for a polynomial \(f(x)\), then
+                        <span class="fb" id="slide-7-step-3"><span class="fb-blank">________</span><span class="fb-answer">\((x - c)\)</span></span>
+                        is a factor of \(f(x)\).
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Two Sides of the Same Coin</div>
+                <div class="card-copy">The Remainder Theorem lets you <em>evaluate</em> a polynomial via synthetic division. The Factor Theorem lets you <em>verify</em> a factor by plugging in.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Quick Check for Zero</div>
+                <div class="card-copy">To check whether \(x = c\) is a zero, compute \(f(c)\). If \(f(c) = 0\), then \(c\) is a zero <em>and</em> \((x - c)\) is a factor.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Two Ways to Compute \(f(c)\)</div>
+                <div class="card-copy">Plug in directly, or run synthetic division and read the remainder. Synthetic division is often faster for high-degree polynomials.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 5 — Evaluate via Synthetic ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Evaluate \(f(-1)\) via Synthetic Division</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use synthetic division to evaluate \(f(-1)\) for \(f(x) = 3x^3 + 8x^2 + 5x - 7\). Interpret the meaning of \(f(-1)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Set up with \(c = -1\)</div>
+                    <div class="step-copy" style="text-align:center;">By the Remainder Theorem, the remainder when \(f(x)\) is divided by \((x - (-1)) = (x + 1)\) equals \(f(-1)\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Run synthetic division</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-1 │</td><td>3</td><td>8</td><td>5</td><td>-7</td></tr>
+                            <tr class="products"><td></td><td></td><td>-3</td><td>-5</td><td>0</td></tr>
+                            <tr class="result"><td></td><td>3</td><td>5</td><td>0</td><td class="remainder">-7</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Remainder</div>
+                    <div class="step-math">\[f(-1) = -7\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Interpretation</div>
+                    <div class="step-copy" style="text-align:center;">The point \((-1,\, -7)\) is on the graph of \(f\). Because \(f(-1) \neq 0\), the value \(x = -1\) is <strong>not</strong> a zero and \((x + 1)\) is <strong>not</strong> a factor.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Example 6 — Verify Factors + Find Remaining ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Verify Factors, Then Finish Factoring</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Show that \((x - 2)\) and \((x + 3)\) are factors of \(f(x) = 2x^4 + 7x^3 - 4x^2 - 27x - 18\). Then find the remaining factors.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Divide by \((x - 2)\) with \(c = 2\)</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">2 │</td><td>2</td><td>7</td><td>-4</td><td>-27</td><td>-18</td></tr>
+                            <tr class="products"><td></td><td></td><td>4</td><td>22</td><td>36</td><td>18</td></tr>
+                            <tr class="result"><td></td><td>2</td><td>11</td><td>18</td><td>9</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Remainder \(= 0\), so \((x - 2)\) <strong>is</strong> a factor.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Use the new quotient</div>
+                    <div class="step-math">\[f(x) = (x - 2)(2x^3 + 11x^2 + 18x + 9)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Divide the quotient by \((x + 3)\) with \(c = -3\)</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">-3 │</td><td>2</td><td>11</td><td>18</td><td>9</td></tr>
+                            <tr class="products"><td></td><td></td><td>-6</td><td>-15</td><td>-9</td></tr>
+                            <tr class="result"><td></td><td>2</td><td>5</td><td>3</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Remainder \(= 0\), so \((x + 3)\) <strong>is</strong> a factor.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Factor the remaining quadratic</div>
+                    <div class="step-math">\[2x^2 + 5x + 3 = (2x + 3)(x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Full Factorization</div>
+                    <div class="step-math">\[f(x) = (x - 2)(x + 3)(2x + 3)(x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-5">
+                <div class="step-box green">
+                    <div class="step-label">All Four Zeros</div>
+                    <div class="step-math">\[x = 2,\quad x = -3,\quad x = -\tfrac{3}{2},\quad x = -1\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Rational Zero Theorem ===================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">The Rational Zero Theorem</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When a polynomial has integer coefficients, every rational zero must come from a short, predictable list. We don't have to guess.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">if zero is</div>
+                <div class="fn-eq-stack">
+                    <div>\(\dfrac{p}{q}\) (in lowest terms)</div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">then</div>
+                <div class="fn-eq-stack">
+                    <div>\(p\) is a factor of the
+                        <span class="fb" id="slide-10-step-0"><span class="fb-blank">________________</span><span class="fb-answer">constant term</span></span>,
+                        and \(q\) is a factor of the
+                        <span class="fb" id="slide-10-step-1"><span class="fb-blank">________________</span><span class="fb-answer">leading coefficient</span></span>.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Working Formula</div>
+            <div class="note-copy" style="text-align:center;">\[\text{possible rational zeros} \;=\; \pm\dfrac{\text{factors of the constant term}}{\text{factors of the leading coefficient}}\]</div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">List, Don't Guess</div>
+                <div class="card-copy">Write out every \(\pm p/q\) combination, then test with synthetic division. Stop testing once you find a zero — divide and continue with the smaller quotient.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Lowest Terms Matters</div>
+                <div class="card-copy">Reduce duplicates: \(\pm 1/1\) is just \(\pm 1\). \(\pm 2/2\) is just \(\pm 1\). Otherwise you'll waste time testing the same value twice.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Doesn't Guarantee Zeros</div>
+                <div class="card-copy">The theorem only tells you <em>which rationals could be zeros</em>. The polynomial may have all irrational zeros — in which case nothing on the list will work.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Example 7 — Rational Zeros ===================== -->
+<section class="slide grid-bg" id="slide-11" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Rational Zeros of \(P(x) = 4x^3 - 4x^2 - x + 1\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find all the rational zeros of \(P(x)\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — List the candidates</div>
+                    <div class="step-copy" style="text-align:center;">Constant term \(1\): factors \(\pm 1\). Leading coefficient \(4\): factors \(\pm 1, \pm 2, \pm 4\).</div>
+                    <div class="step-math">\[\dfrac{p}{q} = \pm 1,\; \pm\tfrac{1}{2},\; \pm\tfrac{1}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Test the candidates</div>
+                    <div class="pill-list">
+                        <span class="pill tested-good">1 ✓</span>
+                        <span class="pill tested-bad">-1</span>
+                        <span class="pill tested-good">1/2 ✓</span>
+                        <span class="pill tested-good">-1/2 ✓</span>
+                        <span class="pill tested-bad">1/4</span>
+                        <span class="pill tested-bad">-1/4</span>
+                    </div>
+                    <div class="step-math">\[P(1) = 4 - 4 - 1 + 1 = 0 \;\checkmark\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Factor by grouping (sanity check)</div>
+                    <div class="step-math">\[P(x) = 4x^2(x - 1) - 1(x - 1) = (x - 1)(4x^2 - 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Factor the difference of squares</div>
+                    <div class="step-math">\[P(x) = (x - 1)(2x - 1)(2x + 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">All Rational Zeros</div>
+                    <div class="step-math">\[x = 1,\quad x = \tfrac{1}{2},\quad x = -\tfrac{1}{2}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 12: Example 8 — All Zeros ===================== -->
+<section class="slide grid-bg" id="slide-12" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 8</div>
+        <div class="slide-title">All Zeros of \(f(x) = 10x^3 - 15x^2 - 16x + 12\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find <strong>all</strong> the zeros of \(f(x)\) — rational <em>and</em> irrational.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Build the candidate list</div>
+                    <div class="step-copy" style="text-align:center;">Constant \(12\): factors \(\pm 1, 2, 3, 4, 6, 12\). Leading \(10\): factors \(\pm 1, 2, 5, 10\). Many candidates; test small integers first.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Try \(x = 2\)</div>
+                    <div class="synth-wrap">
+                        <table class="synth">
+                            <tr><td class="c">2 │</td><td>10</td><td>-15</td><td>-16</td><td>12</td></tr>
+                            <tr class="products"><td></td><td></td><td>20</td><td>10</td><td>-12</td></tr>
+                            <tr class="result"><td></td><td>10</td><td>5</td><td>-6</td><td class="remainder">0</td></tr>
+                        </table>
+                    </div>
+                    <div class="step-copy" style="text-align:center;">Remainder \(0\) &rArr; \(x = 2\) is a zero, and \((x - 2)\) is a factor.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Factor what's left</div>
+                    <div class="step-math">\[f(x) = (x - 2)(10x^2 + 5x - 6)\]</div>
+                    <div class="step-copy" style="text-align:center;">The quadratic \(10x^2 + 5x - 6\) doesn't factor over the integers — its discriminant is \(25 + 240 = 265\), not a perfect square.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Apply the Quadratic Formula</div>
+                    <div class="step-math">\[x = \dfrac{-5 \pm \sqrt{25 + 240}}{20} = \dfrac{-5 \pm \sqrt{265}}{20}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">All Three Zeros</div>
+                    <div class="step-math">\[x = 2, \quad x = \dfrac{-5 + \sqrt{265}}{20}, \quad x = \dfrac{-5 - \sqrt{265}}{20}\]</div>
+                    <div class="step-copy" style="text-align:center;">One rational zero and two irrational zeros (approximately \(0.564\) and \(-1.064\)).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 13: Review ===================== -->
+<section class="slide grid-bg" id="slide-13">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to make sure you can divide, factor, and find zeros of any polynomial.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Use the Division Algorithm</div>
+                <div class="card-copy">Write any polynomial division as \(\text{dividend} = (\text{divisor})(\text{quotient}) + \text{remainder}\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Long Division</div>
+                <div class="card-copy">Always usable. Insert \(0\) for missing terms in the dividend. Stop when the remainder has lower degree than the divisor.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Synthetic Division</div>
+                <div class="card-copy">Faster, but only works for \((x - c)\) divisors. Use \(c\), not \((x - c)\), and remember the sign flip.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Remainder Theorem</div>
+                <div class="card-copy">\(f(c)\) equals the remainder when \(f(x)\) is divided by \((x - c)\). Use synthetic division to evaluate a polynomial.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Factor Theorem</div>
+                <div class="card-copy">If \(f(c) = 0\), then \((x - c)\) is a factor — and conversely. The bridge between zeros and factors.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Rational Zero Theorem</div>
+                <div class="card-copy">Possible rational zeros = \(\pm\dfrac{\text{factors of constant}}{\text{factors of leading coef.}}\). Test each with synthetic division until you find one.</div>
+            </div>
+        </div>
+        <div class="formula-note">Every polynomial-zero problem is a hunt: list the rational candidates, test them, divide to peel off each factor, and use the quadratic formula on whatever remains.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Long Div',  slideId: 'slide-2' },
+            { label: 'Synthetic', slideId: 'slide-4' },
+            { label: 'Theorems',  slideId: 'slide-7' },
+            { label: 'Rat. Zeros', slideId: 'slide-10' },
+            { label: 'Review',    slideId: 'slide-13' }
+        ]
+    });
+</script>
+</body>
+</html>

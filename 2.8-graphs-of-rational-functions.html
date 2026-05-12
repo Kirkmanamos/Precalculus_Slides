@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.8 - Graphs of Rational Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.8 Graphs of Rational Functions</div>
+    <div class="title-objective">Objective: Sketch any rational function by hand: find the asymptotes (vertical, horizontal, slant), plot the intercepts and a few test points, and connect with smooth curves on each side of the vertical asymptotes.</div>
+    <div class="identity-chips">
+        <span class="chip">graphing procedure</span>
+        <span class="chip">vertical asymptotes</span>
+        <span class="chip">slant asymptotes</span>
+        <span class="chip">test points</span>
+        <span class="chip">smooth curves</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Graphing Procedure ===================== -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Guidelines for Graphing a Rational Function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Every rational graph follows the same four-step recipe. The asymptotes are scaffolding; the test points decide the shape between them.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">1 · Find &amp; Sketch Asymptotes</div>
+                <div class="card-copy">Factor numerator and denominator. Cancel common factors to identify holes, then read VA, HA, or slant asymptote from what remains. Draw each asymptote as a dashed line.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">2 · Find &amp; Plot Intercepts</div>
+                <div class="card-copy">\(x\)-intercepts come from zeros of the (simplified) numerator. The \(y\)-intercept is \(f(0)\) — only if \(x = 0\) is in the domain.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">3 · Plot Test Points</div>
+                <div class="card-copy">Plot at least one point <em>between</em> and one point <em>beyond</em> each \(x\)-intercept and each vertical asymptote — the curve's behavior in each region is uniquely determined by sign and asymptote.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">4 · Connect Smoothly</div>
+                <div class="card-copy">Connect the points with smooth curves, respecting the asymptotes (the curve approaches but never crosses VAs; it can cross HAs in the middle but levels off at the ends).</div>
+            </div>
+        </div>
+        <div class="note-box navy">
+            <div class="note-title">Common Mistake</div>
+            <div class="note-copy">Don't connect across a vertical asymptote. The graph splits into separate branches at each VA — sketch each branch independently using the test points and the asymptote.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Example 1 — Simple Shift ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Sketch \(g(x) = \dfrac{3}{x - 2}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sketch the graph by hand.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Asymptotes</div>
+                    <div class="step-copy" style="text-align:center;">Set the denominator to zero: \(x - 2 = 0 \Rightarrow x = 2\). Degree of numerator (\(0\)) is less than the denominator (\(1\)).</div>
+                    <div class="step-math">\[\text{VA: } x = 2, \quad \text{HA: } y = 0\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Intercepts</div>
+                    <div class="step-copy" style="text-align:center;">Numerator is the constant \(3\), never zero &rArr; <strong>no \(x\)-intercept</strong>.</div>
+                    <div class="step-math">\[y\text{-int: } g(0) = \dfrac{3}{-2} = -\dfrac{3}{2} \;\Rightarrow\; \left(0,\, -\tfrac{3}{2}\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Test points around \(x = 2\)</div>
+                    <div class="step-math">\[g(1) = \dfrac{3}{-1} = -3, \qquad g(3) = \dfrac{3}{1} = 3, \qquad g(5) = \dfrac{3}{3} = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Shape</div>
+                    <div class="step-copy" style="text-align:center;">This is the parent \(\tfrac{1}{x}\) shifted <strong>right \(2\)</strong> and vertically stretched by \(3\). Two branches: one below-left of \((2, 0)\), one above-right.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex1" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Hyperbola y equals 3 over x minus 2 with vertical asymptote at x equals 2 and horizontal asymptote at y equals 0."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Example 2 — Two VAs, HA at 1 ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Sketch \(f(x) = \dfrac{x^2}{x^2 - x - 2}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sketch the graph by hand.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor and find asymptotes</div>
+                    <div class="step-math">\[f(x) = \dfrac{x^2}{(x - 2)(x + 1)}\]</div>
+                    <div class="step-copy" style="text-align:center;">No common factors &rArr; no holes. Two VAs and a horizontal asymptote from equal degrees.</div>
+                    <div class="step-math">\[\text{VA: } x = 2,\; x = -1, \quad \text{HA: } y = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x^2 = 0 \Rightarrow x = 0\;(\text{mult } 2) \;\Rightarrow\; (0,\, 0)\]</div>
+                    <div class="step-math">\[y\text{-int: } f(0) = 0 \;\Rightarrow\; (0,\, 0)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Test points in each region</div>
+                    <div class="step-math">\[f(-2) = \dfrac{4}{4} = 1, \qquad f(-3) = \dfrac{9}{10}, \qquad f(1) = -\tfrac{1}{2}, \qquad f(3) = \dfrac{9}{4}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Three branches</div>
+                    <div class="step-copy" style="text-align:center;">The two VAs split the plane into three vertical strips. Use the sign of \(f\) and the asymptote behavior in each strip to sketch the branch shape.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-4">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex2" class="mini-graph" viewBox="0 0 440 280" role="img" aria-label="Rational function with vertical asymptotes at x equals negative 1 and x equals 2, horizontal asymptote at y equals 1, and double zero at the origin."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Example 3 — With Hole ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Sketch \(f(x) = \dfrac{x^2 - 9}{x^2 - 2x - 3}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sketch the graph by hand.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor everything</div>
+                    <div class="step-math">\[f(x) = \dfrac{(x - 3)(x + 3)}{(x - 3)(x + 1)}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Cancel for the hole</div>
+                    <div class="step-copy" style="text-align:center;">\((x - 3)\) cancels &rArr; <strong>hole at \(x = 3\)</strong>. Hole \(y\)-value: \(\dfrac{3 + 3}{3 + 1} = \dfrac{3}{2}\). Simplified: \(\dfrac{x + 3}{x + 1}\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — VA and HA</div>
+                    <div class="step-math">\[\text{VA: } x = -1, \quad \text{HA: } y = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x + 3 = 0 \Rightarrow x = -3 \;\Rightarrow\; (-3,\, 0)\]</div>
+                    <div class="step-math">\[y\text{-int: } f(0) = \dfrac{3}{1} = 3 \;\Rightarrow\; (0,\, 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Test points</div>
+                    <div class="step-math">\[f(1) = \dfrac{4}{2} = 2, \qquad f(-2) = \dfrac{1}{-1} = -1, \qquad f(-5) = \dfrac{-2}{-4} = \dfrac{1}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Sketch (don't forget the open circle at the hole)</div>
+                    <svg id="g-ex3" class="mini-graph" viewBox="0 0 440 260" role="img" aria-label="Rational function with vertical asymptote at x equals negative 1, horizontal asymptote at y equals 1, and an open hole at 3 comma 3 halves."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Slant Asymptote Concept ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Slant (Oblique) Asymptotes</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When the degree of the numerator is <em>exactly one more</em> than the denominator's, the long-run behavior is a tilted line — a slant asymptote — instead of a flat one.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">condition</div>
+                <div class="fn-eq-stack">
+                    <div>\[\deg(\text{num}) = \deg(\text{denom}) + 1\]</div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">how to find</div>
+                <div class="fn-eq-stack">
+                    <div>Long-divide the numerator by the denominator. The
+                        <span class="fb" id="slide-5-step-0"><span class="fb-blank">________</span><span class="fb-answer">quotient</span></span>
+                        (ignore the remainder) is the slant asymptote.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="notes-list">
+            <li>A slant asymptote replaces — does <strong>not coexist with</strong> — a
+                <span class="fb" id="slide-5-step-1"><span class="fb-blank">________</span><span class="fb-answer">horizontal</span></span>
+                asymptote. A rational function has at most one of the two.
+            </li>
+            <li>If the numerator degree exceeds the denominator's by <em>more than 1</em>, the long-run behavior is a polynomial of higher degree — there is
+                <span class="fb" id="slide-5-step-2"><span class="fb-blank">________</span><span class="fb-answer">no slant asymptote</span></span>
+                (but the quotient still describes the end behavior).
+            </li>
+        </ul>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Example</div>
+                <div class="card-copy">For \(\dfrac{x^2 + x}{x - 1}\), long division gives \(x + 2\) with remainder \(2\). Slant asymptote: \(y = x + 2\).</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Drawing It</div>
+                <div class="card-copy">Sketch the slant line as a <strong>dashed line</strong>, just like a horizontal asymptote. The graph hugs this line as \(x \to \pm\infty\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Synthetic Shortcut</div>
+                <div class="card-copy">If the divisor is linear, synthetic division gives the quotient quickly. The bottom row reads off the slant-asymptote coefficients.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Example 4 — Slant Asymptote ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Sketch \(f(x) = \dfrac{x^2 + x}{x - 1}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sketch the graph by hand.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Find the slant asymptote</div>
+                    <div class="step-copy" style="text-align:center;">Degree of numerator (\(2\)) is one more than denominator (\(1\)) &rArr; slant asymptote. Long divide:</div>
+                    <div class="step-math">\[\dfrac{x^2 + x}{x - 1} = x + 2 + \dfrac{2}{x - 1}\]</div>
+                    <div class="step-math">\[\text{Slant asymptote: } y = x + 2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Vertical asymptote</div>
+                    <div class="step-math">\[x - 1 = 0 \;\Rightarrow\; x = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x^2 + x = x(x + 1) = 0 \Rightarrow x = 0,\; -1 \;\Rightarrow\; (0,\,0),\; (-1,\,0)\]</div>
+                    <div class="step-math">\[y\text{-int: } f(0) = 0 \Rightarrow (0,\,0)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Test points around the VA</div>
+                    <div class="step-math">\[f(2) = \dfrac{6}{1} = 6, \qquad f(0.5) = \dfrac{0.75}{-0.5} = -\tfrac{3}{2}, \qquad f(-2) = \dfrac{2}{-3} = -\tfrac{2}{3}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Behavior near each asymptote</div>
+                    <div class="step-copy" style="text-align:center;">Right of \(x = 1\), the curve rises toward the slant line from below at large \(x\). Left of \(x = 1\), the curve approaches \(y = x + 2\) from above at \(x \to -\infty\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex4" class="mini-graph" viewBox="0 0 440 300" role="img" aria-label="Rational function with vertical asymptote at x equals 1 and slant asymptote y equals x plus 2."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 5 — Slant + Two VAs ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="6">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Sketch \(y = \dfrac{x^3}{x^2 - 4}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Sketch the graph by hand.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Factor &amp; vertical asymptotes</div>
+                    <div class="step-math">\[y = \dfrac{x^3}{(x - 2)(x + 2)}\]</div>
+                    <div class="step-math">\[\text{VAs: } x = 2,\; x = -2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Slant asymptote via long division</div>
+                    <div class="step-math">\[\dfrac{x^3}{x^2 - 4} = x + \dfrac{4x}{x^2 - 4}\]</div>
+                    <div class="step-math">\[\text{Slant asymptote: } y = x\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Intercepts</div>
+                    <div class="step-math">\[x\text{-int: } x^3 = 0 \Rightarrow x = 0 \;(\text{mult } 3) \;\Rightarrow\; (0,\, 0)\]</div>
+                    <div class="step-math">\[y\text{-int: } y(0) = 0 \;\Rightarrow\; (0,\, 0)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Test points</div>
+                    <div class="step-math">\[y(1) = \dfrac{1}{-3} = -\tfrac{1}{3}, \qquad y(-1) = \dfrac{-1}{-3} = \tfrac{1}{3}\]</div>
+                    <div class="step-math">\[y(3) = \dfrac{27}{5} = 5.4, \qquad y(-3) = -\tfrac{27}{5} = -5.4\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-4">
+                <div class="step-box">
+                    <div class="step-label">Step 5 — Three branches</div>
+                    <div class="step-copy" style="text-align:center;">The two VAs split the graph into three regions. In each region the curve approaches the slant \(y = x\) at the ends and one of the VAs in the middle. The function is odd, so the graph is symmetric about the origin.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-5">
+                <div class="step-box green">
+                    <div class="step-label">Sketch</div>
+                    <svg id="g-ex5" class="mini-graph" viewBox="0 0 460 320" role="img" aria-label="Rational function x cubed over x squared minus 4 with two vertical asymptotes and slant asymptote y equals x."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Review ===================== -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to confirm you can sketch any rational function by hand.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Follow the Four-Step Recipe</div>
+                <div class="card-copy">Asymptotes, intercepts, test points, smooth connections — every rational graph follows the same procedure.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Choose the Right Asymptote</div>
+                <div class="card-copy">Compare degrees: lower numerator &rArr; \(y = 0\). Equal &rArr; leading-coefficient ratio. One more numerator &rArr; slant. More than one &rArr; polynomial end behavior.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Show Holes as Open Dots</div>
+                <div class="card-copy">A cancelled factor is a hole — a single missing point. Mark it with an open circle on the graph and exclude its \(x\)-value from the domain.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Sketch Each Branch Independently</div>
+                <div class="card-copy">Vertical asymptotes split the plane into separate vertical strips. Sketch the curve in each strip independently — never connect through a VA.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Use Test Points to Resolve Ambiguity</div>
+                <div class="card-copy">When the shape isn't obvious, plug in a few \(x\)-values to anchor each branch. Two well-chosen points usually settle it.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Verify End Behavior</div>
+                <div class="card-copy">As \(x \to \pm\infty\), the graph must approach its horizontal or slant asymptote. If your sketch doesn't, recompute.</div>
+            </div>
+        </div>
+        <div class="formula-note">A rational graph is the meeting place of two stories: the asymptote scaffolding tells you where the curve is forbidden and how it behaves at the ends; the intercepts and test points tell you exactly which way each branch turns.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Recipe',    slideId: 'slide-1' },
+            { label: 'Examples',  slideId: 'slide-2' },
+            { label: 'Hole',      slideId: 'slide-4' },
+            { label: 'Slant',     slideId: 'slide-5' },
+            { label: 'Review',    slideId: 'slide-8' }
+        ]
+    });
+</script>
+
+<!-- ============================================================
+     Math-graph rendering (GraphBuilder + slant-line method)
+     ============================================================ -->
+<script>
+    class GraphBuilder {
+        constructor(svgId, viewBox) {
+            this.svg = document.getElementById(svgId);
+            if (!this.svg) return;
+            this.ns = 'http://www.w3.org/2000/svg';
+            const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+            this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+        }
+        setCoords(xMin, xMax, yMin, yMax, padL, padR, padT, padB) {
+            this.mathXMin = xMin; this.mathXMax = xMax;
+            this.mathYMin = yMin; this.mathYMax = yMax;
+            this.svgXMin = padL; this.svgXMax = this.vbW - padR;
+            this.svgYMin = padT; this.svgYMax = this.vbH - padB;
+        }
+        mx(v) { return this.svgXMin + (v - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+        my(v) { return this.svgYMax - (v - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
+        addGrid(spacing) {
+            const pat = document.createElementNS(this.ns, 'pattern');
+            const id  = 'grid-' + Math.random().toString(36).slice(2, 7);
+            pat.setAttribute('id', id);
+            pat.setAttribute('width',  spacing || 40);
+            pat.setAttribute('height', spacing || 40);
+            pat.setAttribute('patternUnits', 'userSpaceOnUse');
+            const p = document.createElementNS(this.ns, 'path');
+            p.setAttribute('d', `M ${spacing || 40} 0 L 0 0 0 ${spacing || 40}`);
+            p.setAttribute('fill', 'none');
+            p.setAttribute('stroke', '#e2e8f0');
+            p.setAttribute('stroke-width', '0.6');
+            pat.appendChild(p);
+            this.svg.appendChild(pat);
+            const r = document.createElementNS(this.ns, 'rect');
+            r.setAttribute('x', this.svgXMin);
+            r.setAttribute('y', this.svgYMin);
+            r.setAttribute('width',  this.svgXMax - this.svgXMin);
+            r.setAttribute('height', this.svgYMax - this.svgYMin);
+            r.setAttribute('fill', `url(#${id})`);
+            this.svg.appendChild(r);
+        }
+        line(x1, y1, x2, y2, color, w, dash) {
+            const l = document.createElementNS(this.ns, 'line');
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', color || '#1a365d');
+            l.setAttribute('stroke-width', w || 1);
+            if (dash) l.setAttribute('stroke-dasharray', dash);
+            this.svg.appendChild(l);
+            return l;
+        }
+        addAxes() {
+            const originY = this.my(0), originX = this.mx(0);
+            const ax = Math.max(this.svgYMin, Math.min(this.svgYMax, originY));
+            this.line(this.svgXMin, ax, this.svgXMax, ax, '#334155', 1.5);
+            const ay = Math.max(this.svgXMin, Math.min(this.svgXMax, originX));
+            this.line(ay, this.svgYMin, ay, this.svgYMax, '#334155', 1.5);
+        }
+        asymptoteV(mathX, color, dash) {
+            this.line(this.mx(mathX), this.svgYMin, this.mx(mathX), this.svgYMax, color || '#dc2626', 1.4, dash || '6 4');
+        }
+        asymptoteH(mathY, color, dash) {
+            this.line(this.svgXMin, this.my(mathY), this.svgXMax, this.my(mathY), color || '#059669', 1.4, dash || '6 4');
+        }
+        /* Slant line y = m*x + b, clipped to the visible math-coordinate window */
+        slantAsym(m, b, color, dash) {
+            // Find entry/exit points on the visible rectangle
+            const candidates = [];
+            const yAtXmin = m * this.mathXMin + b;
+            const yAtXmax = m * this.mathXMax + b;
+            if (yAtXmin >= this.mathYMin && yAtXmin <= this.mathYMax) candidates.push([this.mathXMin, yAtXmin]);
+            if (yAtXmax >= this.mathYMin && yAtXmax <= this.mathYMax) candidates.push([this.mathXMax, yAtXmax]);
+            if (m !== 0) {
+                const xAtYmin = (this.mathYMin - b) / m;
+                const xAtYmax = (this.mathYMax - b) / m;
+                if (xAtYmin >= this.mathXMin && xAtYmin <= this.mathXMax) candidates.push([xAtYmin, this.mathYMin]);
+                if (xAtYmax >= this.mathXMin && xAtYmax <= this.mathXMax) candidates.push([xAtYmax, this.mathYMax]);
+            }
+            if (candidates.length < 2) return;
+            // Use the two extreme points (by x)
+            candidates.sort((p, q) => p[0] - q[0]);
+            const [x1, y1] = candidates[0];
+            const [x2, y2] = candidates[candidates.length - 1];
+            this.line(this.mx(x1), this.my(y1), this.mx(x2), this.my(y2), color || '#7c3aed', 1.4, dash || '6 4');
+        }
+        point(mx, my, color, r) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r',  r || 4.5);
+            c.setAttribute('fill', color || '#2563eb');
+            c.setAttribute('stroke', 'white');
+            c.setAttribute('stroke-width', '1.5');
+            this.svg.appendChild(c);
+            return c;
+        }
+        holeAt(mx, my, color) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r', '5');
+            c.setAttribute('fill', 'white');
+            c.setAttribute('stroke', color || '#dc2626');
+            c.setAttribute('stroke-width', '2');
+            this.svg.appendChild(c);
+        }
+        label(x, y, text, opts) {
+            const t = document.createElementNS(this.ns, 'text');
+            t.setAttribute('x', x); t.setAttribute('y', y);
+            t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+            t.setAttribute('font-size',   (opts && opts.size)   || '11');
+            t.setAttribute('fill',        (opts && opts.color)  || '#64748b');
+            t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+            if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+            t.textContent = text;
+            this.svg.appendChild(t);
+            return t;
+        }
+        addXLabels(labels) {
+            labels.forEach(lb => {
+                const sx = this.mx(lb.val);
+                const sy = Math.max(this.svgYMin + 12, Math.min(this.svgYMax - 4, this.my(0) + 14));
+                this.label(sx, sy, lb.text, { size: '11', anchor: 'middle', color: '#64748b' });
+            });
+        }
+        addYLabels(labels) {
+            labels.forEach(lb => {
+                const sx = Math.max(this.svgXMin + 4, Math.min(this.svgXMax - 4, this.mx(0) - 6));
+                this.label(sx, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end', color: '#64748b' });
+            });
+        }
+        curve(f, xStart, xEnd, opts) {
+            opts = opts || {};
+            const steps = opts.steps || 600;
+            const color = opts.color || '#2563eb';
+            const width = opts.width || 2.6;
+            const breaks = (opts.discontinuities || []).slice().sort((a, b) => a - b);
+            const pieces = [];
+            let lo = xStart;
+            for (const b of breaks) {
+                if (b > lo && b < xEnd) {
+                    pieces.push([lo, b - 1e-4]);
+                    lo = b + 1e-4;
+                }
+            }
+            pieces.push([lo, xEnd]);
+
+            pieces.forEach(([a, b]) => {
+                if (a >= b) return;
+                const seg = [];
+                const n = Math.max(20, Math.floor(steps * (b - a) / (xEnd - xStart)));
+                for (let i = 0; i <= n; i++) {
+                    const mx = a + (i / n) * (b - a);
+                    const my = f(mx);
+                    if (!isFinite(my) || Math.abs(my) > 1e5) continue;
+                    seg.push([this.mx(mx), this.my(my)]);
+                }
+                if (seg.length < 2) return;
+                let d = 'M ' + seg[0][0].toFixed(2) + ' ' + seg[0][1].toFixed(2);
+                for (let i = 1; i < seg.length; i++) d += ' L ' + seg[i][0].toFixed(2) + ' ' + seg[i][1].toFixed(2);
+                const p = document.createElementNS(this.ns, 'path');
+                p.setAttribute('d', d);
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', color);
+                p.setAttribute('stroke-width', width);
+                p.setAttribute('stroke-linecap',  'round');
+                p.setAttribute('stroke-linejoin', 'round');
+                this.svg.appendChild(p);
+            });
+        }
+    }
+
+    function buildRational(id, cfg) {
+        const g = new GraphBuilder(id);
+        if (!g.svg) return null;
+        const padL = cfg.padL != null ? cfg.padL : 22;
+        const padR = cfg.padR != null ? cfg.padR : 18;
+        const padT = cfg.padT != null ? cfg.padT : 14;
+        const padB = cfg.padB != null ? cfg.padB : 22;
+        g.setCoords(cfg.xMin, cfg.xMax, cfg.yMin, cfg.yMax, padL, padR, padT, padB);
+        if (cfg.grid !== false) g.addGrid(cfg.gridSpacing || 40);
+        (cfg.vasym || []).forEach(x => g.asymptoteV(x));
+        (cfg.hasym || []).forEach(y => g.asymptoteH(y));
+        (cfg.slants || []).forEach(s => g.slantAsym(s.m, s.b, s.color || '#7c3aed'));
+        g.addAxes();
+        if (cfg.xticks) g.addXLabels(cfg.xticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        if (cfg.yticks) g.addYLabels(cfg.yticks.map(v => ({ val: v.val != null ? v.val : v, text: v.text != null ? v.text : String(v) })));
+        g.curve(cfg.fn, cfg.xMin, cfg.xMax, {
+            steps: cfg.steps || 800,
+            color: cfg.color || '#2563eb',
+            width: cfg.width || 2.6,
+            discontinuities: cfg.vasym || []
+        });
+        (cfg.zeros || []).forEach(x => g.point(x, 0, '#16a34a', 4.5));
+        if (cfg.yint != null) g.point(0, cfg.yint, '#2563eb', 4);
+        (cfg.holes || []).forEach(h => g.holeAt(h.x, h.y, h.color || '#dc2626'));
+        (cfg.points || []).forEach(p => g.point(p.x, p.y, p.color || '#dc2626', p.r || 4));
+        (cfg.labels || []).forEach(l => g.label(
+            g.mx(l.x), g.my(l.y), l.text,
+            { color: l.color || '#0f172a', size: l.size || '12',
+              anchor: l.anchor || 'start', weight: l.weight || '600' }
+        ));
+        return g;
+    }
+
+    function buildAll() {
+        // Ex 1: g(x) = 3/(x - 2)
+        buildRational('g-ex1', {
+            fn: x => 3 / (x - 2),
+            xMin: -3, xMax: 7, yMin: -6, yMax: 6,
+            xticks: [-2, 1, 2, 4, 6],
+            yticks: [-4, -3/2, 3],
+            vasym: [2], hasym: [0],
+            yint: -3/2,
+            gridSpacing: 40
+        });
+
+        // Ex 2: f(x) = x^2 / (x^2 - x - 2)
+        buildRational('g-ex2', {
+            fn: x => (x * x) / (x * x - x - 2),
+            xMin: -5, xMax: 5, yMin: -4, yMax: 6,
+            xticks: [-4, -3, -1, 2, 3, 4],
+            yticks: [-3, -1, 1, 3, 5],
+            vasym: [-1, 2], hasym: [1],
+            zeros: [0],
+            gridSpacing: 40
+        });
+
+        // Ex 3: f(x) = (x^2 - 9)/(x^2 - 2x - 3); simplified (x+3)/(x+1) with hole at (3, 3/2)
+        buildRational('g-ex3', {
+            fn: x => (x + 3) / (x + 1),
+            xMin: -7, xMax: 6, yMin: -5, yMax: 7,
+            xticks: [-5, -3, -1, 3, 4],
+            yticks: [-3, 1, 3, 5],
+            vasym: [-1], hasym: [1],
+            zeros: [-3], yint: 3,
+            holes: [{ x: 3, y: 1.5 }],
+            gridSpacing: 40,
+            labels: [{ x: 3.2, y: 2.1, text: 'hole (3, 3/2)', color: '#dc2626', size: 12, weight: 700, anchor: 'start' }]
+        });
+
+        // Ex 4: f(x) = (x^2 + x)/(x - 1) with slant y = x + 2
+        buildRational('g-ex4', {
+            fn: x => (x * x + x) / (x - 1),
+            xMin: -5, xMax: 6, yMin: -8, yMax: 10,
+            xticks: [-4, -2, -1, 1, 2, 4],
+            yticks: [-6, -3, 3, 6, 9],
+            vasym: [1],
+            slants: [{ m: 1, b: 2 }],
+            zeros: [-1, 0],
+            gridSpacing: 35
+        });
+
+        // Ex 5: y = x^3/(x^2 - 4) with slant y = x
+        buildRational('g-ex5', {
+            fn: x => (x * x * x) / (x * x - 4),
+            xMin: -6, xMax: 6, yMin: -9, yMax: 9,
+            xticks: [-5, -3, -2, 2, 3, 5],
+            yticks: [-6, -3, 3, 6],
+            vasym: [-2, 2],
+            slants: [{ m: 1, b: 0 }],
+            zeros: [0],
+            gridSpacing: 35
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+</script>
+</body>
+</html>

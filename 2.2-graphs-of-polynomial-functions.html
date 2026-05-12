@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.2 - Graphs of Polynomial Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* SVG sizing for math graphs. Inner styling (axes, curve, grid, ticks,
+         * dots) is set inline by the GraphBuilder helper at the bottom of the
+         * page, so no per-class SVG color rules are needed here. */
+        .mini-graph { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+        /* The slide-1 continuity panels still use a few hand-drawn polylines —
+         * keep just enough classes to style those. */
+        .mini-graph .axis     { stroke: #475569; stroke-width: 1.5; fill: none; }
+        .mini-graph .curve    { stroke: #2563eb; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .mini-graph .curve-magenta { stroke: #c026d3; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .mini-graph .arrow    { fill: #2563eb; stroke: none; }
+        .mini-graph .arrow-magenta { fill: #c026d3; stroke: none; }
+        .mini-graph .pt-open   { fill: white; stroke: #2563eb; stroke-width: 2; }
+        .mini-graph .pt-closed { fill: #2563eb; stroke: white; stroke-width: 1; }
+        /* Four-panel reference layout for slide 1 (continuity/smoothness) */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.6rem;
+        }
+        .panel-grid .panel {
+            background: white;
+            border: 1px solid var(--slate-line);
+            border-radius: 10px;
+            padding: 0.45rem 0.4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .panel .panel-caption {
+            font-size: 0.6em;
+            line-height: 1.3;
+            color: var(--text);
+            text-align: center;
+            font-weight: 600;
+        }
+        .panel.bad .panel-caption { color: var(--red-accent); }
+        .panel.good .panel-caption { color: var(--green-accent); }
+        @media (max-width: 900px) {
+            .panel-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* Two-column "monomial compare" grid */
+        .mono-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .mono-grid .panel {
+            background: white;
+            border: 1px solid var(--slate-line);
+            border-radius: 10px;
+            padding: 0.4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .mono-grid .panel .panel-label {
+            font-size: 0.62em;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.15rem;
+        }
+        @media (max-width: 900px) {
+            .mono-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        /* End-behavior cases table: shrink the sample-graph column */
+        .eb-table .eb-sample { width: 110px; }
+        .eb-table .eb-sample svg { width: 100%; height: auto; }
+        /* Side-by-side problem-statement layout for two-part examples */
+        .two-up-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: 0.55rem;
+        }
+        .two-up-block .ps-cell {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.85em;
+            font-size: 0.84em;
+            line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+            .two-up-block { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ===================== Slide 0: Title ===================== -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 2 · Polynomial &amp; Rational Functions</div>
+    <div class="title-main">2.2 Graphs of Polynomial Functions</div>
+    <div class="title-objective">Objective: Identify the features that make a graph polynomial, predict end behavior from the leading term, use multiplicity to know whether the graph crosses or is tangent to the \(x\)-axis, and sketch polynomials from factored form.</div>
+    <div class="identity-chips">
+        <span class="chip">continuous</span>
+        <span class="chip">smooth</span>
+        <span class="chip">zeros</span>
+        <span class="chip">turning points</span>
+        <span class="chip">end behavior</span>
+        <span class="chip">multiplicity</span>
+    </div>
+</section>
+
+<!-- ===================== Slide 1: Continuity & Smoothness ===================== -->
+<section class="slide grid-bg" id="slide-1" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">What Makes a Graph Polynomial</div>
+    </div>
+    <div class="slide-body top-layout">
+        <ul class="notes-list">
+            <li>The graph of every polynomial function is
+                <span class="fb" id="slide-1-step-0"><span class="fb-blank">________________</span><span class="fb-answer">continuous</span></span>
+                — no breaks, no holes, no jumps.
+            </li>
+            <li>The graph has only
+                <span class="fb" id="slide-1-step-1"><span class="fb-blank">________________</span><span class="fb-answer">smooth, rounded turns</span></span>
+                — no sharp corners or cusps.
+            </li>
+        </ul>
+        <div class="panel-grid">
+            <div class="panel good">
+                <svg id="g-cont-1" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="A smooth continuous polynomial curve."></svg>
+                <div class="panel-caption">continuous</div>
+            </div>
+            <div class="panel bad">
+                <svg id="g-cont-2" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="A graph with a jump discontinuity, not a polynomial."></svg>
+                <div class="panel-caption">not continuous &rarr; not a polynomial function</div>
+            </div>
+            <div class="panel good">
+                <svg id="g-cont-3" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="A smooth polynomial curve with rounded turning points."></svg>
+                <div class="panel-caption">smooth, rounded turns</div>
+            </div>
+            <div class="panel bad">
+                <svg class="mini-graph" viewBox="0 0 200 140" role="img" aria-label="A piecewise-linear zigzag, sharp turn, not a polynomial.">
+                    <line class="axis" x1="20" y1="80" x2="180" y2="80" />
+                    <line class="axis" x1="100" y1="20" x2="100" y2="130" />
+                    <polyline class="curve-magenta" points="25,30 75,90 125,55 175,95" />
+                    <polygon class="arrow-magenta" points="175,95 168,87 168,99" />
+                    <polygon class="arrow-magenta" points="25,30 18,38 30,38" />
+                </svg>
+                <div class="panel-caption">sharp turn &rarr; not a polynomial function</div>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Continuous means…</div>
+                <div class="card-copy">You can trace the entire graph without lifting your pencil. No gaps, no jumps, no holes.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Smooth means…</div>
+                <div class="card-copy">Every turning point is rounded — there are no sharp corners (no cusps, no kinks).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">The Test</div>
+                <div class="card-copy">
+                    <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">Both</span></span>
+                    properties must hold for the graph to be polynomial.
+                    Either one alone is
+                    <span class="fb" id="slide-1-step-3"><span class="fb-blank">________</span><span class="fb-answer">not enough</span></span>.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 2: Monomial behavior x^n ===================== -->
+<section class="slide grid-bg" id="slide-2" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Monomial Building Blocks: \(f(x) = x^n\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The simplest polynomials are the monomials \(f(x) = x^n\). Comparing them shows how the exponent \(n\) shapes the graph near the origin.</div>
+        <div class="mono-grid">
+            <div class="panel">
+                <div class="panel-label">\(f(x) = x\)</div>
+                <svg id="g-mono-1" class="mini-graph" viewBox="0 0 180 160" role="img" aria-label="Graph of y = x, a line through the origin."></svg>
+            </div>
+            <div class="panel">
+                <div class="panel-label">\(f(x) = x^2\)</div>
+                <svg id="g-mono-2" class="mini-graph" viewBox="0 0 180 160" role="img" aria-label="Graph of y = x squared, a parabola opening up."></svg>
+            </div>
+            <div class="panel">
+                <div class="panel-label">\(f(x) = x^3\)</div>
+                <svg id="g-mono-3" class="mini-graph" viewBox="0 0 180 160" role="img" aria-label="Graph of y = x cubed, an S-shape through the origin."></svg>
+            </div>
+            <div class="panel">
+                <div class="panel-label">\(f(x) = x^4\)</div>
+                <svg id="g-mono-4" class="mini-graph" viewBox="0 0 180 160" role="img" aria-label="Graph of y = x to the fourth, flatter than the parabola near the origin."></svg>
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Even \(n\) (2, 4, 6, …)</div>
+                <div class="card-copy">U-shaped. Both ends point up. Symmetric across the \(y\)-axis. The vertex is at the origin.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Odd \(n\) (1, 3, 5, …)</div>
+                <div class="card-copy">S-shaped. Left end down, right end up. Passes through the origin from quadrant III to quadrant I.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Near the Origin</div>
+                <div class="card-copy">
+                    The greater the value of \(n\), the
+                    <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">flatter</span></span>
+                    the graph near the origin — and the
+                    <span class="fb" id="slide-2-step-1"><span class="fb-blank">________</span><span class="fb-answer">steeper</span></span>
+                    it climbs once \(|x| &gt; 1\).
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 3: Warm-up sketch (quadratic) ===================== -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Warm-Up</div>
+        <div class="slide-title">Sketch \(f(x) = (x+1)(x-3)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the \(x\)-intercepts and sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Read the zeros off the factors</div>
+                    <div class="step-math">\[x + 1 = 0 \;\text{ or }\; x - 3 = 0 \;\;\Longrightarrow\;\; x = -1,\; x = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Identify the shape</div>
+                    <div class="step-copy">Expanding gives \(f(x) = x^2 - 2x - 3\). Degree \(2\), leading coefficient \(+1\) &rArr; parabola opening <strong>up</strong> with two \(x\)-intercepts.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Find the vertex (halfway between zeros)</div>
+                    <div class="step-math">\[x = \tfrac{-1 + 3}{2} = 1, \quad f(1) = (2)(-2) = -4 \;\;\Rightarrow\;\; \text{vertex } (1,\, -4)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 — Sketch</div>
+                    <svg id="g-warmup-quadratic" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Parabola through x = negative 1 and x = 3 with vertex at 1 comma negative 4."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 4: Warm-up sketch (cubic) ===================== -->
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Warm-Up</div>
+        <div class="slide-title">Sketch \(f(x) = (x+1)(x-3)(x+6)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the \(x\)-intercepts and sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Zeros from the factors</div>
+                    <div class="step-math">\[x = -1,\; x = 3,\; x = -6\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Identify the shape</div>
+                    <div class="step-copy">Leading term \(x \cdot x \cdot x = x^3\). Degree \(3\), positive leading coefficient &rArr; a cubic with end behavior <strong>left &darr;, right &uarr;</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Sign check between zeros</div>
+                    <div class="step-copy">Pick a test point in each interval and check the sign of \(f\): negative on \((-\infty, -6)\), positive on \((-6, -1)\), negative on \((-1, 3)\), positive on \((3, \infty)\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 — Sketch</div>
+                    <svg id="g-warmup-cubic" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Cubic through zeros at negative 6, negative 1, and 3 with left arm down and right arm up."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 5: Reference — Zeros & Turning Points ===================== -->
+<section class="slide grid-bg" id="slide-5" data-steps="3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Zeros &amp; Turning Points</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">For a polynomial function \(f\) of degree \(n\), two ceilings always hold.</div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">at most</div>
+                <div class="fn-eq-stack">
+                    <div>\(f\) has at most
+                        <span class="fb" id="slide-5-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(n\) zeros</span></span>.
+                    </div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">at most</div>
+                <div class="fn-eq-stack">
+                    <div>The graph of \(f\) has at most
+                        <span class="fb" id="slide-5-step-1"><span class="fb-blank">________</span><span class="fb-answer">\(n-1\)</span></span>
+                        turning points.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="notes-list">
+            <li>A <strong>zero</strong> of a function \(f\) is a number \(x\) for which
+                <span class="fb" id="slide-5-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(f(x) = 0\)</span></span>.
+                Equivalently, an \(x\)-intercept of the graph.
+            </li>
+        </ul>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Cubic (degree 3)</div>
+                <div class="card-copy">At most \(3\) zeros and at most \(2\) turning points.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Quartic (degree 4)</div>
+                <div class="card-copy">At most \(4\) zeros and at most \(3\) turning points.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Quintic (degree 5)</div>
+                <div class="card-copy">At most \(5\) zeros and at most \(4\) turning points.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 6: Reference — End Behavior table ===================== -->
+<section class="slide grid-bg" id="slide-6" data-steps="3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">End Behavior &amp; the Leading Coefficient Test</div>
+    </div>
+    <div class="slide-body top-layout">
+        <ul class="notes-list">
+            <li><strong>End behavior</strong> describes what happens as \(x\) becomes large in the
+                <span class="fb" id="slide-6-step-0"><span class="fb-blank">________________</span><span class="fb-answer">positive or negative</span></span>
+                direction.
+            </li>
+            <li>End behavior is determined by the function's
+                <span class="fb" id="slide-6-step-1"><span class="fb-blank">________</span><span class="fb-answer">degree</span></span>
+                and the
+                <span class="fb" id="slide-6-step-2"><span class="fb-blank">________</span><span class="fb-answer">sign</span></span>
+                of its leading coefficient.
+            </li>
+        </ul>
+        <div class="table-shell">
+            <table class="data-table eb-table">
+                <thead>
+                    <tr><th>Case</th><th>Degree</th><th>Leading Coef.</th><th>End Behavior</th><th>Notation</th><th>Sample Graph</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>even</td>
+                        <td>positive</td>
+                        <td>both ends &uarr;</td>
+                        <td style="font-size:0.85em; text-align:left;">
+                            as \(x \to \infty,\ y \to \infty\)<br>
+                            as \(x \to -\infty,\ y \to \infty\)
+                        </td>
+                        <td class="eb-sample">
+                            <svg id="g-eb-1" viewBox="0 0 130 90" role="img" aria-label="Even degree positive leading: both ends point up."></svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>even</td>
+                        <td>negative</td>
+                        <td>both ends &darr;</td>
+                        <td style="font-size:0.85em; text-align:left;">
+                            as \(x \to \infty,\ y \to -\infty\)<br>
+                            as \(x \to -\infty,\ y \to -\infty\)
+                        </td>
+                        <td class="eb-sample">
+                            <svg id="g-eb-2" viewBox="0 0 130 90" role="img" aria-label="Even degree negative leading: both ends point down."></svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>odd</td>
+                        <td>positive</td>
+                        <td>left &darr;, right &uarr;</td>
+                        <td style="font-size:0.85em; text-align:left;">
+                            as \(x \to \infty,\ y \to \infty\)<br>
+                            as \(x \to -\infty,\ y \to -\infty\)
+                        </td>
+                        <td class="eb-sample">
+                            <svg id="g-eb-3" viewBox="0 0 130 90" role="img" aria-label="Odd degree positive leading: left down, right up."></svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>odd</td>
+                        <td>negative</td>
+                        <td>left &uarr;, right &darr;</td>
+                        <td style="font-size:0.85em; text-align:left;">
+                            as \(x \to \infty,\ y \to -\infty\)<br>
+                            as \(x \to -\infty,\ y \to \infty\)
+                        </td>
+                        <td class="eb-sample">
+                            <svg id="g-eb-4" viewBox="0 0 130 90" role="img" aria-label="Odd degree negative leading: left up, right down."></svg>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 7: Example 1 — Multiple Choice ===================== -->
+<section class="slide grid-bg" id="slide-7" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Which Graph Has Leading Term \(-3x^4\)?</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">MULTIPLE CHOICE. Which of the following could be the graph of a polynomial whose leading term is \(-3x^4\)?</div>
+        <div class="steps-area">
+            <div class="step" id="slide-7-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Read the leading term</div>
+                    <div class="step-copy">Leading term \(-3x^4\): degree is \(4\) (even), leading coefficient is \(-3\) (negative).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Apply the Leading Coefficient Test</div>
+                    <div class="step-copy">Even degree with a negative leading coefficient &rArr; <strong>both ends point down</strong> (Case 2 from the table).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Eliminate</div>
+                    <div class="step-copy">Discard any option whose left and right arms don't <strong>both</strong> go down. Up-and-down or down-and-up shapes belong to odd-degree polynomials.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-7-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-copy" style="text-align:center;">Choose the graph whose <strong>left arm and right arm both point downward</strong> — that is the unique shape consistent with an even degree and a negative leading coefficient.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 8: Example 2 — Leading Coefficient Test ===================== -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Describe the End Behavior</div>
+    </div>
+    <div class="slide-body">
+        <div class="two-up-block">
+            <div class="ps-cell"><strong>(a)</strong> \(f(x) = -x^3 + 4x\)</div>
+            <div class="ps-cell"><strong>(b)</strong> \(f(x) = x^4 - 5x^2 + 4\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Identify degree and sign of leading coefficient</div>
+                    <div class="step-copy">Degree \(3\) (odd), leading coefficient \(-1\) (negative) &rArr; Case 4: <strong>left &uarr;, right &darr;</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">(a) End Behavior Notation</div>
+                    <div class="step-math">\[\text{as } x \to \infty,\ y \to -\infty \qquad \text{as } x \to -\infty,\ y \to \infty\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">(b) Identify degree and sign of leading coefficient</div>
+                    <div class="step-copy">Degree \(4\) (even), leading coefficient \(+1\) (positive) &rArr; Case 1: <strong>both ends &uarr;</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">(b) End Behavior Notation</div>
+                    <div class="step-math">\[\text{as } x \to \infty,\ y \to \infty \qquad \text{as } x \to -\infty,\ y \to \infty\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 9: Concept — Multiplicity ===================== -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Repeated Zeros &amp; Multiplicity</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">For a polynomial, a factor of \((x - a)^k\) with \(k &gt; 1\) means \(x = a\) is a <strong>zero of multiplicity</strong> \(k\). The multiplicity controls how the graph meets the \(x\)-axis at that zero.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">\(k\) is odd → <em>crosses</em></div>
+                <svg id="g-mult-odd" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="Curve crossing the x-axis at a single point."></svg>
+                <div class="card-copy">The graph passes through the \(x\)-axis.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">\(k\) is even → <em>tangent</em></div>
+                <svg id="g-mult-even" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="Curve tangent to the x-axis, touching and bouncing back."></svg>
+                <div class="card-copy">The graph touches the \(x\)-axis and bounces back without crossing.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Higher \(k\) → flatter</div>
+                <svg id="g-mult-flat" class="mini-graph" viewBox="0 0 220 150" role="img" aria-label="Curve crossing the x-axis with a flat S-shaped inflection."></svg>
+                <div class="card-copy">The more repeats, the more slowly the curve moves through (or past) the \(x\)-axis.</div>
+            </div>
+        </div>
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">rule</div>
+                <div class="fn-eq-stack">
+                    <div>If \(k\) is
+                        <span class="fb" id="slide-9-step-0"><span class="fb-blank">________</span><span class="fb-answer">odd</span></span>,
+                        the graph
+                        <span class="fb" id="slide-9-step-1"><span class="fb-blank">________</span><span class="fb-answer">crosses</span></span>
+                        the \(x\)-axis at \(x = a\).
+                    </div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">rule</div>
+                <div class="fn-eq-stack">
+                    <div>If \(k\) is
+                        <span class="fb" id="slide-9-step-2"><span class="fb-blank">________</span><span class="fb-answer">even</span></span>,
+                        the graph is
+                        <span class="fb" id="slide-9-step-3"><span class="fb-blank">________</span><span class="fb-answer">tangent to</span></span>
+                        the \(x\)-axis at \(x = a\).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 10: Example 3 — All simple zeros ===================== -->
+<section class="slide grid-bg" id="slide-10" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">\(f(x) = -(x-1)(x+2)(x-3)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Identify the degree. (b) Identify the \(x\)-intercepts. (c) State whether the graph crosses or is tangent at each. (d) Sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Degree</div>
+                    <div class="step-copy">Three linear factors &rArr; degree \(\mathbf{3}\) (cubic). Leading term is \(-x^3\), so leading coefficient is \(-1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">(b) \(x\)-intercepts</div>
+                    <div class="step-math">\[x = 1,\quad x = -2,\quad x = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">(c) Cross or Tangent</div>
+                    <div class="step-copy">All three factors have multiplicity \(1\) (odd) &rArr; the graph <strong>crosses</strong> the \(x\)-axis at every intercept.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box">
+                    <div class="step-label">End behavior check</div>
+                    <div class="step-copy">Odd degree, negative leading &rArr; <strong>left &uarr;, right &darr;</strong>. The graph starts high on the left, weaves through three crossings, and ends low on the right.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-4">
+                <div class="step-box green">
+                    <div class="step-label">(d) Sketch</div>
+                    <svg id="g-ex3" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Cubic with zeros at negative 2, 1, and 3, left arm up and right arm down."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 11: Example 4 — Mixed multiplicities ===================== -->
+<section class="slide grid-bg" id="slide-11" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">\(f(x) = (x+2)^2 (x-3)^3\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">(a) Identify the degree. (b) Identify the \(x\)-intercepts. (c) State whether the graph crosses or is tangent at each. (d) Sketch the graph.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(a) Degree</div>
+                    <div class="step-copy">Add the multiplicities: \(2 + 3 = \mathbf{5}\) (quintic). Leading term is \(x^5\), so leading coefficient is \(+1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">(b) \(x\)-intercepts</div>
+                    <div class="step-math">\[x = -2 \;\;(\text{multiplicity } 2), \qquad x = 3 \;\;(\text{multiplicity } 3)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box">
+                    <div class="step-label">(c) Cross or Tangent</div>
+                    <div class="step-copy">At \(x = -2\), multiplicity is even &rArr; <strong>tangent</strong> (touches and bounces). At \(x = 3\), multiplicity is odd &rArr; <strong>crosses</strong>, with a flatter S-curve through the axis because \(k = 3\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-3">
+                <div class="step-box">
+                    <div class="step-label">End behavior check</div>
+                    <div class="step-copy">Odd degree, positive leading &rArr; <strong>left &darr;, right &uarr;</strong>. The graph starts low, comes up to touch \(x = -2\), drops back, dives down, then crosses through \(x = 3\) on its way up.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-4">
+                <div class="step-box green">
+                    <div class="step-label">(d) Sketch (qualitative — vertical scale compressed)</div>
+                    <svg id="g-ex4" class="mini-graph" viewBox="0 0 420 260" role="img" aria-label="Quintic with a tangent zero at negative 2 and an inflection-cross at 3."></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 12: Examples 5 & 6 — Turning Points ===================== -->
+<section class="slide grid-bg" id="slide-12" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Examples 5 &amp; 6</div>
+        <div class="slide-title">How Many Turning Points?</div>
+    </div>
+    <div class="slide-body">
+        <div class="two-up-block">
+            <div class="ps-cell"><strong>(5)</strong> \(f(x) = -(x+1)^2(x-3)\)</div>
+            <div class="ps-cell"><strong>(6)</strong> \(f(x) = (x+1)^2(x-3)^3\)</div>
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">(5) Find the degree</div>
+                    <div class="step-math">\[\text{degree} = 2 + 1 = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">(5) Turning Points</div>
+                    <div class="step-math">\[\text{at most } 3 - 1 = \mathbf{2} \text{ turning points}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">(6) Find the degree</div>
+                    <div class="step-math">\[\text{degree} = 2 + 3 = 5\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">(6) Turning Points</div>
+                    <div class="step-math">\[\text{at most } 5 - 1 = \mathbf{4} \text{ turning points}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 13: Example 7 — Write equation from graph ===================== -->
+<section class="slide grid-bg" id="slide-13" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Write an Equation from a Graph</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write an equation for the graph shown. Assume all \(x\)-intercepts are integers and the leading coefficient is \(1\) or \(-1\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">The graph</div>
+                    <svg id="g-ex7" class="mini-graph" viewBox="0 0 420 280" role="img" aria-label="Quartic with zeros at negative 3, negative 1, 1, and 2, both arms pointing down."></svg>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 1 — Read the zeros</div>
+                    <div class="step-math">\[x = -3,\;-1,\;1,\;2\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Write the factors</div>
+                    <div class="step-math">\[f(x) = a\,(x+3)(x+1)(x-1)(x-2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Pick the sign of \(a\)</div>
+                    <div class="step-copy">Four factors &rArr; degree \(4\) (even). Both arms point <strong>down</strong> &rArr; negative leading coefficient. Since we're told \(a = \pm 1\), choose \(a = -1\).</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Equation</div>
+                    <div class="step-math">\[f(x) = -(x+3)(x+1)(x-1)(x-2)\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===================== Slide 14: Review ===================== -->
+<section class="slide grid-bg" id="slide-14">
+    <div class="slide-header">
+        <div class="ref-label">Review</div>
+        <div class="slide-title">Can You Now...?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Use this checklist to make sure you can sketch any polynomial in factored form.</div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Recognize a Polynomial Graph</div>
+                <div class="card-copy">Continuous everywhere with only smooth, rounded turns — no jumps, no sharp corners.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Count Zeros &amp; Turns</div>
+                <div class="card-copy">A degree-\(n\) polynomial has at most \(n\) zeros and at most \(n-1\) turning points.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Predict End Behavior</div>
+                <div class="card-copy">Use degree (even/odd) and the sign of the leading coefficient to determine the four cases.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Use Multiplicity</div>
+                <div class="card-copy">Odd-power factor &rArr; crosses. Even-power factor &rArr; tangent (bounces). Higher \(k\) &rArr; flatter pass.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Sketch from Factors</div>
+                <div class="card-copy">Plot the zeros, decide cross-or-tangent at each, anchor the \(y\)-intercept, and draw the arms using end behavior.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Reverse Engineer</div>
+                <div class="card-copy">From a given graph, read the zeros (with multiplicities) and the end behavior to write \(f(x)\) in factored form.</div>
+            </div>
+        </div>
+        <div class="formula-note">A factored polynomial is a graph in disguise: each factor is a zero, each exponent is a multiplicity, and the leading sign is the end behavior.</div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',  slideId: 'slide-0' },
+            { label: 'Basics',    slideId: 'slide-1' },
+            { label: 'Warm-Ups',  slideId: 'slide-3' },
+            { label: 'End Beh.',  slideId: 'slide-6' },
+            { label: 'Multipl.',  slideId: 'slide-9' },
+            { label: 'Sketches',  slideId: 'slide-10' },
+            { label: 'Reverse',   slideId: 'slide-13' },
+            { label: 'Review',    slideId: 'slide-14' }
+        ]
+    });
+</script>
+
+<!-- ============================================================
+     Math-graph rendering
+     ============================================================
+
+     The deck reuses the GraphBuilder helper that ships with 4.8
+     (graphs-other-trig-functions). Each <svg id="g-…"> placeholder
+     in the body is filled in here at DOMContentLoaded time.
+
+     Conventions (match the trig decks):
+       • Curve: #2563eb (blue), stroke-width 2.5
+       • Zeros: #16a34a (green) dot at (x, 0)
+       • y-intercept: #2563eb dot at (0, yint)
+       • Special points (vertex, etc.): #dc2626 (red)
+       • Grid: SVG <pattern> tile, #e2e8f0 at 0.5 stroke
+     ============================================================ -->
+<script>
+    class GraphBuilder {
+        constructor(svgId, viewBox) {
+            this.svg = document.getElementById(svgId);
+            if (!this.svg) return;
+            this.ns = 'http://www.w3.org/2000/svg';
+            const vb = viewBox || this.svg.getAttribute('viewBox').split(' ').map(Number);
+            this.vbX = vb[0]; this.vbY = vb[1]; this.vbW = vb[2]; this.vbH = vb[3];
+        }
+        setCoords(xMin, xMax, yMin, yMax, padL, padR, padT, padB) {
+            this.mathXMin = xMin; this.mathXMax = xMax;
+            this.mathYMin = yMin; this.mathYMax = yMax;
+            this.svgXMin = padL; this.svgXMax = this.vbW - padR;
+            this.svgYMin = padT; this.svgYMax = this.vbH - padB;
+        }
+        mx(v) { return this.svgXMin + (v - this.mathXMin) / (this.mathXMax - this.mathXMin) * (this.svgXMax - this.svgXMin); }
+        my(v) { return this.svgYMax - (v - this.mathYMin) / (this.mathYMax - this.mathYMin) * (this.svgYMax - this.svgYMin); }
+        addGrid(spacing) {
+            const pat = document.createElementNS(this.ns, 'pattern');
+            const id  = 'grid-' + Math.random().toString(36).slice(2, 7);
+            pat.setAttribute('id', id);
+            pat.setAttribute('width',  spacing || 40);
+            pat.setAttribute('height', spacing || 40);
+            pat.setAttribute('patternUnits', 'userSpaceOnUse');
+            const p = document.createElementNS(this.ns, 'path');
+            p.setAttribute('d', `M ${spacing || 40} 0 L 0 0 0 ${spacing || 40}`);
+            p.setAttribute('fill', 'none');
+            p.setAttribute('stroke', '#e2e8f0');
+            p.setAttribute('stroke-width', '0.6');
+            pat.appendChild(p);
+            this.svg.appendChild(pat);
+            const r = document.createElementNS(this.ns, 'rect');
+            r.setAttribute('x', this.svgXMin);
+            r.setAttribute('y', this.svgYMin);
+            r.setAttribute('width',  this.svgXMax - this.svgXMin);
+            r.setAttribute('height', this.svgYMax - this.svgYMin);
+            r.setAttribute('fill', `url(#${id})`);
+            this.svg.appendChild(r);
+        }
+        line(x1, y1, x2, y2, color, w, dash) {
+            const l = document.createElementNS(this.ns, 'line');
+            l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+            l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+            l.setAttribute('stroke', color || '#1a365d');
+            l.setAttribute('stroke-width', w || 1);
+            if (dash) l.setAttribute('stroke-dasharray', dash);
+            this.svg.appendChild(l);
+            return l;
+        }
+        addAxes() {
+            const originY = this.my(0), originX = this.mx(0);
+            // x-axis (full panel width even if 0 is off-range — clamp)
+            const ax = Math.max(this.svgYMin, Math.min(this.svgYMax, originY));
+            this.line(this.svgXMin, ax, this.svgXMax, ax, '#334155', 1.5);
+            // y-axis (full panel height if 0 is in x-range)
+            const ay = Math.max(this.svgXMin, Math.min(this.svgXMax, originX));
+            this.line(ay, this.svgYMin, ay, this.svgYMax, '#334155', 1.5);
+            // Arrowheads on each axis end (pointing outward)
+            const arrow = (x, y, dir) => {
+                const p = document.createElementNS(this.ns, 'polygon');
+                let pts;
+                if (dir === 'right') pts = `${x},${y} ${x-7},${y-4} ${x-7},${y+4}`;
+                else if (dir === 'up') pts = `${x},${y} ${x-4},${y+7} ${x+4},${y+7}`;
+                p.setAttribute('points', pts);
+                p.setAttribute('fill', '#334155');
+                this.svg.appendChild(p);
+            };
+            arrow(this.svgXMax, ax, 'right');
+            arrow(ay, this.svgYMin, 'up');
+        }
+        point(mx, my, color, r) {
+            const c = document.createElementNS(this.ns, 'circle');
+            c.setAttribute('cx', this.mx(mx));
+            c.setAttribute('cy', this.my(my));
+            c.setAttribute('r',  r || 4.5);
+            c.setAttribute('fill', color || '#2563eb');
+            c.setAttribute('stroke', 'white');
+            c.setAttribute('stroke-width', '1.5');
+            this.svg.appendChild(c);
+            return c;
+        }
+        label(x, y, text, opts) {
+            const t = document.createElementNS(this.ns, 'text');
+            t.setAttribute('x', x); t.setAttribute('y', y);
+            t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+            t.setAttribute('font-size',   (opts && opts.size)   || '11');
+            t.setAttribute('fill',        (opts && opts.color)  || '#64748b');
+            t.setAttribute('text-anchor', (opts && opts.anchor) || 'middle');
+            if (opts && opts.weight) t.setAttribute('font-weight', opts.weight);
+            t.textContent = text;
+            this.svg.appendChild(t);
+            return t;
+        }
+        addXLabels(labels) {
+            labels.forEach(lb => {
+                const sx = this.mx(lb.val);
+                const sy = Math.max(this.svgYMin + 12, Math.min(this.svgYMax - 4, this.my(0) + 14));
+                this.label(sx, sy, lb.text, { size: '11', anchor: 'middle', color: '#64748b' });
+            });
+        }
+        addYLabels(labels) {
+            labels.forEach(lb => {
+                const sx = Math.max(this.svgXMin + 4, Math.min(this.svgXMax - 4, this.mx(0) - 6));
+                this.label(sx, this.my(lb.val) + 4, lb.text, { size: '11', anchor: 'end', color: '#64748b' });
+            });
+        }
+        curve(f, xStart, xEnd, steps, color, width) {
+            const segs = []; let seg = [];
+            const n = steps || 500;
+            const yRange = this.mathYMax - this.mathYMin;
+            const clip = yRange * 2;  // allow some over-run before splitting
+            for (let i = 0; i <= n; i++) {
+                const mx = xStart + (i / n) * (xEnd - xStart);
+                const my = f(mx);
+                if (!isFinite(my) || Math.abs(my) > Math.max(Math.abs(this.mathYMin), Math.abs(this.mathYMax)) + clip) {
+                    if (seg.length >= 2) segs.push(seg);
+                    seg = [];
+                    continue;
+                }
+                seg.push([this.mx(mx), this.my(my)]);
+            }
+            if (seg.length >= 2) segs.push(seg);
+            segs.forEach(s => {
+                let d = 'M ' + s[0][0].toFixed(2) + ' ' + s[0][1].toFixed(2);
+                for (let i = 1; i < s.length; i++) d += ' L ' + s[i][0].toFixed(2) + ' ' + s[i][1].toFixed(2);
+                const p = document.createElementNS(this.ns, 'path');
+                p.setAttribute('d', d);
+                p.setAttribute('fill', 'none');
+                p.setAttribute('stroke', color || '#2563eb');
+                p.setAttribute('stroke-width', width || 2.5);
+                p.setAttribute('stroke-linecap',  'round');
+                p.setAttribute('stroke-linejoin', 'round');
+                this.svg.appendChild(p);
+            });
+        }
+    }
+
+    /* ---------- Graph configurations ---------- */
+    function build(id, viewBox, cfg) {
+        const g = new GraphBuilder(id, viewBox);
+        if (!g.svg) return;
+        const padL = cfg.padL != null ? cfg.padL : 22;
+        const padR = cfg.padR != null ? cfg.padR : 18;
+        const padT = cfg.padT != null ? cfg.padT : 14;
+        const padB = cfg.padB != null ? cfg.padB : 22;
+        g.setCoords(cfg.xMin, cfg.xMax, cfg.yMin, cfg.yMax, padL, padR, padT, padB);
+        if (cfg.grid !== false) g.addGrid(cfg.gridSpacing || 40);
+        g.addAxes();
+        if (cfg.xticks) g.addXLabels(cfg.xticks.map(v => ({ val: v, text: String(v) })));
+        if (cfg.yticks) g.addYLabels(cfg.yticks.map(v => ({ val: v, text: String(v) })));
+        g.curve(cfg.fn, cfg.xMin, cfg.xMax, cfg.steps || 400, cfg.color || '#2563eb', cfg.width || 2.6);
+        (cfg.zeros || []).forEach(x => g.point(x, 0, '#16a34a', 4.5));
+        if (cfg.yint != null) g.point(0, cfg.yint, '#2563eb', 4);
+        (cfg.points || []).forEach(p => g.point(p.x, p.y, p.color || '#dc2626', p.r || 4.5));
+        (cfg.labels || []).forEach(l => g.label(
+            g.mx(l.x), g.my(l.y), l.text,
+            { color: l.color || '#0f172a', size: l.size || '12',
+              anchor: l.anchor || 'start', weight: l.weight || '600' }
+        ));
+    }
+
+    function buildAll() {
+        // Slide 1 — continuity / smoothness illustration panels
+        // Panel 1 (continuous): smooth S-cubic
+        build('g-cont-1', null, {
+            fn: x => 0.2 * x * x * x - 1.2 * x + 0.1,
+            xMin: -2.6, xMax: 2.6, yMin: -2, yMax: 2,
+            padL: 10, padR: 10, padT: 10, padB: 10, gridSpacing: 22,
+            color: '#2563eb'
+        });
+        // Panel 2 (jump discontinuity): two smooth pieces + open/closed dots
+        (function () {
+            const g = new GraphBuilder('g-cont-2', null);
+            if (!g.svg) return;
+            g.setCoords(-2.6, 2.6, -1.6, 1.8, 10, 10, 10, 10);
+            g.addGrid(22);
+            g.addAxes();
+            // Left piece: smooth rising curve ending at x = 0.6
+            const f1 = x => 0.45 + 0.4 * x - 0.05 * x * x * x;
+            g.curve(f1, -2.4, 0.6, 200, '#2563eb', 2.6);
+            // Right piece: smooth rising curve starting at x = 0.6 (lower value)
+            const f2 = x => -0.4 + 0.35 * x + 0.18 * x * x;
+            g.curve(f2, 0.6, 2.4, 200, '#2563eb', 2.6);
+            // Closed dot at end of left piece, open dot at start of right piece
+            const NS = 'http://www.w3.org/2000/svg';
+            const dot = (cx, cy, fill, stroke) => {
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', cx); c.setAttribute('cy', cy); c.setAttribute('r', 4.2);
+                c.setAttribute('fill', fill); c.setAttribute('stroke', stroke);
+                c.setAttribute('stroke-width', '2');
+                g.svg.appendChild(c);
+            };
+            dot(g.mx(0.6), g.my(f1(0.6)), '#2563eb', 'white');  // closed
+            dot(g.mx(0.6), g.my(f2(0.6)), 'white',   '#2563eb'); // open
+        })();
+        // Panel 3 (smooth, rounded turns): magenta M-shape with two peaks
+        build('g-cont-3', null, {
+            fn: x => -0.1 * x * x * x * x + 0.6 * x * x - 0.4,
+            xMin: -2.5, xMax: 2.5, yMin: -1.4, yMax: 1.2,
+            padL: 10, padR: 10, padT: 10, padB: 10, gridSpacing: 22,
+            color: '#c026d3'
+        });
+
+        // Slide 2 — monomials (no ticks, light grid)
+        build('g-mono-1', null, { fn: x => x,             xMin: -2.2, xMax: 2.2, yMin: -2.2, yMax: 2.2,
+                                  padL: 14, padR: 14, padT: 14, padB: 14, gridSpacing: 22 });
+        build('g-mono-2', null, { fn: x => x*x,           xMin: -2,   xMax: 2,   yMin: -0.6, yMax: 4.2,
+                                  padL: 14, padR: 14, padT: 14, padB: 14, gridSpacing: 22 });
+        build('g-mono-3', null, { fn: x => x*x*x,         xMin: -1.6, xMax: 1.6, yMin: -4.2, yMax: 4.2,
+                                  padL: 14, padR: 14, padT: 14, padB: 14, gridSpacing: 22 });
+        build('g-mono-4', null, { fn: x => x*x*x*x,       xMin: -1.6, xMax: 1.6, yMin: -1,   yMax: 6.6,
+                                  padL: 14, padR: 14, padT: 14, padB: 14, gridSpacing: 22 });
+
+        // Slide 3 — warm-up parabola
+        build('g-warmup-quadratic', null, {
+            fn: x => (x + 1) * (x - 3),
+            xMin: -3, xMax: 5, yMin: -5, yMax: 5,
+            xticks: [-3, -2, -1, 1, 2, 3, 4, 5],
+            yticks: [-4, -2, 2, 4],
+            zeros: [-1, 3], yint: -3,
+            points: [{ x: 1, y: -4, color: '#dc2626' }],
+            labels: [
+                { x: 1.2,  y: -4.6, text: 'vertex (1, −4)', color: '#dc2626', anchor: 'start' },
+                { x: -0.9, y: -3.5, text: 'y-int (0, −3)',  color: '#1d4ed8', anchor: 'end' }
+            ]
+        });
+
+        // Slide 4 — warm-up cubic
+        build('g-warmup-cubic', null, {
+            fn: x => (x + 1) * (x - 3) * (x + 6),
+            xMin: -7, xMax: 5, yMin: -40, yMax: 55,
+            xticks: [-6, -4, -2, 2, 4],
+            yticks: [-30, -15, 15, 30, 45],
+            zeros: [-6, -1, 3], yint: -18,
+            labels: [{ x: 0.4, y: -22, text: 'y-int (0, −18)', color: '#1d4ed8', anchor: 'start' }]
+        });
+
+        // Slide 6 — end-behavior shape illustrations (no grid, no ticks)
+        const quartW = x => 0.55 * x * x * x * x - 1.5 * x * x + 0.4;
+        const cubicS = x => (x * x * x) / 3 - x;
+        build('g-eb-1', null, { fn: quartW,         xMin: -1.7, xMax: 1.7, yMin: -1.1, yMax: 2.6, grid: false, padL: 8, padR: 8, padT: 6, padB: 6 });
+        build('g-eb-2', null, { fn: x => -quartW(x),xMin: -1.7, xMax: 1.7, yMin: -2.6, yMax: 1.1, grid: false, padL: 8, padR: 8, padT: 6, padB: 6 });
+        build('g-eb-3', null, { fn: cubicS,         xMin: -1.9, xMax: 1.9, yMin: -1.8, yMax: 1.8, grid: false, padL: 8, padR: 8, padT: 6, padB: 6 });
+        build('g-eb-4', null, { fn: x => -cubicS(x),xMin: -1.9, xMax: 1.9, yMin: -1.8, yMax: 1.8, grid: false, padL: 8, padR: 8, padT: 6, padB: 6 });
+
+        // Slide 9 — multiplicity examples
+        build('g-mult-odd',  null, { fn: x => 0.7 * x,       xMin: -1.6, xMax: 1.6, yMin: -1.2, yMax: 1.2, zeros: [0],
+                                     padL: 10, padR: 10, padT: 10, padB: 10, gridSpacing: 22 });
+        build('g-mult-even', null, { fn: x => 0.8 * x * x,   xMin: -1.3, xMax: 1.3, yMin: -0.3, yMax: 1.4, zeros: [0],
+                                     padL: 10, padR: 10, padT: 10, padB: 14, gridSpacing: 22 });
+        build('g-mult-flat', null, { fn: x => 0.7 * x * x * x, xMin: -1.2, xMax: 1.2, yMin: -1, yMax: 1, zeros: [0],
+                                     padL: 10, padR: 10, padT: 10, padB: 10, gridSpacing: 22 });
+
+        // Slide 10 — Example 3 cubic: -(x-1)(x+2)(x-3)
+        build('g-ex3', null, {
+            fn: x => -(x - 1) * (x + 2) * (x - 3),
+            xMin: -3.5, xMax: 4, yMin: -10, yMax: 13,
+            xticks: [-3, -2, -1, 1, 2, 3],
+            yticks: [-9, -6, -3, 3, 6, 9, 12],
+            zeros: [-2, 1, 3], yint: -6,
+            labels: [{ x: 0.3, y: -7.3, text: 'y-int (0, −6)', color: '#1d4ed8', anchor: 'start' }]
+        });
+
+        // Slide 11 — Example 4 quintic, qualitative (×0.04 scale so it fits)
+        build('g-ex4', null, {
+            fn: x => 0.04 * Math.pow(x + 2, 2) * Math.pow(x - 3, 3),
+            xMin: -3.2, xMax: 4.4, yMin: -8, yMax: 4,
+            xticks: [-3, -2, -1, 1, 2, 3, 4],
+            yticks: [-6, -3, 3],
+            zeros: [-2, 3],
+            labels: [
+                { x: -2.3, y: 0.9, text: 'tangent',         color: '#15803d', anchor: 'end' },
+                { x:  3.1, y: 0.9, text: 'flat cross', color: '#15803d', anchor: 'start' }
+            ]
+        });
+
+        // Slide 13 — Example 7 quartic, both ends down
+        build('g-ex7', null, {
+            fn: x => -(x + 3) * (x + 1) * (x - 1) * (x - 2),
+            xMin: -4, xMax: 3.2, yMin: -12, yMax: 14,
+            xticks: [-4, -3, -2, -1, 1, 2, 3],
+            yticks: [-10, -5, 5, 10],
+            zeros: [-3, -1, 1, 2], yint: -6
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', buildAll);
+    } else {
+        buildAll();
+    }
+</script>
+</body>
+</html>
