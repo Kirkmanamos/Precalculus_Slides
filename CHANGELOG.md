@@ -5,6 +5,29 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-05-13
+
+### Rebuilt HTML Deck - 4.6b Graphs of Sine & Cosine Part 2
+
+Converted `4.6b-graphs-sine-cosine-part2.html` to the shared-assets
+HoffMath Classroom standard. The deck now links `assets/slides-core.css` and
+`assets/slides-core.js` for shell layout, navigation, KaTeX rendering, and
+teacher-controlled step reveals; the inline style block is limited to the
+deck-specific graph/table presentation.
+
+- Preserved the six-slide lesson flow: title, sine/cosine 5-key-point parent
+  graphs, graphing process, and three worked graphing examples.
+- Kept the animated/generated SVG graph curves for the parent graphs and
+  examples, but moved the controller work onto `SlidesCore.init(...)` with
+  small deck-local observers for graph reveal timing.
+- Converted remaining math rendering hazards around SVG text and labels:
+  KaTeX stays in HTML text, while SVG labels use plain text because auto-render
+  does not enter SVG.
+- Updated `CLAUDE.md` so 4.6 and 4.6b are tracked as rebuilt to the 5.5 /
+  shared-assets standard; next legacy rebuild targets are 4.7 and 4.8.
+
+---
+
 ## 2026-05-12
 
 ### New HTML Decks - Unit 4 Sections 4.1–4.5 (rebuilt to 5.5 standard)

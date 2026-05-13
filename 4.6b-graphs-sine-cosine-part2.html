@@ -6,413 +6,156 @@
     <title>4.6b — Graphs of Sine &amp; Cosine (Part 2)</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
     <style>
-        /* ============================================================
-           THEME — HoffMath Classroom (matches 5.5)
-           ============================================================ */
-        :root {
-            --navy:          #1a365d;
-            --blue-accent:   #2563eb;
-            --green-accent:  #16a34a;
-            --teal-accent:   #0891b2;
-            --orange-accent: #d97706;
-            --red-accent:    #dc2626;
-            --grid-line:     #dbeafe;
-            --bg-white:      #ffffff;
-            --text:          #1e293b;
-            --text-muted:    #64748b;
-            --blue-light:    #eff6ff;
-            --green-light:   #f0fdf4;
-            --teal-light:    #f0fdfa;
-            --orange-light:  #fffbeb;
-            --navy-light:    #e8edf5;
-            --dark-blue-curve: #1e40af;
-        }
+        /* Deck-specific graph/table styling. Layout and slide shell come from slides-core.css. */
+        :root { --dark-blue-curve: #1e40af; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            width: 100%; height: 100%;
-            overflow: hidden;
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 28px;
-            background: var(--navy);
-        }
-
-        /* ============================================================
-           SLIDE SHELL — horizontal transition model (matches 5.5)
-           ============================================================ */
-        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
-
-        .slide {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            padding-top: 5rem; padding-bottom: 3rem;
-            padding-left:  max(3rem, calc((100% - 1120px) / 2));
-            padding-right: max(3rem, calc((100% - 1120px) / 2));
-            opacity: 0; transform: translateX(60px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
-        }
-        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
-        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
-
-        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
-
-        /* ============================================================
-           BACKGROUNDS
-           ============================================================ */
-        .title-slide {
-            background: var(--navy);
-            color: white;
-            justify-content: center;
-        }
-
-        .grid-bg {
-            background-color: var(--bg-white);
-            background-image:
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: var(--text);
-        }
-
-        /* ============================================================
-           TITLE SLIDE TYPOGRAPHY
-           ============================================================ */
-        .title-section-label {
-            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
-            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
-        }
-        .title-main {
-            font-size: 2em; font-weight: 700; line-height: 1.2;
-            color: white; margin-bottom: 0.5rem;
-        }
-        .title-objective {
-            font-size: 0.72em; color: #93c5fd; font-weight: 400;
-            line-height: 1.6; margin-top: 0.75rem;
-        }
-        .identity-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
-        .chip {
-            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 100px; padding: 0.2em 0.75em;
-            font-size: 0.58em; color: #e2e8f0;
-        }
-
-        /* ============================================================
-           SLIDE HEADER
-           ============================================================ */
-        .slide-header {
-            display: flex; align-items: center; gap: 1rem;
-            margin-bottom: 1.2rem; flex-shrink: 0;
-        }
-        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
-
-        /* Tags / labels */
-        .example-label, .concept-label, .ref-label {
-            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
-            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
-        }
-        .example-label { background: var(--green-accent); }
-        .concept-label { background: var(--teal-accent); }
-        .ref-label     { background: var(--navy); }
-
-        /* ============================================================
-           PROBLEM STATEMENT
-           ============================================================ */
-        .problem-statement {
-            background: var(--navy-light); border-left: 5px solid var(--navy);
-            border-radius: 10px; padding: 0.65em 1.2em;
-            margin-bottom: 0.9rem; flex-shrink: 0;
-            font-weight: 600; color: var(--navy); font-size: 0.9em;
-        }
-        .problem-statement .katex-display { margin: 0; }
-
-        /* ============================================================
-           STEP REVEALS — display:none/block with keyframe animation
-           ============================================================ */
-        .steps-area {
-            display: flex; flex-direction: column;
-            overflow-y: auto; flex: 1;
-            min-height: 0; padding-bottom: 3.5rem;
-        }
-
-        .step { display: none; }
-        .step.visible {
-            display: block;
-            animation: stepReveal 0.4s ease both;
-            margin-bottom: 0.4rem;
-        }
-        .step.visible:last-child { margin-bottom: 0; }
-
-        @keyframes stepReveal {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ============================================================
-           STEP-BOX CARDS
-           ============================================================ */
-        .step-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue-accent);
-            border-radius: 10px; padding: 0.45em 1.1em;
-        }
-        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
-        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
-        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
-        .step-box.dark   { background: var(--navy); }
-
-        .step-label {
-            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.08em;
-        }
-        .step-box.dark .step-label { color: #93c5fd; }
-
-        .step-math {
-            font-size: 0.88em; line-height: 2;
-            padding: 0.2em 0; text-align: center;
-        }
-        .step-box.dark .step-math { color: white; }
-        .step-box.dark .katex { color: white; }
-
-        /* Annotation beside equation */
-        .step-math.has-annotation {
-            display: flex; align-items: center;
-            gap: 2.5rem; text-align: left;
-        }
-        .step-eq { flex: 1; text-align: center; }
-        .annotation {
-            flex: 0 0 36%; color: var(--blue-accent);
-            font-size: 0.72em; font-weight: 600; line-height: 1.45;
-            text-align: left; border-left: 3px solid #93c5fd;
-            padding-left: 1rem;
-        }
-
-        /* ============================================================
-           PARENT-GRAPH LAYOUT (Slide 1)
-           ============================================================ */
         .graphs-row {
-            display: flex; gap: 1.5rem; align-items: flex-start;
-            justify-content: center; flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            align-items: start;
         }
-        .graph-col { display: flex; flex-direction: column; align-items: center; }
+
+        .graph-col {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
         .graph-col-title {
-            font-size: 0.82em; font-weight: 700; color: var(--navy);
-            margin-bottom: 0.3rem;
+            font-size: 0.78em;
+            font-weight: 700;
+            color: var(--navy);
         }
+
         .graph-svg {
-            border: 1.5px solid #c7d2fe; border-radius: 6px; background: white;
+            width: 100%;
+            height: auto;
+            max-height: 260px;
+            border: 1.5px solid #c7d2fe;
+            border-radius: 8px;
+            background: white;
         }
 
-        /* T-tables */
+        .graph-svg.parent-graph { max-width: 420px; }
+        .graph-svg.example-graph { max-width: 780px; }
+
         .ttable {
-            border-collapse: collapse; font-size: 0.6em; margin-top: 0.3rem;
+            border-collapse: collapse;
+            font-size: 0.58em;
+            margin-top: 0.25rem;
         }
-        .ttable th, .ttable td {
-            border: 1.5px solid var(--navy);
-            padding: 0.15em 0.5em; text-align: center; min-width: 2.2em;
-        }
-        .ttable th { background: var(--grid-line); font-weight: 700; color: var(--navy); }
-        .ttable td { background: white; }
 
-        /* ============================================================
-           GRAPHING STEPS SLIDE (Slide 2)
-           ============================================================ */
+        .ttable th,
+        .ttable td {
+            border: 1.5px solid var(--navy);
+            padding: 0.14em 0.46em;
+            text-align: center;
+            min-width: 2.15em;
+        }
+
+        .ttable th {
+            background: var(--grid-line);
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .ttable td { background: white; }
+        .ttable .red-val { color: var(--red-accent); font-weight: 700; }
+
         .step-item {
-            display: flex; align-items: flex-start; gap: 0.5rem;
-            font-size: 0.82em; line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            font-size: 0.82em;
+            line-height: 1.5;
         }
+
         .step-number-badge {
-            background: var(--blue-accent); color: white;
-            width: 1.3em; height: 1.3em; min-width: 1.3em;
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-weight: 700; font-size: 0.85em;
+            background: var(--blue-accent);
+            color: white;
+            width: 1.3em;
+            height: 1.3em;
+            min-width: 1.3em;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85em;
         }
+
         .step-item-content { flex: 1; }
         .step-item-content strong { color: var(--blue-accent); }
 
         .transform-diagram {
-            display: flex; gap: 1rem; justify-content: center;
-            margin-top: 0.4rem; flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.65rem;
+            margin-top: 0.5rem;
         }
+
         .transform-box {
-            border: 2px solid var(--blue-accent); border-radius: 8px;
-            padding: 0.3em 0.8em; text-align: center; background: white;
-            font-size: 0.9em;
+            border: 2px solid var(--blue-accent);
+            border-radius: 8px;
+            padding: 0.38em 0.75em;
+            text-align: center;
+            background: white;
+            font-size: 0.88em;
         }
-        .transform-box .label-text { font-weight: 600; color: var(--blue-accent); margin-bottom: 0.15em; }
+
+        .transform-box .label-text {
+            font-weight: 700;
+            color: var(--blue-accent);
+            margin-bottom: 0.15em;
+        }
+
         .transform-box .items-text { color: var(--navy); }
 
-        .note-red {
-            color: var(--red-accent); font-weight: 700; font-size: 0.82em;
-            text-align: center; margin-top: 0.5rem;
+        .ttable-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            flex-wrap: wrap;
         }
 
-        /* ============================================================
-           EXAMPLE T-TABLE LAYOUT
-           ============================================================ */
-        .ttable-container {
-            display: flex; align-items: center; justify-content: center;
-            gap: 0.7rem; flex-wrap: wrap;
-        }
         .ttable-label {
-            text-align: center; font-weight: 600; margin-bottom: 0.15em;
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 0.15em;
             font-size: 0.62em;
         }
+
         .ttable-label.parent-label { color: var(--navy); }
         .ttable-label.transformed-label { color: var(--red-accent); }
         .ttable-arrow { font-size: 1.5em; color: var(--blue-accent); font-weight: 700; }
-        .ttable .red-val { color: var(--red-accent); font-weight: 700; }
+
         .table-notes {
-            font-size: 0.6em; color: var(--text-muted);
-            margin-top: 0.15em; text-align: center;
+            font-size: 0.6em;
+            color: var(--text-muted);
+            margin-top: 0.2em;
+            text-align: center;
         }
+
         .table-notes .red-val { color: var(--red-accent); font-weight: 700; }
 
-        /* ============================================================
-           GRAPH WRAPPER
-           ============================================================ */
         .graph-wrapper {
-            display: flex; justify-content: center;
-            align-items: center; width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
         }
 
-        /* ============================================================
-           NAV / PROGRESS (matches 5.5)
-           ============================================================ */
-        .nav-dots {
-            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        @media (max-width: 900px) {
+            .graphs-row,
+            .transform-diagram { grid-template-columns: 1fr; }
+            .ttable { font-size: 0.52em; }
         }
-        .nav-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: rgba(255,255,255,0.3); border: none; cursor: pointer;
-            transition: all 0.3s;
-        }
-        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
-        .progress-bar {
-            position: fixed; top: 0; left: 0; height: 3px;
-            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
-            transition: width 0.4s ease; z-index: 100;
-        }
-        .click-hint {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-            font-size: 0.45em; color: rgba(100,116,139,0.6);
-            letter-spacing: 0.1em; text-transform: uppercase;
-            animation: pulse 2s ease-in-out infinite; z-index: 100;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-
-        @media (prefers-reduced-motion: reduce) {
-            .slide { transition: opacity 0.3s ease; transform: none !important; }
-            .step.visible { animation: none; opacity: 1; }
-        }
-/* ===========================================
-   MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
-   =========================================== */
-@media (max-width: 768px) {
-  html, body {
-    font-size: 18px !important;
-    width: 100%;
-    height: 100%;
-  }
-
-  .slide {
-    padding-top: max(16px, env(safe-area-inset-top)) !important;
-    padding-right: 12px !important;
-    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
-    padding-left: 12px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .slide-title,
-  .section-title {
-    line-height: 1.14;
-  }
-
-  .slide-subtitle {
-    font-size: 0.9em !important;
-  }
-
-  .problem-statement {
-    font-size: 0.95em !important;
-    padding: 0.48em 0.66em !important;
-    margin-bottom: 0.55rem !important;
-  }
-
-  .steps-area {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
-  }
-
-  .step {
-    gap: 8px !important;
-  }
-
-  .step-label {
-    min-width: 0 !important;
-    font-size: 0.6em !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.92em !important;
-    line-height: 1.6 !important;
-  }
-
-  .example-label,
-  .concept-label,
-  .ref-label {
-    top: 10px !important;
-    left: 12px !important;
-    font-size: 0.52em !important;
-    padding: 0.22em 0.6em !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  .click-hint {
-    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-    font-size: 0.5em !important;
-    max-width: 92vw;
-    text-align: center;
-  }
-
-  .ref-grid,
-  .strategy-grid,
-  .identities-grid,
-  .qa-list-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .nav-dots,
-  #nav-dots,
-  #navDots {
-    display: none !important;
-  }
-
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 420px) {
-  html, body {
-    font-size: 16px !important;
-  }
-
-  .slide {
-    padding-right: 10px !important;
-    padding-left: 10px !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.88em !important;
-  }
-}
     </style>
 </head>
 <body>
@@ -427,7 +170,7 @@
          SLIDE 1 — TITLE: 5 Key Points from Parent Graphs
          ================================================================ -->
     <section class="slide title-slide" id="slide-0">
-        <div class="title-section-label">Unit 4 &middot; Trigonometric Functions</div>
+        <div class="title-section-label">Unit 4 · Trigonometric Functions</div>
         <h1 class="title-main">4.6b Graphs of Sine &amp;<br>Cosine (Part 2)</h1>
         <p class="title-objective">Objective: Graph sine and cosine functions using the 5 key points, amplitude, period, phase shift, and vertical translation.</p>
         <div class="identity-chips">
@@ -470,15 +213,15 @@
                         <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
                         <!-- Y-axis labels -->
                         <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−1</text>
                         <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
                         <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
                         <!-- X-axis labels -->
                         <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
-                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
-                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
-                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
-                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π/2</text>
+                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π</text>
+                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π/2</text>
+                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2π</text>
                         <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
                         <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
                         <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
@@ -501,10 +244,10 @@
                             <text x="310" y="218" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">low</text>
                             <text x="390" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
                             <text x="52" y="128" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 0)</text>
-                            <text x="130" y="55" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;/2, 1)</text>
-                            <text x="220" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;, 0)</text>
-                            <text x="310" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&#x03C0;/2, -1)</text>
-                            <text x="375" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&#x03C0;, 0)</text>
+                            <text x="130" y="55" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(π/2, 1)</text>
+                            <text x="220" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(π, 0)</text>
+                            <text x="310" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3π/2, −1)</text>
+                            <text x="375" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2π, 0)</text>
                         </g>
                     </svg>
                     <table class="ttable">
@@ -529,14 +272,14 @@
                         <polygon points="405,120 398,116 398,124" fill="#1a365d"/>
                         <polygon points="40,15 36,22 44,22" fill="#1a365d"/>
                         <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
-                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                        <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−1</text>
                         <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
                         <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
                         <text x="40" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">0</text>
-                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
-                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
-                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
-                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
+                        <text x="130" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π/2</text>
+                        <text x="220" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π</text>
+                        <text x="310" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π/2</text>
+                        <text x="390" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2π</text>
                         <line x1="130" y1="117" x2="130" y2="123" stroke="#1a365d" stroke-width="1"/>
                         <line x1="220" y1="117" x2="220" y2="123" stroke="#1a365d" stroke-width="1"/>
                         <line x1="310" y1="117" x2="310" y2="123" stroke="#1a365d" stroke-width="1"/>
@@ -556,10 +299,10 @@
                             <text x="310" y="115" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">middle</text>
                             <text x="390" y="30" font-size="9" fill="#dc2626" text-anchor="middle" font-weight="700" font-family="Source Sans 3, sans-serif">high</text>
                             <text x="52" y="50" font-size="8" fill="#1a365d" font-family="Source Sans 3, sans-serif">(0, 1)</text>
-                            <text x="130" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;/2, 0)</text>
-                            <text x="220" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(&#x03C0;, -1)</text>
-                            <text x="310" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3&#x03C0;/2, 0)</text>
-                            <text x="375" y="50" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2&#x03C0;, 1)</text>
+                            <text x="130" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(π/2, 0)</text>
+                            <text x="220" y="195" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(π, −1)</text>
+                            <text x="310" y="140" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(3π/2, 0)</text>
+                            <text x="375" y="50" font-size="8" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">(2π, 1)</text>
                         </g>
                     </svg>
                     <table class="ttable">
@@ -706,7 +449,7 @@
                                         <tr><th>\(\sin x\)</th><td>\(0\)</td><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td></tr>
                                     </table>
                                 </div>
-                                <div class="ttable-arrow">&rarr;</div>
+                                <div class="ttable-arrow">→</div>
                                 <div>
                                     <div class="ttable-label transformed-label">Transformed</div>
                                     <table class="ttable">
@@ -715,7 +458,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="table-notes"><span class="red-val">\(x\)'s &times; 2</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s &times; 3</span></div>
+                            <div class="table-notes"><span class="red-val">\(x\)'s \(\times\) 2</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s \(\times\) 3</span></div>
                         </div>
                     </div>
                 </div>
@@ -738,17 +481,17 @@
                                 <polygon points="770,120 763,116 763,124" fill="#1a365d"/>
                                 <polygon points="40,10 36,17 44,17" fill="#1a365d"/>
                                 <text x="28" y="44" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">3</text>
-                                <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-3</text>
+                                <text x="24" y="200" font-size="11" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−3</text>
                                 <line x1="37" y1="40" x2="43" y2="40" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="37" y1="200" x2="43" y2="200" stroke="#1a365d" stroke-width="1"/>
-                                <text x="126" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
-                                <text x="212" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
-                                <text x="299" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
-                                <text x="385" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">4&#x03C0;</text>
-                                <text x="471" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;</text>
-                                <text x="558" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">6&#x03C0;</text>
-                                <text x="644" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;</text>
-                                <text x="730" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">8&#x03C0;</text>
+                                <text x="126" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π</text>
+                                <text x="212" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2π</text>
+                                <text x="299" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π</text>
+                                <text x="385" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">4π</text>
+                                <text x="471" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5π</text>
+                                <text x="558" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">6π</text>
+                                <text x="644" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7π</text>
+                                <text x="730" y="135" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">8π</text>
                                 <line x1="126" y1="117" x2="126" y2="123" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="212" y1="117" x2="212" y2="123" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="299" y1="117" x2="299" y2="123" stroke="#1a365d" stroke-width="1"/>
@@ -867,7 +610,7 @@
                                         <tr><th>\(\sin x\)</th><td>\(0\)</td><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td></tr>
                                     </table>
                                 </div>
-                                <div class="ttable-arrow">&rarr;</div>
+                                <div class="ttable-arrow">→</div>
                                 <div>
                                     <div class="ttable-label transformed-label">Transformed</div>
                                     <table class="ttable">
@@ -876,7 +619,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="table-notes"><span class="red-val">\(y\)'s &times; (\(-1\)), then + 1</span> &nbsp;|&nbsp; <span class="red-val">\(x\)'s \(-\) \(\frac{\pi}{2}\)</span></div>
+                            <div class="table-notes"><span class="red-val">\(y\)'s \(\times\) (\(-1\)), then + 1</span> &nbsp;|&nbsp; <span class="red-val">\(x\)'s \(-\) \(\frac{\pi}{2}\)</span></div>
                         </div>
                     </div>
                 </div>
@@ -900,26 +643,26 @@
                                 <line x1="129" y1="20" x2="129" y2="220" stroke="#1a365d" stroke-width="1.5"/>
                                 <polygon points="690,165 683,161 683,169" fill="#1a365d"/>
                                 <polygon points="129,20 125,27 133,27" fill="#1a365d"/>
-                                <!-- Midline y=1 dashed -->
+                                <!-- Midline y = 1 dashed -->
                                 <line x1="40" y1="120" x2="680" y2="120" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
-                                <text x="685" y="123" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=1</text>
+                                <text x="685" y="123" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y = 1</text>
                                 <!-- Y-axis labels -->
                                 <text x="120" y="170" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
                                 <text x="120" y="124" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
                                 <text x="120" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">2</text>
-                                <text x="120" y="214" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
+                                <text x="120" y="214" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−1</text>
                                 <line x1="126" y1="120" x2="132" y2="120" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="126" y1="75" x2="132" y2="75" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="126" y1="210" x2="132" y2="210" stroke="#1a365d" stroke-width="1"/>
                                 <!-- X-axis labels -->
-                                <text x="50" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">-&#x03C0;/2</text>
-                                <text x="208" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;/2</text>
-                                <text x="286" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
-                                <text x="365" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
-                                <text x="444" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
-                                <text x="523" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/2</text>
-                                <text x="601" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
-                                <text x="680" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;/2</text>
+                                <text x="50" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">−π/2</text>
+                                <text x="208" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π/2</text>
+                                <text x="286" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π</text>
+                                <text x="365" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π/2</text>
+                                <text x="444" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2π</text>
+                                <text x="523" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5π/2</text>
+                                <text x="601" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π</text>
+                                <text x="680" y="180" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7π/2</text>
                                 <line x1="50" y1="162" x2="50" y2="168" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="208" y1="162" x2="208" y2="168" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="286" y1="162" x2="286" y2="168" stroke="#1a365d" stroke-width="1"/>
@@ -1030,7 +773,7 @@
                                         <tr><th>\(\cos x\)</th><td>\(1\)</td><td>\(0\)</td><td>\(-1\)</td><td>\(0\)</td><td>\(1\)</td></tr>
                                     </table>
                                 </div>
-                                <div class="ttable-arrow">&rarr;</div>
+                                <div class="ttable-arrow">→</div>
                                 <div>
                                     <div class="ttable-label transformed-label">Transformed</div>
                                     <table class="ttable">
@@ -1039,7 +782,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="table-notes"><span class="red-val">\(x\)'s &times; \(\frac{1}{2}\), then + \(\pi\)</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s &times; \(\frac{1}{2}\), then \(-\) 1</span></div>
+                            <div class="table-notes"><span class="red-val">\(x\)'s \(\times\) \(\frac{1}{2}\), then + \(\pi\)</span> &nbsp;|&nbsp; <span class="red-val">\(y\)'s \(\times\) \(\frac{1}{2}\), then \(-\) 1</span></div>
                         </div>
                     </div>
                 </div>
@@ -1063,29 +806,29 @@
                                 <line x1="60" y1="15" x2="60" y2="225" stroke="#1a365d" stroke-width="1.5"/>
                                 <polygon points="680,75 673,71 673,79" fill="#1a365d"/>
                                 <polygon points="60,15 56,22 64,22" fill="#1a365d"/>
-                                <!-- Midline y=-1 dashed -->
+                                <!-- Midline y = −1 dashed -->
                                 <line x1="40" y1="150" x2="670" y2="150" stroke="#dc2626" stroke-width="1" stroke-dasharray="6,4"/>
-                                <text x="675" y="153" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y=-1</text>
+                                <text x="675" y="153" font-size="10" fill="#dc2626" font-family="Source Sans 3, sans-serif">y = −1</text>
                                 <!-- Y labels -->
                                 <text x="50" y="30" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">1</text>
                                 <text x="50" y="79" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">0</text>
-                                <text x="50" y="117" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1/2</text>
-                                <text x="50" y="154" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-1</text>
-                                <text x="50" y="192" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">-3/2</text>
+                                <text x="50" y="117" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−1/2</text>
+                                <text x="50" y="154" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−1</text>
+                                <text x="50" y="192" font-size="10" fill="#1a365d" text-anchor="end" font-family="Source Sans 3, sans-serif">−3/2</text>
                                 <line x1="57" y1="25" x2="63" y2="25" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="57" y1="112.5" x2="63" y2="112.5" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="57" y1="150" x2="63" y2="150" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="57" y1="187.5" x2="63" y2="187.5" stroke="#1a365d" stroke-width="1"/>
                                 <!-- X labels -->
-                                <text x="60" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">&#x03C0;</text>
-                                <text x="135" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/4</text>
-                                <text x="210" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;/2</text>
-                                <text x="285" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7&#x03C0;/4</text>
-                                <text x="360" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2&#x03C0;</text>
-                                <text x="435" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">9&#x03C0;/4</text>
-                                <text x="510" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5&#x03C0;/2</text>
-                                <text x="585" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">11&#x03C0;/4</text>
-                                <text x="660" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3&#x03C0;</text>
+                                <text x="60" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">π</text>
+                                <text x="135" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5π/4</text>
+                                <text x="210" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π/2</text>
+                                <text x="285" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">7π/4</text>
+                                <text x="360" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">2π</text>
+                                <text x="435" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">9π/4</text>
+                                <text x="510" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">5π/2</text>
+                                <text x="585" y="90" font-size="9" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">11π/4</text>
+                                <text x="660" y="90" font-size="10" fill="#1a365d" text-anchor="middle" font-family="Source Sans 3, sans-serif">3π</text>
                                 <line x1="60" y1="72" x2="60" y2="78" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="135" y1="72" x2="135" y2="78" stroke="#1a365d" stroke-width="1"/>
                                 <line x1="210" y1="72" x2="210" y2="78" stroke="#1a365d" stroke-width="1"/>
@@ -1139,337 +882,125 @@
 
 </div><!-- end .slides-wrapper -->
 
-<!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
 <script>
-    /* Render all LaTeX in the document */
-    renderMathInElement(document.body, {
-        delimiters: [
-            { left: '\\[', right: '\\]', display: true  },
-            { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false
+    const presentation = SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',   slideId: 'slide-0' },
+            { label: 'Key Points', slideId: 'slide-1' },
+            { label: 'Process',    slideId: 'slide-2' },
+            { label: 'Example 1',  slideId: 'slide-3' },
+            { label: 'Example 2',  slideId: 'slide-4' },
+            { label: 'Example 3',  slideId: 'slide-5' }
+        ]
     });
 
-    /* Move each annotation beside its equation (same as 5.5) */
-    document.querySelectorAll('.step-math').forEach(stepMath => {
-        const annotation = stepMath.querySelector('.annotation');
-        if (!annotation) return;
-        const eqDiv = document.createElement('div');
-        eqDiv.className = 'step-eq';
-        const before = [];
-        for (const node of stepMath.childNodes) {
-            if (node === annotation) break;
-            before.push(node);
-        }
-        before.forEach(n => eqDiv.appendChild(n));
-        stepMath.insertBefore(eqDiv, annotation);
-        stepMath.classList.add('has-annotation');
-    });
-
-    /* ============================================================
-       SVG CURVE GENERATION
-       ============================================================ */
-    function generateSinePath(xStart, xEnd, yFunc, xToPx, yToPx, numPoints) {
+    function generateTrigPath(xStart, xEnd, yFunc, xToPx, yToPx, numPoints) {
         let d = '';
         for (let i = 0; i <= numPoints; i++) {
             const x = xStart + (xEnd - xStart) * i / numPoints;
             const y = yFunc(x);
-            const px = xToPx(x);
-            const py = yToPx(y);
-            if (i === 0) d += `M ${px} ${py}`;
-            else d += ` L ${px} ${py}`;
+            const px = Number(xToPx(x).toFixed(2));
+            const py = Number(yToPx(y).toFixed(2));
+            d += (i === 0 ? 'M ' : ' L ') + px + ' ' + py;
         }
         return d;
     }
 
-    /* ============================================================
-       PARENT GRAPH ANIMATIONS (Slide 1)
-       ============================================================ */
-    function animateParentGraphs() {
-        const sinXStart = 0, sinXEnd = 2 * Math.PI;
-        const sinXToPx = (x) => 40 + (x / (2 * Math.PI)) * 350;
-        const sinYToPx = (y) => 120 - y * 80;
-        const sinPath = generateSinePath(sinXStart, sinXEnd, Math.sin, sinXToPx, sinYToPx, 200);
-        const sinCurve = document.getElementById('sin-curve');
-        sinCurve.setAttribute('d', sinPath);
-
-        const sinLen = sinCurve.getTotalLength();
-        sinCurve.style.strokeDasharray = sinLen;
-        sinCurve.style.strokeDashoffset = sinLen;
-        sinCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-        setTimeout(() => { sinCurve.style.strokeDashoffset = '0'; }, 100);
-
-        setTimeout(() => {
-            document.getElementById('sin-points').style.transition = 'opacity 0.5s ease';
-            document.getElementById('sin-points').style.opacity = '1';
-        }, 1700);
-
-        setTimeout(() => {
-            document.getElementById('sin-labels').style.transition = 'opacity 0.8s ease';
-            document.getElementById('sin-labels').style.opacity = '1';
-        }, 2200);
-
-        const cosPath = generateSinePath(sinXStart, sinXEnd, Math.cos, sinXToPx, sinYToPx, 200);
-        const cosCurve = document.getElementById('cos-curve');
-        cosCurve.setAttribute('d', cosPath);
-
-        const cosLen = cosCurve.getTotalLength();
-        cosCurve.style.strokeDasharray = cosLen;
-        cosCurve.style.strokeDashoffset = cosLen;
-        cosCurve.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-        setTimeout(() => { cosCurve.style.strokeDashoffset = '0'; }, 100);
-
-        setTimeout(() => {
-            document.getElementById('cos-points').style.transition = 'opacity 0.5s ease';
-            document.getElementById('cos-points').style.opacity = '1';
-        }, 1700);
-
-        setTimeout(() => {
-            document.getElementById('cos-labels').style.transition = 'opacity 0.8s ease';
-            document.getElementById('cos-labels').style.opacity = '1';
-        }, 2200);
+    function setPath(id, path) {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('d', path);
     }
 
-    /* ============================================================
-       EXAMPLE 1 GRAPH ANIMATION
-       ============================================================ */
-    function animateEx1Graph() {
-        const xToPx = (x) => 40 + (x / (8 * Math.PI)) * 690;
-        const yToPx = (y) => 120 - (y / 3) * 80;
-        const yFunc = (x) => 3 * Math.sin(x / 2);
-
-        const path = generateSinePath(0, 8 * Math.PI, yFunc, xToPx, yToPx, 400);
-        const curve = document.getElementById('ex1-curve');
-        curve.setAttribute('d', path);
-
-        const len = curve.getTotalLength();
-        curve.style.strokeDasharray = len;
-        curve.style.strokeDashoffset = len;
-        curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
-        setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
-
-        setTimeout(() => {
-            document.getElementById('ex1-points').style.transition = 'opacity 0.5s ease';
-            document.getElementById('ex1-points').style.opacity = '1';
-        }, 2200);
-
-        setTimeout(() => {
-            document.getElementById('ex1-annotations').style.transition = 'opacity 0.6s ease';
-            document.getElementById('ex1-annotations').style.opacity = '1';
-        }, 2700);
+    function setOpacity(id, value) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.transition = 'opacity 0.45s ease';
+        el.style.opacity = value;
     }
 
-    /* ============================================================
-       EXAMPLE 2 GRAPH ANIMATION
-       ============================================================ */
-    function animateEx2Graph() {
-        const xToPx = (x) => 50 + ((x + Math.PI / 2) / (4 * Math.PI)) * 630;
-        const yToPxCorrected = (y) => 210 - (y + 1) * 45;
-        const yFunc = (x) => -Math.sin(x + Math.PI / 2) + 1;
-
-        const path = generateSinePath(-Math.PI / 2, 7 * Math.PI / 2, yFunc, xToPx, yToPxCorrected, 400);
-        const curve = document.getElementById('ex2-curve');
-        curve.setAttribute('d', path);
-
-        const len = curve.getTotalLength();
-        curve.style.strokeDasharray = len;
-        curve.style.strokeDashoffset = len;
-        curve.style.transition = 'stroke-dashoffset 2s ease-in-out';
-        setTimeout(() => { curve.style.strokeDashoffset = '0'; }, 100);
-
-        setTimeout(() => {
-            document.getElementById('ex2-points').style.transition = 'opacity 0.5s ease';
-            document.getElementById('ex2-points').style.opacity = '1';
-        }, 2200);
+    function animateCurve(id, duration = 1600) {
+        const curve = document.getElementById(id);
+        if (!curve || !curve.getTotalLength) return;
+        const length = curve.getTotalLength();
+        curve.style.strokeDasharray = length;
+        curve.style.strokeDashoffset = length;
+        curve.getBoundingClientRect();
+        curve.style.transition = `stroke-dashoffset ${duration}ms ease-in-out`;
+        curve.style.strokeDashoffset = '0';
     }
 
-    /* ============================================================
-       EXAMPLE 3 GRAPH ANIMATION
-       ============================================================ */
-    function animateEx3Graph() {
-        const xToPx = (x) => 60 + ((x - Math.PI) / (2 * Math.PI)) * 600;
-        const yToPx = (y) => 75 - y * 75;
-        const yFunc = (x) => 0.5 * Math.cos(2 * (x - Math.PI)) - 1;
+    function drawPaths() {
+        const baseXToPx = x => 40 + (x / (2 * Math.PI)) * 350;
+        const baseYToPx = y => 120 - y * 80;
+        setPath('sin-curve', generateTrigPath(0, 2 * Math.PI, Math.sin, baseXToPx, baseYToPx, 200));
+        setPath('cos-curve', generateTrigPath(0, 2 * Math.PI, Math.cos, baseXToPx, baseYToPx, 200));
 
-        /* Period 1 (green) */
-        const path1 = generateSinePath(Math.PI, 2 * Math.PI, yFunc, xToPx, yToPx, 200);
-        const curve1 = document.getElementById('ex3-curve1');
-        curve1.setAttribute('d', path1);
+        const ex1XToPx = x => 40 + (x / (8 * Math.PI)) * 690;
+        const ex1YToPx = y => 120 - (y / 3) * 80;
+        setPath('ex1-curve', generateTrigPath(0, 8 * Math.PI, x => 3 * Math.sin(x / 2), ex1XToPx, ex1YToPx, 400));
 
-        const len1 = curve1.getTotalLength();
-        curve1.style.strokeDasharray = len1;
-        curve1.style.strokeDashoffset = len1;
-        curve1.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-        setTimeout(() => { curve1.style.strokeDashoffset = '0'; }, 100);
+        const ex2XToPx = x => 50 + ((x + Math.PI / 2) / (4 * Math.PI)) * 630;
+        const ex2YToPx = y => 210 - (y + 1) * 45;
+        setPath('ex2-curve', generateTrigPath(-Math.PI / 2, 7 * Math.PI / 2, x => -Math.sin(x + Math.PI / 2) + 1, ex2XToPx, ex2YToPx, 400));
 
-        /* Period 2 (red) */
-        const curve2 = document.getElementById('ex3-curve2');
-        setTimeout(() => {
-            const path2 = generateSinePath(2 * Math.PI, 3 * Math.PI, yFunc, xToPx, yToPx, 200);
-            curve2.setAttribute('d', path2);
-            const len2 = curve2.getTotalLength();
-            curve2.style.strokeDasharray = len2;
-            curve2.style.strokeDashoffset = len2;
-            curve2.getBoundingClientRect();
-            curve2.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
-            curve2.style.strokeDashoffset = '0';
-        }, 1700);
-
-        /* Points */
-        setTimeout(() => {
-            document.getElementById('ex3-points').style.transition = 'opacity 0.5s ease';
-            document.getElementById('ex3-points').style.opacity = '1';
-        }, 3200);
-
-        /* Legend */
-        setTimeout(() => {
-            document.getElementById('ex3-legend').style.transition = 'opacity 0.5s ease';
-            document.getElementById('ex3-legend').style.opacity = '1';
-        }, 3500);
+        const ex3XToPx = x => 60 + ((x - Math.PI) / (2 * Math.PI)) * 600;
+        const ex3YToPx = y => 75 - y * 75;
+        const ex3Func = x => 0.5 * Math.cos(2 * (x - Math.PI)) - 1;
+        setPath('ex3-curve1', generateTrigPath(Math.PI, 2 * Math.PI, ex3Func, ex3XToPx, ex3YToPx, 200));
+        setPath('ex3-curve2', generateTrigPath(2 * Math.PI, 3 * Math.PI, ex3Func, ex3XToPx, ex3YToPx, 200));
     }
 
-    /* ============================================================
-       PRESENTATION CONTROLLER (matches 5.5)
-       ============================================================ */
-    class SlidePresentation {
-        constructor() {
-            this.slides      = Array.from(document.querySelectorAll('.slide'));
-            this.current     = 0;
-            this.total       = this.slides.length;
-            this.progressBar = document.getElementById('progressBar');
-            this.navDotsEl   = document.getElementById('navDots');
-            this.clickHint   = document.getElementById('clickHint');
-            this.animated    = new Set();
-            this._buildNav();
-            this._activate(0);
-            this._bindEvents();
-        }
-
-        _buildNav() {
-            this.slides.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = 'nav-dot';
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.addEventListener('click', e => {
-                    e.stopPropagation(); this._goTo(i);
-                });
-                this.navDotsEl.appendChild(dot);
-            });
-            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
-        }
-
-        _sync() {
-            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
-            this.progressBar.style.width =
-                ((this.current + 1) / this.total * 100) + '%';
-            const slide = this.slides[this.current];
-            const max   = parseInt(slide.dataset.steps || 0);
-            const cur   = parseInt(slide.dataset.currentStep ?? -1);
-            this.clickHint.textContent =
-                cur < max - 1 ? 'click to advance'
-                : this.current < this.total - 1 ? 'click for next slide' : '';
-        }
-
-        _activate(i) {
-            this.slides[i].classList.add('active');
-            this._sync();
-            this._triggerSlideAnimation(i);
-        }
-
-        _goTo(i) {
-            if (i === this.current) return;
-            const out = this.slides[this.current];
-            out.classList.add('exit-left');
-            out.classList.remove('active');
-            setTimeout(() => out.classList.remove('exit-left'), 500);
-            this.current = i;
-            this.slides[i].classList.add('active');
-            this._sync();
-            this._triggerSlideAnimation(i);
-        }
-
-        _triggerSlideAnimation(i) {
-            if (this.animated.has(i)) return;
-            this.animated.add(i);
-            /* Slide 1 (parent graphs) animates on enter */
-            if (i === 1) {
-                setTimeout(() => animateParentGraphs(), 300);
-            }
-        }
-
-        _advanceStep(slide) {
-            const max = parseInt(slide.dataset.steps || 0);
-            let   cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < max - 1) {
-                cur++;
-                slide.dataset.currentStep = cur;
-                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
-                if (el) {
-                    el.classList.add('visible');
-                    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
-                this._sync();
-                /* Trigger graph animations on the graph step */
-                if (slide.id === 'slide-3' && cur === 4) {
-                    setTimeout(() => animateEx1Graph(), 200);
-                }
-                if (slide.id === 'slide-4' && cur === 5) {
-                    setTimeout(() => animateEx2Graph(), 200);
-                }
-                if (slide.id === 'slide-5' && cur === 5) {
-                    setTimeout(() => animateEx3Graph(), 200);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        _retreatStep(slide) {
-            let cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < 0) return false;
-            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
-            slide.dataset.currentStep = cur - 1;
-            this._sync();
-            return true;
-        }
-
-        _next() {
-            if (!this._advanceStep(this.slides[this.current])
-                && this.current < this.total - 1)
-                this._goTo(this.current + 1);
-        }
-
-        _prev() {
-            if (!this._retreatStep(this.slides[this.current])
-                && this.current > 0)
-                this._goTo(this.current - 1);
-        }
-
-        _bindEvents() {
-            document.addEventListener('keydown', e => {
-                if (['ArrowRight','ArrowDown',' '].includes(e.key)) {
-                    e.preventDefault(); this._next();
-                } else if (['ArrowLeft','ArrowUp'].includes(e.key)) {
-                    e.preventDefault(); this._prev();
-                }
-            });
-            document.addEventListener('click', e => {
-                if (!e.target.closest('.nav-dot')) this._next();
-            });
-            let tx = 0;
-            document.addEventListener('touchstart', e => {
-                tx = e.touches[0].clientX;
-            }, { passive: true });
-            document.addEventListener('touchend', e => {
-                const dx = e.changedTouches[0].clientX - tx;
-                if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev();
-            }, { passive: true });
-        }
+    const ran = new Set();
+    function runOnce(key, fn) {
+        if (ran.has(key)) return;
+        ran.add(key);
+        fn();
     }
 
-    new SlidePresentation();
+    function whenClassAppears(element, className, callback) {
+        if (!element) return;
+        if (element.classList.contains(className)) callback();
+        const observer = new MutationObserver(() => {
+            if (element.classList.contains(className)) callback();
+        });
+        observer.observe(element, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    drawPaths();
+
+    whenClassAppears(document.getElementById('slide-1'), 'active', () => runOnce('parents', () => {
+        animateCurve('sin-curve');
+        animateCurve('cos-curve');
+        setTimeout(() => {
+            setOpacity('sin-points', '1');
+            setOpacity('cos-points', '1');
+        }, 1500);
+        setTimeout(() => {
+            setOpacity('sin-labels', '1');
+            setOpacity('cos-labels', '1');
+        }, 1950);
+    }));
+
+    whenClassAppears(document.getElementById('slide-3-step-4'), 'visible', () => runOnce('ex1', () => {
+        animateCurve('ex1-curve', 1900);
+        setTimeout(() => setOpacity('ex1-points', '1'), 2000);
+        setTimeout(() => setOpacity('ex1-annotations', '1'), 2400);
+    }));
+
+    whenClassAppears(document.getElementById('slide-4-step-5'), 'visible', () => runOnce('ex2', () => {
+        animateCurve('ex2-curve', 1900);
+        setTimeout(() => setOpacity('ex2-points', '1'), 2000);
+    }));
+
+    whenClassAppears(document.getElementById('slide-5-step-5'), 'visible', () => runOnce('ex3', () => {
+        animateCurve('ex3-curve1', 1400);
+        setTimeout(() => animateCurve('ex3-curve2', 1400), 1450);
+        setTimeout(() => setOpacity('ex3-points', '1'), 2950);
+        setTimeout(() => setOpacity('ex3-legend', '1'), 3300);
+    }));
 </script>
 </body>
 </html>
