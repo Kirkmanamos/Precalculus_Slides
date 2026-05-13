@@ -7,6 +7,26 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ## 2026-05-13
 
+### Rebuilt HTML Deck - 4.7 Modeling with Sine and Cosine
+
+Converted `4.7-modeling-sine-cosine.html` to the shared-assets HoffMath
+Classroom standard while preserving the existing 11-slide tide-modeling lesson.
+The deck now links `assets/slides-core.css` and `assets/slides-core.js` for
+shell layout, navigation, KaTeX rendering, and teacher-controlled step reveals.
+
+- Kept the real-world applications opener, tide data table, scatterplot, cosine
+  model derivation, docking-time graph, clock-time conversion, and sine-model
+  conversion sequence intact.
+- Moved the generated cosine-curve drawing and SVG overlays onto small
+  deck-local observers that respond to `SlidesCore` slide/step classes.
+- Replaced legacy controller and render code with `SlidesCore.init(...)`;
+  inline CSS is now limited to deck-specific gallery, graph, table, conversion,
+  and closing-slide components.
+- Updated `CLAUDE.md` so 4.7 is tracked as rebuilt to the 5.5 /
+  shared-assets standard; the remaining legacy rebuild target is 4.8.
+
+---
+
 ### Rebuilt HTML Deck - 4.6b Graphs of Sine & Cosine Part 2
 
 Converted `4.6b-graphs-sine-cosine-part2.html` to the shared-assets
@@ -24,7 +44,7 @@ deck-specific graph/table presentation.
   KaTeX stays in HTML text, while SVG labels use plain text because auto-render
   does not enter SVG.
 - Updated `CLAUDE.md` so 4.6 and 4.6b are tracked as rebuilt to the 5.5 /
-  shared-assets standard; next legacy rebuild targets are 4.7 and 4.8.
+  shared-assets standard.
 
 ---
 
