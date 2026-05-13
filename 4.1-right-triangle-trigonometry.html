@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.1 — Right Triangle Trigonometry</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific: SVG colors for right-triangle diagrams.
+           Triangle side palette matches CONVENTIONS.md
+           (opp/y=pink, adj/x=cyan, hyp/r=green). */
+        .tri-line   { stroke: #475569; stroke-width: 2.6; fill: none; }
+        .tri-opp    { stroke: #ec4899; stroke-width: 3; fill: none; }
+        .tri-adj    { stroke: #0891b2; stroke-width: 3; fill: none; }
+        .tri-hyp    { stroke: #16a34a; stroke-width: 3; fill: none; }
+        .tri-fill   { fill: #f0fdfa; stroke: #0891b2; stroke-width: 2; }
+        .tri-dash   { stroke: #94a3b8; stroke-width: 1.8; stroke-dasharray: 5 4; fill: none; }
+        .tri-angle  { stroke: #d97706; stroke-width: 2; fill: none; }
+        .tri-rt     { stroke: #475569; stroke-width: 2; fill: none; }
+        .tri-label  { font: 700 17px 'Source Sans 3', sans-serif; fill: #0f172a; }
+        .tri-side   { font: 700 16px 'Source Sans 3', sans-serif; fill: #0f172a; }
+        .tri-side-opp { fill: #be185d; }
+        .tri-side-adj { fill: #0e7490; }
+        .tri-side-hyp { fill: #15803d; }
+        .tri-theta  { font: italic 600 18px 'Source Sans 3', sans-serif; fill: #d97706; }
+        .tri-callout { font: 600 13px 'Source Sans 3', sans-serif; fill: #d97706; }
+
+        /* Application illustrations (chair, smokestack) — flat geometric shapes */
+        .scene-floor { stroke: #475569; stroke-width: 2; fill: none; }
+        .scene-wall  { fill: #e2e8f0; stroke: #475569; stroke-width: 2; }
+        .scene-stack { fill: #92400e; stroke: #451a03; stroke-width: 1.5; }
+        .scene-bldg  { fill: #7c2d12; stroke: #451a03; stroke-width: 1.5; }
+        .scene-sight { stroke: #d97706; stroke-width: 2; stroke-dasharray: 6 4; fill: none; }
+        .scene-h     { stroke: #475569; stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; }
+        .scene-tag   { font: 600 14px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .scene-tag-em{ font: 700 15px 'Source Sans 3', sans-serif; fill: #d97706; }
+
+        /* Two-column layout for examples with diagram + work side-by-side */
+        .ex-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        @media (max-width: 900px) {
+            .ex-grid { grid-template-columns: 1fr; }
+        }
+        .ex-grid .diagram-shell { padding: 0.6em; }
+
+        /* Compact six-ratio grid for example answers */
+        .six-ratio {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.35rem 1.2rem;
+            font-size: 0.84em;
+            padding: 0.4em 0.6em;
+        }
+        .six-ratio > div { line-height: 1.3; }
+
+        /* SOHCAHTOA mnemonic chips */
+        .sohcahtoa-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-top: 0.4rem;
+        }
+        .soh-card {
+            border-radius: 10px;
+            padding: 0.55em 0.8em;
+            text-align: center;
+        }
+        .soh-card.pink { background: #fdf2f8; border-left: 4px solid #ec4899; }
+        .soh-card.cyan { background: #ecfeff; border-left: 4px solid #0891b2; }
+        .soh-card.amber{ background: #fffbeb; border-left: 4px solid #d97706; }
+        .soh-card .soh-mnem {
+            font-size: 0.72em;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+        .soh-card .soh-eq { font-size: 0.92em; }
+
+        /* DMS conversion display */
+        .dms-strip {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.4rem;
+        }
+        .dms-cell {
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 0.45em 0.7em;
+            text-align: center;
+        }
+        .dms-cell-label {
+            font-size: 0.56em;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .dms-cell-eq { font-size: 0.85em; }
+
+        /* Identity bundle — 4 boxes for reciprocal / quotient / Pythagorean / cofunction */
+        .id-bundle {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 0.65rem;
+        }
+        .id-card {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid var(--blue-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.75em;
+        }
+        .id-card.recip { grid-row: 1 / span 2; border-left-color: var(--blue-accent); background: var(--blue-light); }
+        .id-card.quot  { border-left-color: var(--teal-accent); background: var(--teal-light); }
+        .id-card.pyth  { border-left-color: var(--orange-accent); background: var(--orange-light); }
+        .id-card.cof   { grid-column: 3; grid-row: 1 / span 2; border-left-color: var(--green-accent); background: var(--green-light); }
+        .id-card .id-title {
+            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.35rem;
+        }
+        .id-card .id-eq { font-size: 0.78em; line-height: 1.85; text-align: center; }
+        @media (max-width: 900px) {
+            .id-bundle { grid-template-columns: 1fr; }
+            .id-card.recip, .id-card.cof { grid-row: auto; grid-column: auto; }
+        }
+
+        /* Two-method side-by-side for example 4 */
+        .method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+        }
+        .method-box {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid var(--teal-accent);
+            border-radius: 10px;
+            padding: 0.5em 0.8em;
+        }
+        .method-box.alt { border-left-color: var(--orange-accent); }
+        .method-box .method-label {
+            font-size: 0.56em; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.25rem;
+        }
+        .method-box .method-body { font-size: 0.82em; line-height: 1.7; }
+        @media (max-width: 900px) {
+            .method-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper">
+
+<!-- ============================================================ -->
+<!-- SLIDE 0 — Title                                                -->
+<!-- ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 4 · Intro to Trigonometry</div>
+    <div class="title-main">4.1 Right Triangle Trigonometry</div>
+    <div class="title-objective">Objective: Evaluate trigonometric functions of acute angles, use fundamental identities, and apply right-triangle trig to model real-life problems.</div>
+    <div class="identity-chips">
+        <span class="chip">SOHCAHTOA</span>
+        <span class="chip">six ratios</span>
+        <span class="chip">reciprocal &amp; cofunction identities</span>
+        <span class="chip">degrees / minutes / seconds</span>
+        <span class="chip">elevation &amp; depression</span>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — SOHCAHTOA overview                                   -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">SOHCAHTOA — The Three Primary Ratios</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">For an acute angle \(\theta\) in a right triangle, the three primary trigonometric ratios compare two side lengths each.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Reference Right Triangle</div>
+                    <svg class="diagram" viewBox="0 0 340 240" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Vertices: A(40,200) at θ, B(300,200) right angle, C(300,60) top -->
+                        <polygon points="40,200 300,200 300,60" fill="#ecfeff" stroke="none"/>
+                        <line class="tri-adj" x1="40"  y1="200" x2="300" y2="200"/>
+                        <line class="tri-opp" x1="300" y1="200" x2="300" y2="60"/>
+                        <line class="tri-hyp" x1="40"  y1="200" x2="300" y2="60"/>
+                        <!-- Right-angle square at B(300,200): along BA (left) and BC (up) -->
+                        <polyline class="tri-rt" points="286,200 286,186 300,186"/>
+                        <!-- θ arc at A(40,200): from x-axis to hypotenuse direction -->
+                        <path class="tri-angle" d="M 78 200 A 38 38 0 0 0 74.4 179.6"/>
+                        <text class="tri-theta" x="84" y="192">θ</text>
+                        <!-- Vertex dots -->
+                        <circle cx="40"  cy="200" r="4" fill="#1e293b"/>
+                        <circle cx="300" cy="200" r="4" fill="#1e293b"/>
+                        <circle cx="300" cy="60"  r="4" fill="#1e293b"/>
+                        <!-- Side labels positioned outside each side -->
+                        <text class="tri-side tri-side-adj" x="170" y="224" text-anchor="middle">adjacent</text>
+                        <text class="tri-side tri-side-opp" x="312" y="134" text-anchor="start">opposite</text>
+                        <text class="tri-side tri-side-hyp" x="150" y="118" text-anchor="middle" transform="rotate(-28.3 150 118)">hypotenuse</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="sohcahtoa-row" style="grid-template-columns: 1fr;">
+                    <div class="soh-card pink">
+                        <div class="soh-mnem">S O H</div>
+                        <div class="soh-eq">\(\sin\theta = \dfrac{\text{opposite}}{\text{hypotenuse}}\)</div>
+                    </div>
+                    <div class="soh-card cyan">
+                        <div class="soh-mnem">C A H</div>
+                        <div class="soh-eq">\(\cos\theta = \dfrac{\text{adjacent}}{\text{hypotenuse}}\)</div>
+                    </div>
+                    <div class="soh-card amber">
+                        <div class="soh-mnem">T O A</div>
+                        <div class="soh-eq">\(\tan\theta = \dfrac{\text{opposite}}{\text{adjacent}}\)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box teal">
+            <div class="note-title">Reading the Triangle</div>
+            <div class="note-copy">"Opposite" and "adjacent" are always relative to the angle you're working with. The hypotenuse is always the side across from the right angle.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Reference: All Six Trig Functions                    -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">The Six Trigonometric Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Three primary ratios — and three reciprocals. The reciprocal pairs are (sin, csc), (cos, sec), and (tan, cot).</div>
+
+        <div class="formula-grid">
+            <div class="formula-row">
+                <div class="fn-label">sin / csc</div>
+                <div class="fn-eq-stack">
+                    <div>\[\sin\theta = \dfrac{\text{opp}}{\text{hyp}} \qquad \csc\theta = \dfrac{\text{hyp}}{\text{opp}} = \dfrac{1}{\sin\theta}\]</div>
+                </div>
+            </div>
+            <div class="formula-row teal">
+                <div class="fn-label">cos / sec</div>
+                <div class="fn-eq-stack">
+                    <div>\[\cos\theta = \dfrac{\text{adj}}{\text{hyp}} \qquad \sec\theta = \dfrac{\text{hyp}}{\text{adj}} = \dfrac{1}{\cos\theta}\]</div>
+                </div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">tan / cot</div>
+                <div class="fn-eq-stack">
+                    <div>\[\tan\theta = \dfrac{\text{opp}}{\text{adj}} \qquad \cot\theta = \dfrac{\text{adj}}{\text{opp}} = \dfrac{1}{\tan\theta}\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box navy">
+            <div class="note-title">Reciprocal Pairs</div>
+            <div class="note-copy">Sine ↔ Cosecant, Cosine ↔ Secant, Tangent ↔ Cotangent. Flipping the ratio (\(\text{opp}/\text{hyp} \to \text{hyp}/\text{opp}\)) gives the reciprocal function. The <em>"co"</em> in cosine, cotangent, and cosecant comes from <strong>complementary</strong> — those names mark <em>cofunction</em> pairs, which we'll meet later.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — Example 1: Six trig functions, 21-28-35 triangle     -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Find the Six Trig Functions for Angle \(G\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">In right triangle \(\triangle ABG\), the right angle is at \(B\), with \(AB = 21\), \(BG = 28\), and \(AG = 35\). Find the six trig functions of angle \(G\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Locate the Sides Relative to \(G\)</div>
+                    <div class="ex-grid">
+                        <div class="diagram-shell">
+                            <svg class="diagram" viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg">
+                                <!-- True 3-4-5 right triangle, right angle at B.
+                                     A(20,220), G(320,220), B(128,76). Sides: AB=180, BG=240, AG=300. -->
+                                <polygon points="20,220 128,76 320,220" fill="#ecfeff" stroke="none"/>
+                                <line class="tri-opp" x1="20"  y1="220" x2="128" y2="76"/>
+                                <line class="tri-adj" x1="128" y1="76"  x2="320" y2="220"/>
+                                <line class="tri-hyp" x1="20"  y1="220" x2="320" y2="220"/>
+                                <!-- Right-angle square at B: along BA dir (-0.6,0.8) and BG dir (0.8,0.6) -->
+                                <polyline class="tri-rt" points="119.6,87.2 130.8,95.6 139.2,84.4"/>
+                                <!-- Vertex dots -->
+                                <circle cx="20"  cy="220" r="4" fill="#1e293b"/>
+                                <circle cx="128" cy="76"  r="4" fill="#1e293b"/>
+                                <circle cx="320" cy="220" r="4" fill="#1e293b"/>
+                                <!-- Vertex labels -->
+                                <text class="tri-label" x="10"  y="240" text-anchor="end">A</text>
+                                <text class="tri-label" x="128" y="66"  text-anchor="middle">B</text>
+                                <text class="tri-label" x="330" y="240" text-anchor="start">G</text>
+                                <!-- Side labels (each pushed perpendicular outward from triangle) -->
+                                <text class="tri-side tri-side-opp" x="52"  y="142" text-anchor="end">21</text>
+                                <text class="tri-side tri-side-adj" x="240" y="128" text-anchor="start">28</text>
+                                <text class="tri-side tri-side-hyp" x="170" y="240" text-anchor="middle">35</text>
+                            </svg>
+                        </div>
+                        <div style="font-size: 0.82em; line-height: 1.8; padding: 0.2em 0.5em;">
+                            <div>From angle \(G\):</div>
+                            <ul style="margin-top: 0.2rem; padding-left: 1.2rem;">
+                                <li>opposite \(= AB = 21\)</li>
+                                <li>adjacent \(= BG = 28\)</li>
+                                <li>hypotenuse \(= AG = 35\)</li>
+                            </ul>
+                            <div style="margin-top: 0.4em; color: var(--text-muted); font-size: 0.92em;">Check: \(21^2 + 28^2 = 441 + 784 = 1225 = 35^2\) ✓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Primary Ratios — Reduce</div>
+                    <div class="step-math">\[\sin G = \dfrac{21}{35} = \dfrac{3}{5} \qquad \cos G = \dfrac{28}{35} = \dfrac{4}{5} \qquad \tan G = \dfrac{21}{28} = \dfrac{3}{4}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box orange">
+                    <div class="step-label">Reciprocal Ratios — Flip</div>
+                    <div class="step-math">\[\csc G = \dfrac{5}{3} \qquad \sec G = \dfrac{5}{4} \qquad \cot G = \dfrac{4}{3}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-3-step-3">
+                <div class="step-box green">
+                    <div class="step-label">All Six Trig Functions</div>
+                    <div class="six-ratio">
+                        <div>\(\sin G = \dfrac{3}{5}\)</div><div>\(\csc G = \dfrac{5}{3}\)</div>
+                        <div>\(\cos G = \dfrac{4}{5}\)</div><div>\(\sec G = \dfrac{5}{4}\)</div>
+                        <div>\(\tan G = \dfrac{3}{4}\)</div><div>\(\cot G = \dfrac{4}{3}\)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — Example 2: cos θ = 7/8, find others                  -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Given One Ratio, Find the Rest</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Given \(\cos\theta = \dfrac{7}{8}\), find the other five trig ratios of \(\theta\) (assume \(\theta\) is acute).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Set Up: Cos = adj / hyp</div>
+                    <div class="step-math">\[\cos\theta = \dfrac{\text{adj}}{\text{hyp}} = \dfrac{7}{8} \quad\Longrightarrow\quad \text{adj} = 7,\;\; \text{hyp} = 8\]
+                    <div class="annotation">Pick a right triangle whose adjacent side is 7 and hypotenuse is 8. Then find the missing leg.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Find the Opposite Side (Pythagorean Theorem)</div>
+                    <div class="ex-grid">
+                        <div class="diagram-shell">
+                            <svg class="diagram" viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg">
+                                <!-- True proportions: adj=7, opp=√15, hyp=8.
+                                     Scale: adj=280 → opp = 280·√15/7 ≈ 154.9.
+                                     Vertices: θ at A(20,190), right angle at B(300,190), top C(300,35.1) -->
+                                <polygon points="20,190 300,190 300,35" fill="#ecfeff" stroke="none"/>
+                                <line class="tri-adj" x1="20"  y1="190" x2="300" y2="190"/>
+                                <line class="tri-opp" x1="300" y1="190" x2="300" y2="35"/>
+                                <line class="tri-hyp" x1="20"  y1="190" x2="300" y2="35"/>
+                                <!-- Right-angle square at B(300,190) -->
+                                <polyline class="tri-rt" points="286,190 286,176 300,176"/>
+                                <!-- θ arc at A: from x-axis up to hypotenuse (angle ≈ 28.96°) -->
+                                <path class="tri-angle" d="M 58 190 A 38 38 0 0 0 53.2 171.6"/>
+                                <text class="tri-theta" x="64" y="183">θ</text>
+                                <!-- Vertex dots -->
+                                <circle cx="20"  cy="190" r="4" fill="#1e293b"/>
+                                <circle cx="300" cy="190" r="4" fill="#1e293b"/>
+                                <circle cx="300" cy="35"  r="4" fill="#1e293b"/>
+                                <!-- Side labels -->
+                                <text class="tri-side tri-side-adj" x="160" y="210" text-anchor="middle">7</text>
+                                <text class="tri-side tri-side-opp" x="314" y="118" text-anchor="start">
+                                    √<tspan text-decoration="overline">15</tspan>
+                                </text>
+                                <text class="tri-side tri-side-hyp" x="150" y="100" text-anchor="middle" transform="rotate(-28.96 150 100)">8</text>
+                            </svg>
+                        </div>
+                        <div style="font-size: 0.82em; line-height: 1.9; padding: 0.4em 0.6em;">
+                            <div>\(\text{opp}^2 + 7^2 = 8^2\)</div>
+                            <div>\(\text{opp}^2 = 64 - 49 = 15\)</div>
+                            <div>\(\text{opp} = \sqrt{15}\)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box orange">
+                    <div class="step-label">Build the Remaining Five Ratios</div>
+                    <div class="step-math">\[\sin\theta = \dfrac{\sqrt{15}}{8} \qquad \tan\theta = \dfrac{\sqrt{15}}{7}\]</div>
+                    <div class="step-math">\[\csc\theta = \dfrac{8}{\sqrt{15}} = \dfrac{8\sqrt{15}}{15} \qquad \sec\theta = \dfrac{8}{7} \qquad \cot\theta = \dfrac{7}{\sqrt{15}} = \dfrac{7\sqrt{15}}{15}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Final Answer (Rationalized)</div>
+                    <div class="six-ratio">
+                        <div>\(\sin\theta = \dfrac{\sqrt{15}}{8}\)</div><div>\(\csc\theta = \dfrac{8\sqrt{15}}{15}\)</div>
+                        <div>\(\cos\theta = \dfrac{7}{8}\)</div><div>\(\sec\theta = \dfrac{8}{7}\)</div>
+                        <div>\(\tan\theta = \dfrac{\sqrt{15}}{7}\)</div><div>\(\cot\theta = \dfrac{7\sqrt{15}}{15}\)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Concept: 30-60-90 from an equilateral triangle       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-5">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Building 30-60-90 from an Equilateral Triangle</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">An equilateral triangle, split down the middle by its altitude, produces a 30-60-90 right triangle with exact side ratios \(1 : \sqrt{3} : 2\).</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Equilateral Triangle of Side 2, Bisected</div>
+                    <svg class="diagram" viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Equilateral side 2 → in SVG, side length 240 → altitude = 240·(√3/2) ≈ 207.8.
+                             Apex A(190,22), base D(70,230)–C(190,230)–B(310,230). -->
+                        <!-- Subtle fill across the whole equilateral -->
+                        <polygon points="190,22 310,230 70,230" fill="#fffbeb" stroke="none"/>
+                        <!-- Highlight the 30-60-90 half (ACB) with a tinted overlay -->
+                        <polygon points="190,22 310,230 190,230" fill="#ecfeff" stroke="none"/>
+                        <!-- Dashed mirror half (ACD) -->
+                        <line class="tri-dash" x1="190" y1="22"  x2="70"  y2="230"/>
+                        <line class="tri-dash" x1="70"  y1="230" x2="190" y2="230"/>
+                        <!-- Solid right-half triangle ACB -->
+                        <line class="tri-opp" x1="190" y1="22"  x2="190" y2="230"/>
+                        <line class="tri-adj" x1="190" y1="230" x2="310" y2="230"/>
+                        <line class="tri-hyp" x1="190" y1="22"  x2="310" y2="230"/>
+                        <!-- Right-angle square at C(190,230): up and right -->
+                        <polyline class="tri-rt" points="190,216 204,216 204,230"/>
+                        <!-- 30° angle at A: from straight down (BC direction is straight down, but we measure from AC going down to AB) -->
+                        <path class="tri-angle" d="M 190 60 A 38 38 0 0 0 209 55"/>
+                        <text class="tri-theta" x="195" y="78">30°</text>
+                        <!-- 60° angle at B: from BC (going left) up to BA -->
+                        <path class="tri-angle" d="M 278 230 A 32 32 0 0 0 286 212"/>
+                        <text class="tri-theta" x="252" y="222">60°</text>
+                        <!-- Vertex dots -->
+                        <circle cx="190" cy="22"  r="4" fill="#1e293b"/>
+                        <circle cx="70"  cy="230" r="4" fill="#1e293b"/>
+                        <circle cx="190" cy="230" r="4" fill="#1e293b"/>
+                        <circle cx="310" cy="230" r="4" fill="#1e293b"/>
+                        <!-- Vertex labels -->
+                        <text class="tri-label" x="190" y="14"  text-anchor="middle">A</text>
+                        <text class="tri-label" x="58"  y="248" text-anchor="end">D</text>
+                        <text class="tri-label" x="190" y="250" text-anchor="middle">C</text>
+                        <text class="tri-label" x="322" y="248" text-anchor="start">B</text>
+                        <!-- Side labels -->
+                        <text class="tri-side tri-side-hyp" x="258" y="120" text-anchor="middle" transform="rotate(60 258 120)">2</text>
+                        <text class="tri-side tri-side-adj" x="250" y="250" text-anchor="middle">1</text>
+                        <text class="tri-side tri-side-opp" x="178" y="130" text-anchor="end">
+                            √<tspan text-decoration="overline">3</tspan>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-box teal" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">Step 1 — Use Equilateral Property</div>
+                    <div class="step-math" style="text-align: left; font-size: 0.82em;">All three sides equal 2, so \(DB = 2\). The altitude \(AC\) bisects \(DB\), giving \(CB = 1\).</div>
+                </div>
+                <div class="step-box" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">Step 2 — Pythagorean Theorem</div>
+                    <div class="step-math">\[AC^2 + 1^2 = 2^2 \;\Longrightarrow\; AC = \sqrt{3}\]</div>
+                </div>
+                <div class="step-box green">
+                    <div class="step-label">Result — 30-60-90 Side Ratios</div>
+                    <div class="step-math">\[1 \;:\; \sqrt{3} \;:\; 2\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — Example 3: sin/cos 60° and 30°                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Exact Values: \(\sin 60°,\; \cos 60°,\; \sin 30°,\; \cos 30°\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use the 30-60-90 triangle (sides \(1, \sqrt{3}, 2\)) from the equilateral triangle to find \(\sin 60°,\; \cos 60°,\; \sin 30°,\; \cos 30°\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">From the Triangle, Identify Sides for Each Angle</div>
+                    <div class="step-math" style="text-align: left; font-size: 0.82em; line-height: 1.85;">
+                        For the <strong>60°</strong> angle (at \(B\)): opposite \(= \sqrt{3}\), adjacent \(= 1\), hypotenuse \(= 2\).<br>
+                        For the <strong>30°</strong> angle (at \(A\)): opposite \(= 1\), adjacent \(= \sqrt{3}\), hypotenuse \(= 2\).
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Apply SOHCAHTOA</div>
+                    <div class="step-math">\[\sin 60° = \dfrac{\sqrt{3}}{2} \qquad \cos 60° = \dfrac{1}{2}\]</div>
+                    <div class="step-math">\[\sin 30° = \dfrac{1}{2} \qquad \cos 30° = \dfrac{\sqrt{3}}{2}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Observation — These Values Are Linked</div>
+                    <div class="step-math">\[\sin 60° = \cos 30° \qquad \cos 60° = \sin 30°\]</div>
+                    <div class="step-math" style="font-size: 0.78em;">Notice 60° and 30° are <em>complementary</em> (they sum to 90°). This pattern is the <strong>cofunction identity</strong> — coming up next.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — Concept: Cofunction Identities                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-7">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Cofunction Identities</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Cofunctions of complementary angles are equal. If two acute angles sum to 90°, swapping a trig function with its "co-" counterpart preserves the value.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">sin ↔ cos</div>
+                <div class="fn-eq-stack">
+                    <div>\[\sin\theta = \cos(90° - \theta) \qquad \cos\theta = \sin(90° - \theta)\]</div>
+                </div>
+            </div>
+            <div class="formula-row">
+                <div class="fn-label">tan ↔ cot</div>
+                <div class="fn-eq-stack">
+                    <div>\[\tan\theta = \cot(90° - \theta) \qquad \cot\theta = \tan(90° - \theta)\]</div>
+                </div>
+            </div>
+            <div class="formula-row orange">
+                <div class="fn-label">sec ↔ csc</div>
+                <div class="fn-eq-stack">
+                    <div>\[\sec\theta = \csc(90° - \theta) \qquad \csc\theta = \sec(90° - \theta)\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Why "co-"?</div>
+                <div class="card-copy">The "co" in <em>co</em>sine, <em>co</em>tangent, and <em>co</em>secant literally stands for <em>complementary</em>. Sine and cosine are cofunctions because they trade roles when angles are complementary.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Quick Check</div>
+                <div class="card-copy">\(\sin 60° = \cos 30°\) because \(60° + 30° = 90°\). Same with \(\tan 20° = \cot 70°\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — Reference: Identity Bundle                            -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Fundamental Trig Identities</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Four families of identities you will use throughout Unit 4 and Unit 5. All are valid for any acute angle \(\theta\).</div>
+
+        <div class="id-bundle">
+            <div class="id-card recip">
+                <div class="id-title">Reciprocal Identities</div>
+                <div class="id-eq">
+                    \(\sin\theta = \dfrac{1}{\csc\theta}\) &nbsp;&nbsp; \(\csc\theta = \dfrac{1}{\sin\theta}\)<br>
+                    \(\cos\theta = \dfrac{1}{\sec\theta}\) &nbsp;&nbsp; \(\sec\theta = \dfrac{1}{\cos\theta}\)<br>
+                    \(\tan\theta = \dfrac{1}{\cot\theta}\) &nbsp;&nbsp; \(\cot\theta = \dfrac{1}{\tan\theta}\)
+                </div>
+            </div>
+            <div class="id-card quot">
+                <div class="id-title">Quotient Identities</div>
+                <div class="id-eq">
+                    \(\tan\theta = \dfrac{\sin\theta}{\cos\theta}\)<br>
+                    \(\cot\theta = \dfrac{\cos\theta}{\sin\theta}\)
+                </div>
+            </div>
+            <div class="id-card pyth">
+                <div class="id-title">Pythagorean Identities</div>
+                <div class="id-eq">
+                    \(\sin^2\theta + \cos^2\theta = 1\)<br>
+                    \(1 + \tan^2\theta = \sec^2\theta\)<br>
+                    \(1 + \cot^2\theta = \csc^2\theta\)
+                </div>
+            </div>
+            <div class="id-card cof">
+                <div class="id-title">Cofunction Identities</div>
+                <div class="id-eq">
+                    \(\sin\theta = \cos(90°-\theta)\)<br>
+                    \(\cos\theta = \sin(90°-\theta)\)<br>
+                    \(\tan\theta = \cot(90°-\theta)\)<br>
+                    \(\cot\theta = \tan(90°-\theta)\)<br>
+                    \(\sec\theta = \csc(90°-\theta)\)<br>
+                    \(\csc\theta = \sec(90°-\theta)\)
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box orange">
+            <div class="note-title">Power Notation</div>
+            <div class="note-copy">\(\sin^2\theta\) means \((\sin\theta)^2\), not \(\sin(\theta^2)\). The same convention applies to all six trig functions. Reciprocal identities work with powers too: \(\sin^2\theta = \dfrac{1}{\csc^2\theta}\).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — Example 4: tan = 1/3 → cot and sec (two methods)     -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Two Methods: Using Triangles vs. Using Identities</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Let \(\theta\) be an acute angle with \(\tan\theta = \dfrac{1}{3}\). Find (a) \(\cot\theta\) and (b) \(\sec\theta\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Method 1 — Build a Reference Triangle</div>
+                    <div class="ex-grid">
+                        <div class="diagram-shell">
+                            <svg class="diagram" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+                                <!-- True 1:3 ratio (tan θ = 1/3).
+                                     Scale: adj=240, opp=80. Hyp = √(240²+80²) ≈ 252.98.
+                                     θ at A(30,170), right angle at B(270,170), top C(270,90). -->
+                                <polygon points="30,170 270,170 270,90" fill="#ecfeff" stroke="none"/>
+                                <line class="tri-adj" x1="30"  y1="170" x2="270" y2="170"/>
+                                <line class="tri-opp" x1="270" y1="170" x2="270" y2="90"/>
+                                <line class="tri-hyp" x1="30"  y1="170" x2="270" y2="90"/>
+                                <!-- Right-angle square at B(270,170) -->
+                                <polyline class="tri-rt" points="256,170 256,156 270,156"/>
+                                <!-- θ ≈ 18.43° — use larger arc radius so it reads -->
+                                <path class="tri-angle" d="M 70 170 A 40 40 0 0 0 67.95 157.4"/>
+                                <text class="tri-theta" x="76" y="165">θ</text>
+                                <!-- Vertex dots -->
+                                <circle cx="30"  cy="170" r="4" fill="#1e293b"/>
+                                <circle cx="270" cy="170" r="4" fill="#1e293b"/>
+                                <circle cx="270" cy="90"  r="4" fill="#1e293b"/>
+                                <!-- Side labels -->
+                                <text class="tri-side tri-side-adj" x="150" y="190" text-anchor="middle">3</text>
+                                <text class="tri-side tri-side-opp" x="282" y="135" text-anchor="start">1</text>
+                                <text class="tri-side tri-side-hyp" x="140" y="118" text-anchor="middle" transform="rotate(-18.43 140 118)">
+                                    √<tspan text-decoration="overline">10</tspan>
+                                </text>
+                            </svg>
+                        </div>
+                        <div style="font-size: 0.82em; line-height: 1.7; padding: 0.3em 0.5em;">
+                            <div>\(\tan\theta = \dfrac{1}{3}\;\Rightarrow\;\text{opp}=1,\;\text{adj}=3\)</div>
+                            <div>\(\text{hyp} = \sqrt{1^2 + 3^2} = \sqrt{10}\)</div>
+                            <div style="margin-top: 0.4em;">From the triangle:</div>
+                            <div>\(\cot\theta = \dfrac{\text{adj}}{\text{opp}} = \dfrac{3}{1} = 3\)</div>
+                            <div>\(\sec\theta = \dfrac{\text{hyp}}{\text{adj}} = \dfrac{\sqrt{10}}{3}\)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box orange">
+                    <div class="step-label">Method 2 — Use Identities Directly</div>
+                    <div class="method-grid">
+                        <div class="method-box">
+                            <div class="method-label">(a) Reciprocal Identity</div>
+                            <div class="method-body">
+                                \(\cot\theta = \dfrac{1}{\tan\theta} = \dfrac{1}{1/3} = 3\)
+                            </div>
+                        </div>
+                        <div class="method-box alt">
+                            <div class="method-label">(b) Pythagorean Identity</div>
+                            <div class="method-body">
+                                \(\sec^2\theta = 1 + \tan^2\theta = 1 + \left(\dfrac{1}{3}\right)^2 = \dfrac{10}{9}\)<br>
+                                \(\sec\theta = \dfrac{\sqrt{10}}{3}\)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Final Answers — Both Methods Agree</div>
+                    <div class="step-math">\[\cot\theta = 3 \qquad \sec\theta = \dfrac{\sqrt{10}}{3}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Concept: Degrees, Minutes, Seconds                  -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Degrees, Minutes, and Seconds (DMS)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Like an hour on a clock, a degree can be subdivided into smaller pieces: <strong>minutes</strong> (\('\)) and <strong>seconds</strong> (\(''\)).</div>
+
+        <div class="dms-strip">
+            <div class="dms-cell">
+                <div class="dms-cell-label">Degree</div>
+                <div class="dms-cell-eq">\(1°\) = full unit</div>
+            </div>
+            <div class="dms-cell">
+                <div class="dms-cell-label">Minute</div>
+                <div class="dms-cell-eq">\(1° = 60'\)</div>
+            </div>
+            <div class="dms-cell">
+                <div class="dms-cell-label">Second</div>
+                <div class="dms-cell-eq">\(1' = 60''\) so \(1° = 3600''\)</div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Read an Angle</div>
+                <div class="card-copy">
+                    The angle \(40°\,20'\,50''\) reads as<br>
+                    <strong>40 degrees, 20 minutes, 50 seconds.</strong>
+                </div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Convert to Decimal Degrees</div>
+                <div class="card-copy">
+                    \[40 + 20\!\left(\tfrac{1}{60}\right) + 50\!\left(\tfrac{1}{60^{2}}\right) \approx 40.347°\]
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Don't Confuse with Time</div>
+                <div class="card-copy">An hour and a degree both use "minutes" and "seconds," but they're unrelated. A minute of angle has nothing to do with the clock on the wall.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Example 5: sec(9°40'12")                            -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Evaluate \(\sec(9°\,40'\,12'')\) with a Calculator</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use a calculator to evaluate \(\sec(9°\,40'\,12'')\). Round to four decimal places.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Convert DMS to Decimal Degrees</div>
+                    <div class="step-math">\[9°\,40'\,12'' = 9° + \left(\dfrac{40}{60}\right)° + \left(\dfrac{12}{60^2}\right)° \approx 9.67°\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Evaluate Using \(\sec\theta = 1/\cos\theta\)</div>
+                    <div class="step-math">\[\sec(9.67°) = \dfrac{1}{\cos(9.67°)} \approx 1.0144\]
+                        <div class="annotation">Make sure your calculator is set to <strong>degree mode</strong>, not radian mode.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Final Answer</div>
+                    <div class="step-math">\[\sec(9°\,40'\,12'') \approx 1.0144\]</div>
+                    <div class="step-math" style="font-size: 0.74em; color: var(--text-muted);">Alternatively, most graphing calculators accept DMS input directly using the °, \(\,'\,\), \(\,''\,\) keys.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — Concept: Angles of Elevation & Depression          -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-12">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Angles of Elevation and Depression</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">In modeling problems, angles are measured from a <strong>horizontal line of sight</strong>. Looking up gives an angle of <em>elevation</em>; looking down gives an angle of <em>depression</em>.</div>
+
+        <div class="diagram-shell">
+            <div class="diagram-title">Looking Up vs. Looking Down (from the Observer)</div>
+            <svg class="diagram" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+                <!-- Building -->
+                <rect class="scene-wall" x="40" y="120" width="80" height="140"/>
+                <!-- Observer dot near top of building -->
+                <circle cx="120" cy="130" r="5" fill="#1e293b"/>
+                <text class="scene-tag" x="50" y="115">observer</text>
+                <!-- Horizontal sight line from observer -->
+                <line class="scene-h" x1="120" y1="130" x2="620" y2="130"/>
+                <text class="scene-tag" x="600" y="125" text-anchor="end">horizontal</text>
+                <!-- Up-line to airplane -->
+                <line class="scene-sight" x1="120" y1="130" x2="540" y2="60"/>
+                <!-- Down-line to car on ground -->
+                <line class="scene-sight" x1="120" y1="130" x2="560" y2="240"/>
+                <!-- Airplane (simple plane shape) -->
+                <polygon points="510,60 560,52 560,68 545,72 520,75" fill="#0f172a" stroke="none"/>
+                <polygon points="525,52 545,40 550,52" fill="#0f172a" stroke="none"/>
+                <text class="scene-tag" x="565" y="55">airplane</text>
+                <!-- Car (simple shape) -->
+                <rect x="540" y="225" width="60" height="20" rx="4" fill="#dc2626"/>
+                <rect x="552" y="215" width="36" height="12" rx="3" fill="#dc2626"/>
+                <circle cx="552" cy="248" r="6" fill="#1e293b"/>
+                <circle cx="588" cy="248" r="6" fill="#1e293b"/>
+                <text class="scene-tag" x="566" y="266" text-anchor="middle">car</text>
+                <!-- Angle of elevation arc -->
+                <path class="tri-angle" d="M 180 130 A 60 60 0 0 0 175 120"/>
+                <text class="scene-tag-em" x="195" y="120">angle of elevation</text>
+                <!-- Angle of depression arc -->
+                <path class="tri-angle" d="M 180 130 A 60 60 0 0 1 175 140"/>
+                <text class="scene-tag-em" x="195" y="155">angle of depression</text>
+                <!-- Ground line -->
+                <line class="scene-floor" x1="0" y1="260" x2="700" y2="260"/>
+            </svg>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Angle of Elevation</div>
+                <div class="card-copy">Measured <em>up</em> from the horizontal, toward an object above the observer's eye level.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Angle of Depression</div>
+                <div class="card-copy">Measured <em>down</em> from the horizontal, toward an object below the observer's eye level.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Key Insight</div>
+                <div class="card-copy">Both angles are measured from a <strong>horizontal</strong> line — never from a vertical wall or ground.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — Example 6: Red pen on the floor                     -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-13" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Angle of Depression — Spotting a Toy</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Daniel's mom is sitting in a chair. Her eye level is \(3.5\) feet above the floor. She spots a red pen on the floor and measures the angle of depression to be \(65°\). How far is the pen from the chair?</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Draw and Label the Right Triangle</div>
+                    <div class="ex-grid">
+                        <div class="diagram-shell">
+                            <svg class="diagram" viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Floor -->
+                                <line class="scene-floor" x1="0" y1="200" x2="360" y2="200"/>
+                                <!-- Chair (simplified): seat and back -->
+                                <rect x="30" y="160" width="60" height="14" fill="#0f172a"/>
+                                <rect x="30" y="100" width="14" height="60" fill="#0f172a"/>
+                                <line class="scene-floor" x1="40" y1="174" x2="40" y2="200" stroke-width="3"/>
+                                <line class="scene-floor" x1="80" y1="174" x2="80" y2="200" stroke-width="3"/>
+                                <!-- Eye level point: at top of chair back, (44,100) — use horizontal from there -->
+                                <circle cx="60" cy="80" r="4" fill="#1e293b"/>
+                                <text class="scene-tag" x="6" y="76">eye</text>
+                                <!-- Horizontal from eye -->
+                                <line class="scene-h" x1="60" y1="80" x2="320" y2="80"/>
+                                <!-- Vertical from eye to floor -->
+                                <line class="tri-opp" x1="60" y1="80" x2="60" y2="200"/>
+                                <!-- Hypotenuse (line of sight) -->
+                                <line class="tri-hyp" x1="60" y1="80" x2="300" y2="200"/>
+                                <!-- Bottom leg (floor distance) -->
+                                <line class="tri-adj" x1="60" y1="200" x2="300" y2="200"/>
+                                <!-- Right angle at floor -->
+                                <polyline class="tri-rt" points="74,200 74,186 60,186"/>
+                                <!-- Angle of depression at eye -->
+                                <path class="tri-angle" d="M 100 80 A 40 40 0 0 1 96 96"/>
+                                <text class="scene-tag-em" x="105" y="98">65°</text>
+                                <!-- Side labels -->
+                                <text class="tri-side tri-side-opp" x="50" y="145" text-anchor="end">3.5 ft</text>
+                                <text class="tri-side tri-side-adj" x="180" y="218" text-anchor="middle">x</text>
+                                <!-- Red pen -->
+                                <line x1="290" y1="198" x2="310" y2="202" stroke="#dc2626" stroke-width="3"/>
+                                <text class="scene-tag" x="295" y="194" fill="#dc2626">pen</text>
+                            </svg>
+                        </div>
+                        <div style="font-size: 0.82em; line-height: 1.8; padding: 0.3em 0.5em;">
+                            <div>From the eye, the angle <em>down</em> to the pen is \(65°\).</div>
+                            <div>The vertical leg is the eye height: \(3.5\) ft.</div>
+                            <div>The horizontal leg \(x\) is the unknown — distance along the floor.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Choose a Ratio That Uses Opposite and Adjacent</div>
+                    <div class="step-math">\[\tan 65° = \dfrac{\text{opp}}{\text{adj}} = \dfrac{3.5}{x} \quad\Longrightarrow\quad x = \dfrac{3.5}{\tan 65°}\]
+                        <div class="annotation">Opposite (3.5) is across from 65°; adjacent (\(x\)) is along the floor. That's <strong>tan</strong>.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Step 3 — Evaluate</div>
+                    <div class="step-math">\[x = \dfrac{3.5}{\tan 65°} \approx 1.632 \text{ feet}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — Example 7: Smokestack height                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-14" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Angle of Elevation — Height of a Smokestack</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">From a point \(200\) ft from the base of a building, the angle of elevation to the <em>bottom</em> of a smokestack on the roof is \(35°\); to the <em>top</em> of the smokestack it is \(53°\). Find the height of the smokestack alone.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-14-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Build Two Right Triangles That Share the Same Base</div>
+                    <div class="ex-grid">
+                        <div class="diagram-shell">
+                            <svg class="diagram" viewBox="0 0 420 280" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Ground -->
+                                <line class="scene-floor" x1="0" y1="240" x2="420" y2="240"/>
+                                <!-- Building -->
+                                <rect class="scene-bldg" x="80" y="120" width="100" height="120"/>
+                                <!-- Smokestack -->
+                                <rect class="scene-stack" x="100" y="40" width="30" height="80"/>
+                                <!-- Observer point (right side) -->
+                                <circle cx="380" cy="240" r="4" fill="#1e293b"/>
+                                <!-- Horizontal base label -->
+                                <text class="tri-side" x="280" y="258" text-anchor="middle">200 ft</text>
+                                <!-- Sight line to bottom of stack (top of building) -->
+                                <line class="scene-sight" x1="380" y1="240" x2="180" y2="120"/>
+                                <!-- Sight line to top of stack -->
+                                <line class="scene-sight" x1="380" y1="240" x2="115" y2="40"/>
+                                <!-- Vertical heights -->
+                                <line class="tri-opp" x1="180" y1="120" x2="180" y2="240" stroke-dasharray="4 3"/>
+                                <line class="tri-opp" x1="115" y1="40" x2="115" y2="120" stroke-dasharray="4 3"/>
+                                <!-- Angles at observer -->
+                                <path class="tri-angle" d="M 340 240 A 40 40 0 0 0 343 224"/>
+                                <text class="scene-tag-em" x="328" y="224">35°</text>
+                                <path class="tri-angle" d="M 320 240 A 60 60 0 0 0 326 209"/>
+                                <text class="scene-tag-em" x="304" y="206">53°</text>
+                                <!-- Side labels for heights -->
+                                <text class="tri-side tri-side-opp" x="192" y="186" text-anchor="start">x</text>
+                                <text class="tri-side tri-side-opp" x="128" y="84" text-anchor="start">y</text>
+                            </svg>
+                        </div>
+                        <div style="font-size: 0.82em; line-height: 1.85; padding: 0.3em 0.5em;">
+                            <div>Let \(x\) = height of building (bottom of stack).</div>
+                            <div>Let \(y\) = height of smokestack alone (above building).</div>
+                            <div>Both triangles share the same 200-ft base.</div>
+                            <div style="margin-top: 0.4em;">Then \(x + y\) is the total height from ground to <em>top</em> of stack.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-14-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Find the Building Height \(x\) (Lower Triangle)</div>
+                    <div class="step-math">\[\tan 35° = \dfrac{x}{200} \quad\Longrightarrow\quad x = 200\tan 35° \approx 140.042 \text{ ft}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-14-step-2">
+                <div class="step-box orange">
+                    <div class="step-label">Step 3 — Find Total Height \(x + y\) (Upper Triangle)</div>
+                    <div class="step-math">\[\tan 53° = \dfrac{x + y}{200} \quad\Longrightarrow\quad x + y = 200\tan 53° \approx 265.409 \text{ ft}\]</div>
+                </div>
+            </div>
+
+            <div class="step" id="slide-14-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 — Subtract to Isolate the Smokestack</div>
+                    <div class="step-math">\[y = (x+y) - x \approx 265.409 - 140.042 \approx 125.367 \text{ ft}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15 — Wrap-up: What you should be able to do              -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-15">
+    <div class="slide-header">
+        <div class="ref-label">Wrap-up</div>
+        <div class="slide-title">By the End of 4.1 You Should Be Able To...</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Check yourself against each of these. If anything feels shaky, revisit the relevant example before moving on to 4.2.</div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Skill 1 — The Six Ratios</div>
+                <div class="card-copy">Given a right triangle, name the six trig functions of an acute angle without looking up SOHCAHTOA.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 2 — One Given Ratio</div>
+                <div class="card-copy">Given one trig ratio, find the other five — either by drawing a reference triangle or by applying identities.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Skill 3 — Exact Values</div>
+                <div class="card-copy">Know the exact sine and cosine values at 30° and 60°, and recognize them when they appear in problems.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Skill 4 — Identity Toolbox</div>
+                <div class="card-copy">Identify which identity (reciprocal, quotient, Pythagorean, or cofunction) to use in a given setup.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Skill 5 — DMS</div>
+                <div class="card-copy">Convert an angle between DMS and decimal degrees and evaluate a trig function of either form on a calculator.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Skill 6 — Modeling</div>
+                <div class="card-copy">Translate an elevation/depression word problem into a labeled right triangle and solve for the unknown.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Six Ratios',   slideId: 'slide-1' },
+            { label: 'Examples 1–2', slideId: 'slide-3' },
+            { label: '30-60-90',     slideId: 'slide-5' },
+            { label: 'Identities',   slideId: 'slide-7' },
+            { label: 'DMS',          slideId: 'slide-10' },
+            { label: 'Applications', slideId: 'slide-12' },
+            { label: 'Wrap-up',      slideId: 'slide-15' }
+        ]
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.5 — Trigonometric Functions of Any Angle</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific SVG primitives. All layout uses shared classes. */
+        .axis           { stroke: #475569; stroke-width: 1.6; fill: none; }
+        .axis-arrow     { fill: #475569; stroke: none; }
+        .axis-letter    { font: italic 600 13px 'Source Sans 3', sans-serif; fill: #64748b; }
+        .ray-init       { stroke: #2563eb; stroke-width: 2.6; fill: none; }
+        .ray-init-head  { fill: #2563eb; stroke: none; }
+        .ray-term       { stroke: #0891b2; stroke-width: 2.8; fill: none; }
+        .ray-term-head  { fill: #0891b2; stroke: none; }
+        .arc-theta      { stroke: #dc2626; stroke-width: 2.4; fill: none; }
+        .arc-theta-head { fill: #dc2626; stroke: none; }
+        .arc-ref        { stroke: #16a34a; stroke-width: 2.4; fill: none; }
+        .lbl-theta      { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #dc2626; }
+        .lbl-ref        { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #16a34a; }
+        .scene-vertex   { fill: #1e293b; stroke: white; stroke-width: 1.4; }
+        .scene-label    { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .scene-coord    { font: 700 14px 'Source Sans 3', sans-serif; fill: #2563eb; }
+        .perp-drop      { stroke: #dc2626; stroke-width: 1.8; stroke-dasharray: 5 3; fill: none; }
+        .perp-rt        { stroke: #475569; stroke-width: 1.5; fill: none; }
+        .side-x         { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #0e7490; }
+        .side-y         { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #be185d; }
+        .side-r         { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #15803d; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper">
+
+<!-- ============================================================ -->
+<!-- SLIDE 0 — Title                                                -->
+<!-- ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 4 · Intro to Trigonometry</div>
+    <div class="title-main">4.5 Trig Functions of Any Angle</div>
+    <div class="title-objective">Objective: Use reference angles to evaluate trigonometric functions of any angle, including angles whose terminal sides pass through non-unit-circle points.</div>
+    <div class="identity-chips">
+        <span class="chip">reference angles</span>
+        <span class="chip">terminal-side points</span>
+        <span class="chip">\(r = \sqrt{x^2 + y^2}\)</span>
+        <span class="chip">solving for \(\theta\)</span>
+        <span class="chip">two-quadrant answers</span>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Concept: From Q1 to any angle                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">From Q1 to <em>Any</em> Angle</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">You already know how to evaluate trig functions for angles in Q1, and for any multiple of 30°, 45°, or 60° via the unit circle. The trick for everything else is to relate it back to a Q1 angle — its <strong>reference angle</strong>.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">A Point on the Terminal Side</div>
+                    <svg class="diagram" viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg">
+                        <line class="axis" x1="30"  y1="160" x2="310" y2="160"/>
+                        <line class="axis" x1="170" y1="30"  x2="170" y2="240"/>
+                        <polygon class="axis-arrow" points="310,160 302,156 302,164"/>
+                        <polygon class="axis-arrow" points="170,30  166,38 174,38"/>
+                        <text class="axis-letter" x="316" y="164">x</text>
+                        <text class="axis-letter" x="164" y="28" text-anchor="end">y</text>
+                        <!-- Initial ray on +x -->
+                        <line class="ray-init" x1="170" y1="160" x2="260" y2="160"/>
+                        <polygon class="ray-init-head" points="260,160 252,155 252,165"/>
+                        <!-- Terminal ray through P -->
+                        <line class="ray-term" x1="170" y1="160" x2="270" y2="80"/>
+                        <polygon class="ray-term-head" points="270,80 262,84 264,73"/>
+                        <!-- Theta arc -->
+                        <path class="arc-theta" d="M 210 160 A 40 40 0 0 0 200.6 134.8"/>
+                        <text class="lbl-theta" x="216" y="146">θ</text>
+                        <!-- Point P -->
+                        <circle class="scene-vertex" cx="248" cy="97.6" r="5" fill="#2563eb"/>
+                        <text class="scene-coord" x="258" y="92">P(x, y)</text>
+                        <circle class="scene-vertex" cx="170" cy="160" r="4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards-grid" style="grid-template-columns: 1fr;">
+                    <div class="info-card teal">
+                        <div class="card-title">What's New in 4.5</div>
+                        <div class="card-copy">Trig works for <em>any</em> terminal-side point — the point doesn't have to live on the unit circle.</div>
+                    </div>
+                    <div class="info-card green">
+                        <div class="card-title">Strategy</div>
+                        <div class="card-copy">Find the reference angle (the Q1 partner), evaluate the trig function there, then attach the correct sign from ASTC.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Concept: Reference Angle definition + 4 quadrants    -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">The Reference Angle \(\theta'\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The <strong>reference angle</strong> \(\theta'\) is the <em>positive acute</em> angle between the terminal side of \(\theta\) and the \(x\)-axis (whichever side is closer). It always lives in \([0,\pi/2]\).</div>
+
+        <div class="cards-grid" style="grid-template-columns: repeat(4, 1fr);">
+            <!-- Q1 -->
+            <div class="diagram-shell" style="padding: 0.45em;">
+                <div class="diagram-title">Quadrant I</div>
+                <svg class="diagram" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                    <line class="axis" x1="10"  y1="120" x2="170" y2="120"/>
+                    <line class="axis" x1="90"  y1="10"  x2="90"  y2="170"/>
+                    <line class="ray-init" x1="90" y1="120" x2="150" y2="120"/>
+                    <line class="ray-term" x1="90" y1="120" x2="148" y2="62"/>
+                    <path class="arc-theta" d="M 115 120 A 25 25 0 0 0 107.4 102.4"/>
+                    <text class="lbl-theta" x="120" y="110">θ</text>
+                    <text class="lbl-ref" x="120" y="138" style="font-size: 12px;">θ′ = θ</text>
+                </svg>
+            </div>
+            <!-- Q2 -->
+            <div class="diagram-shell" style="padding: 0.45em;">
+                <div class="diagram-title">Quadrant II</div>
+                <svg class="diagram" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                    <line class="axis" x1="10"  y1="120" x2="170" y2="120"/>
+                    <line class="axis" x1="90"  y1="10"  x2="90"  y2="170"/>
+                    <line class="ray-init" x1="90" y1="120" x2="150" y2="120"/>
+                    <line class="ray-term" x1="90" y1="120" x2="40" y2="68"/>
+                    <!-- theta: from +x sweep CCW to upper-left ray -->
+                    <path class="arc-theta" d="M 130 120 A 40 40 0 0 0 62.7 91.6"/>
+                    <text class="lbl-theta" x="100" y="80">θ</text>
+                    <!-- ref: from terminal to -x axis -->
+                    <path class="arc-ref" d="M 70 96.2 A 26 26 0 0 0 64 120"/>
+                    <text class="lbl-ref" x="58" y="108">θ′</text>
+                </svg>
+            </div>
+            <!-- Q3 -->
+            <div class="diagram-shell" style="padding: 0.45em;">
+                <div class="diagram-title">Quadrant III</div>
+                <svg class="diagram" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                    <line class="axis" x1="10"  y1="90" x2="170" y2="90"/>
+                    <line class="axis" x1="90"  y1="10" x2="90"  y2="170"/>
+                    <line class="ray-init" x1="90" y1="90" x2="150" y2="90"/>
+                    <line class="ray-term" x1="90" y1="90" x2="40" y2="140"/>
+                    <!-- theta: CCW sweep from +x past π to lower-left -->
+                    <path class="arc-theta" d="M 130 90 A 40 40 0 1 0 62 118"/>
+                    <text class="lbl-theta" x="92" y="60">θ</text>
+                    <!-- ref: from terminal to -x axis (small arc) -->
+                    <path class="arc-ref" d="M 64 90 A 26 26 0 0 0 71.6 108.4"/>
+                    <text class="lbl-ref" x="48" y="108">θ′</text>
+                </svg>
+            </div>
+            <!-- Q4 -->
+            <div class="diagram-shell" style="padding: 0.45em;">
+                <div class="diagram-title">Quadrant IV</div>
+                <svg class="diagram" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+                    <line class="axis" x1="10"  y1="90" x2="170" y2="90"/>
+                    <line class="axis" x1="90"  y1="10" x2="90"  y2="170"/>
+                    <line class="ray-init" x1="90" y1="90" x2="150" y2="90"/>
+                    <line class="ray-term" x1="90" y1="90" x2="140" y2="140"/>
+                    <!-- theta: large CCW sweep almost all the way around -->
+                    <path class="arc-theta" d="M 130 90 A 40 40 0 1 0 118 118"/>
+                    <text class="lbl-theta" x="78" y="60">θ</text>
+                    <!-- ref: from terminal back up to +x axis (small arc) -->
+                    <path class="arc-ref" d="M 116 90 A 26 26 0 0 0 108.4 108.4"/>
+                    <text class="lbl-ref" x="120" y="108">θ′</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="note-box navy" style="margin-top: 0.6rem;">
+            <div class="note-title">Why It Matters</div>
+            <div class="note-copy">Once you have \(\theta'\), every trig value of \(\theta\) equals \(\pm\) the same trig value of \(\theta'\). The sign comes from which quadrant \(\theta\) lives in (ASTC).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — Reference: Formulas by quadrant                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Reference-Angle Formulas</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">For an angle \(\theta\) in standard position (already reduced to \([0^\circ, 360^\circ)\) or \([0, 2\pi)\)), use the formula matching its quadrant.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Quadrant I</div>
+                <div class="fn-eq-stack">
+                    <div>\[\theta' = \theta\]</div>
+                </div>
+            </div>
+            <div class="formula-row">
+                <div class="fn-label">Quadrant II</div>
+                <div class="fn-eq-stack">
+                    <div>\[\theta' = 180° - \theta \qquad \text{(or } \pi - \theta\text{)}\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Quadrant III</div>
+                <div class="fn-eq-stack">
+                    <div>\[\theta' = \theta - 180° \qquad \text{(or } \theta - \pi\text{)}\]</div>
+                </div>
+            </div>
+            <div class="formula-row teal">
+                <div class="fn-label">Quadrant IV</div>
+                <div class="fn-eq-stack">
+                    <div>\[\theta' = 360° - \theta \qquad \text{(or } 2\pi - \theta\text{)}\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box orange">
+            <div class="note-title">First, Normalize the Angle</div>
+            <div class="note-copy">If \(\theta\) is negative or larger than one full revolution, add or subtract \(360^\circ\) (or \(2\pi\)) until you land in \([0^\circ, 360^\circ)\) — <em>then</em> apply the formula.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — Example 1: 330°                                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Reference Angle for \(330°\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the reference angle for \(\theta = 330°\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Identify the Quadrant</div>
+                    <div class="step-math">\[270° < 330° < 360° \quad\Longrightarrow\quad \theta \text{ is in Quadrant IV}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Apply the Q4 Formula</div>
+                    <div class="step-math">\[\theta' = 360° - 330° = 30°\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Reference Angle</div>
+                    <div class="step-math">\[\theta' = 30°\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Example 2: -5π/6                                      -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Reference Angle for \(-\dfrac{5\pi}{6}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the reference angle for \(\theta = -\dfrac{5\pi}{6}\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Find a Coterminal Angle</div>
+                    <div class="step-math">\[-\dfrac{5\pi}{6} + 2\pi = -\dfrac{5\pi}{6} + \dfrac{12\pi}{6} = \dfrac{7\pi}{6}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Identify the Quadrant</div>
+                    <div class="step-math">\[\pi < \dfrac{7\pi}{6} < \dfrac{3\pi}{2} \quad\Longrightarrow\quad \text{Quadrant III}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Apply the Q3 Formula</div>
+                    <div class="step-math">\[\theta' = \dfrac{7\pi}{6} - \pi = \dfrac{7\pi}{6} - \dfrac{6\pi}{6} = \dfrac{\pi}{6}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Reference Angle</div>
+                    <div class="step-math">\[\theta' = \dfrac{\pi}{6}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — Example 3: 2.3 radians                                -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Reference Angle for \(\theta = 2.3\) Radians</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the reference angle for \(\theta = 2.3\) (radians, not a multiple of \(\pi\)).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Locate the Radian Angle</div>
+                    <div class="step-math">\[\dfrac{\pi}{2} \approx 1.571 \;\;<\;\; 2.3 \;\;<\;\; \pi \approx 3.142\]
+                        <div class="annotation">So \(\theta\) lies in Quadrant II.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Apply the Q2 Formula</div>
+                    <div class="step-math">\[\theta' = \pi - 2.3 \approx 3.1416 - 2.3 = 0.8416\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Reference Angle</div>
+                    <div class="step-math">\[\theta' \approx 0.8416 \text{ rad}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — Concept: P(x,y), r definition                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-7">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Trig from <em>Any</em> Point on the Terminal Side</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">If the terminal side of \(\theta\) passes through \(P(x, y)\), the same six trig values come from the ratios of \(x\), \(y\), and \(r = \sqrt{x^2 + y^2}\). The point doesn't have to be on the unit circle.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Triangle with Legs \(x\), \(y\) and Hypotenuse \(r\)</div>
+                    <svg class="diagram" viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg">
+                        <line class="axis" x1="20" y1="130" x2="320" y2="130"/>
+                        <line class="axis" x1="180" y1="20" x2="180" y2="240"/>
+                        <polygon class="axis-arrow" points="320,130 312,126 312,134"/>
+                        <polygon class="axis-arrow" points="180,20  176,28 184,28"/>
+                        <text class="axis-letter" x="326" y="134">x</text>
+                        <text class="axis-letter" x="174" y="18" text-anchor="end">y</text>
+                        <!-- Q3 example point P -->
+                        <line class="ray-term" x1="180" y1="130" x2="70" y2="210"/>
+                        <polygon class="ray-term-head" points="70,210 78,206 79,216"/>
+                        <!-- Drop to x-axis -->
+                        <line class="perp-drop" x1="70" y1="130" x2="70" y2="210"/>
+                        <polyline class="perp-rt" points="70,144 84,144 84,130"/>
+                        <!-- theta arc (sweep CCW from +x past π to lower-left) -->
+                        <path class="arc-theta" d="M 220 130 A 40 40 0 1 0 152 158"/>
+                        <text class="lbl-theta" x="200" y="100" text-anchor="middle">θ</text>
+                        <!-- reference angle near terminal -->
+                        <path class="arc-ref" d="M 96 130 A 26 26 0 0 0 89.8 150.2"/>
+                        <text class="lbl-ref" x="74" y="124">θ′</text>
+                        <!-- Side labels -->
+                        <text class="side-x" x="125" y="124" text-anchor="middle">x</text>
+                        <text class="side-y" x="62" y="172" text-anchor="end">y</text>
+                        <text class="side-r" x="118" y="186" text-anchor="middle" transform="rotate(-36 118 186)">r</text>
+                        <!-- Point P -->
+                        <circle class="scene-vertex" cx="70" cy="210" r="5" fill="#2563eb"/>
+                        <text class="scene-coord" x="58" y="226" text-anchor="end">P(x, y)</text>
+                        <circle class="scene-vertex" cx="180" cy="130" r="4"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-box teal" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">Distance to Origin</div>
+                    <div class="step-math">\[r = \sqrt{x^{2} + y^{2}}\]
+                        <div class="annotation">Pythagorean theorem on the legs \(x\) and \(y\). \(r\) is always positive.</div>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <div class="card-title">Why It Generalizes the Unit Circle</div>
+                    <div class="card-copy">On the unit circle, \(r = 1\), so the ratios collapse to \(\sin\theta = y\), \(\cos\theta = x\). For any other point, you just divide by \(r\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — Reference: Six functions in x, y, r                  -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-8">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Six Trig Functions in Terms of \(x\), \(y\), \(r\)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">These match the SOHCAHTOA ratios you already know, but now the legs are signed: \(x\) and \(y\) carry the sign of the quadrant.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Primary</div>
+                <div class="fn-eq-stack">
+                    <div>\[\sin\theta = \dfrac{y}{r} \qquad \cos\theta = \dfrac{x}{r} \qquad \tan\theta = \dfrac{y}{x}\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Reciprocals</div>
+                <div class="fn-eq-stack">
+                    <div>\[\csc\theta = \dfrac{r}{y} \qquad \sec\theta = \dfrac{r}{x} \qquad \cot\theta = \dfrac{x}{y}\]</div>
+                </div>
+            </div>
+            <div class="formula-row">
+                <div class="fn-label">Setup</div>
+                <div class="fn-eq-stack">
+                    <div>\[x^{2} + y^{2} = r^{2} \quad\text{with}\quad r > 0\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Watch the Signs</div>
+                <div class="card-copy">\(r\) is always positive. The signs of sin/cos/tan come entirely from the signs of \(x\) and \(y\) — which depend on the quadrant.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Same Six Values for the Whole Ray</div>
+                <div class="card-copy">Pick <em>any</em> point on the terminal side: the ratios \(y/r\), \(x/r\), \(y/x\) are the same. The trig value depends on the angle, not on which point you pick.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — Example 4: (8, -15)                                   -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Six Trig Functions Given a Terminal-Side Point</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The terminal side of \(\theta\) in standard position contains the point \((8,\,-15)\). Find the exact values of all six trig functions of \(\theta\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Identify \(x\), \(y\), and the Quadrant</div>
+                    <div class="step-math">\[x = 8,\; y = -15 \quad\Longrightarrow\quad \theta \text{ is in Quadrant IV}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Find \(r\) (Pythagorean Theorem)</div>
+                    <div class="step-math">\[r = \sqrt{8^{2} + (-15)^{2}} = \sqrt{64 + 225} = \sqrt{289} = 17\]
+                        <div class="annotation">8-15-17 is a Pythagorean triple, like 3-4-5 or 5-12-13.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Build the Six Ratios</div>
+                    <div class="step-math">\[\sin\theta = -\dfrac{15}{17} \qquad \cos\theta = \dfrac{8}{17} \qquad \tan\theta = -\dfrac{15}{8}\]</div>
+                    <div class="step-math">\[\csc\theta = -\dfrac{17}{15} \qquad \sec\theta = \dfrac{17}{8} \qquad \cot\theta = -\dfrac{8}{15}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Q4 Sign Check</div>
+                    <div class="step-math" style="font-size: 0.78em;">In Q4, cosine and secant are positive; the other four are negative — matches ASTC. ✓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Example 5: sin = -2/3, tan > 0                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-10" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Given One Sign Plus One Value, Find the Rest</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Given \(\sin\theta = -\dfrac{2}{3}\) and \(\tan\theta > 0\), find \(\cos\theta\) and \(\cot\theta\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Determine the Quadrant</div>
+                    <div class="step-math" style="text-align: left; font-size: 0.84em;">
+                        \(\sin\theta &lt; 0 \Rightarrow y &lt; 0\) (Q3 or Q4)<br>
+                        \(\tan\theta &gt; 0 \Rightarrow x\) and \(y\) have the <em>same</em> sign (Q1 or Q3)<br>
+                        Intersection: <strong>Quadrant III</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Read \(y\) and \(r\) from sin</div>
+                    <div class="step-math">\[\sin\theta = \dfrac{y}{r} = \dfrac{-2}{3} \quad\Longrightarrow\quad y = -2,\; r = 3\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Solve for \(x\)</div>
+                    <div class="step-math">\[x^{2} + (-2)^{2} = 3^{2} \;\Longrightarrow\; x^{2} = 5 \;\Longrightarrow\; x = \pm\sqrt{5}\]
+                        <div class="annotation">In Q3 the \(x\)-coordinate is negative, so \(x = -\sqrt{5}\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Compute cos and cot</div>
+                    <div class="step-math">\[\cos\theta = \dfrac{x}{r} = -\dfrac{\sqrt{5}}{3} \qquad \cot\theta = \dfrac{x}{y} = \dfrac{-\sqrt{5}}{-2} = \dfrac{\sqrt{5}}{2}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answers</div>
+                    <div class="step-math">\[\cos\theta = -\dfrac{\sqrt{5}}{3} \qquad \cot\theta = \dfrac{\sqrt{5}}{2}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Concept: Solving for θ from a value                  -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-11">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Given a Trig Value, Find <em>All</em> Angles</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When you're handed a trig <em>value</em> instead of an angle, expect <strong>two</strong> answers in one revolution — one in each of the two quadrants where the function has that sign.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Step 1</div>
+                <div class="fn-eq-stack">
+                    <div>Find the reference angle \(\theta'\) by taking the inverse trig function of the <em>absolute value</em>.</div>
+                </div>
+            </div>
+            <div class="formula-row">
+                <div class="fn-label">Step 2</div>
+                <div class="fn-eq-stack">
+                    <div>Identify the two quadrants where the given trig function has the given sign (via ASTC).</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Step 3</div>
+                <div class="fn-eq-stack">
+                    <div>Build each angle from \(\theta'\) using the same quadrant formulas as before:<br>Q2: \(180^\circ - \theta'\) &nbsp;·&nbsp; Q3: \(180^\circ + \theta'\) &nbsp;·&nbsp; Q4: \(360^\circ - \theta'\)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box orange">
+            <div class="note-title">Why Absolute Value?</div>
+            <div class="note-copy">Calculator's inverse functions return only one angle. Stripping the sign forces \(\theta'\) into Q1, then you control where it lives using ASTC — instead of letting the calculator decide.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — Example 6: tan θ = -0.4623                           -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-12" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Given \(\tan\theta = -0.4623\), Find \(\theta\) in \([0^\circ, 360^\circ)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">If \(\tan\theta = -0.4623\) and \(0^\circ \le \theta &lt; 360^\circ\), find \(\theta\) to the nearest \(0.1^\circ\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Reference Angle (drop the sign)</div>
+                    <div class="step-math">\[\theta' = \tan^{-1}(0.4623) \approx 24.8°\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Where Is Tangent Negative?</div>
+                    <div class="step-math" style="text-align: left; font-size: 0.84em;">
+                        ASTC: tangent is positive in Q1 and Q3, so it's <strong>negative in Q2 and Q4</strong>.
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Build Both Angles from the Reference Angle</div>
+                    <div class="step-math">\[\theta_{\text{Q2}} = 180° - 24.8° = 155.2° \qquad \theta_{\text{Q4}} = 360° - 24.8° = 335.2°\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answers</div>
+                    <div class="step-math">\[\theta \approx 155.2° \quad\text{or}\quad \theta \approx 335.2°\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — Example 7: cos θ = -0.3842 (radians)                 -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-13" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 7</div>
+        <div class="slide-title">Given \(\cos\theta = -0.3842\), Find \(\theta\) in \([0, 2\pi)\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">If \(\cos\theta = -0.3842\) and \(0 \le \theta &lt; 2\pi\), find \(\theta\) to the nearest \(0.0001\) radian.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-13-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Reference Angle</div>
+                    <div class="step-math">\[\theta' = \cos^{-1}(0.3842) \approx 1.1765\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Where Is Cosine Negative?</div>
+                    <div class="step-math" style="text-align: left; font-size: 0.84em;">
+                        ASTC: cosine is positive in Q1 and Q4, so it's <strong>negative in Q2 and Q3</strong>.
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Build Both Angles from the Reference Angle</div>
+                    <div class="step-math">\[\theta_{\text{Q2}} = \pi - 1.1765 \approx 1.9651 \qquad \theta_{\text{Q3}} = \pi + 1.1765 \approx 4.3181\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-13-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answers</div>
+                    <div class="step-math">\[\theta \approx 1.9651 \quad\text{or}\quad \theta \approx 4.3181 \text{ rad}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — Wrap-up                                              -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-14">
+    <div class="slide-header">
+        <div class="ref-label">Wrap-up</div>
+        <div class="slide-title">By the End of 4.5 You Should Be Able To...</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Check yourself against each of these. If anything feels shaky, revisit the relevant example before the Unit 4 review.</div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Skill 1 — Reference Angles</div>
+                <div class="card-copy">Find the reference angle for any \(\theta\) in degrees or radians by identifying its quadrant and applying the right formula.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 2 — Coterminal First</div>
+                <div class="card-copy">Reduce a negative or oversized angle to the interval \([0^\circ, 360^\circ)\) or \([0, 2\pi)\) before applying the reference-angle formula.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Skill 3 — Trig from a Point</div>
+                <div class="card-copy">Given any point on the terminal side, use \(r = \sqrt{x^2 + y^2}\) to compute all six trig values.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Skill 4 — Two Constraints, One Quadrant</div>
+                <div class="card-copy">Use sign clues (like "sine negative AND tangent positive") to pin down which quadrant \(\theta\) is in, then find the missing trig values.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 5 — Solve for Angles</div>
+                <div class="card-copy">Given a trig value, find the reference angle from its absolute value, then locate both angles in \([0^\circ, 360^\circ)\) using ASTC.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Skill 6 — Expect Two Answers</div>
+                <div class="card-copy">When solving sin/cos/tan = (value), there are two angles in one revolution. Don't stop at the first one.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Ref Angles',   slideId: 'slide-2' },
+            { label: 'Examples 1–3', slideId: 'slide-4' },
+            { label: 'Any Point',    slideId: 'slide-7' },
+            { label: 'Examples 4–5', slideId: 'slide-9' },
+            { label: 'Solve Angles', slideId: 'slide-11' },
+            { label: 'Examples 6–7', slideId: 'slide-12' },
+            { label: 'Wrap-up',      slideId: 'slide-14' }
+        ]
+    });
+</script>
+</body>
+</html>

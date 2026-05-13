@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.3 — Linear and Angular Speed</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific SVG only. All layout uses shared classes. */
+        .circ-bg        { fill: none; stroke: #1e293b; stroke-width: 2.2; }
+        .circ-radius   { stroke: #0891b2; stroke-width: 2.4; fill: none; }
+        .circ-arc-hi   { stroke: #dc2626; stroke-width: 4; fill: none; }
+        .circ-sector   { fill: #fee2e2; stroke: none; opacity: 0.7; }
+        .circ-dot      { fill: #1e293b; stroke: white; stroke-width: 1.4; }
+        .circ-letter   { font: italic 600 14px 'Source Sans 3', sans-serif; fill: #0f172a; }
+        .circ-side     { font: 700 14px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .circ-angle    { font: 700 14px 'Source Sans 3', sans-serif; fill: #dc2626; }
+        .arc-arrow     { fill: #dc2626; stroke: none; }
+
+        /* Application illustrations */
+        .clock-face   { fill: #1e293b; stroke: none; }
+        .clock-inner  { fill: white; stroke: none; }
+        .clock-mark   { fill: #1e293b; }
+        .clock-hand   { stroke: #dc2626; stroke-width: 4; stroke-linecap: round; }
+        .clock-pivot  { fill: #dc2626; }
+
+        .turb-tower   { fill: #1e293b; }
+        .turb-blade   { fill: #1e293b; stroke: none; }
+        .turb-hub     { fill: #475569; stroke: #1e293b; stroke-width: 1.5; }
+        .turb-meas    { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; }
+
+        .wheel-rim    { fill: none; stroke: #1e293b; stroke-width: 3; }
+        .wheel-diam   { stroke: #475569; stroke-width: 1.5; }
+        .wheel-tag    { font: 600 13px 'Source Sans 3', sans-serif; fill: #1e293b; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper">
+
+<!-- ============================================================ -->
+<!-- SLIDE 0 — Title                                                -->
+<!-- ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 4 · Intro to Trigonometry</div>
+    <div class="title-main">4.3 Linear and Angular Speed</div>
+    <div class="title-objective">Objective: Compute arc length and sector area, and use them to distinguish between linear and angular speed in circular motion.</div>
+    <div class="identity-chips">
+        <span class="chip">arc length</span>
+        <span class="chip">sector area</span>
+        <span class="chip">angular speed (rad/time)</span>
+        <span class="chip">linear speed (length/time)</span>
+        <span class="chip">unit conversions</span>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Concept: What is a radian?                           -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">What Is a Radian, Really?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A radian is defined by a <em>proportion</em>: the share of a full circle's arc taken up by the angle equals the share of \(2\pi\) taken up by the angle's measure.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Central Angle and Its Arc</div>
+                    <svg class="diagram" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Circle, center O(150,140), radius 90 -->
+                        <circle class="circ-bg" cx="150" cy="140" r="90"/>
+                        <!-- Two radii: OA at 55°, OB at 0° -->
+                        <line class="circ-radius" x1="150" y1="140" x2="201.6" y2="66.3"/>
+                        <line class="circ-radius" x1="150" y1="140" x2="240"   y2="140"/>
+                        <!-- Highlighted arc from B(240,140) up to A(201.6,66.3) -->
+                        <path class="circ-arc-hi" d="M 240 140 A 90 90 0 0 0 201.6 66.3"/>
+                        <!-- Vertex dots -->
+                        <circle class="circ-dot" cx="150"   cy="140"  r="4"/>
+                        <circle class="circ-dot" cx="201.6" cy="66.3" r="4"/>
+                        <circle class="circ-dot" cx="240"   cy="140"  r="4"/>
+                        <text class="circ-letter" x="138" y="158">O</text>
+                        <text class="circ-letter" x="208" y="60" >A</text>
+                        <text class="circ-letter" x="248" y="146">B</text>
+                        <!-- r label on the upper radius -->
+                        <text class="circ-side" x="178" y="100" text-anchor="middle" transform="rotate(-55 178 100)">r</text>
+                        <!-- arc label -->
+                        <text class="circ-angle" x="252" y="100" text-anchor="start">arc <tspan font-style="italic">s</tspan></text>
+                        <!-- central angle θ -->
+                        <path class="arc-pos" d="M 180 140 A 30 30 0 0 0 167.2 116.8" stroke="#16a34a" stroke-width="2" fill="none"/>
+                        <text class="circ-side" x="184" y="124" fill="#16a34a">θ</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="formula-grid">
+                    <div class="formula-row teal">
+                        <div class="fn-label">Proportion</div>
+                        <div class="fn-eq-stack">
+                            <div>\[\dfrac{\text{arc length}}{\text{circumference}} = \dfrac{\text{central angle}}{2\pi}\]</div>
+                        </div>
+                    </div>
+                    <div class="formula-row">
+                        <div class="fn-label">In Symbols</div>
+                        <div class="fn-eq-stack">
+                            <div>\[\dfrac{s}{2\pi r} = \dfrac{\theta}{2\pi} \quad\Longrightarrow\quad \dfrac{s}{r} = \theta\]</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="note-box navy" style="margin-top: 0.6rem;">
+                    <div class="note-title">Definition</div>
+                    <div class="note-copy">A <strong>radian</strong> is the measure of a central angle whose intercepted arc has length equal to the radius. We use the letter \(s\) for arc length.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Concept: 1 radian visually                           -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">One Radian, Two Radians — Just Count Radii Along the Arc</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">If you wrap a length of one radius along the circle's edge, the angle it cuts out is exactly one radian. Wrap two radii, you get two radians.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">arc = r → 1 radian</div>
+                    <svg class="diagram" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="circ-bg" cx="140" cy="130" r="80"/>
+                        <!-- Two radii at 0 rad and at 1 rad ≈ 57.3° -->
+                        <line class="circ-radius" x1="140" y1="130" x2="220" y2="130"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="183.2" y2="62.7"/>
+                        <!-- Arc from 0° to 1 rad ≈ 57.3° -->
+                        <path class="circ-arc-hi" d="M 220 130 A 80 80 0 0 0 183.2 62.7"/>
+                        <circle class="circ-dot" cx="140" cy="130" r="4"/>
+                        <text class="circ-side" x="226" y="124" text-anchor="start">arc = 12 cm</text>
+                        <text class="circ-side" x="180" y="106" text-anchor="end">r = 12 cm</text>
+                        <text class="circ-angle" x="194" y="146" text-anchor="middle">1 rad</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">arc = 2r → 2 radians</div>
+                    <svg class="diagram" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="circ-bg" cx="140" cy="130" r="80"/>
+                        <!-- Two radii at 0 rad and at 2 rad ≈ 114.6° -->
+                        <line class="circ-radius" x1="140" y1="130" x2="220" y2="130"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="106.7" y2="57.3"/>
+                        <!-- Arc from 0° to 2 rad ≈ 114.6° -->
+                        <path class="circ-arc-hi" d="M 220 130 A 80 80 0 0 0 106.7 57.3"/>
+                        <circle class="circ-dot" cx="140" cy="130" r="4"/>
+                        <text class="circ-side" x="226" y="124" text-anchor="start">arc = 24 cm</text>
+                        <text class="circ-side" x="160" y="100" text-anchor="end">r = 12 cm</text>
+                        <text class="circ-angle" x="138" y="78" text-anchor="middle">2 rad</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Same Ratio, Any Circle</div>
+                <div class="card-copy">\(\dfrac{\text{arc}}{\text{radius}}\) is unitless — it doesn't matter whether the circle is the size of a coin or the size of the Earth.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Why Radians Beat Degrees</div>
+                <div class="card-copy">Radians come straight from the geometry of the circle. Degrees are an arbitrary choice (why 360?). For arc-length and speed formulas, radians keep the algebra clean.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — Reference: Arc Length                                -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Arc Length Formula</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Multiply the radius by the central angle (in radians) to get the arc length.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Arc Length \(s\)</div>
+                    <svg class="diagram" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+                        <circle class="circ-bg" cx="140" cy="130" r="80"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="220" y2="130"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="187.1" y2="65.3"/>
+                        <path class="circ-arc-hi" d="M 220 130 A 80 80 0 0 0 187.1 65.3"/>
+                        <circle class="circ-dot" cx="140" cy="130" r="4"/>
+                        <text class="circ-side" x="180" y="100" text-anchor="end">r</text>
+                        <text class="circ-angle" x="230" y="92" text-anchor="start">s</text>
+                        <path d="M 175 130 A 35 35 0 0 0 156.2 102" stroke="#16a34a" stroke-width="2" fill="none"/>
+                        <text class="circ-side" x="178" y="118" fill="#16a34a">θ</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="formula-grid">
+                    <div class="formula-row teal">
+                        <div class="fn-label">Arc Length</div>
+                        <div class="fn-eq-stack">
+                            <div>\[s = \theta \, r\]</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cards-grid" style="grid-template-columns: 1fr; margin-top: 0.6rem;">
+                    <div class="info-card teal">
+                        <div class="card-title">Use Radians, Not Degrees</div>
+                        <div class="card-copy">\(\theta\) must be in radians. If you're given degrees, convert <em>before</em> plugging in.</div>
+                    </div>
+                    <div class="info-card green">
+                        <div class="card-title">Unit Circle Bonus</div>
+                        <div class="card-copy">When \(r = 1\), the formula collapses to \(s = \theta\). On a unit circle, the radian measure of the angle equals the arc length itself.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — Example 1: Arc length, r=4, θ=240°                   -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Arc Length for a Reflex Angle</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A circle has radius \(r = 4\) inches. Find the length of the arc intercepted by a central angle of \(240°\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-4-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Convert the Angle to Radians</div>
+                    <div class="step-math">\[240° \times \dfrac{\pi}{180°} = \dfrac{240\pi}{180} = \dfrac{4\pi}{3} \text{ rad}\]
+                        <div class="annotation">The arc-length formula \(s = \theta r\) requires radians.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Apply the Formula</div>
+                    <div class="step-math">\[s = \theta r = \left(\dfrac{4\pi}{3}\right)(4)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Simplify</div>
+                    <div class="step-math">\[s = \dfrac{16\pi}{3} \text{ in}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-4-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answer</div>
+                    <div class="step-math">\[s = \dfrac{16\pi}{3} \approx 16.76 \text{ in}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Reference: Sector Area                               -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-5">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Area of a Sector</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">A <em>sector</em> is the "pie-slice" region between two radii and an arc. Its area is half the angle times the radius squared.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">Sector — Pie-Slice Region</div>
+                    <svg class="diagram" viewBox="0 0 280 240" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Sector fill: from O to A, arc, to B, back to O -->
+                        <path class="circ-sector" d="M 140 130 L 220 130 A 80 80 0 0 0 187.1 65.3 Z"/>
+                        <circle class="circ-bg" cx="140" cy="130" r="80"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="220" y2="130"/>
+                        <line class="circ-radius" x1="140" y1="130" x2="187.1" y2="65.3"/>
+                        <path class="circ-arc-hi" d="M 220 130 A 80 80 0 0 0 187.1 65.3"/>
+                        <circle class="circ-dot" cx="140" cy="130" r="4"/>
+                        <text class="circ-side" x="180" y="100" text-anchor="end">r</text>
+                        <path d="M 175 130 A 35 35 0 0 0 156.2 102" stroke="#16a34a" stroke-width="2" fill="none"/>
+                        <text class="circ-side" x="178" y="118" fill="#16a34a">θ</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="formula-grid">
+                    <div class="formula-row teal">
+                        <div class="fn-label">Sector Area</div>
+                        <div class="fn-eq-stack">
+                            <div>\[A = \tfrac{1}{2}\,\theta\, r^{2}\]</div>
+                        </div>
+                    </div>
+                    <div class="formula-row">
+                        <div class="fn-label">Proportion</div>
+                        <div class="fn-eq-stack">
+                            <div>\[\dfrac{A_{\text{sector}}}{A_{\text{circle}}} = \dfrac{\theta}{2\pi}\]</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="note-box navy" style="margin-top: 0.6rem;">
+                    <div class="note-title">Same Idea as Arc Length</div>
+                    <div class="note-copy">Both \(s\) and \(A\) come from the same proportion: the slice's share of the angle equals its share of the whole. Once again, \(\theta\) must be in radians.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — Concept: Linear vs Angular Speed                     -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-6">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Two Ways to Measure "How Fast"</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">When a point travels around a circle, we can measure how fast the <em>angle</em> changes or how far the <em>point</em> moves. These are different measures with different units.</div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Angular Speed (\(\omega\))</div>
+                <div class="card-copy">How fast the central angle changes.<br><strong>Units:</strong> radians per second / minute / hour (or revolutions per minute, etc.)</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Linear Speed (\(v\))</div>
+                <div class="card-copy">How fast a point on the circle moves along the arc.<br><strong>Units:</strong> length per time (cm/sec, ft/min, mph, …)</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Connecting Them</div>
+                <div class="card-copy">Both come from the same revolutions-per-time, then converted: angular uses \(2\pi\) rad/rev, linear uses the circumference per rev.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — Reference: Speed Formulas                            -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-7">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Linear and Angular Speed — Setup</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Start with rotations per unit time. Multiply by the right conversion factor to land on the unit you want.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Angular</div>
+                <div class="fn-eq-stack">
+                    <div>\[\omega = \dfrac{\text{revolutions}}{\text{time}} \times \dfrac{2\pi \text{ rad}}{1 \text{ rev}} = \dfrac{\text{radians}}{\text{time}}\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Linear</div>
+                <div class="fn-eq-stack">
+                    <div>\[v = \dfrac{\text{revolutions}}{\text{time}} \times \dfrac{\text{circumference}}{1 \text{ rev}} = \dfrac{\text{length}}{\text{time}}\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card">
+                <div class="card-title">Pick Your Conversion Factor</div>
+                <div class="card-copy">Each revolution sweeps \(2\pi\) radians (for angular speed) or travels one circumference \(2\pi r\) (for linear speed). That's the only thing that changes.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Why \(v = r\omega\)</div>
+                <div class="card-copy">Multiplying angular speed by the radius gives linear speed: every radian along the angle corresponds to \(r\) units along the arc.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — Example 2: Clock second hand                          -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Linear Speed of a Clock's Second Hand</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The second hand of a clock is \(10.2\) cm long. Find the linear speed (in cm/sec) of its tip.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Find the Rate in Revolutions per Second</div>
+                    <div class="step-math">\[\dfrac{1 \text{ rev}}{60 \text{ sec}}\]
+                        <div class="annotation">A second hand completes one full revolution every 60 seconds.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Multiply by the Circumference</div>
+                    <div class="step-math">\[v = \dfrac{1 \text{ rev}}{60 \text{ sec}} \times \dfrac{2\pi(10.2) \text{ cm}}{1 \text{ rev}}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Simplify</div>
+                    <div class="step-math">\[v = \dfrac{20.4\pi}{60} = \dfrac{0.34\pi \text{ cm}}{1 \text{ sec}}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answer</div>
+                    <div class="step-math">\[v \approx 1.068 \text{ cm/sec}\]</div>
+                    <div class="step-math" style="font-size: 0.74em; color: #93c5fd;">If the question asked for cm/min, you'd use the rate \(1 \text{ rev}/1 \text{ min}\) and get \(20.4\pi \approx 64.1\) cm/min.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — Example 3: Wind turbine                              -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Wind Turbine — Angular and Linear Speed</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">The blades of a wind turbine are \(116\) ft long. The propeller rotates at \(15\) revolutions per minute. Find (a) the angular speed in rad/min and (b) the linear speed of the tip of a blade.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Part (a) — Set Up Angular Speed</div>
+                    <div class="step-math">\[\omega = \dfrac{15 \text{ rev}}{1 \text{ min}} \times \dfrac{2\pi \text{ rad}}{1 \text{ rev}}\]
+                        <div class="annotation">The "rev" units cancel, leaving radians per minute.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box dark">
+                    <div class="step-label">Part (a) — Evaluate</div>
+                    <div class="step-math">\[\omega = 30\pi \approx 94.25 \text{ rad/min}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box teal">
+                    <div class="step-label">Part (b) — Set Up Linear Speed</div>
+                    <div class="step-math">\[v = \dfrac{15 \text{ rev}}{1 \text{ min}} \times \dfrac{2\pi(116) \text{ ft}}{1 \text{ rev}}\]
+                        <div class="annotation">Now we use the <strong>circumference</strong> \(2\pi r = 232\pi\) feet per revolution.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Part (b) — Evaluate</div>
+                    <div class="step-math">\[v = 3480\pi \approx 10{,}932.7 \text{ ft/min}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Example 4: Wheel mph (unit conversion chain)        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Wheel Speed in Miles per Hour</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A wheel with diameter \(24\) inches rotates at \(800\) rpm. Find (a) the angular speed and (b) the linear speed of a point \(P\) on the circumference, in mi/hr. Use \(5280\) ft \(= 1\) mile.</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Part (a) — Angular Speed</div>
+                    <div class="step-math">\[\omega = \dfrac{800 \text{ rev}}{1 \text{ min}} \times \dfrac{2\pi \text{ rad}}{1 \text{ rev}} = 1600\pi \approx 5026.5 \text{ rad/min}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Part (b) — Set Up Linear Speed (Convert as You Go)</div>
+                    <div class="step-math">\[v = \dfrac{800 \text{ rev}}{1 \text{ min}} \times \dfrac{24\pi \text{ in}}{1 \text{ rev}} \times \dfrac{60 \text{ min}}{1 \text{ hr}} \times \dfrac{1 \text{ ft}}{12 \text{ in}} \times \dfrac{1 \text{ mi}}{5280 \text{ ft}}\]
+                        <div class="annotation">Diameter is 24 in, so the circumference is \(24\pi\) in. Then chain conversions: min→hr, in→ft, ft→mi.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Part (b) — Cancel and Simplify</div>
+                    <div class="step-math">\[v = \dfrac{800 \cdot 24\pi \cdot 60}{12 \cdot 5280} = \dfrac{1{,}152{,}000\,\pi}{63{,}360}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answer</div>
+                    <div class="step-math">\[v \approx 57.1 \text{ mph}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Wrap-up                                             -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-11">
+    <div class="slide-header">
+        <div class="ref-label">Wrap-up</div>
+        <div class="slide-title">By the End of 4.3 You Should Be Able To...</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Check yourself against each of these. If anything feels shaky, revisit the relevant example before moving on to 4.4.</div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Skill 1 — Radian Meaning</div>
+                <div class="card-copy">Explain what one radian is in terms of arcs and radii, not just as a number.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 2 — Arc Length</div>
+                <div class="card-copy">Apply \(s = \theta r\), remembering to convert degrees to radians first.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Skill 3 — Sector Area</div>
+                <div class="card-copy">Apply \(A = \tfrac{1}{2}\theta r^2\) for the "pie-slice" region of a circle.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Skill 4 — Distinguish the Two Speeds</div>
+                <div class="card-copy">Identify when a problem asks for angular speed (rate of angle change) versus linear speed (rate of distance traveled).</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 5 — Set Up the Conversion Chain</div>
+                <div class="card-copy">Start from revolutions per unit time and multiply by \(2\pi\) rad/rev or the circumference per rev to land on the units you want.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Skill 6 — Compound Unit Conversions</div>
+                <div class="card-copy">Chain together time and length conversions to express a speed in any units the problem asks for, such as mph.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'Radians',     slideId: 'slide-1' },
+            { label: 'Arc Length',  slideId: 'slide-3' },
+            { label: 'Sector Area', slideId: 'slide-5' },
+            { label: 'Speed Setup', slideId: 'slide-6' },
+            { label: 'Clock',       slideId: 'slide-8' },
+            { label: 'Turbine',     slideId: 'slide-9' },
+            { label: 'Wheel',       slideId: 'slide-10' },
+            { label: 'Wrap-up',     slideId: 'slide-11' }
+        ]
+    });
+</script>
+</body>
+</html>

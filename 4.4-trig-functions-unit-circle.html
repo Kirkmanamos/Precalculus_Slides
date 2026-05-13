@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.4 — Trig Functions: The Unit Circle</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific SVG only. Layout uses shared classes. */
+        .axis           { stroke: #475569; stroke-width: 1.6; fill: none; }
+        .axis-arrow     { fill: #475569; stroke: none; }
+        .axis-letter    { font: italic 600 13px 'Source Sans 3', sans-serif; fill: #64748b; }
+
+        .tri-leg        { stroke: #2563eb; stroke-width: 2.6; fill: none; }
+        .tri-hyp        { stroke: #2563eb; stroke-width: 2.6; fill: none; }
+        .tri-rt         { stroke: #475569; stroke-width: 2; fill: none; }
+        .tri-fill       { fill: #eff6ff; }
+        .tri-side       { font: 700 14px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .tri-angle      { font: 700 14px 'Source Sans 3', sans-serif; fill: #d97706; }
+        .tri-arc        { stroke: #d97706; stroke-width: 1.8; fill: none; }
+
+        /* Quarter-circle Q1 derivation diagrams */
+        .qc-arc         { stroke: #1e293b; stroke-width: 1.8; fill: none; }
+        .qc-tri-fill    { fill: #f0fdfa; stroke: none; }
+        .qc-ray         { stroke: #1e293b; stroke-width: 2.4; fill: none; }
+        .qc-tri-line    { stroke: #1e293b; stroke-width: 2; fill: none; }
+        .qc-dash        { stroke: #94a3b8; stroke-width: 1.3; stroke-dasharray: 4 3; fill: none; }
+        .qc-arrow-head  { fill: #1e293b; stroke: none; }
+        .qc-coord-dot   { fill: #dc2626; stroke: white; stroke-width: 1.4; }
+
+        /* Full unit circle */
+        .uc-line   { fill: none; stroke: #1e293b; stroke-width: 2; }
+        .uc-diam   { stroke: #cbd5e1; stroke-width: 1; fill: none; }
+        .uc-dot    { fill: #1e293b; }
+        .uc-rad    { font: 700 11px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .uc-bar    { stroke: #1e293b; stroke-width: 1; }
+        .uc-coord  { font: 600 10px 'Source Sans 3', sans-serif; fill: #475569; }
+
+        /* ASTC quadrant chart */
+        .astc-axis   { stroke: #1e293b; stroke-width: 2; fill: none; }
+        .astc-axis-arrow { fill: #1e293b; stroke: none; }
+        .astc-quad   { font: 700 16px 'Source Sans 3', sans-serif; fill: #1e293b; }
+        .astc-letter { font: 800 32px 'Source Sans 3', sans-serif; fill: #dc2626; }
+        .astc-rule   { font: 600 14px 'Source Sans 3', sans-serif; fill: #0891b2; }
+        .astc-sign   { font: italic 700 14px 'Source Sans 3', sans-serif; fill: #64748b; }
+    </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+
+<div class="slides-wrapper">
+
+<!-- ============================================================ -->
+<!-- SLIDE 0 — Title                                                -->
+<!-- ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 4 · Intro to Trigonometry</div>
+    <div class="title-main">4.4 Trig Functions: The Unit Circle</div>
+    <div class="title-objective">Objective: Use the unit circle to evaluate all six trigonometric functions for standard angles, and apply periodicity and even/odd symmetry.</div>
+    <div class="identity-chips">
+        <span class="chip">unit circle coords</span>
+        <span class="chip">six trig values</span>
+        <span class="chip">ASTC signs</span>
+        <span class="chip">periodicity</span>
+        <span class="chip">even / odd functions</span>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 1 — Special Right Triangles Refresher                    -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Before We Build the Unit Circle — Special Right Triangles</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">The 45-45-90 and 30-60-90 triangles supply the side ratios for every special angle on the unit circle.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">45-45-90 — Isosceles Right</div>
+                    <svg class="diagram" viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+                        <polygon class="tri-fill" points="40,200 220,200 220,20"/>
+                        <line class="tri-leg" x1="40"  y1="200" x2="220" y2="200"/>
+                        <line class="tri-leg" x1="220" y1="200" x2="220" y2="20"/>
+                        <line class="tri-hyp" x1="40"  y1="200" x2="220" y2="20"/>
+                        <polyline class="tri-rt" points="206,200 206,186 220,186"/>
+                        <path class="tri-arc" d="M 78 200 A 38 38 0 0 0 73.1 173.1"/>
+                        <text class="tri-angle" x="86" y="192">45°</text>
+                        <path class="tri-arc" d="M 220 58 A 38 38 0 0 0 193.1 53.1"/>
+                        <text class="tri-angle" x="180" y="46" text-anchor="end">45°</text>
+                        <text class="tri-side" x="130" y="222" text-anchor="middle">n</text>
+                        <text class="tri-side" x="232" y="115" text-anchor="start">n</text>
+                        <text class="tri-side" x="115" y="100" text-anchor="middle" transform="rotate(-45 115 100)">
+                            n√<tspan text-decoration="overline">2</tspan>
+                        </text>
+                    </svg>
+                </div>
+                <div class="info-card teal" style="margin-top: 0.5rem;">
+                    <div class="card-title">Rule</div>
+                    <div class="card-copy">\[\text{hypotenuse} = \sqrt{2}\,\cdot\,\text{leg}\]</div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">30-60-90 — Half-Equilateral</div>
+                    <svg class="diagram" viewBox="0 0 260 240" xmlns="http://www.w3.org/2000/svg">
+                        <!-- short leg = 90 (horizontal), long leg = 90√3 ≈ 155.9 (vertical), hyp = 180 -->
+                        <polygon class="tri-fill" points="40,200 220,200 220,44.1"/>
+                        <line class="tri-leg" x1="40"  y1="200" x2="220" y2="200"/>
+                        <line class="tri-leg" x1="220" y1="200" x2="220" y2="44.1"/>
+                        <line class="tri-hyp" x1="40"  y1="200" x2="220" y2="44.1"/>
+                        <polyline class="tri-rt" points="206,200 206,186 220,186"/>
+                        <!-- 60° at bottom-left -->
+                        <path class="tri-arc" d="M 75 200 A 35 35 0 0 0 57.5 169.7"/>
+                        <text class="tri-angle" x="80" y="192">60°</text>
+                        <!-- 30° at top -->
+                        <path class="tri-arc" d="M 220 79 A 35 35 0 0 0 200.7 49.5"/>
+                        <text class="tri-angle" x="195" y="72" text-anchor="end">30°</text>
+                        <text class="tri-side" x="130" y="222" text-anchor="middle">n</text>
+                        <text class="tri-side" x="232" y="125" text-anchor="start">n√<tspan text-decoration="overline">3</tspan></text>
+                        <text class="tri-side" x="115" y="115" text-anchor="middle" transform="rotate(-41 115 115)">2n</text>
+                    </svg>
+                </div>
+                <div class="info-card green" style="margin-top: 0.5rem;">
+                    <div class="card-title">Rules</div>
+                    <div class="card-copy">\[\text{hypotenuse} = 2\,\cdot\,\text{short leg}\]\[\text{long leg} = \sqrt{3}\,\cdot\,\text{short leg}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2 — Q1 Build: π/6                                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Q1 Coordinates at \(\theta = \dfrac{\pi}{6}\) (30°)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Drop a perpendicular from the point on the unit circle to the \(x\)-axis. The triangle inside is a 30-60-90 with hypotenuse 1.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <svg class="diagram" viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Origin (40,280), quarter-circle radius 220 -->
+                        <path class="qc-arc" d="M 260 280 A 220 220 0 0 0 40 60"/>
+                        <!-- Axes -->
+                        <line class="axis" x1="30" y1="280" x2="280" y2="280"/>
+                        <line class="axis" x1="40" y1="290" x2="40" y2="50"/>
+                        <polygon class="axis-arrow" points="280,280 272,276 272,284"/>
+                        <polygon class="axis-arrow" points="40,50  36,58 44,58"/>
+                        <!-- π/6 point: (40 + 220·√3/2, 280 - 220·1/2) = (40 + 190.5, 280 - 110) = (230.5, 170) -->
+                        <polygon class="qc-tri-fill" points="40,280 230.5,280 230.5,170"/>
+                        <line class="qc-ray" x1="40" y1="280" x2="230.5" y2="170"/>
+                        <line class="qc-tri-line" x1="230.5" y1="280" x2="230.5" y2="170"/>
+                        <polyline class="tri-rt" points="216.5,280 216.5,266 230.5,266"/>
+                        <!-- Angle arc for 30° -->
+                        <path class="tri-arc" d="M 90 280 A 50 50 0 0 0 83.3 254.5"/>
+                        <text class="tri-angle" x="96" y="270">30°</text>
+                        <!-- Hyp label "1" -->
+                        <text class="tri-side" x="125" y="220" text-anchor="middle" transform="rotate(-30 125 220)">1</text>
+                        <!-- horizontal leg label √3/2 (below x-axis) -->
+                        <text class="tri-side" x="135" y="302" text-anchor="middle">√<tspan text-decoration="overline">3</tspan>/2</text>
+                        <!-- vertical leg label 1/2 (right of vertical line) -->
+                        <text class="tri-side" x="240" y="230" text-anchor="start">1/2</text>
+                        <!-- Endpoints labeled -->
+                        <text class="axis-letter" x="44" y="52" text-anchor="start">(0,1)</text>
+                        <text class="axis-letter" x="272" y="298" text-anchor="end">(1,0)</text>
+                        <!-- The point on the circle -->
+                        <circle class="qc-coord-dot" cx="230.5" cy="170" r="5"/>
+                        <text class="uc-rad" x="247" y="158" font-size="14">π/6</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-box teal" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">From the 30-60-90 with hyp = 1</div>
+                    <div class="step-math" style="font-size: 0.82em;">
+                        short leg (across from 30°) = \(\tfrac{1}{2}\)<br>
+                        long leg (across from 60°) = \(\tfrac{\sqrt{3}}{2}\)
+                    </div>
+                </div>
+                <div class="step-box dark">
+                    <div class="step-label">Coordinate Pair</div>
+                    <div class="step-math">\[\left(\dfrac{\sqrt{3}}{2},\;\dfrac{1}{2}\right)\]</div>
+                </div>
+                <div class="note-box navy" style="margin-top: 0.55rem;">
+                    <div class="note-title">Pattern</div>
+                    <div class="note-copy">The horizontal leg is the \(x\)-coordinate, the vertical leg is the \(y\)-coordinate. We'll see why on slide 6.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 3 — Q1 Build: π/4                                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Q1 Coordinates at \(\theta = \dfrac{\pi}{4}\) (45°)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">At 45°, the triangle is 45-45-90 with hypotenuse 1, so both legs are equal — and equal to \(\sqrt{2}/2\).</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <svg class="diagram" viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
+                        <path class="qc-arc" d="M 260 280 A 220 220 0 0 0 40 60"/>
+                        <line class="axis" x1="30" y1="280" x2="280" y2="280"/>
+                        <line class="axis" x1="40" y1="290" x2="40" y2="50"/>
+                        <polygon class="axis-arrow" points="280,280 272,276 272,284"/>
+                        <polygon class="axis-arrow" points="40,50  36,58 44,58"/>
+                        <!-- π/4 point: (40 + 220·√2/2, 280 - 220·√2/2) = (40+155.6, 280-155.6) = (195.6, 124.4) -->
+                        <polygon class="qc-tri-fill" points="40,280 195.6,280 195.6,124.4"/>
+                        <line class="qc-ray" x1="40" y1="280" x2="195.6" y2="124.4"/>
+                        <line class="qc-tri-line" x1="195.6" y1="280" x2="195.6" y2="124.4"/>
+                        <polyline class="tri-rt" points="181.6,280 181.6,266 195.6,266"/>
+                        <path class="tri-arc" d="M 90 280 A 50 50 0 0 0 75.4 244.6"/>
+                        <text class="tri-angle" x="92" y="262">45°</text>
+                        <text class="tri-side" x="105" y="210" text-anchor="middle" transform="rotate(-45 105 210)">1</text>
+                        <text class="tri-side" x="118" y="302" text-anchor="middle">√<tspan text-decoration="overline">2</tspan>/2</text>
+                        <text class="tri-side" x="205" y="208" text-anchor="start">√<tspan text-decoration="overline">2</tspan>/2</text>
+                        <text class="axis-letter" x="44" y="52" text-anchor="start">(0,1)</text>
+                        <text class="axis-letter" x="272" y="298" text-anchor="end">(1,0)</text>
+                        <circle class="qc-coord-dot" cx="195.6" cy="124.4" r="5"/>
+                        <text class="uc-rad" x="212" y="113" font-size="14">π/4</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-box teal" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">From the 45-45-90 with hyp = 1</div>
+                    <div class="step-math" style="font-size: 0.82em;">
+                        Each leg = \(\dfrac{1}{\sqrt{2}} = \dfrac{\sqrt{2}}{2}\)<br>
+                        (rationalize the denominator)
+                    </div>
+                </div>
+                <div class="step-box dark">
+                    <div class="step-label">Coordinate Pair</div>
+                    <div class="step-math">\[\left(\dfrac{\sqrt{2}}{2},\;\dfrac{\sqrt{2}}{2}\right)\]</div>
+                </div>
+                <div class="note-box navy" style="margin-top: 0.55rem;">
+                    <div class="note-title">Symmetry</div>
+                    <div class="note-copy">\(\pi/4\) is the unique angle in Q1 where \(x = y\). That's why the sine and cosine match here.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4 — Q1 Build: π/3                                        -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-4">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Q1 Coordinates at \(\theta = \dfrac{\pi}{3}\) (60°)</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Same 30-60-90 triangle as \(\pi/6\), but now we're looking at the \(60^\circ\) angle at the origin. The legs swap roles.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <svg class="diagram" viewBox="0 0 340 320" xmlns="http://www.w3.org/2000/svg">
+                        <path class="qc-arc" d="M 260 280 A 220 220 0 0 0 40 60"/>
+                        <line class="axis" x1="30" y1="280" x2="280" y2="280"/>
+                        <line class="axis" x1="40" y1="290" x2="40" y2="50"/>
+                        <polygon class="axis-arrow" points="280,280 272,276 272,284"/>
+                        <polygon class="axis-arrow" points="40,50  36,58 44,58"/>
+                        <!-- π/3: (40 + 220·1/2, 280 - 220·√3/2) = (40+110, 280-190.5) = (150, 89.5) -->
+                        <polygon class="qc-tri-fill" points="40,280 150,280 150,89.5"/>
+                        <line class="qc-ray" x1="40" y1="280" x2="150" y2="89.5"/>
+                        <line class="qc-tri-line" x1="150" y1="280" x2="150" y2="89.5"/>
+                        <polyline class="tri-rt" points="136,280 136,266 150,266"/>
+                        <path class="tri-arc" d="M 90 280 A 50 50 0 0 0 65 236.7"/>
+                        <text class="tri-angle" x="86" y="252">60°</text>
+                        <text class="tri-side" x="80" y="190" text-anchor="middle" transform="rotate(-60 80 190)">1</text>
+                        <text class="tri-side" x="95" y="302" text-anchor="middle">1/2</text>
+                        <text class="tri-side" x="160" y="185" text-anchor="start">√<tspan text-decoration="overline">3</tspan>/2</text>
+                        <text class="axis-letter" x="44" y="52" text-anchor="start">(0,1)</text>
+                        <text class="axis-letter" x="272" y="298" text-anchor="end">(1,0)</text>
+                        <circle class="qc-coord-dot" cx="150" cy="89.5" r="5"/>
+                        <text class="uc-rad" x="166" y="80" font-size="14">π/3</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-box teal" style="margin-bottom: 0.55rem;">
+                    <div class="step-label">From the 30-60-90 with hyp = 1</div>
+                    <div class="step-math" style="font-size: 0.82em;">
+                        short leg (now horizontal) = \(\tfrac{1}{2}\)<br>
+                        long leg (now vertical) = \(\tfrac{\sqrt{3}}{2}\)
+                    </div>
+                </div>
+                <div class="step-box dark">
+                    <div class="step-label">Coordinate Pair</div>
+                    <div class="step-math">\[\left(\dfrac{1}{2},\;\dfrac{\sqrt{3}}{2}\right)\]</div>
+                </div>
+                <div class="note-box navy" style="margin-top: 0.55rem;">
+                    <div class="note-title">Cofunction Echo</div>
+                    <div class="note-copy">Notice \(\pi/3\) and \(\pi/6\) are complementary, and their coordinates swap: \((\sqrt{3}/2,\,1/2) \;\leftrightarrow\; (1/2,\,\sqrt{3}/2)\).</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5 — Reference: Full Unit Circle with Coordinates         -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-5">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">The Unit Circle — Memorize This</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Each labeled point on the unit circle shows the radian measure and its coordinates \((\cos\theta,\,\sin\theta)\). Reflections across the axes propagate the Q1 values to the other three quadrants — and signs follow the quadrant they land in. For degree equivalents see the 4.2 reference.</div>
+
+        <div class="diagram-shell">
+            <svg class="diagram" viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg">
+                <!-- Axes -->
+                <line class="uc-diam" x1="200" y1="260" x2="680" y2="260"/>
+                <line class="uc-diam" x1="440" y1="40"  x2="440" y2="480"/>
+                <!-- Circle -->
+                <circle class="uc-line" cx="440" cy="260" r="200"/>
+
+                <!-- Per point: dot, radian label, coord label.
+                     Point on circle: (440 + 200cosθ, 260 - 200sinθ).
+                     Radian label at radius 232, coord label at radius 290. -->
+
+                <!-- 0 / 2π — coord (1,0) -->
+                <circle class="uc-dot" cx="640" cy="260" r="4"/>
+                <g transform="translate(672, 260)" text-anchor="start">
+                    <text class="uc-rad" y="-2">0  / 2π</text>
+                    <text class="uc-coord" y="16">(1, 0)</text>
+                </g>
+
+                <!-- π/6 — (√3/2, 1/2) -->
+                <circle class="uc-dot" cx="613.2" cy="160" r="4"/>
+                <g transform="translate(643, 142)" text-anchor="start">
+                    <text class="uc-rad" y="-4">π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="12" y2="0"/>
+                    <text class="uc-rad" y="14">6</text>
+                    <text class="uc-coord" y="32">(√<tspan text-decoration="overline">3</tspan>/2, 1/2)</text>
+                </g>
+
+                <!-- π/4 — (√2/2, √2/2) -->
+                <circle class="uc-dot" cx="581.4" cy="118.6" r="4"/>
+                <g transform="translate(608, 96)" text-anchor="start">
+                    <text class="uc-rad" y="-4">π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="12" y2="0"/>
+                    <text class="uc-rad" y="14">4</text>
+                    <text class="uc-coord" y="32">(√<tspan text-decoration="overline">2</tspan>/2, √<tspan text-decoration="overline">2</tspan>/2)</text>
+                </g>
+
+                <!-- π/3 — (1/2, √3/2) -->
+                <circle class="uc-dot" cx="540" cy="86.8" r="4"/>
+                <g transform="translate(560, 60)" text-anchor="start">
+                    <text class="uc-rad" y="-4">π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="12" y2="0"/>
+                    <text class="uc-rad" y="14">3</text>
+                    <text class="uc-coord" y="32">(1/2, √<tspan text-decoration="overline">3</tspan>/2)</text>
+                </g>
+
+                <!-- π/2 — (0,1) -->
+                <circle class="uc-dot" cx="440" cy="60" r="4"/>
+                <g transform="translate(440, 34)" text-anchor="middle">
+                    <text class="uc-rad" y="-4">π</text>
+                    <line class="uc-bar" x1="-8" y1="0" x2="8" y2="0"/>
+                    <text class="uc-rad" y="14">2</text>
+                    <text class="uc-coord" y="-22">(0, 1)</text>
+                </g>
+
+                <!-- 2π/3 — (-1/2, √3/2) -->
+                <circle class="uc-dot" cx="340" cy="86.8" r="4"/>
+                <g transform="translate(320, 60)" text-anchor="end">
+                    <text class="uc-rad" y="-4">2π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">3</text>
+                    <text class="uc-coord" y="32">(−1/2, √<tspan text-decoration="overline">3</tspan>/2)</text>
+                </g>
+
+                <!-- 3π/4 — (-√2/2, √2/2) -->
+                <circle class="uc-dot" cx="298.6" cy="118.6" r="4"/>
+                <g transform="translate(272, 96)" text-anchor="end">
+                    <text class="uc-rad" y="-4">3π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">4</text>
+                    <text class="uc-coord" y="32">(−√<tspan text-decoration="overline">2</tspan>/2, √<tspan text-decoration="overline">2</tspan>/2)</text>
+                </g>
+
+                <!-- 5π/6 — (-√3/2, 1/2) -->
+                <circle class="uc-dot" cx="266.8" cy="160" r="4"/>
+                <g transform="translate(237, 142)" text-anchor="end">
+                    <text class="uc-rad" y="-4">5π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">6</text>
+                    <text class="uc-coord" y="32">(−√<tspan text-decoration="overline">3</tspan>/2, 1/2)</text>
+                </g>
+
+                <!-- π — (-1,0) -->
+                <circle class="uc-dot" cx="240" cy="260" r="4"/>
+                <g transform="translate(208, 260)" text-anchor="end">
+                    <text class="uc-rad" y="-2">π</text>
+                    <text class="uc-coord" y="16">(−1, 0)</text>
+                </g>
+
+                <!-- 7π/6 — (-√3/2, -1/2) -->
+                <circle class="uc-dot" cx="266.8" cy="360" r="4"/>
+                <g transform="translate(237, 378)" text-anchor="end">
+                    <text class="uc-rad" y="-4">7π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">6</text>
+                    <text class="uc-coord" y="32">(−√<tspan text-decoration="overline">3</tspan>/2, −1/2)</text>
+                </g>
+
+                <!-- 5π/4 — (-√2/2, -√2/2) -->
+                <circle class="uc-dot" cx="298.6" cy="401.4" r="4"/>
+                <g transform="translate(272, 422)" text-anchor="end">
+                    <text class="uc-rad" y="-4">5π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">4</text>
+                    <text class="uc-coord" y="32">(−√<tspan text-decoration="overline">2</tspan>/2, −√<tspan text-decoration="overline">2</tspan>/2)</text>
+                </g>
+
+                <!-- 4π/3 — (-1/2, -√3/2) -->
+                <circle class="uc-dot" cx="340" cy="433.2" r="4"/>
+                <g transform="translate(320, 458)" text-anchor="end">
+                    <text class="uc-rad" y="-4">4π</text>
+                    <line class="uc-bar" x1="-14" y1="0" x2="2" y2="0"/>
+                    <text class="uc-rad" y="14">3</text>
+                    <text class="uc-coord" y="32">(−1/2, −√<tspan text-decoration="overline">3</tspan>/2)</text>
+                </g>
+
+                <!-- 3π/2 — (0,-1) -->
+                <circle class="uc-dot" cx="440" cy="460" r="4"/>
+                <g transform="translate(440, 480)" text-anchor="middle">
+                    <text class="uc-rad" y="-4">3π</text>
+                    <line class="uc-bar" x1="-10" y1="0" x2="10" y2="0"/>
+                    <text class="uc-rad" y="14">2</text>
+                    <text class="uc-coord" y="32">(0, −1)</text>
+                </g>
+
+                <!-- 5π/3 — (1/2, -√3/2) -->
+                <circle class="uc-dot" cx="540" cy="433.2" r="4"/>
+                <g transform="translate(560, 458)" text-anchor="start">
+                    <text class="uc-rad" y="-4">5π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="14" y2="0"/>
+                    <text class="uc-rad" y="14">3</text>
+                    <text class="uc-coord" y="32">(1/2, −√<tspan text-decoration="overline">3</tspan>/2)</text>
+                </g>
+
+                <!-- 7π/4 — (√2/2, -√2/2) -->
+                <circle class="uc-dot" cx="581.4" cy="401.4" r="4"/>
+                <g transform="translate(608, 422)" text-anchor="start">
+                    <text class="uc-rad" y="-4">7π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="14" y2="0"/>
+                    <text class="uc-rad" y="14">4</text>
+                    <text class="uc-coord" y="32">(√<tspan text-decoration="overline">2</tspan>/2, −√<tspan text-decoration="overline">2</tspan>/2)</text>
+                </g>
+
+                <!-- 11π/6 — (√3/2, -1/2) -->
+                <circle class="uc-dot" cx="613.2" cy="360" r="4"/>
+                <g transform="translate(643, 378)" text-anchor="start">
+                    <text class="uc-rad" y="-4">11π</text>
+                    <line class="uc-bar" x1="-2" y1="0" x2="20" y2="0"/>
+                    <text class="uc-rad" y="14">6</text>
+                    <text class="uc-coord" y="32">(√<tspan text-decoration="overline">3</tspan>/2, −1/2)</text>
+                </g>
+            </svg>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6 — Concept: What do these coordinates mean?             -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-6">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">What Do These Coordinates Actually Mean?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">On the unit circle, the point at angle \(\theta\) is exactly \((\cos\theta,\;\sin\theta)\). Cosine reads the \(x\)-coordinate; sine reads the \(y\)-coordinate. The other four functions are built from those two.</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Primary</div>
+                <div class="fn-eq-stack">
+                    <div>\[\cos\theta = x \qquad \sin\theta = y\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Tangent</div>
+                <div class="fn-eq-stack">
+                    <div>\[\tan\theta = \dfrac{\sin\theta}{\cos\theta} = \dfrac{y}{x} \quad (x \ne 0)\]</div>
+                </div>
+            </div>
+            <div class="formula-row">
+                <div class="fn-label">Reciprocals</div>
+                <div class="fn-eq-stack">
+                    <div>\[\csc\theta = \dfrac{1}{y} \qquad \sec\theta = \dfrac{1}{x} \qquad \cot\theta = \dfrac{x}{y}\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Every Value, One Lookup</div>
+                <div class="card-copy">If you can read the \((x, y)\) at any angle on the unit circle, you can evaluate all six trig functions there with no calculator.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Watch the Domain</div>
+                <div class="card-copy">\(\tan\theta\) and \(\sec\theta\) are undefined when \(x = 0\) (at \(\theta = \pi/2,\, 3\pi/2,\dots\)). \(\csc\theta\) and \(\cot\theta\) are undefined when \(y = 0\) (at \(\theta = 0,\, \pi,\, 2\pi,\dots\)).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7 — Reference: ASTC Quadrant Signs                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-7">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Signs by Quadrant — "All Students Take Calculus"</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">In each quadrant, exactly one of \(\sin\), \(\cos\), \(\tan\) is positive — along with its reciprocal. The mnemonic <strong>ASTC</strong> tells you which.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="diagram-shell">
+                    <div class="diagram-title">ASTC Wheel</div>
+                    <svg class="diagram" viewBox="0 0 360 320" xmlns="http://www.w3.org/2000/svg">
+                        <line class="astc-axis" x1="30"  y1="160" x2="330" y2="160"/>
+                        <line class="astc-axis" x1="180" y1="20"  x2="180" y2="300"/>
+                        <polygon class="astc-axis-arrow" points="330,160 322,156 322,164"/>
+                        <polygon class="astc-axis-arrow" points="30,160  38,156 38,164"/>
+                        <polygon class="astc-axis-arrow" points="180,20  176,28 184,28"/>
+                        <polygon class="astc-axis-arrow" points="180,300 176,292 184,292"/>
+                        <!-- Quadrant labels -->
+                        <text class="astc-quad" x="260" y="70"  text-anchor="middle">Quadrant I</text>
+                        <text class="astc-sign" x="260" y="92"  text-anchor="middle">(+, +)</text>
+                        <text class="astc-rule" x="260" y="120" text-anchor="middle">All positive</text>
+                        <text class="astc-letter" x="310" y="60" text-anchor="middle">A</text>
+
+                        <text class="astc-quad" x="100" y="70"  text-anchor="middle">Quadrant II</text>
+                        <text class="astc-sign" x="100" y="92"  text-anchor="middle">(−, +)</text>
+                        <text class="astc-rule" x="100" y="120" text-anchor="middle">Sine positive</text>
+                        <text class="astc-letter" x="50"  y="60" text-anchor="middle">S</text>
+
+                        <text class="astc-quad" x="100" y="220" text-anchor="middle">Quadrant III</text>
+                        <text class="astc-sign" x="100" y="242" text-anchor="middle">(−, −)</text>
+                        <text class="astc-rule" x="100" y="270" text-anchor="middle">Tangent positive</text>
+                        <text class="astc-letter" x="50"  y="296" text-anchor="middle">T</text>
+
+                        <text class="astc-quad" x="260" y="220" text-anchor="middle">Quadrant IV</text>
+                        <text class="astc-sign" x="260" y="242" text-anchor="middle">(+, −)</text>
+                        <text class="astc-rule" x="260" y="270" text-anchor="middle">Cosine positive</text>
+                        <text class="astc-letter" x="310" y="296" text-anchor="middle">C</text>
+                    </svg>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cards-grid" style="grid-template-columns: 1fr;">
+                    <div class="info-card green">
+                        <div class="card-title">A — All</div>
+                        <div class="card-copy">In Q1 every trig function is positive (both \(x\) and \(y\) are positive).</div>
+                    </div>
+                    <div class="info-card teal">
+                        <div class="card-title">S — Sine</div>
+                        <div class="card-copy">In Q2 only sine (and its reciprocal csc) are positive. Cosine and tangent are negative.</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="card-title">T — Tangent</div>
+                        <div class="card-copy">In Q3 only tangent (and cot) are positive. Sine and cosine are both negative — and their ratio is positive.</div>
+                    </div>
+                    <div class="info-card navy">
+                        <div class="card-title">C — Cosine</div>
+                        <div class="card-copy">In Q4 only cosine (and sec) are positive. Sine and tangent are negative.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8 — Example 1: 5π/4                                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Six Trig Functions of \(\dfrac{5\pi}{4}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write down the six trigonometric functions of \(\theta = \dfrac{5\pi}{4}\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Locate the Angle and Read Its Coordinates</div>
+                    <div class="step-math">\[\dfrac{5\pi}{4} \text{ is in Quadrant III; reference angle } \dfrac{\pi}{4}\]\[(\cos\theta,\;\sin\theta) = \left(-\dfrac{\sqrt{2}}{2},\;-\dfrac{\sqrt{2}}{2}\right)\]
+                        <div class="annotation">In Q3 both \(x\) and \(y\) are negative (S→sine only in Q2).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Primary Trig Functions</div>
+                    <div class="step-math">\[\sin\dfrac{5\pi}{4} = -\dfrac{\sqrt{2}}{2} \qquad \cos\dfrac{5\pi}{4} = -\dfrac{\sqrt{2}}{2} \qquad \tan\dfrac{5\pi}{4} = \dfrac{-\sqrt{2}/2}{-\sqrt{2}/2} = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Reciprocals</div>
+                    <div class="step-math">\[\csc\dfrac{5\pi}{4} = -\sqrt{2} \qquad \sec\dfrac{5\pi}{4} = -\sqrt{2} \qquad \cot\dfrac{5\pi}{4} = 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">All Six Values</div>
+                    <div class="step-math" style="font-size: 0.78em; line-height: 2;">
+                        \(\sin = -\tfrac{\sqrt{2}}{2}\) &nbsp;|&nbsp; \(\cos = -\tfrac{\sqrt{2}}{2}\) &nbsp;|&nbsp; \(\tan = 1\)<br>
+                        \(\csc = -\sqrt{2}\) &nbsp;|&nbsp; \(\sec = -\sqrt{2}\) &nbsp;|&nbsp; \(\cot = 1\)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9 — Example 2: -π/3                                       -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Six Trig Functions at \(\theta = -\dfrac{\pi}{3}\)</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Write down the six trig functions at \(\theta = -\dfrac{\pi}{3}\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-9-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Find a Coterminal Angle</div>
+                    <div class="step-math">\[-\dfrac{\pi}{3} + 2\pi = \dfrac{5\pi}{3}\]
+                        <div class="annotation">The terminal side lies in Quadrant IV. By ASTC, cosine is positive there; sine and tangent are negative.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Read the Coterminal Coordinates</div>
+                    <div class="step-math">\[\left(\cos,\;\sin\right) = \left(\dfrac{1}{2},\;-\dfrac{\sqrt{3}}{2}\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Build All Six</div>
+                    <div class="step-math">\[\sin = -\dfrac{\sqrt{3}}{2} \qquad \cos = \dfrac{1}{2} \qquad \tan = \dfrac{-\sqrt{3}/2}{1/2} = -\sqrt{3}\]</div>
+                    <div class="step-math">\[\csc = -\dfrac{2\sqrt{3}}{3} \qquad \sec = 2 \qquad \cot = -\dfrac{\sqrt{3}}{3}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-9-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">All Six Values</div>
+                    <div class="step-math" style="font-size: 0.78em; line-height: 2;">
+                        \(\sin = -\tfrac{\sqrt{3}}{2}\) &nbsp;|&nbsp; \(\cos = \tfrac{1}{2}\) &nbsp;|&nbsp; \(\tan = -\sqrt{3}\)<br>
+                        \(\csc = -\tfrac{2\sqrt{3}}{3}\) &nbsp;|&nbsp; \(\sec = 2\) &nbsp;|&nbsp; \(\cot = -\tfrac{\sqrt{3}}{3}\)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10 — Concept: Periodicity                                -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-10">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Periodicity — Going Around Doesn't Change the Value</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Add or subtract a full revolution (\(2\pi\)) and you land back on the same point of the unit circle. Sine and cosine repeat with period \(2\pi\); tangent and cotangent repeat with period \(\pi\).</div>
+
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">Sine / Cosine</div>
+                <div class="fn-eq-stack">
+                    <div>\[\sin(\theta + 2\pi k) = \sin\theta \qquad \cos(\theta + 2\pi k) = \cos\theta \quad (k \in \mathbb{Z})\]</div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">Tangent / Cotangent</div>
+                <div class="fn-eq-stack">
+                    <div>\[\tan(\theta + \pi k) = \tan\theta \qquad \cot(\theta + \pi k) = \cot\theta\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Strategy for Big Angles</div>
+                <div class="card-copy">If the angle is bigger than \(2\pi\) (or less than \(-2\pi\)), subtract or add \(2\pi\) until you're back in \([0, 2\pi)\), then use the unit circle.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Why Tangent Period Is Smaller</div>
+                <div class="card-copy">Going halfway around the circle flips the sign of both \(x\) and \(y\), so their ratio \(y/x\) is unchanged. Tangent only "knows" half-revolutions.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 11 — Example 3: sin(13π/6), cos(13π/6)                   -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Evaluate Beyond One Revolution</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate \(\sin\!\left(\dfrac{13\pi}{6}\right)\) and \(\cos\!\left(\dfrac{13\pi}{6}\right)\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Reduce by One Full Turn</div>
+                    <div class="step-math">\[\dfrac{13\pi}{6} - 2\pi = \dfrac{13\pi}{6} - \dfrac{12\pi}{6} = \dfrac{\pi}{6}\]
+                        <div class="annotation">So \(\dfrac{13\pi}{6}\) is coterminal with \(\dfrac{\pi}{6}\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Read the Coterminal Coordinates</div>
+                    <div class="step-math">\[(\cos,\;\sin) = \left(\dfrac{\sqrt{3}}{2},\;\dfrac{1}{2}\right)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answer</div>
+                    <div class="step-math">\[\sin\!\left(\dfrac{13\pi}{6}\right) = \dfrac{1}{2} \qquad \cos\!\left(\dfrac{13\pi}{6}\right) = \dfrac{\sqrt{3}}{2}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 12 — Example 4: Calculator                                -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-12" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Calculator — When Exact Values Don't Apply</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Evaluate with a calculator (round to three decimal places): (a) \(\sin\!\left(\dfrac{2\pi}{3}\right)\) and (b) \(\cot(1.5)\).</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Part (a) — Set Calculator to Radian Mode</div>
+                    <div class="step-math">\[\sin\!\left(\dfrac{2\pi}{3}\right) \approx 0.866\]
+                        <div class="annotation">This is the exact value \(\sqrt{3}/2\), now shown as a decimal. Q2 → sine positive.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Part (b) — Cotangent Isn't a Calculator Button</div>
+                    <div class="step-math">\[\cot(1.5) = \dfrac{1}{\tan(1.5)} = \dfrac{\cos(1.5)}{\sin(1.5)} \approx 0.071\]
+                        <div class="annotation">No "cot" key — rewrite as a reciprocal or quotient, then use \(\tan\), or \(\sin\) and \(\cos\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Final Answers</div>
+                    <div class="step-math">\[\sin\!\left(\dfrac{2\pi}{3}\right) \approx 0.866 \qquad \cot(1.5) \approx 0.071\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 13 — Concept: Even and Odd Functions                     -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-13">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Even and Odd Trig Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Replacing \(\theta\) with \(-\theta\) reflects the point on the unit circle across the \(x\)-axis. The \(x\)-coordinate is unchanged; the \(y\)-coordinate flips sign. That makes cosine (and its reciprocal sec) <strong>even</strong>, while the other four are <strong>odd</strong>.</div>
+
+        <div class="two-col">
+            <div class="col">
+                <div class="formula-grid">
+                    <div class="formula-row teal">
+                        <div class="fn-label">Even</div>
+                        <div class="fn-eq-stack">
+                            <div>\[\cos(-\theta) = \cos\theta \qquad \sec(-\theta) = \sec\theta\]</div>
+                            <div style="font-size: 0.74em; color: #64748b;">Graph is symmetric about the \(y\)-axis: \(f(-x) = f(x)\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="formula-grid">
+                    <div class="formula-row green">
+                        <div class="fn-label">Odd</div>
+                        <div class="fn-eq-stack">
+                            <div>\[\sin(-\theta) = -\sin\theta \qquad \csc(-\theta) = -\csc\theta\]</div>
+                            <div>\[\tan(-\theta) = -\tan\theta \qquad \cot(-\theta) = -\cot\theta\]</div>
+                            <div style="font-size: 0.74em; color: #64748b;">Graph is symmetric about the origin: \(f(-x) = -f(x)\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="note-box navy">
+            <div class="note-title">Geometric Memory</div>
+            <div class="note-copy">"Cosine is even because cosine reads the \(x\)-coordinate, and flipping the angle's sign doesn't change \(x\). Sine reads \(y\), and \(y\) flips — so sine is odd."</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 14 — Example 5: Verify identity                          -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-14" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Verify Using Even / Odd and Pythagorean</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Use trig identities to transform the left side into the right side:
+        \[\sin(-x)\,\tan(-x) + \cos(-x) = \sec(x).\]</div>
+
+        <div class="steps-area">
+            <div class="step" id="slide-14-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 — Apply Even / Odd</div>
+                    <div class="step-math">\[(-\sin x)\,(-\tan x) + \cos x = \sin x\,\tan x + \cos x\]
+                        <div class="annotation">Sine and tangent are odd (sign flips); cosine is even (sign stays).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 — Rewrite tan as sin/cos</div>
+                    <div class="step-math">\[\sin x \cdot \dfrac{\sin x}{\cos x} + \cos x = \dfrac{\sin^{2} x}{\cos x} + \cos x\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 — Common Denominator</div>
+                    <div class="step-math">\[\dfrac{\sin^{2} x}{\cos x} + \dfrac{\cos^{2} x}{\cos x} = \dfrac{\sin^{2} x + \cos^{2} x}{\cos x}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 — Pythagorean Identity</div>
+                    <div class="step-math">\[\dfrac{\sin^{2} x + \cos^{2} x}{\cos x} = \dfrac{1}{\cos x} = \sec x\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-14-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Verified</div>
+                    <div class="step-math">\[\sin(-x)\,\tan(-x) + \cos(-x) = \sec(x) \;\;\checkmark\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 15 — Wrap-up                                             -->
+<!-- ============================================================ -->
+<section class="slide grid-bg" id="slide-15">
+    <div class="slide-header">
+        <div class="ref-label">Wrap-up</div>
+        <div class="slide-title">By the End of 4.4 You Should Be Able To...</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="body-lead">Check yourself against each of these. If anything feels shaky, revisit the relevant example before moving on to 4.5.</div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Skill 1 — Build Q1 Coordinates</div>
+                <div class="card-copy">Derive the coordinates at \(\pi/6\), \(\pi/4\), and \(\pi/3\) from the 30-60-90 and 45-45-90 triangles.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 2 — Read Any Standard Angle</div>
+                <div class="card-copy">Locate any of the 16 standard angles on the unit circle and read off its coordinates by reflection.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Skill 3 — All Six Trig Functions</div>
+                <div class="card-copy">Use the coordinates to evaluate sine, cosine, tangent and their three reciprocals at any standard angle.</div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Skill 4 — ASTC Signs</div>
+                <div class="card-copy">Use the quadrant to determine the sign of each trig function without redoing the geometry.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Skill 5 — Periodicity</div>
+                <div class="card-copy">Reduce angles outside \([0, 2\pi)\) by adding or subtracting full revolutions before evaluating.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Skill 6 — Even / Odd</div>
+                <div class="card-copy">Identify which trig functions are even and which are odd, and use that to simplify expressions involving negative angles.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- end .slides-wrapper -->
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Triangles',    slideId: 'slide-1' },
+            { label: 'Q1 Build',     slideId: 'slide-2' },
+            { label: 'Full Circle',  slideId: 'slide-5' },
+            { label: 'Coords Mean',  slideId: 'slide-6' },
+            { label: 'ASTC',         slideId: 'slide-7' },
+            { label: 'Examples 1–3', slideId: 'slide-8' },
+            { label: 'Calculator',   slideId: 'slide-12' },
+            { label: 'Even / Odd',   slideId: 'slide-13' },
+            { label: 'Wrap-up',      slideId: 'slide-15' }
+        ]
+    });
+</script>
+</body>
+</html>

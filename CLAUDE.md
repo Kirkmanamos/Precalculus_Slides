@@ -122,7 +122,12 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 3.5 | Exponential Applications | ✅ Complete | — |
 | 3 (suppl.) | Rational Functions — Features | ✅ Complete | — |
 | 3 (suppl.) | Rational Functions — Graphing | ✅ Complete | — |
-| 4 | Trig Review (4.1–4.5) | ✅ Complete | — |
+| 4.1 | Right Triangle Trigonometry | ✅ Complete (5.5 standard) | — |
+| 4.2 | Radian and Degree Measure | ✅ Complete (5.5 standard) | — |
+| 4.3 | Linear and Angular Speed | ✅ Complete (5.5 standard) | — |
+| 4.4 | Trig Functions: The Unit Circle | ✅ Complete (5.5 standard) | — |
+| 4.5 | Trig Functions of Any Angle | ✅ Complete (5.5 standard) | — |
+| 4 (legacy) | Trig Review (4.1–4.5) | ✅ Complete (legacy `trig-review.html`) | — |
 | 4 | Spaghetti Trig Activity | ✅ Complete | — |
 | 4.6 | Graphs of Sine & Cosine | ✅ Complete | 🔄 Prototype |
 | 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ Complete | — |
@@ -142,7 +147,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 6.6 | Probability | ✅ Complete | — |
 | 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**. Pre-existing supplemental Rational Functions (Features &amp; Graphing) decks remain in place. Continue with new units or supplemental review materials as needed.
+**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.5 newly built to 5.5 standard** (the older `trig-review.html` is preserved as a legacy review deck). Pre-existing supplemental Rational Functions decks remain in place. Up next: rebuild the legacy 4.6/4.6b/4.7/4.8 decks to the 5.5 standard, or move on to other supplemental review materials.
 
 ---
 

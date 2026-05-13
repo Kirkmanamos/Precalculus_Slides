@@ -7,6 +7,29 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ## 2026-05-12
 
+### New HTML Decks - Unit 4 Sections 4.1–4.5 (rebuilt to 5.5 standard)
+
+Authored five brand-new dedicated section decks for the first half of Unit 4
+against the shared-assets standard (`assets/slides-core.css` +
+`slides-core.js`, KaTeX, teacher-controlled step reveals). These replace the
+single bundled `trig-review.html` for daily classroom use; the legacy review
+deck is preserved for end-of-chapter mixed practice.
+
+- **4.1 Right Triangle Trigonometry** (`4.1-right-triangle-trigonometry.html`) — 16 slides. SOHCAHTOA concept with a colored reference triangle (cyan x-side / pink y-side / green hypotenuse), reference card for all six ratios with reciprocal pairings, full identity bundle (reciprocal, quotient, Pythagorean, cofunction with the "co = complementary" hook), DMS notation and conversion, and seven worked examples — six trig functions of angle G (21-28-35 → 3-4-5), cos θ = 7/8 → other five (rationalized), exact values from a bisected equilateral (30-60-90 derivation of \(\sin 30°,\cos 30°,\sin 60°,\cos 60°\)), tan θ = 1/3 → cot, sec via two methods (reference triangle and Pythagorean identity), sec(9°40'12") via decimal-degree conversion, an angle-of-depression chair/pen problem, and a two-triangle smokestack height problem (\(35°\) and \(53°\) elevations from 200 ft). All triangle SVGs use true proportions verified against the Pythagorean theorem; \(\sqrt{}\) glyphs render with `<tspan text-decoration="overline">`.
+- **4.2 Radian and Degree Measure** (`4.2-radian-and-degree-measure.html`) — 16 slides. Standard-position angle (vertex/initial/terminal), CCW vs. CW direction with 120° and −145° illustrations, coterminal angles (\(\theta \pm 360°k\) / \(\theta \pm 2\pi k\)), a full unit-circle reference figure with all 16 standard angles double-labeled (degrees and radians, 720×480 SVG), the foundational \(180° = \pi\) bridge with a half-rotation illustration, conversion-rule reference card, three conversions (\(130° \to 13\pi/18\), \(-3\pi/10 \to -54°\), \(2 \text{ rad} \to 360°/\pi \approx 114.59°\)), complementary vs. supplementary diagrams + two examples (\(148°\) — complement undefined, supplement 32°; \(2\pi/5\) — complement \(\pi/10\), supplement \(3\pi/5\)), and a "where is 3 radians?" Q2 placement exercise.
+- **4.3 Linear and Angular Speed** (`4.3-linear-and-angular-speed.html`) — 12 slides. Radian-as-proportion derivation (\(s/r = \theta\)), one-radian and two-radian visualizations, arc-length reference \(s = \theta r\), 240°-reflex-angle example (\(r = 4 \to s = 16\pi/3 \approx 16.76\) in), sector-area reference \(A = \tfrac{1}{2}\theta r^2\) with the underlying proportion, linear-vs-angular speed conceptual split with the rev/time × (\(2\pi\) rad/rev or circumference/rev) framework, and three modeling examples — clock second-hand tip (10.2 cm → ≈1.068 cm/sec), wind turbine (116 ft blade, 15 rpm → \(30\pi\) rad/min and \(3480\pi \approx 10{,}932.7\) ft/min), and a wheel-to-mph conversion (d = 24 in, 800 rpm → ≈57.1 mph) showing the full unit-conversion chain.
+- **4.4 Trig Functions: The Unit Circle** (`4.4-trig-functions-unit-circle.html`) — 16 slides. Special-right-triangle refresher (45-45-90 and 30-60-90), three Q1-derivation slides building \((\sqrt{3}/2, 1/2)\) at \(\pi/6\), \((\sqrt{2}/2, \sqrt{2}/2)\) at \(\pi/4\), and \((1/2, \sqrt{3}/2)\) at \(\pi/3\) from the inscribed right triangle. The "memorize this" full unit-circle reference shows all 16 standard angles with radian labels and coordinate pairs (overlined radicals). Coordinates-mean-cos-sin concept slide unlocks the other four ratios. ASTC mnemonic chart with A/S/T/C corner letters. Five examples — \(5\pi/4\) → (−√2/2, −√2/2) → all six, \(-\pi/3 \equiv 5\pi/3\) → (1/2, −√3/2) → all six, periodicity reduction \(13\pi/6 \to \pi/6\), calculator (sin 2π/3 ≈ 0.866, cot 1.5 ≈ 0.071), and a five-step identity verification \(\sin(-x)\tan(-x) + \cos(-x) = \sec(x)\) using even/odd + Pythagorean.
+- **4.5 Trig Functions of Any Angle** (`4.5-trig-functions-of-any-angle.html`) — 15 slides. Reference-angle definition with a four-quadrant SVG mosaic, the quadrant-by-quadrant formulas (deg + rad), and seven worked examples — \(330° \to 30°\), \(-5\pi/6 \equiv 7\pi/6 \to \pi/6\), \(2.3 \text{ rad} \to \pi - 2.3 \approx 0.8416\), then trig from a terminal-side point (\((8, -15)\) → r = 17 → six trig functions), a two-constraint problem (\(\sin\theta = -2/3\) and \(\tan\theta > 0\) → Q3 → \(\cos = -\sqrt{5}/3\), \(\cot = \sqrt{5}/2\)), and the "given a value, find both angles in one revolution" pair — \(\tan\theta = -0.4623 \to 155.2°, 335.2°\) and \(\cos\theta = -0.3842 \to 1.9651, 4.3181\) rad. Closes with a 6-skill wrap-up emphasizing "expect two answers" when solving for θ.
+
+Each deck stays under 60K, with inline `<style>` blocks held to 23–39 lines
+(only deck-specific SVG primitives — all layout uses the shared
+`assets/slides-core.css` components). Step-box palette is restricted to
+teal (setup) and dark (final answer) to match the established lesson-deck
+pattern from Unit 3. Curriculum table in CLAUDE.md updated; the legacy
+`trig-review.html` stays in place as an end-of-chapter review.
+
+---
+
 ### New HTML Decks - Unit 3 Exponential &amp; Logarithmic Functions (5 decks)
 
 Added the full Unit 3 sequence built against the shared-assets standard
