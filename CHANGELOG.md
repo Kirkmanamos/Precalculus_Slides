@@ -19,6 +19,8 @@ shell layout, navigation, KaTeX rendering, and teacher-controlled step reveals.
   conversion sequence intact.
 - Moved the generated cosine-curve drawing and SVG overlays onto small
   deck-local observers that respond to `SlidesCore` slide/step classes.
+- Replaced the generic questions slide with the same six-card key-skills
+  wrap-up pattern used by the other Unit 4 section decks.
 - Replaced legacy controller and render code with `SlidesCore.init(...)`;
   inline CSS is now limited to deck-specific gallery, graph, table, conversion,
   and closing-slide components.
@@ -40,6 +42,8 @@ deck-specific graph/table presentation.
 - Kept the animated/generated SVG graph curves for the parent graphs and
   examples, but moved the controller work onto `SlidesCore.init(...)` with
   small deck-local observers for graph reveal timing.
+- Added a six-card key-skills wrap-up slide so the section closes consistently
+  with the other Unit 4 decks.
 - Converted remaining math rendering hazards around SVG text and labels:
   KaTeX stays in HTML text, while SVG labels use plain text because auto-render
   does not enter SVG.
