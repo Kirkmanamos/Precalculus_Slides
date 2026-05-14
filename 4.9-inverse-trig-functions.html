@@ -6,460 +6,285 @@
     <title>4.9 — Inverse Trig Functions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
     <style>
-        /* ============================================================
-           THEME — HoffMath Classroom (matches 5.5)
-           ============================================================ */
+        /* Deck-specific graph/table styling. Layout and slide shell come from slides-core.css. */
         :root {
-            --navy:          #1a365d;
-            --blue-accent:   #2563eb;
-            --green-accent:  #16a34a;
-            --teal-accent:   #0891b2;
-            --orange-accent: #d97706;
-            --red-accent:    #dc2626;
             --purple-accent: #7c3aed;
-            --grid-line:     #dbeafe;
-            --bg-white:      #ffffff;
-            --text:          #1e293b;
-            --text-muted:    #64748b;
-            --blue-light:    #eff6ff;
-            --green-light:   #f0fdf4;
-            --teal-light:    #f0fdfa;
-            --orange-light:  #fffbeb;
-            --red-light:     #fef2f2;
-            --navy-light:    #e8edf5;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html, body {
-            width: 100%; height: 100%;
-            overflow: hidden;
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 28px;
-            background: var(--navy);
-        }
-
-        /* ============================================================
-           SLIDE SHELL
-           ============================================================ */
-        .slides-wrapper { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
-
-        .slide {
-            position: absolute; inset: 0;
-            display: flex; flex-direction: column;
-            padding-top: 5rem; padding-bottom: 3rem;
-            padding-left:  max(3rem, calc((100% - 1120px) / 2));
-            padding-right: max(3rem, calc((100% - 1120px) / 2));
-            opacity: 0; transform: translateX(60px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            pointer-events: none;
-        }
-        .slide.active    { opacity: 1; transform: translateX(0); pointer-events: all; }
-        .slide.exit-left { opacity: 0; transform: translateX(-60px); }
-
-        .slide-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .slide-body:has(.steps-area) { justify-content: flex-start; overflow: hidden; }
-
-        /* ============================================================
-           BACKGROUNDS
-           ============================================================ */
-        .title-slide {
-            background: var(--navy);
-            color: white;
-            justify-content: center;
+            --red-light: #fef2f2;
         }
 
         .section-slide {
             background: var(--navy);
             color: white;
             justify-content: center;
+            align-items: center;
+            text-align: center;
         }
 
-        .grid-bg {
-            background-color: var(--bg-white);
-            background-image:
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: var(--text);
+        .section-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: white;
+            text-align: center;
         }
 
-        /* ============================================================
-           TITLE SLIDE TYPOGRAPHY
-           ============================================================ */
-        .title-section-label {
-            font-size: 0.62em; font-weight: 700; letter-spacing: 0.12em;
-            text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem;
+        .section-subtitle {
+            font-size: 0.72em;
+            color: #93c5fd;
+            margin-top: 0.5rem;
+            text-align: center;
         }
-        .title-main {
-            font-size: 2em; font-weight: 700; line-height: 1.2;
-            color: white; margin-bottom: 0.5rem;
-        }
+
         .title-divider {
-            width: 80px; height: 4px; background: var(--teal-accent); margin: 1rem 0;
-        }
-        .title-objective {
-            font-size: 0.72em; color: #93c5fd; font-weight: 400;
-            line-height: 1.6; margin-top: 0.75rem;
+            width: 80px;
+            height: 4px;
+            background: var(--teal-accent);
+            margin: 1rem 0;
         }
 
-        /* ============================================================
-           SLIDE HEADER
-           ============================================================ */
-        .slide-header {
-            display: flex; align-items: center; gap: 1rem;
-            margin-bottom: 1.2rem; flex-shrink: 0;
+        .fyi-label,
+        .advanced-label {
+            font-size: 0.6em;
+            font-weight: 700;
+            padding: 0.2em 0.75em;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: white;
         }
-        .slide-title { font-size: 1em; font-weight: 700; color: var(--navy); }
 
-        /* Tags / labels */
-        .example-label, .concept-label, .ref-label, .fyi-label, .advanced-label {
-            font-size: 0.6em; font-weight: 700; padding: 0.2em 0.75em;
-            border-radius: 6px; letter-spacing: 0.05em; text-transform: uppercase; color: white;
-        }
-        .example-label { background: var(--green-accent); }
-        .concept-label { background: var(--teal-accent); }
-        .ref-label     { background: var(--navy); }
-        .fyi-label     { background: var(--orange-accent); }
+        .fyi-label { background: var(--orange-accent); }
         .advanced-label { background: var(--purple-accent); }
 
-        /* ============================================================
-           PROBLEM STATEMENT
-           ============================================================ */
-        .problem-statement {
-            background: var(--navy-light); border-left: 5px solid var(--navy);
-            border-radius: 10px; padding: 0.65em 1.2em;
-            margin-bottom: 0.9rem; flex-shrink: 0;
-            font-weight: 600; color: var(--navy); font-size: 0.9em;
+        .step-box.red {
+            background: var(--red-light);
+            border-color: var(--red-accent);
         }
-        .problem-statement .katex-display { margin: 0; }
-
-        /* ============================================================
-           STEP REVEALS
-           ============================================================ */
-        .steps-area { display: flex; flex-direction: column; overflow-y: auto; flex: 1; min-height: 0; padding-bottom: 3.5rem; }
-
-        .step { display: none; }
-        .step.visible { display: block; animation: stepReveal 0.4s ease both; margin-bottom: 0.4rem; }
-        .step.visible:last-child { margin-bottom: 0; }
-        @keyframes stepReveal { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Labeled step card */
-        .step-box {
-            background: var(--blue-light); border-left: 4px solid var(--blue-accent);
-            border-radius: 10px; padding: 0.45em 1.1em;
-        }
-        .step-box.teal   { background: var(--teal-light);   border-color: var(--teal-accent); }
-        .step-box.green  { background: var(--green-light);  border-color: var(--green-accent); }
-        .step-box.orange { background: var(--orange-light); border-color: var(--orange-accent); }
-        .step-box.red    { background: var(--red-light);    border-color: var(--red-accent); }
-        .step-box.dark   { background: var(--navy); }
-
-        .step-label {
-            font-size: 0.58em; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.08em; color: var(--text-muted); margin-bottom: 0.08em;
-        }
-        .step-box.dark .step-label { color: #93c5fd; }
-
-        .step-math {
-            font-size: 0.88em; line-height: 2; padding: 0.2em 0; text-align: center;
-        }
-        .step-box.dark .step-math { color: white; }
-        .step-box.dark .katex { color: white; }
 
         .step-content {
-            font-size: 0.88em; line-height: 1.7; padding: 0.15em 0;
+            font-size: 0.88em;
+            line-height: 1.7;
+            padding: 0.15em 0;
         }
+
         .step-box.dark .step-content { color: white; }
 
-        /* Annotation beside equation */
-        .step-math.has-annotation { display: flex; align-items: center; gap: 2.5rem; text-align: left; }
-        .step-eq { flex: 1; text-align: center; }
-        .annotation {
-            flex: 0 0 36%; color: var(--blue-accent);
-            font-size: 0.72em; font-weight: 600; line-height: 1.45;
-            text-align: left; border-left: 3px solid #93c5fd; padding-left: 1rem;
+        .step-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
         }
 
-        /* Step row (text + figure side by side) */
-        .step-row {
-            display: flex; align-items: flex-start; gap: 1.5rem;
-        }
         .step-row .step-text { flex: 1; }
         .step-row .step-figure { flex: 0 0 auto; }
 
-        /* ============================================================
-           CONCEPT DIAGRAM (Slide 1)
-           ============================================================ */
         .concept-diagram {
-            display: flex; flex-direction: column;
-            gap: 0.75rem; align-items: center; margin-top: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            align-items: center;
+            margin-top: 0.75rem;
         }
+
         .concept-row {
-            display: flex; align-items: center; gap: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
         }
+
         .concept-box {
-            background: white; border: 2px solid var(--blue-accent);
-            border-radius: 8px; padding: 0.45em 1em;
-            font-size: 1em; font-weight: 600; text-align: center; min-width: 4rem;
+            background: white;
+            border: 2px solid var(--blue-accent);
+            border-radius: 8px;
+            padding: 0.45em 1em;
+            font-size: 1em;
+            font-weight: 600;
+            text-align: center;
+            min-width: 4rem;
         }
+
         .concept-box.label-box {
-            background: var(--navy); color: white; border-color: var(--navy);
-            font-size: 0.9em; min-width: 6rem;
+            background: var(--navy);
+            color: white;
+            border-color: var(--navy);
+            font-size: 0.9em;
+            min-width: 6rem;
         }
+
         .concept-arrow {
-            font-size: 1.2em; color: var(--blue-accent); font-weight: 700;
+            font-size: 1.2em;
+            color: var(--blue-accent);
+            font-weight: 700;
         }
 
-        /* ============================================================
-           TWO-COL / GRAPH LAYOUT
-           ============================================================ */
         .two-col {
-            display: flex; gap: 1rem; align-items: flex-start;
-            justify-content: center; width: 100%;
-        }
-        .col {
-            flex: 1; min-width: 280px;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
         }
 
-        .graph-svg {
+        .col {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .graph-svg,
+        .triangle-svg {
+            width: 100%;
+            height: auto;
+            max-width: 420px;
+            max-height: 320px;
             border: 1.5px solid #c7d2fe;
             border-radius: 6px;
             background: white;
         }
 
-        /* ============================================================
-           EQUATION BOX
-           ============================================================ */
         .equation-box {
-            background: white; border: 2px solid var(--blue-accent);
-            border-radius: 8px; padding: 0.3em 0.8em;
-            font-weight: 700; color: var(--navy);
+            background: white;
+            border: 2px solid var(--blue-accent);
+            border-radius: 8px;
+            padding: 0.3em 0.8em;
+            font-weight: 700;
+            color: var(--navy);
             display: inline-block;
         }
 
-        /* ============================================================
-           DEFINITION LIST
-           ============================================================ */
         .def-list {
-            text-align: left; max-width: 700px;
-            display: flex; flex-direction: column; gap: 0.5rem;
-        }
-        .def-item {
-            font-size: 0.95em; line-height: 1.6;
-            padding-left: 1rem; position: relative;
-        }
-        .def-item::before {
-            content: '\2022'; position: absolute; left: 0;
-            color: var(--blue-accent); font-weight: 700;
+            text-align: left;
+            max-width: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        /* ============================================================
-           SUMMARY TABLE
-           ============================================================ */
+        .def-item {
+            font-size: 0.95em;
+            line-height: 1.6;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .def-item::before {
+            content: '\2022';
+            position: absolute;
+            left: 0;
+            color: var(--blue-accent);
+            font-weight: 700;
+        }
+
         .summary-table {
-            border-collapse: collapse; font-size: 0.95em; margin-top: 0.5rem;
+            border-collapse: collapse;
+            font-size: 0.95em;
+            margin-top: 0.5rem;
         }
-        .summary-table th, .summary-table td {
+
+        .summary-table th,
+        .summary-table td {
             border: 1.5px solid var(--navy);
-            padding: 0.35em 0.9em; text-align: center; min-width: 5rem;
+            padding: 0.35em 0.9em;
+            text-align: center;
+            min-width: 5rem;
         }
+
         .summary-table th {
-            background: var(--navy); color: white; font-weight: 700;
+            background: var(--navy);
+            color: white;
+            font-weight: 700;
         }
+
         .summary-table td { background: white; }
-        .summary-table td:first-child { background: #f1f5f9; font-weight: 600; }
+        .summary-table td:first-child {
+            background: #f1f5f9;
+            font-weight: 600;
+        }
+
         .summary-table .fill-blank {
-            background: var(--blue-light); cursor: pointer;
-            min-width: 140px; min-height: 36px;
+            background: var(--blue-light);
+            cursor: pointer;
+            min-width: 140px;
+            min-height: 36px;
             transition: background 0.3s ease;
         }
+
         .summary-table .fill-blank.revealed {
-            background: #dcfce7; font-weight: 600;
+            background: #dcfce7;
+            font-weight: 600;
         }
 
-        /* ============================================================
-           WARN BOX / TIP BOX
-           ============================================================ */
         .warn-box {
-            background: var(--red-light); border-left: 4px solid var(--red-accent);
-            padding: 0.45em 0.9em; border-radius: 0 8px 8px 0;
-            margin: 0.3em 0; font-size: 0.9em;
-        }
-        .tip-box {
-            background: var(--green-light); border-left: 4px solid var(--green-accent);
-            padding: 0.45em 0.9em; border-radius: 0 8px 8px 0;
-            margin: 0.3em 0; font-size: 0.9em;
+            background: var(--red-light);
+            border-left: 4px solid var(--red-accent);
+            padding: 0.45em 0.9em;
+            border-radius: 0 8px 8px 0;
+            margin: 0.3em 0;
+            font-size: 0.9em;
         }
 
-        /* ============================================================
-           COMPOSITION GRID
-           ============================================================ */
+        .tip-box {
+            background: var(--green-light);
+            border-left: 4px solid var(--green-accent);
+            padding: 0.45em 0.9em;
+            border-radius: 0 8px 8px 0;
+            margin: 0.3em 0;
+            font-size: 0.9em;
+        }
+
         .comp-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            gap: 1rem; width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
         }
+
         .comp-item {
-            display: flex; flex-direction: column;
-            align-items: center; gap: 0.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
         }
+
         .comp-problem {
-            font-size: 1.05em; font-weight: 700; color: var(--navy);
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--navy);
             margin-bottom: 0.15rem;
         }
 
-        /* ============================================================
-           TRIANGLE SVG
-           ============================================================ */
-        .triangle-svg {
-            background: white; border: 1.5px solid #c7d2fe;
-            border-radius: 6px;
-        }
-
-        /* ============================================================
-           COPYRIGHT
-           ============================================================ */
         .copyright {
-            position: absolute; bottom: 0.75rem; right: 1.2rem;
-            font-size: 0.45em; color: #94a3b8; font-style: italic;
+            position: absolute;
+            bottom: 0.75rem;
+            right: 1.2rem;
+            font-size: 0.45em;
+            color: #94a3b8;
+            font-style: italic;
         }
 
-        /* ============================================================
-           NAV / PROGRESS
-           ============================================================ */
-        .nav-dots {
-            position: fixed; right: 1.2rem; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; gap: 8px; z-index: 100;
+        .section-slide .slide-section-chip {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            color: #dbeafe;
         }
-        .nav-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: rgba(255,255,255,0.3); border: none; cursor: pointer;
-            transition: all 0.3s;
+
+        .section-slide .slide-section-chip.active {
+            background: #60a5fa;
+            border-color: #60a5fa;
+            color: white;
         }
-        .nav-dot.active { background: var(--blue-accent); transform: scale(1.4); }
-        .progress-bar {
-            position: fixed; top: 0; left: 0; height: 3px;
-            background: linear-gradient(90deg, var(--blue-accent), var(--teal-accent));
-            transition: width 0.4s ease; z-index: 100;
+
+        @media (max-width: 900px) {
+            .two-col,
+            .step-row,
+            .comp-grid { display: grid; grid-template-columns: 1fr; }
+            .graph-svg,
+            .triangle-svg { max-height: 260px; }
+            .summary-table { font-size: 0.72em; }
         }
-        .click-hint {
-            position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
-            font-size: 0.45em; color: rgba(100,116,139,0.6);
-            letter-spacing: 0.1em; text-transform: uppercase;
-            animation: pulse 2s ease-in-out infinite; z-index: 100;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
-
-        @media (prefers-reduced-motion: reduce) {
-            .slide { transition: opacity 0.3s ease; transform: none !important; }
-            .step.visible { animation: none; opacity: 1; }
-        }
-/* ===========================================
-   MOBILE PHONE LAYOUT PATCH (codex/mobile-phone-rewrite)
-   =========================================== */
-@media (max-width: 768px) {
-  html, body {
-    font-size: 18px !important;
-    width: 100%;
-    height: 100%;
-  }
-
-  .slide {
-    padding-top: max(16px, env(safe-area-inset-top)) !important;
-    padding-right: 12px !important;
-    padding-bottom: calc(64px + env(safe-area-inset-bottom)) !important;
-    padding-left: 12px !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .slide-title,
-  .section-title {
-    line-height: 1.14;
-  }
-
-  .slide-subtitle {
-    font-size: 0.9em !important;
-  }
-
-  .problem-statement {
-    font-size: 0.95em !important;
-    padding: 0.48em 0.66em !important;
-    margin-bottom: 0.55rem !important;
-  }
-
-  .steps-area {
-    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
-  }
-
-  .step {
-    gap: 8px !important;
-  }
-
-  .step-label {
-    min-width: 0 !important;
-    font-size: 0.6em !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.92em !important;
-    line-height: 1.6 !important;
-  }
-
-  .example-label,
-  .concept-label,
-  .ref-label {
-    top: 10px !important;
-    left: 12px !important;
-    font-size: 0.52em !important;
-    padding: 0.22em 0.6em !important;
-    letter-spacing: 0.04em !important;
-  }
-
-  .click-hint {
-    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-    font-size: 0.5em !important;
-    max-width: 92vw;
-    text-align: center;
-  }
-
-  .ref-grid,
-  .strategy-grid,
-  .identities-grid,
-  .qa-list-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .nav-dots,
-  #nav-dots,
-  #navDots {
-    display: none !important;
-  }
-
-  svg {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-width: 420px) {
-  html, body {
-    font-size: 16px !important;
-  }
-
-  .slide {
-    padding-right: 10px !important;
-    padding-left: 10px !important;
-  }
-
-  .step-math,
-  .step-text {
-    font-size: 0.88em !important;
-  }
-}
     </style>
 </head>
 <body>
@@ -500,17 +325,17 @@
                 </div>
                 <div class="concept-row">
                     <div class="concept-box">angle</div>
-                    <div class="concept-arrow">&rarr;</div>
+                    <div class="concept-arrow">\(\to\)</div>
                     <div class="concept-box">ratio</div>
                 </div>
-                <div id="slide-1-step-0" class="step" style="display:none;">
+                <div id="slide-1-step-0" class="step">
                     <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:16px;">
                         <div class="concept-row">
                             <div class="concept-box label-box" style="background:var(--teal-accent); border-color:var(--teal-accent);">Inverse Trig Function</div>
                         </div>
                         <div class="concept-row">
                             <div class="concept-box" style="border-color:var(--teal-accent);">ratio</div>
-                            <div class="concept-arrow" style="color:var(--teal-accent);">&rarr;</div>
+                            <div class="concept-arrow" style="color:var(--teal-accent);">\(\to\)</div>
                             <div class="concept-box" style="border-color:var(--teal-accent);">angle</div>
                         </div>
                     </div>
@@ -1131,42 +956,51 @@
     </section>
 
     <!-- ================================================================
-         SLIDE 17 — QUESTIONS
+         SLIDE 17 — WRAP-UP
          ================================================================ -->
-    <section class="slide section-slide" id="slide-17">
-        <div style="font-size:2em; font-weight:700; color:white; text-align:center;">What are your questions?</div>
-        <span class="copyright">&copy; Hoff Math. All Rights Reserved</span>
+    <section class="slide grid-bg" id="slide-17">
+        <div class="slide-header">
+            <div class="ref-label">Wrap-up</div>
+            <div class="slide-title">By the End of 4.9 You Should Be Able To...</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Check yourself against each of these. If anything feels shaky, revisit the relevant example before moving on.</div>
+
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Skill 1 — Restrict Domains</div>
+                    <div class="card-copy">Explain why inverse trig functions require restricted trig domains before the inverse can be a function.</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-title">Skill 2 — Read Inverse Graphs</div>
+                    <div class="card-copy">Identify the domain, range, and graph shape of \(\arcsin x\), \(\arccos x\), and \(\arctan x\).</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Skill 3 — Evaluate Exact Values</div>
+                    <div class="card-copy">Use special angles and the allowed output interval to evaluate inverse trig expressions exactly.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Skill 4 — Transform Inverses</div>
+                    <div class="card-copy">Track how shifts, stretches, and reflections change inverse trig graphs, domains, and ranges.</div>
+                </div>
+                <div class="info-card">
+                    <div class="card-title">Skill 5 — Check Compositions</div>
+                    <div class="card-copy">Work inside out and decide whether trig-inverse cancellation is valid before simplifying a composition.</div>
+                </div>
+                <div class="info-card navy">
+                    <div class="card-title">Skill 6 — Use Triangle Methods</div>
+                    <div class="card-copy">Draw a right triangle to evaluate expressions like \(\tan(\arccos x)\), including algebraic inputs.</div>
+                </div>
+            </div>
+        </div>
     </section>
 
 </div><!-- end .slides-wrapper -->
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
 <script>
-    renderMathInElement(document.body, {
-        delimiters: [
-            { left: '\\[', right: '\\]', display: true  },
-            { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false
-    });
-
-    /* Move each annotation beside its equation (same as 5.5) */
-    document.querySelectorAll('.step-math').forEach(stepMath => {
-        const annotation = stepMath.querySelector('.annotation');
-        if (!annotation) return;
-        const eqDiv = document.createElement('div');
-        eqDiv.className = 'step-eq';
-        const before = [];
-        for (const node of stepMath.childNodes) {
-            if (node === annotation) break;
-            before.push(node);
-        }
-        before.forEach(n => eqDiv.appendChild(n));
-        stepMath.insertBefore(eqDiv, annotation);
-        stepMath.classList.add('has-annotation');
-    });
-
     /* ===========================================
        GRAPH BUILDER
        Creates accurate SVG graphs using a consistent
@@ -1746,94 +1580,49 @@
         }
     }
 
-    buildAllGraphs();
-
-    /* ===== PRESENTATION CONTROLLER (matches 5.5) ===== */
-    class SlidePresentation {
-        constructor() {
-            this.slides      = Array.from(document.querySelectorAll('.slide'));
-            this.current     = 0;
-            this.total       = this.slides.length;
-            this.progressBar = document.getElementById('progressBar');
-            this.navDotsEl   = document.getElementById('navDots');
-            this.clickHint   = document.getElementById('clickHint');
-            this._buildNav();
-            this._activate(0);
-            this._bindEvents();
-        }
-        _buildNav() {
-            this.slides.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = 'nav-dot';
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.addEventListener('click', e => { e.stopPropagation(); this._goTo(i); });
-                this.navDotsEl.appendChild(dot);
-            });
-            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
-        }
-        _sync() {
-            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
-            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
-            const slide = this.slides[this.current];
-            const max   = parseInt(slide.dataset.steps || 0);
-            const cur   = parseInt(slide.dataset.currentStep ?? -1);
-            this.clickHint.textContent = cur < max - 1 ? 'click to advance'
-                : this.current < this.total - 1 ? 'click for next slide' : '';
-        }
-        _activate(i) { this.slides[i].classList.add('active'); this._sync(); }
-        _goTo(i) {
-            if (i === this.current) return;
-            const out = this.slides[this.current];
-            out.classList.add('exit-left'); out.classList.remove('active');
-            setTimeout(() => out.classList.remove('exit-left'), 500);
-            this.current = i; this.slides[i].classList.add('active'); this._sync();
-        }
-        _advanceStep(slide) {
-            const max = parseInt(slide.dataset.steps || 0);
-            let   cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < max - 1) {
-                cur++; slide.dataset.currentStep = cur;
-                /* ID-based step finding */
-                const el = slide.querySelector(`#${slide.id}-step-${cur}`);
-                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-                /* Fill-blank table support (slide 7) */
-                const blankA = slide.querySelector(`#${slide.id}-step-${cur}-a`);
-                const blankB = slide.querySelector(`#${slide.id}-step-${cur}-b`);
-                if (blankA) { blankA.classList.add('revealed'); }
-                if (blankB) { blankB.classList.add('revealed'); }
-                this._sync();
-                return true;
-            }
-            return false;
-        }
-        _retreatStep(slide) {
-            let cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < 0) return false;
-            const el = slide.querySelector(`#${slide.id}-step-${cur}`);
-            if (el) el.classList.remove('visible');
-            const blankA = slide.querySelector(`#${slide.id}-step-${cur}-a`);
-            const blankB = slide.querySelector(`#${slide.id}-step-${cur}-b`);
-            if (blankA) { blankA.classList.remove('revealed'); }
-            if (blankB) { blankB.classList.remove('revealed'); }
-            slide.dataset.currentStep = cur - 1;
-            this._sync();
-            return true;
-        }
-        _next() { if (!this._advanceStep(this.slides[this.current]) && this.current < this.total - 1) this._goTo(this.current + 1); }
-        _prev() { if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1); }
-        _bindEvents() {
-            document.addEventListener('keydown', e => {
-                if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); this._next(); }
-                else if (['ArrowLeft','ArrowUp'].includes(e.key))   { e.preventDefault(); this._prev(); }
-            });
-            document.addEventListener('click', e => { if (!e.target.closest('.nav-dot')) this._next(); });
-            let tx = 0;
-            document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
-            document.addEventListener('touchend',   e => { const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 50) dx < 0 ? this._next() : this._prev(); }, { passive: true });
-        }
+    function revealStepVariants(slide, stepIndex, visible) {
+        const prefix = `${slide.id}-step-${stepIndex}`;
+        slide.querySelectorAll(`[id^="${prefix}"]`).forEach(el => {
+            el.classList.toggle('visible', visible);
+            if (el.classList.contains('fill-blank')) el.classList.toggle('revealed', visible);
+        });
     }
 
-    new SlidePresentation();
+    function enhanceStepVariants(controller) {
+        const advance = controller._advanceStep.bind(controller);
+        controller._advanceStep = function(slide) {
+            const advanced = advance(slide);
+            if (advanced) {
+                revealStepVariants(slide, parseInt(slide.dataset.currentStep ?? -1, 10), true);
+            }
+            return advanced;
+        };
+
+        const retreat = controller._retreatStep.bind(controller);
+        controller._retreatStep = function(slide) {
+            const cur = parseInt(slide.dataset.currentStep ?? -1, 10);
+            const retreated = retreat(slide);
+            if (retreated) revealStepVariants(slide, cur, false);
+            return retreated;
+        };
+    }
+
+    buildAllGraphs();
+
+    const presentation = SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Inverses',     slideId: 'slide-1' },
+            { label: 'Arcsin',       slideId: 'slide-2' },
+            { label: 'Arccos/Tan',   slideId: 'slide-5' },
+            { label: 'Summary',      slideId: 'slide-7' },
+            { label: 'Exact Values', slideId: 'slide-9' },
+            { label: 'Compositions', slideId: 'slide-11' },
+            { label: 'Honors',       slideId: 'slide-15' },
+            { label: 'Wrap-up',      slideId: 'slide-17' }
+        ]
+    });
+    enhanceStepVariants(presentation);
 </script>
 </body>
 </html>

@@ -132,8 +132,8 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 4.6 | Graphs of Sine & Cosine | ✅ Complete (5.5 standard) | 🔄 Prototype |
 | 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ Complete (5.5 standard) | — |
 | 4.7 | Modeling with Sine & Cosine | ✅ Complete (5.5 standard) | — |
-| 4.8 | Graphs of Other Trig Functions | ✅ Complete | — |
-| 4.9 | Inverse Trig Functions | ✅ Complete (rebuilt to 5.5 standard) | 🔄 Prototype |
+| 4.8 | Graphs of Other Trig Functions | ✅ Complete (5.5 standard) | — |
+| 4.9 | Inverse Trig Functions | ✅ Complete (5.5 standard) | 🔄 Prototype |
 | 5.1 | Using Fundamental Identities | ✅ Complete | — |
 | 5.2 | Verifying Trig Identities | ✅ Complete | — |
 | 5.3 | Solving Trig Equations | ✅ Complete | — |
@@ -147,7 +147,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 6.6 | Probability | ✅ Complete | — |
 | 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.7 newly built or rebuilt to 5.5 standard** (the older `trig-review.html` is preserved as a legacy review deck). Pre-existing supplemental Rational Functions decks remain in place. Up next: rebuild the legacy 4.8 deck to the 5.5 standard, or move on to other supplemental review materials.
+**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.9 newly built or rebuilt to 5.5 standard** (the older `trig-review.html` is preserved as a legacy review deck). Pre-existing supplemental Rational Functions decks remain in place. Up next: other supplemental review materials.
 
 ---
 

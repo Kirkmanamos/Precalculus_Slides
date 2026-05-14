@@ -5,6 +5,30 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-05-14
+
+### Rebuilt HTML Decks - 4.8 and 4.9 Trig Graphs
+
+Converted `4.8-graphs-other-trig-functions.html` and
+`4.9-inverse-trig-functions.html` to the shared-assets HoffMath Classroom
+standard. Both decks now link `assets/slides-core.css` and
+`assets/slides-core.js` for shell layout, navigation, KaTeX rendering, and
+teacher-controlled step reveals while keeping their deck-specific graph and
+table systems local.
+
+- Replaced the old inline slide controllers with `SlidesCore.init(...)` and
+  kept small compatibility hooks for existing fill-in-table cells and generated
+  SVG graph substeps.
+- Preserved the worked-example flow, generated SVG graphs, tables, reciprocal
+  graph comparisons, inverse trig summary tables, composition examples, and
+  honors triangle-method slides.
+- Replaced generic questions endings with six-card key-skills wrap-up slides
+  so 4.8 and 4.9 now close consistently with the other Unit 4 section decks.
+- Updated `CLAUDE.md` so Unit 4 sections 4.1-4.9 are tracked as newly built or
+  rebuilt to the 5.5 / shared-assets standard.
+
+---
+
 ## 2026-05-13
 
 ### Rebuilt HTML Deck - 4.7 Modeling with Sine and Cosine
