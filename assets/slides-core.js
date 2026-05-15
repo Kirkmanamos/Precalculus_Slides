@@ -59,6 +59,13 @@
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
             this.sectionTargets = options.sectionTargets || [];
+            this.ignoreClickSelectors = options.ignoreClickSelectors || ['.nav-dot', '.slide-section-nav'];
+            this.ignoreKeySelectors = options.ignoreKeySelectors || [];
+            this.onSync = typeof options.onSync === 'function' ? options.onSync : null;
+            this.beforeGoTo = typeof options.beforeGoTo === 'function' ? options.beforeGoTo : null;
+            this.scrollStepIntoView = typeof options.scrollStepIntoView === 'function'
+                ? options.scrollStepIntoView
+                : step => step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             this._buildNav();
             this._buildSectionNavs();
             this._activate(0);
@@ -129,6 +136,7 @@
                     : this.current < this.total - 1 ? 'click for next slide'
                     : '';
             }
+            if (this.onSync) this.onSync(this);
         }
 
         _activate(index) {
@@ -138,6 +146,7 @@
 
         _goTo(index) {
             if (index === this.current) return;
+            if (this.beforeGoTo) this.beforeGoTo(this, index);
             const out = this.slides[this.current];
             out.classList.add('exit-left');
             out.classList.remove('active');
@@ -156,7 +165,7 @@
                 const step = slide.querySelector(`#${slide.id}-step-${cur}`);
                 if (step) {
                     step.classList.add('visible');
-                    step.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    this.scrollStepIntoView(step, slide, this);
                 }
                 this._sync();
                 return true;
@@ -187,6 +196,7 @@
 
         _bindEvents() {
             document.addEventListener('keydown', event => {
+                if (this.ignoreKeySelectors.some(selector => event.target.closest(selector))) return;
                 if (['ArrowRight', 'ArrowDown', ' '].includes(event.key)) {
                     event.preventDefault();
                     this._next();
@@ -197,7 +207,7 @@
             });
 
             document.addEventListener('click', event => {
-                if (!event.target.closest('.nav-dot') && !event.target.closest('.slide-section-nav')) {
+                if (!this.ignoreClickSelectors.some(selector => event.target.closest(selector))) {
                     this._next();
                 }
             });

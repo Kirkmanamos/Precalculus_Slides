@@ -134,11 +134,11 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 4.7 | Modeling with Sine & Cosine | ✅ Complete (5.5 standard) | — |
 | 4.8 | Graphs of Other Trig Functions | ✅ Complete (5.5 standard) | — |
 | 4.9 | Inverse Trig Functions | ✅ Complete (5.5 standard) | 🔄 Prototype |
-| 5.1 | Using Fundamental Identities | ✅ Complete | — |
-| 5.2 | Verifying Trig Identities | ✅ Complete | — |
-| 5.3 | Solving Trig Equations | ✅ Complete | — |
-| 5.4 | Sum and Difference Identities | ✅ Complete | — |
-| 5.5 | Double &amp; Half Angle Identities | ✅ Complete | — |
+| 5.1 | Using Fundamental Identities | ✅ Complete (shared-assets cleanup) | — |
+| 5.2 | Verifying Trig Identities | ✅ Complete (shared-assets cleanup) | — |
+| 5.3 | Solving Trig Equations | ✅ Complete (shared-assets cleanup) | — |
+| 5.4 | Sum and Difference Identities | ✅ Complete (shared-assets cleanup) | — |
+| 5.5 | Double &amp; Half Angle Identities | ✅ Complete (shared-assets cleanup) | — |
 | 6.1 | Sequences | ✅ Complete | — |
 | 6.2 | Arithmetic Sequences | ✅ Complete | — |
 | 6.3 | Geometric Sequences | ✅ Complete | — |
@@ -147,7 +147,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 6.6 | Probability | ✅ Complete | — |
 | 6.7 | Conditional Probability | ✅ Complete | — |
 
-**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.9 newly built or rebuilt to 5.5 standard** (the older `trig-review.html` is preserved as a legacy review deck). Pre-existing supplemental Rational Functions decks remain in place. Up next: other supplemental review materials.
+**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.9 newly built or rebuilt to 5.5 standard**; **Unit 5 daily decks now use the shared-assets engine while preserving their existing organization and visual identity**. Pre-existing supplemental Rational Functions decks remain in place. Up next: other supplemental review materials.
 
 ---
 

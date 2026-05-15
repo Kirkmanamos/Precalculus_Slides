@@ -6,6 +6,7 @@
     <title>5.2 Verifying Trigonometric Identities</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
 
     <style>
         /* ==============================================
@@ -1470,344 +1471,172 @@
 <!-- KaTeX loaded synchronously to ensure math renders before JS runs -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
 <script>
-    /* Render all LaTeX in the document */
-    renderMathInElement(document.body, {
-        delimiters: [
-            { left: '\\[', right: '\\]', display: true  },
-            { left: '\\(', right: '\\)', display: false }
-        ],
-        throwOnError: false
-    });
+    const strategyDock = document.getElementById('strategyDock');
+    const strategyWidgets = Array.from(document.querySelectorAll('[data-strategy-widget]'));
+    const launchBoard = document.querySelector('[data-launch-board]');
+    const launchCards = Array.from(document.querySelectorAll('[data-launch-card]'));
+    const launchDropzones = Array.from(document.querySelectorAll('[data-launch-dropzone]'));
+    const launchResetButton = document.querySelector('[data-launch-reset]');
+    let draggedLaunchCard = null;
+    let selectedLaunchCard = null;
 
-    /* After KaTeX renders, restructure each .step-math that has an annotation
-       so the equation and annotation appear side-by-side instead of stacked.
-       Wraps all pre-annotation nodes in .step-eq, then marks .has-annotation. */
-    document.querySelectorAll('.step-math').forEach(stepMath => {
-        const annotation = stepMath.querySelector('.annotation');
-        if (!annotation) return;
-
-        const eqDiv = document.createElement('div');
-        eqDiv.className = 'step-eq';
-
-        // Collect every node that comes before the annotation span
-        const before = [];
-        for (const node of stepMath.childNodes) {
-            if (node === annotation) break;
-            before.push(node);
-        }
-        before.forEach(node => eqDiv.appendChild(node));
-        stepMath.insertBefore(eqDiv, annotation);
-        stepMath.classList.add('has-annotation');
-    });
-
-    /* ==============================================
-       PRESENTATION CONTROLLER
-       Handles navigation, step reveals, progress bar
-       ============================================== */
-    class SlidePresentation {
-        constructor() {
-            this.slides       = Array.from(document.querySelectorAll('.slide'));
-            this.current      = 0;
-            this.total        = this.slides.length;
-            this.progressBar  = document.getElementById('progressBar');
-            this.navDotsEl    = document.getElementById('navDots');
-            this.clickHint    = document.getElementById('clickHint');
-            this.strategyDock = document.getElementById('strategyDock');
-            this.strategyWidgets = Array.from(document.querySelectorAll('[data-strategy-widget]'));
-            this.sectionTargets = [
-                { label: 'Launch', slideId: 'slide-launch' },
-                { label: 'Rules', slideId: 'slide-1' },
-                { label: 'Proofs', slideId: 'slide-3' },
-                { label: 'More Proofs', slideId: 'slide-8' },
-                { label: 'Review', slideId: 'slide-12' }
-            ];
-            this.strategyDockStart = this.slides.findIndex((slide) => slide.id === 'slide-3');
-            this.launchBoard = document.querySelector('[data-launch-board]');
-            this.launchCards = Array.from(document.querySelectorAll('[data-launch-card]'));
-            this.launchDropzones = Array.from(document.querySelectorAll('[data-launch-dropzone]'));
-            this.launchResetButton = document.querySelector('[data-launch-reset]');
-            this.draggedLaunchCard = null;
-            this.selectedLaunchCard = null;
-
-            this._buildNav();
-            this._buildSectionNavs();
-            this._bindStrategyDock();
-            this._bindLaunchSort();
-            this._activate(0);
-            this._bindEvents();
-        }
-
-        /* Build navigation dots */
-        _buildNav() {
-            this.slides.forEach((_, i) => {
-                const dot = document.createElement('button');
-                dot.className = 'nav-dot';
-                dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-                dot.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this._goTo(i);
-                });
-                this.navDotsEl.appendChild(dot);
-            });
-            this.dots = Array.from(this.navDotsEl.querySelectorAll('.nav-dot'));
-        }
-
-        _buildSectionNavs() {
-            this.sectionButtons = this.sectionTargets
-                .map((target) => ({ ...target, index: this.slides.findIndex((slide) => slide.id === target.slideId) }))
-                .filter((target) => target.index >= 0)
-                .map((target) => ({ ...target, buttons: [] }));
-
-            this.slides.forEach((slide) => {
-                const nav = document.createElement('div');
-                nav.className = 'slide-section-nav';
-                nav.setAttribute('aria-label', 'Section navigation');
-
-                this.sectionButtons.forEach((target) => {
-                    const button = document.createElement('button');
-                    button.className = 'slide-section-chip';
-                    button.type = 'button';
-                    button.textContent = target.label;
-                    button.setAttribute('aria-label', `Jump to ${target.label}`);
-                    button.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this._goTo(target.index);
-                    });
-                    nav.appendChild(button);
-                    target.buttons.push(button);
-                });
-
-                slide.appendChild(nav);
-            });
-        }
-
-        /* Sync progress bar, dots, and click hint */
-        _sync() {
-            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
-            this.progressBar.style.width = ((this.current + 1) / this.total * 100) + '%';
-            const activeSection = [...this.sectionButtons].reverse()
-                .find((target) => this.current >= target.index);
-            this.sectionButtons.forEach((target) => {
-                target.buttons.forEach((button) => button.classList.toggle('active', target === activeSection));
-            });
-
-            const slide    = this.slides[this.current];
-            const maxSteps = parseInt(slide.dataset.steps || 0);
-            const curStep  = parseInt(slide.dataset.currentStep ?? -1);
-            this.clickHint.textContent = (curStep < maxSteps - 1)
-                ? 'click to advance'
-                : (this.current < this.total - 1 ? 'click for next slide' : '');
-            const showStrategyDock = this.strategyDockStart >= 0 && this.current >= this.strategyDockStart;
-            if (!showStrategyDock) this._closeStrategyPanels();
-            this.strategyDock.classList.toggle('is-hidden', !showStrategyDock);
-        }
-
-        /* Make slide at index visible */
-        _activate(index) {
-            this.slides[index].classList.add('active');
-            this._sync();
-        }
-
-        /* Transition to a different slide */
-        _goTo(index) {
-            if (index === this.current) return;
-            const out = this.slides[this.current];
-            out.classList.add('exit-left');
-            out.classList.remove('active');
-            setTimeout(() => out.classList.remove('exit-left'), 500);
-            this.current = index;
-            this.slides[this.current].classList.add('active');
-            this._sync();
-        }
-
-        /* Reveal next step on the current slide. Returns true if a step was revealed. */
-        _advanceStep(slide) {
-            const maxSteps = parseInt(slide.dataset.steps || 0);
-            let   curStep  = parseInt(slide.dataset.currentStep ?? -1);
-            if (curStep < maxSteps - 1) {
-                curStep++;
-                slide.dataset.currentStep = curStep;
-                const el = slide.querySelector(`#${slide.id}-step-${curStep}`);
-                if (el) { el.classList.add('visible'); el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
-                this._sync();
-                return true;
-            }
-            return false;
-        }
-        _retreatStep(slide) {
-            let cur = parseInt(slide.dataset.currentStep ?? -1);
-            if (cur < 0) return false;
-            slide.querySelector(`#${slide.id}-step-${cur}`)?.classList.remove('visible');
-            slide.dataset.currentStep = cur - 1;
-            this._sync(); return true;
-        }
-
-        _next() {
-            const consumed = this._advanceStep(this.slides[this.current]);
-            if (!consumed && this.current < this.total - 1) this._goTo(this.current + 1);
-        }
-
-        _prev() {
-            if (!this._retreatStep(this.slides[this.current]) && this.current > 0) this._goTo(this.current - 1);
-        }
-
-        _bindStrategyDock() {
-            this.strategyWidgets.forEach((widget) => {
-                const toggle = widget.querySelector('[data-strategy-toggle]');
-                toggle.addEventListener('click', () => {
-                    const willOpen = !widget.classList.contains('is-open');
-                    this._closeStrategyPanels();
-                    widget.classList.toggle('is-open', willOpen);
-                    toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
-                });
-            });
-        }
-
-        _closeStrategyPanels() {
-            this.strategyWidgets.forEach((widget) => {
-                widget.classList.remove('is-open');
-                widget.querySelector('[data-strategy-toggle]')?.setAttribute('aria-expanded', 'false');
-            });
-        }
-
-        _hasOpenStrategyPanel() {
-            return this.strategyWidgets.some((widget) => widget.classList.contains('is-open'));
-        }
-
-        _bindLaunchSort() {
-            if (!this.launchBoard) return;
-
-            this.launchCards.forEach((card) => {
-                card.addEventListener('dragstart', (e) => {
-                    this.draggedLaunchCard = card;
-                    card.classList.add('is-dragging');
-                    e.dataTransfer.effectAllowed = 'move';
-                    e.dataTransfer.setData('text/plain', card.id);
-                });
-
-                card.addEventListener('dragend', () => {
-                    card.classList.remove('is-dragging');
-                    this.draggedLaunchCard = null;
-                    this._clearLaunchDropState();
-                });
-
-                card.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this._setSelectedLaunchCard(this.selectedLaunchCard === card ? null : card);
-                });
-            });
-
-            this.launchDropzones.forEach((zone) => {
-                zone.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    zone.classList.add('is-over');
-                });
-
-                zone.addEventListener('dragenter', (e) => {
-                    e.preventDefault();
-                    zone.classList.add('is-over');
-                });
-
-                zone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    const cardId = e.dataTransfer.getData('text/plain');
-                    const card = document.getElementById(cardId) || this.draggedLaunchCard;
-                    this._moveLaunchCard(card, zone);
-                    this._clearLaunchDropState();
-                });
-
-                zone.addEventListener('click', (e) => {
-                    if (e.target.closest('[data-launch-card]') || e.target.closest('[data-launch-reset]')) return;
-                    if (!this.selectedLaunchCard) return;
-                    e.stopPropagation();
-                    this._moveLaunchCard(this.selectedLaunchCard, zone);
-                });
-
-                zone.addEventListener('keydown', (e) => {
-                    if (!this.selectedLaunchCard || !['Enter', ' '].includes(e.key)) return;
-                    e.preventDefault();
-                    e.stopPropagation();
-                    this._moveLaunchCard(this.selectedLaunchCard, zone);
-                });
-            });
-
-            this.launchResetButton?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const bankHolder = document.getElementById('launch-bank-cards');
-                this.launchCards
-                    .slice()
-                    .sort((a, b) => Number(a.dataset.defaultOrder) - Number(b.dataset.defaultOrder))
-                    .forEach((card) => bankHolder?.appendChild(card));
-                this._setSelectedLaunchCard(null);
-                this._clearLaunchDropState();
-            });
-        }
-
-        _moveLaunchCard(card, zone) {
-            const holder = zone?.querySelector('[data-launch-card-holder]');
-            if (!card || !holder) return;
-            holder.appendChild(card);
-            this._setSelectedLaunchCard(null);
-        }
-
-        _setSelectedLaunchCard(card) {
-            if (this.selectedLaunchCard) this.selectedLaunchCard.classList.remove('is-selected');
-            this.selectedLaunchCard = card;
-            if (this.selectedLaunchCard) this.selectedLaunchCard.classList.add('is-selected');
-        }
-
-        _clearLaunchDropState() {
-            this.launchDropzones.forEach((zone) => zone.classList.remove('is-over'));
-        }
-
-        _bindEvents() {
-            /* Keyboard */
-            document.addEventListener('keydown', (e) => {
-                if (e.target.closest('.strategy-dock, [data-launch-board]')) {
-                    if (e.key === 'Escape') {
-                        this._closeStrategyPanels();
-                        this._setSelectedLaunchCard(null);
-                        return;
-                    }
-                    return;
-                }
-                if (e.key === 'Escape' && this._hasOpenStrategyPanel()) {
-                    this._closeStrategyPanels();
-                    return;
-                }
-                if (['ArrowRight', 'ArrowDown', ' '].includes(e.key)) {
-                    e.preventDefault(); this._next();
-                } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
-                    e.preventDefault(); this._prev();
-                }
-            });
-
-            /* Click anywhere (except nav dots, handled separately) */
-            document.addEventListener('click', (e) => {
-                if (e.target.closest('.nav-dot') || e.target.closest('.strategy-dock') || e.target.closest('[data-launch-board]') || e.target.closest('.slide-section-nav')) return;
-                if (this._hasOpenStrategyPanel()) {
-                    this._closeStrategyPanels();
-                    return;
-                }
-                if (this.selectedLaunchCard) {
-                    this._setSelectedLaunchCard(null);
-                    return;
-                }
-                this._next();
-            });
-
-            /* Touch swipe */
-            let touchStartX = 0;
-            document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
-            document.addEventListener('touchend', (e) => {
-                const dx = e.changedTouches[0].clientX - touchStartX;
-                if (Math.abs(dx) > 50) { dx < 0 ? this._next() : this._prev(); }
-            }, { passive: true });
-        }
+    function closeStrategyPanels() {
+        strategyWidgets.forEach(widget => {
+            widget.classList.remove('is-open');
+            widget.querySelector('[data-strategy-toggle]')?.setAttribute('aria-expanded', 'false');
+        });
     }
 
-    new SlidePresentation();
+    function hasOpenStrategyPanel() {
+        return strategyWidgets.some(widget => widget.classList.contains('is-open'));
+    }
+
+    function setSelectedLaunchCard(card) {
+        if (selectedLaunchCard) selectedLaunchCard.classList.remove('is-selected');
+        selectedLaunchCard = card;
+        if (selectedLaunchCard) selectedLaunchCard.classList.add('is-selected');
+    }
+
+    function clearLaunchDropState() {
+        launchDropzones.forEach(zone => zone.classList.remove('is-over'));
+    }
+
+    function moveLaunchCard(card, zone) {
+        const holder = zone?.querySelector('[data-launch-card-holder]');
+        if (!card || !holder) return;
+        holder.appendChild(card);
+        setSelectedLaunchCard(null);
+    }
+
+    function bindStrategyDock() {
+        strategyWidgets.forEach(widget => {
+            const toggle = widget.querySelector('[data-strategy-toggle]');
+            toggle?.addEventListener('click', event => {
+                event.stopPropagation();
+                const willOpen = !widget.classList.contains('is-open');
+                closeStrategyPanels();
+                widget.classList.toggle('is-open', willOpen);
+                toggle.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+            });
+        });
+    }
+
+    function bindLaunchSort() {
+        if (!launchBoard) return;
+
+        launchCards.forEach(card => {
+            card.addEventListener('dragstart', event => {
+                draggedLaunchCard = card;
+                card.classList.add('is-dragging');
+                event.dataTransfer.effectAllowed = 'move';
+                event.dataTransfer.setData('text/plain', card.id);
+            });
+
+            card.addEventListener('dragend', () => {
+                card.classList.remove('is-dragging');
+                draggedLaunchCard = null;
+                clearLaunchDropState();
+            });
+
+            card.addEventListener('click', event => {
+                event.stopPropagation();
+                setSelectedLaunchCard(selectedLaunchCard === card ? null : card);
+            });
+        });
+
+        launchDropzones.forEach(zone => {
+            zone.addEventListener('dragover', event => {
+                event.preventDefault();
+                zone.classList.add('is-over');
+            });
+
+            zone.addEventListener('dragenter', event => {
+                event.preventDefault();
+                zone.classList.add('is-over');
+            });
+
+            zone.addEventListener('drop', event => {
+                event.preventDefault();
+                const cardId = event.dataTransfer.getData('text/plain');
+                const card = document.getElementById(cardId) || draggedLaunchCard;
+                moveLaunchCard(card, zone);
+                clearLaunchDropState();
+            });
+
+            zone.addEventListener('click', event => {
+                if (event.target.closest('[data-launch-card]') || event.target.closest('[data-launch-reset]')) return;
+                if (!selectedLaunchCard) return;
+                event.stopPropagation();
+                moveLaunchCard(selectedLaunchCard, zone);
+            });
+
+            zone.addEventListener('keydown', event => {
+                if (!selectedLaunchCard || !['Enter', ' '].includes(event.key)) return;
+                event.preventDefault();
+                event.stopPropagation();
+                moveLaunchCard(selectedLaunchCard, zone);
+            });
+        });
+
+        launchResetButton?.addEventListener('click', event => {
+            event.stopPropagation();
+            const bankHolder = document.getElementById('launch-bank-cards');
+            launchCards
+                .slice()
+                .sort((a, b) => Number(a.dataset.defaultOrder) - Number(b.dataset.defaultOrder))
+                .forEach(card => bankHolder?.appendChild(card));
+            setSelectedLaunchCard(null);
+            clearLaunchDropState();
+        });
+    }
+
+    document.addEventListener('click', event => {
+        if (hasOpenStrategyPanel() && !event.target.closest('.strategy-dock')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            closeStrategyPanels();
+            return;
+        }
+        if (selectedLaunchCard && !event.target.closest('[data-launch-board]')) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            setSelectedLaunchCard(null);
+        }
+    }, true);
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+            closeStrategyPanels();
+            setSelectedLaunchCard(null);
+        }
+    });
+
+    bindStrategyDock();
+    bindLaunchSort();
+
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Launch', slideId: 'slide-launch' },
+            { label: 'Rules', slideId: 'slide-1' },
+            { label: 'Proofs', slideId: 'slide-3' },
+            { label: 'More Proofs', slideId: 'slide-8' },
+            { label: 'Review', slideId: 'slide-12' }
+        ],
+        ignoreClickSelectors: ['.nav-dot', '.slide-section-nav', '.strategy-dock', '[data-launch-board]'],
+        ignoreKeySelectors: ['.strategy-dock', '[data-launch-board]'],
+        beforeGoTo() {
+            closeStrategyPanels();
+            setSelectedLaunchCard(null);
+        },
+        onSync(controller) {
+            const strategyDockStart = controller.slides.findIndex(slide => slide.id === 'slide-3');
+            const showStrategyDock = strategyDockStart >= 0 && controller.current >= strategyDockStart;
+            if (!showStrategyDock) closeStrategyPanels();
+            strategyDock?.classList.toggle('is-hidden', !showStrategyDock);
+        }
+    });
 </script>
 </body>
 </html>

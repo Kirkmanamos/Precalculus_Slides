@@ -5,6 +5,30 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-05-15
+
+### Unit 5 Shared-Assets Cleanup
+
+Refactored the main Unit 5 daily decks onto the shared HoffMath slide engine
+without changing their lesson organization or visual identity.
+
+- Added `assets/slides-core.css` and `assets/slides-core.js` to
+  `5.1-fundamental-identities.html`, `5.2-verifying-trig-identities.html`,
+  `5.3-solving-trig-equations.html`, `5.4-sum-and-difference.html`, and
+  `5.5-double-half-angle.html`.
+- Replaced each deck's copied `SlidePresentation` controller and inline KaTeX
+  render/annotation setup with `SlidesCore.init(...)`.
+- Extended `assets/slides-core.js` with backward-compatible hooks for deck-local
+  click-ignore selectors, keyboard-ignore selectors, sync callbacks, pre-slide
+  transitions, and custom step scrolling.
+- Preserved Unit 5-specific classroom tools: identity docks, strategy docks,
+  the 5.2 launch sorting activity, and the 5.3 quick-reference / section-jump
+  controls.
+- Fixed the 5.5 double-angle annotation layout so long worked-example equations
+  no longer squeeze or clip the blue explanation text.
+
+---
+
 ## 2026-05-14
 
 ### Rebuilt HTML Decks - 4.8 and 4.9 Trig Graphs
