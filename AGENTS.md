@@ -783,8 +783,21 @@ Before starting any new deck, check this table so you don't rebuild something th
 | 1.5 | Transformations of Functions | ✅ | `1.5-transformations.html` |
 | 1.6 | Operations with Functions | ✅ | `1.6-operations-with-functions.html` |
 | 1.7 | Inverse Functions | ✅ | `1.7-inverse-functions.html` |
-| 3 | Rational Functions — Features | ✅ | `RationalFeatures.html` (legacy arch) |
-| 3 | Rational Functions — Graphing | ✅ | `RationalGraphing.html` (legacy arch) |
+| 2.1 | Quadratic Functions | ✅ | `2.1-quadratic-functions.html` |
+| 2.2 | Graphs of Polynomial Functions | ✅ | `2.2-graphs-of-polynomial-functions.html` |
+| 2.3 | Zeros of Polynomial Functions | ✅ | `2.3-zeros-of-polynomial-functions.html` |
+| 2.4 | Dividing Polynomials | ✅ | `2.4-dividing-polynomials.html` |
+| 2.5 | Complex Numbers | ✅ | `2.5-complex-numbers.html` |
+| 2.6 | Fundamental Theorem of Algebra | ✅ | `2.6-fundamental-theorem-of-algebra.html` |
+| 2.7 | Rational Functions and Asymptotes | ✅ | `2.7-rational-functions-and-asymptotes.html` |
+| 2.8 | Graphs of Rational Functions | ✅ | `2.8-graphs-of-rational-functions.html` |
+| 3.1 | Exponential Functions and Their Graphs | ✅ | `3.1-exponential-functions-and-their-graphs.html` |
+| 3.2 | Logarithmic Functions and Their Graphs | ✅ | `3.2-logarithmic-functions-and-their-graphs.html` |
+| 3.3 | Properties of Logarithms | ✅ | `3.3-properties-of-logarithms.html` |
+| 3.4 | Solving Exponential and Log Equations | ✅ | `3.4-solving-exponential-and-log-equations.html` |
+| 3.5 | Exponential Applications | ✅ | `3.5-exponential-applications.html` |
+| 3 (suppl.) | Rational Functions — Features | ✅ | `RationalFeatures.html` (legacy arch) |
+| 3 (suppl.) | Rational Functions — Graphing | ✅ | `RationalGraphing.html` (legacy arch) |
 | 4.1–4.5 | Trig Review | ✅ | `trig-review.html` |
 | 4.6 | Graphs of Sine & Cosine | ✅ | `4.6-graphs-sine-cosine.html` |
 | 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ | `4.6b-graphs-sine-cosine-part2.html` |

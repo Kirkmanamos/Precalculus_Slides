@@ -28,7 +28,27 @@
 - [1.6 Operations with Functions](1.6-operations-with-functions.html)
 - [1.7 Inverse Functions](1.7-inverse-functions.html)
 
-## Unit 3: Rational Functions
+## Unit 2: Polynomial and Rational Functions
+
+- [2.1 Quadratic Functions](2.1-quadratic-functions.html)
+- [2.2 Graphs of Polynomial Functions](2.2-graphs-of-polynomial-functions.html)
+- [2.3 Zeros of Polynomial Functions](2.3-zeros-of-polynomial-functions.html)
+- [2.4 Dividing Polynomials](2.4-dividing-polynomials.html)
+- [2.5 Complex Numbers](2.5-complex-numbers.html)
+- [2.6 Fundamental Theorem of Algebra](2.6-fundamental-theorem-of-algebra.html)
+- [2.7 Rational Functions and Asymptotes](2.7-rational-functions-and-asymptotes.html)
+- [2.8 Graphs of Rational Functions](2.8-graphs-of-rational-functions.html)
+
+## Unit 3: Exponential and Logarithmic Functions
+
+- [3.1 Exponential Functions and Their Graphs](3.1-exponential-functions-and-their-graphs.html)
+- [3.2 Logarithmic Functions and Their Graphs](3.2-logarithmic-functions-and-their-graphs.html)
+- [3.3 Properties of Logarithms](3.3-properties-of-logarithms.html)
+- [3.4 Solving Exponential and Logarithmic Equations](3.4-solving-exponential-and-log-equations.html)
+- [3.5 Exponential Applications](3.5-exponential-applications.html)
+
+## Supplemental Rational Functions Reference
+
 - [Rational Features](RationalFeatures.html)
 - [Rational Graphing](RationalGraphing.html)
 
