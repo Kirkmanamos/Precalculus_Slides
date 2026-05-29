@@ -277,6 +277,10 @@
             grid-template-columns: 5.6rem repeat(4, minmax(4.8rem, 1fr));
             min-width: 640px;
         }
+        .binomial-map.row-5-map {
+            grid-template-columns: 5.6rem repeat(6, minmax(4.8rem, 1fr));
+            min-width: 860px;
+        }
         #slide-3 .step-box.visual-step {
             padding: 0.44em 0.72em;
         }
@@ -983,7 +987,7 @@
 </div>
             </div>
         </section>
-<section class="slide grid-bg" id="slide-5" data-steps="4">
+<section class="slide grid-bg" id="slide-5" data-steps="5">
             <div class="slide-header">
                 <div class="example-label">Example 2</div>
                 <div class="slide-title">Expanding with the Binomial Theorem</div>
@@ -1010,6 +1014,47 @@
 
     </div>
 </div><div class="step" id="slide-5-step-2">
+    <div class="step-box visual-step">
+        <div class="step-label">Line Up the Coefficients With the Power Pattern</div>
+
+    <div class="binomial-visual-wrap">
+        <div class="binomial-map row-5-map" role="table" aria-label="Pascal coefficients multiplied by matching power-pattern terms for row 5">
+            <div class="binomial-map-label">Term</div>
+            <div class="binomial-cell term-index">1st</div>
+            <div class="binomial-cell term-index">2nd</div>
+            <div class="binomial-cell term-index">3rd</div>
+            <div class="binomial-cell term-index">4th</div>
+            <div class="binomial-cell term-index">5th</div>
+            <div class="binomial-cell term-index">6th</div>
+
+            <div class="binomial-map-label">Pascal row 5</div>
+            <div class="binomial-cell coefficient">1</div>
+            <div class="binomial-cell coefficient">5</div>
+            <div class="binomial-cell coefficient">10</div>
+            <div class="binomial-cell coefficient">10</div>
+            <div class="binomial-cell coefficient">5</div>
+            <div class="binomial-cell coefficient">1</div>
+
+            <div class="binomial-map-label">Power pattern</div>
+            <div class="binomial-cell power-pattern">\(x^5\)</div>
+            <div class="binomial-cell power-pattern">\(x^4(-2y)^1\)</div>
+            <div class="binomial-cell power-pattern">\(x^3(-2y)^2\)</div>
+            <div class="binomial-cell power-pattern">\(x^2(-2y)^3\)</div>
+            <div class="binomial-cell power-pattern">\(x^1(-2y)^4\)</div>
+            <div class="binomial-cell power-pattern">\((-2y)^5\)</div>
+
+            <div class="binomial-map-label">Multiply</div>
+            <div class="binomial-cell multiplication">\(1(x^5)\)</div>
+            <div class="binomial-cell multiplication">\(5(x^4 \cdot -2y)\)</div>
+            <div class="binomial-cell multiplication">\(10(x^3 \cdot 4y^2)\)</div>
+            <div class="binomial-cell multiplication">\(10(x^2 \cdot -8y^3)\)</div>
+            <div class="binomial-cell multiplication">\(5(x \cdot 16y^4)\)</div>
+            <div class="binomial-cell multiplication">\(1(-32y^5)\)</div>
+        </div>
+    </div>
+
+    </div>
+</div><div class="step" id="slide-5-step-3">
     <div class="step-box dark">
         <div class="step-label">Simplify Each Term</div>
 
@@ -1018,7 +1063,7 @@
     </div>
 
     </div>
-</div><div class="step" id="slide-5-step-3">
+</div><div class="step" id="slide-5-step-4">
     <div class="step-box orange">
         <div class="step-label">Watch Out</div>
         <div class="step-copy">When \(b\) is negative, the signs <strong>alternate</strong>: \((-b)^0 = +\), \((-b)^1 = -\), \((-b)^2 = +\), \((-b)^3 = -\), \(\ldots\)</div>
