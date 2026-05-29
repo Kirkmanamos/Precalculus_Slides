@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 — Rates of Change and Behavior of Graphs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        /* Deck-specific: source tags for example provenance */
+        .source-tag {
+            display: inline-block;
+            font-size: 0.5em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 0.15em 0.55em;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+        .source-tag.openstax { background: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
+        .source-tag.larson   { background: #ede9fe; color: #5b21b6; border: 1px solid #8b5cf6; }
+
+        /* Gas price table styling */
+        .gas-table { width: 100%; border-collapse: collapse; margin-top: 0.3rem; }
+        .gas-table th, .gas-table td { padding: 0.4rem 0.5rem; border: 1px solid #e2e8f0; text-align: center; font-size: 0.85em; }
+        .gas-table th { background: var(--navy); color: white; font-weight: 700; }
+        .gas-table td { background: #f8fafc; }
+
+        /* Graph container */
+        .graph-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0.3rem 0;
+        }
+        .graph-card-svg {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 0.4rem;
+            max-width: 420px;
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ============================================================
+     SLIDE 0 — TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Chapter 1 · Functions</div>
+    <div class="title-main">1.3 Rates of Change and Behavior of Graphs</div>
+    <div class="title-objective">Objective: Calculate the average rate of change of a function, identify intervals of increase, decrease, or constant behavior, and locate local and absolute extrema.</div>
+    <div class="identity-chips">
+        <span class="chip">average rate of change</span>
+        <span class="chip">secant line</span>
+        <span class="chip">increasing &amp; decreasing</span>
+        <span class="chip">local extrema</span>
+        <span class="chip">absolute extrema</span>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1 — CONCEPT: Average Rate of Change
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-1" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Definition</div>
+        <div class="slide-title">Average Rate of Change</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="info-card teal">
+            <div class="card-title">Average Rate of Change</div>
+            <div class="card-copy" style="line-height: 1.8;">
+                The <strong>average rate of change</strong> between two input values is the change in the output values divided by the change in the input values.
+                \[\text{Average Rate of Change} = \dfrac{\Delta y}{\Delta x} = \dfrac{f(x_2) - f(x_1)}{x_2 - x_1}\]
+            </div>
+        </div>
+        <div class="cards-grid">
+            <div class="info-card orange">
+                <div class="card-title">Geometric Interpretation</div>
+                <div class="card-copy">
+                    It represents the <span class="fb" id="slide-1-step-0"><span class="fb-blank">________________</span><span class="fb-answer">slope of the secant line</span></span> passing through the points \((x_1,\, f(x_1))\) and \((x_2,\, f(x_2))\) on the graph.
+                </div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Units of Measurement</div>
+                <div class="card-copy">
+                    The units are always <span class="fb" id="slide-1-step-1"><span class="fb-blank">________________</span><span class="fb-answer">output units per input unit</span></span> (e.g., miles per hour, dollars per year).
+                </div>
+            </div>
+        </div>
+        <div class="step" id="slide-1-step-2">
+            <div class="note-box navy">
+                <div class="note-title">Constant vs. Variable Rate</div>
+                <div class="note-copy">
+                    For linear functions, the average rate of change is constant (always equal to the slope \(m\)). For non-linear functions, it varies depending on the chosen interval \([x_1,\, x_2]\).
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — EXAMPLE 1: Average Rate of Change from Table
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-2" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Average Rate of Change from a Table</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">
+            The table shows the average price of a gallon of gasoline in the US between 2005 and 2020. Find the average rate of change of gas prices between the given years.
+        </div>
+        <table class="gas-table" style="max-width: 580px; margin: 0.2rem auto;">
+            <thead>
+                <tr><th>Year (\(t\))</th><th>2005</th><th>2008</th><th>2012</th><th>2016</th><th>2020</th></tr>
+            </thead>
+            <tbody>
+                <tr><td style="font-weight:700; background:#f1f5f9;">Price \(P(t)\) (\$)</td><td>2.30</td><td>3.27</td><td>3.64</td><td>2.14</td><td>2.60</td></tr>
+            </tbody>
+        </table>
+        <div class="steps-area" style="margin-top: 0.4rem;">
+            <div class="step" id="slide-2-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">a) Between 2005 and 2012</div>
+                    <div class="step-math">
+                        \[\dfrac{P(2012) - P(2005)}{2012 - 2005} = \dfrac{3.64 - 2.30}{12 - 5} = \dfrac{1.34}{7} \approx 0.191 \text{ dollars per year}\]
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-1">
+                <div class="step-box">
+                    <div class="step-label">b) Between 2012 and 2020</div>
+                    <div class="step-math">
+                        \[\dfrac{P(2020) - P(2012)}{2020 - 2012} = \dfrac{2.60 - 3.64}{20 - 12} = \dfrac{-1.04}{8} = -0.130 \text{ dollars per year}\]
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-2-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Interpretation</div>
+                    <div class="step-math">
+                        On average, gas prices rose by about \(19.1\) cents per year from 2005 to 2012, and then fell by \(13.0\) cents per year from 2012 to 2020.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — EXAMPLE 2: Average Rate of Change of a Formula
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Average Rate of Change of a Formula</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">
+            Find the average rate of change of \(f(x) = x^2 - \dfrac{1}{x}\) on the interval \([2,\, 4]\).
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Evaluate at the endpoints</div>
+                    <div class="step-math">
+                        \[f(2) = (2)^2 - \dfrac{1}{2} = 4 - 0.5 = 3.5\]
+                        \[f(4) = (4)^2 - \dfrac{1}{4} = 16 - 0.25 = 15.75\]
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Apply the formula</div>
+                    <div class="step-math">
+                        \[\text{Average Rate of Change} = \dfrac{f(4) - f(2)}{4 - 2} = \dfrac{15.75 - 3.5}{4 - 2}\]
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Step 3 · Simplify</div>
+                    <div class="step-math">
+                        \[= \dfrac{12.25}{2} = 6.125\]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — CONCEPT: Increasing, Decreasing, or Constant
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Increasing, Decreasing, or Constant</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Increasing</div>
+                <div class="card-copy">
+                    Graph rises from left to right.<br>
+                    Outputs increase as inputs increase:<br>
+                    \(f(x_1) < f(x_2)\) when \(x_1 < x_2\).
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Decreasing</div>
+                <div class="card-copy">
+                    Graph falls from left to right.<br>
+                    Outputs decrease as inputs increase:<br>
+                    \(f(x_1) > f(x_2)\) when \(x_1 < x_2\).
+                </div>
+            </div>
+            <div class="info-card teal">
+                <div class="card-title">Constant</div>
+                <div class="card-copy">
+                    Graph is flat.<br>
+                    Outputs do not change:<br>
+                    \(f(x_1) = f(x_2)\) for all \(x\).
+                </div>
+            </div>
+        </div>
+        <div class="step" id="slide-4-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Reporting Intervals</div>
+                <div class="note-copy">
+                    When identifying where a function is increasing, decreasing, or constant, always write the intervals in terms of <span class="fb" id="slide-4-step-1"><span class="fb-blank">________________</span><span class="fb-answer">input (x) values</span></span>.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — EXAMPLE 3: Intervals of Increase & Decrease
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="2">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Identify Behavior Intervals from Graph</div>
+        <span class="source-tag larson">Larson</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">Find the intervals where the graphed function is increasing or decreasing.</div>
+        <div class="two-col">
+            <div class="col graph-container">
+                <!-- SVG coordinate plane grid and function graph -->
+                <svg class="graph-card-svg" viewBox="0 0 280 240">
+                    <!-- grid background -->
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="20" y1="20" x2="20" y2="220"/>
+                        <line x1="60" y1="20" x2="60" y2="220"/>
+                        <line x1="100" y1="20" x2="100" y2="220"/>
+                        <line x1="140" y1="20" x2="140" y2="220"/>
+                        <line x1="180" y1="20" x2="180" y2="220"/>
+                        <line x1="220" y1="20" x2="220" y2="220"/>
+                        <line x1="260" y1="20" x2="260" y2="220"/>
+                        
+                        <line x1="20" y1="20" x2="260" y2="20"/>
+                        <line x1="20" y1="60" x2="260" y2="60"/>
+                        <line x1="20" y1="100" x2="260" y2="100"/>
+                        <line x1="20" y1="140" x2="260" y2="140"/>
+                        <line x1="20" y1="180" x2="260" y2="180"/>
+                        <line x1="20" y1="220" x2="260" y2="220"/>
+                    </g>
+                    <!-- Axes -->
+                    <line x1="20" y1="140" x2="260" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+                    <line x1="140" y1="20" x2="140" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
+                    <!-- Axis Labels -->
+                    <text x="100" y="155" font-size="10" fill="#64748b" text-anchor="middle">1</text>
+                    <text x="220" y="155" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+                    <text x="146" y="80" font-size="10" fill="#64748b">3</text>
+                    <text x="146" y="180" font-size="10" fill="#64748b">-2</text>
+                    
+                    <!-- Curve with peak at (1, 3) -> (160, 80) and valley at (4, -2) -> (220, 180)
+                         Bezier scale: 20px per unit in x, 20px per unit in y.
+                         x=0 is at x_px=140, y=0 is at y_px=140.
+                         x=1 -> 140+20 = 160.
+                         x=4 -> 140+80 = 220.
+                         y=3 -> 140-60 = 80.
+                         y=-2 -> 140+40 = 180.
+                    -->
+                    <path d="M 60 220 Q 120 40 160 80 T 220 180 Q 240 220 260 20" stroke="#0891b2" stroke-width="3.5" fill="none"/>
+                    
+                    <!-- Extrema dots -->
+                    <circle cx="160" cy="80" r="4.5" fill="#16a34a"/> <!-- Local Max at (1, 3) -->
+                    <circle cx="220" cy="180" r="4.5" fill="#dc2626"/> <!-- Local Min at (4, -2) -->
+                </svg>
+            </div>
+            <div class="col steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box green">
+                        <div class="step-label">Increasing Intervals</div>
+                        <div class="step-math">
+                            Graph rises left-to-right from \(-\infty\) to the peak at \(x = 1\), and from the valley at \(x = 4\) to \(\infty\).<br>
+                            <strong>Intervals:</strong> \((-\infty,\, 1) \cup (4,\, \infty)\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box orange">
+                        <div class="step-label">Decreasing Interval</div>
+                        <div class="step-math">
+                            Graph falls left-to-right from the peak at \(x = 1\) to the valley at \(x = 4\).<br>
+                            <strong>Interval:</strong> \((1,\, 4)\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — CONCEPT: Local and Absolute Extrema
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Local and Absolute Extrema</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Local (Relative) Extrema</div>
+                <div class="card-copy">
+                    • <strong>Local Maximum</strong>: A point that is higher than any nearby points (a hill peak).<br>
+                    • <strong>Local Minimum</strong>: A point that is lower than any nearby points (a valley bottom).
+                </div>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Absolute (Global) Extrema</div>
+                <div class="card-copy">
+                    • <strong>Absolute Maximum</strong>: The highest output value over the function's entire domain.<br>
+                    • <strong>Absolute Minimum</strong>: The lowest output value over the function's entire domain.
+                </div>
+            </div>
+        </div>
+        <div class="step" id="slide-6-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Open vs. Closed Domains</div>
+                <div class="note-copy">
+                    On open intervals like \((-\infty,\, \infty)\), graphs heading to \(\pm\infty\) have no absolute extrema. On closed intervals like \([a,\, b]\), absolute extrema must exist and can occur at <span class="fb" id="slide-6-step-1"><span class="fb-blank">________________</span><span class="fb-answer">endpoints</span></span>. Local extrema cannot occur at endpoints.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — EXAMPLE 4: Identifying Extrema from Graph
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Identify Extrema from Graph</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">Using the graph from Example 3, identify all local and absolute extrema on the domain \((-\infty,\, \infty)\).</div>
+        <div class="two-col">
+            <div class="col graph-container">
+                <svg class="graph-card-svg" viewBox="0 0 280 240">
+                    <!-- Grid background -->
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="20" y1="20" x2="20" y2="220"/>
+                        <line x1="60" y1="20" x2="60" y2="220"/>
+                        <line x1="100" y1="20" x2="100" y2="220"/>
+                        <line x1="140" y1="20" x2="140" y2="220"/>
+                        <line x1="180" y1="20" x2="180" y2="220"/>
+                        <line x1="220" y1="20" x2="220" y2="220"/>
+                        <line x1="260" y1="20" x2="260" y2="220"/>
+                        
+                        <line x1="20" y1="20" x2="260" y2="20"/>
+                        <line x1="20" y1="60" x2="260" y2="60"/>
+                        <line x1="20" y1="100" x2="260" y2="100"/>
+                        <line x1="20" y1="140" x2="260" y2="140"/>
+                        <line x1="20" y1="180" x2="260" y2="180"/>
+                        <line x1="20" y1="220" x2="260" y2="220"/>
+                    </g>
+                    <line x1="20" y1="140" x2="260" y2="140" stroke="#94a3b8" stroke-width="1.5"/>
+                    <line x1="140" y1="20" x2="140" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
+                    
+                    <text x="160" y="155" font-size="10" fill="#64748b" text-anchor="middle">1</text>
+                    <text x="220" y="155" font-size="10" fill="#64748b" text-anchor="middle">4</text>
+                    
+                    <!-- Graph -->
+                    <path d="M 60 220 Q 120 40 160 80 T 220 180 Q 240 220 260 20" stroke="#0891b2" stroke-width="3.5" fill="none"/>
+                    
+                    <!-- Peak & Valley -->
+                    <circle cx="160" cy="80" r="4.5" fill="#16a34a"/>
+                    <circle cx="220" cy="180" r="4.5" fill="#dc2626"/>
+                </svg>
+            </div>
+            <div class="col steps-area">
+                <div class="step" id="slide-7-step-0">
+                    <div class="step-box green">
+                        <div class="step-label">Local Maximum</div>
+                        <div class="step-math">
+                            Occurs at the peak: \(y = 3\) at \(x = 1\).<br>
+                            <strong>Point:</strong> \((1,\, 3)\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-1">
+                    <div class="step-box orange">
+                        <div class="step-label">Local Minimum</div>
+                        <div class="step-math">
+                            Occurs at the valley: \(y = -2\) at \(x = 4\).<br>
+                            <strong>Point:</strong> \((4,\, -2)\)
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-2">
+                    <div class="step-box dark">
+                        <div class="step-label">Absolute Extrema</div>
+                        <div class="step-math">
+                            Since the curve continues infinitely to \(\infty\) and \(-\infty\):<br>
+                            • **No Absolute Maximum**<br>
+                            • **No Absolute Minimum**
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — EXAMPLE 5: Extrema on a Closed Interval
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Extrema on a Closed Interval</div>
+        <span class="source-tag openstax">OpenStax</span>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">
+            Suppose the function is restricted to the closed domain \([0,\, 5]\), where \(f(0) = 1\) and \(f(5) = 1\). Find the local and absolute extrema.
+        </div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Identify Local Extrema</div>
+                    <div class="step-math">
+                        Local extrema are restricted to interior points:<br>
+                        • Local max of \(3\) at \(x = 1\)<br>
+                        • Local min of \(-2\) at \(x = 4\)
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Compare with Endpoints for Absolute Max</div>
+                    <div class="step-math">
+                        Compare interior peak (\(y=3\)) and endpoints (\(f(0)=1\), \(f(5)=1\)).<br>
+                        • **Absolute Maximum:** \(3\) at \(x = 1\)
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box green">
+                    <div class="step-label">Step 3 · Compare with Endpoints for Absolute Min</div>
+                    <div class="step-math">
+                        Compare interior valley (\(y=-2\)) and endpoints (\(f(0)=1\), \(f(5)=1\)).<br>
+                        • **Absolute Minimum:** \(-2\) at \(x = 4\)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — SUMMARY
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-9">
+    <div class="slide-header">
+        <div class="concept-label">Summary</div>
+        <div class="slide-title">Big Ideas · 1.3</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid three">
+            <div class="info-card teal">
+                <div class="card-title">Average Rate of Change</div>
+                <div class="card-copy">Calculated as \(\dfrac{\Delta y}{\Delta x} = \dfrac{f(x_2)-f(x_1)}{x_2-x_1}\). Represents secant line slope.</div>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Secant vs Tangent</div>
+                <div class="card-copy">Secant line cuts through two points on a curve. Tangent line touches at exactly one point (inst. rate of change).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Behavior Intervals</div>
+                <div class="card-copy">Increasing = rises left-to-right. Decreasing = falls left-to-right. Write intervals using only \(x\)-values.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Local Extrema</div>
+                <div class="card-copy">Local peaks (maxima) and local valleys (minima) on the interior of the function's domain.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Absolute Extrema</div>
+                <div class="card-copy">The absolute highest or lowest outputs over the entire domain. Can occur at endpoints.</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Endpoints</div>
+                <div class="card-copy">On a closed interval, endpoints must be checked as potential candidates for absolute maximums and minimums.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div><!-- end .slides-wrapper -->
+
+<!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    /* Render all LaTeX in the document */
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    /* Initialize Presentation Core Controller */
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',   slideId: 'slide-0' },
+            { label: 'Definition', slideId: 'slide-1' },
+            { label: 'Table Ex',   slideId: 'slide-2' },
+            { label: 'Behavior',   slideId: 'slide-4' },
+            { label: 'Extrema',    slideId: 'slide-6' },
+            { label: 'Endpoints',  slideId: 'slide-8' },
+            { label: 'Review',     slideId: 'slide-9' }
+        ]
+    });
+</script>
+</body>
+</html>
