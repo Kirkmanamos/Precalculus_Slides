@@ -5,6 +5,56 @@ Update this file whenever a new presentation, component, scene, or major feature
 
 ---
 
+## 2026-05-30
+
+### Cross-Repo QA Audit (Units 5/6/8/9) + verify_decks.py
+
+Performed a math/coordinate/vocabulary audit cross-referencing the HTML slide
+decks against the LaTeX guided notes (`/Users/kirkmanamos/Desktop/precalculus`)
+for Units 5, 6, 8, and 9. The two artifact sets were found consistent; every
+worked example, coordinate, vector operation, and final solved value was
+cross-checked.
+
+- **Added `verify_decks.py`** (repo root) — a dependency-free structural checker
+  for every shared-engine deck (those linking `assets/slides-core.js`). It
+  validates `<section>` balance, KaTeX `\(\)`/`\[\]` balance, presence of
+  `assets/slides-core.css` + `SlidesCore.init`, and integer `data-steps`.
+  Run with `python3 verify_decks.py`; exit 0 means all 53 decks pass. (This
+  script was referenced in earlier handoffs but had never actually existed in
+  the repo.)
+- **Fixed `1.2-domain-and-range.html`** — a missing inline-math `\)` (unbalanced
+  KaTeX), caught by the new `verify_decks.py` on its first run.
+- **Corrected the `5sin x/3x` numerical-limit table** in both
+  `9.1-limits-numerical-graphical.html` and the matching LaTeX section
+  `01-limits-numerical-graphical.tex`: values at `x = ±1, ±0.5, ±0.1, ±0.01`
+  are now `1.402, 1.598, 1.664, 1.667` (were `1.401, 1.591, 1.658, 1.666`).
+  Both files kept identical; the `→ 5/3` conclusion was unchanged.
+- **Verification**: `python3 verify_decks.py` passes (53/53, exit 0);
+  `notes/build.sh` for Units 5, 6, 8, 9 each compiles all four variants
+  (`student/teacher` × `regular/honors`) with zero errors.
+
+### Unit 4 Guided Notes
+
+Created and successfully compiled the guided notes for **Unit 4: Trigonometric Functions** in the precalculus notes repository. All four variants build cleanly without warnings or errors.
+
+- **01 Angles and Radian/Degree Measure**: vertex, direction, coterminal, conversion, complements/supplements.
+- **02 Linear and Angular Speed**: radian definition, arc length, sector area, linear vs. angular speed.
+- **03 Trigonometric Functions: The Unit Circle**: special right triangles, coordinate derivations, ASTC, periodicity, even/odd.
+- **04 Trigonometric Functions of Any Angle**: reference angles, coordinates from point P(x, y), solving simple trig equations.
+- **05 Right Triangle Trigonometry**: SOH-CAH-TOA, cofunction identities, DMS conversion, angles of elevation and depression.
+- **Verification**: Built and verified `Unit4_student-regular.pdf`, `Unit4_student-honors.pdf`, `Unit4_teacher-regular.pdf`, and `Unit4_teacher-honors.pdf` with gated red answers and student blanks.
+
+### Unit 8 & Unit 9 Slides Audit & Polish
+
+Audited all 10 slide presentations in Unit 8 (Polar & Parametric) and Unit 9 (Calculus). Corrected step navigation counters and resolved parsing errors.
+
+- Converted legacy LaTeX math macros (`\blankl`) in `8.1-polar-coordinates.html` into standard HTML `.fb` fill-in-the-blank spans wrapping inline KaTeX blocks.
+- Fixed Archimedes' Spiral path ID and observer references in `8.2-polar-graphs.html`.
+- Aligned `data-steps` counts on slide headers in `8.3-polar-complex-numbers.html`, `8.6-vectors.html`, `9.2-limits-properties.html`, and `9.4-derivatives.html` to eliminate browser step mismatches.
+- Verified in-browser performance using Chrome DevTools with 0 console warnings or errors.
+
+---
+
 ## 2026-05-15
 
 ### Unit 5 Shared-Assets Cleanup

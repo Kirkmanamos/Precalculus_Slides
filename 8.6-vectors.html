@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.6 — Vectors</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 8 · Polar &amp; Parametric Equations</div>
+        <div class="title-main">8.6 Vectors</div>
+        <div class="title-objective">Objective: Write vectors in component form, find magnitude and direction, perform operations, and compute dot products.</div>
+        <div class="identity-chips">
+            <span class="chip">component form</span>
+            <span class="chip">magnitude &amp; direction</span>
+            <span class="chip">unit vectors</span>
+            <span class="chip">dot product</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Definition ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Vectors and Scalars</div>
+        </div>
+        <div class="slide-body top-layout">
+            <ul class="notes-list">
+                <li>A <strong>scalar</strong> is a quantity described by
+                    <span class="fb" id="slide-1-step-0"><span class="fb-blank">______________</span><span class="fb-answer">magnitude</span></span> only.</li>
+                <li>A <strong>vector</strong> is described by both <strong>magnitude</strong> and
+                    <span class="fb" id="slide-1-step-1"><span class="fb-blank">______________</span><span class="fb-answer">direction</span></span>.</li>
+            </ul>
+            <div class="formula-grid" style="margin-top: 0.5rem;">
+                <div class="formula-row teal">
+                    <div class="fn-label">Component Form</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\mathbf{v} = \langle a, b \rangle\]</div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">From Two Points</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\mathbf{v} = \langle x_2 - x_1,\; y_2 - y_1 \rangle\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Component Form from Two Points</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find the component form of the vector with initial point \(P(2, 3)\) and terminal point \(Q(6, 4)\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Subtract coordinates</div>
+                        <div class="step-math">
+                            \[\mathbf{v} = \langle 6 - 2,\; 4 - 3 \rangle = \boxed{\langle 4, 1 \rangle}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Magnitude & Direction ===== -->
+    <section class="slide grid-bg" id="slide-3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Magnitude &amp; Direction</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Magnitude</div>
+                    <div class="fn-eq-stack">
+                        <div>\[|\mathbf{v}| = \sqrt{a^2 + b^2}\]</div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">Direction</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\tan\theta = \frac{b}{a} \quad \text{(check quadrant)}\]</div>
+                    </div>
+                </div>
+                <div class="formula-row green">
+                    <div class="fn-label">From Mag &amp; Angle</div>
+                    <div class="fn-eq-stack">
+                        <div>\[a = |\mathbf{v}|\cos\theta, \quad b = |\mathbf{v}|\sin\theta\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Ex 2 & 3 ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Examples 2 &amp; 3</div>
+            <div class="slide-title">Magnitude/Direction &amp; Components from Angle</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                (a) Find the magnitude and direction of \(\mathbf{v} = \langle 3, 4 \rangle\).
+                (b) Write the vector with magnitude 7 and direction \(30^\circ\) in component form.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Part (a)</div>
+                        <div class="step-math">
+                            \[|\mathbf{v}| = \sqrt{9 + 16} = \boxed{5}, \qquad \theta = \arctan\!\left(\frac{4}{3}\right) \approx \boxed{53.1^\circ}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Part (b)</div>
+                        <div class="step-math">
+                            \[a = 7\cos 30^\circ = \frac{7\sqrt{3}}{2}, \quad b = 7\sin 30^\circ = \frac{7}{2}\]
+                        </div>
+                        <div style="text-align: center; font-weight: 700; color: var(--navy);">
+                            \(\mathbf{v} = \left\langle \dfrac{7\sqrt{3}}{2},\; \dfrac{7}{2} \right\rangle\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Operations Reference ===== -->
+    <section class="slide grid-bg" id="slide-5">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Vector Operations</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.4rem;">Let \(\mathbf{u} = \langle a, b \rangle\), \(\mathbf{v} = \langle c, d \rangle\), and \(k\) a scalar.</div>
+            <table class="data-table" style="font-size: 0.68em; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--navy-light);">
+                        <th style="padding: 6px; text-align: left;">Operation</th>
+                        <th style="padding: 6px; text-align: left;">Formula</th>
+                        <th style="padding: 6px; text-align: left;">Geometric Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding: 5px;"><strong>Addition</strong></td><td style="padding: 5px;">\(\mathbf{u} + \mathbf{v} = \langle a+c,\; b+d \rangle\)</td><td style="padding: 5px;">Tip-to-tail</td></tr>
+                    <tr><td style="padding: 5px;"><strong>Subtraction</strong></td><td style="padding: 5px;">\(\mathbf{u} - \mathbf{v} = \langle a-c,\; b-d \rangle\)</td><td style="padding: 5px;">Reverse \(\mathbf{v}\), then add</td></tr>
+                    <tr><td style="padding: 5px;"><strong>Scalar Mult.</strong></td><td style="padding: 5px;">\(k\mathbf{v} = \langle kc,\; kd \rangle\)</td><td style="padding: 5px;">Scales magnitude; reverses if \(k < 0\)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Ex 4 — Operations ===== -->
+    <section class="slide grid-bg" id="slide-6" data-steps="3">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Vector Arithmetic</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Let \(\mathbf{u} = \langle 3, -2 \rangle\) and \(\mathbf{v} = \langle -1, 4 \rangle\). Find (a) \(\mathbf{u} + \mathbf{v}\), (b) \(\mathbf{u} - \mathbf{v}\), (c) \(3\mathbf{v}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">(a) Addition</div>
+                        <div class="step-math">\[\langle 3+(-1),\; -2+4 \rangle = \boxed{\langle 2, 2 \rangle}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box">
+                        <div class="step-label">(b) Subtraction</div>
+                        <div class="step-math">\[\langle 3-(-1),\; -2-4 \rangle = \boxed{\langle 4, -6 \rangle}\]</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">(c) Scalar Multiplication</div>
+                        <div class="step-math">\[3\langle -1, 4 \rangle = \boxed{\langle -3, 12 \rangle}\]</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Unit Vectors ===== -->
+    <section class="slide grid-bg" id="slide-7" data-steps="1">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Standard Unit Vectors &amp; \(\mathbf{i}, \mathbf{j}\) Notation</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Unit Vectors</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\mathbf{i} = \langle 1, 0 \rangle, \qquad \mathbf{j} = \langle 0, 1 \rangle\]</div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">Any Vector</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\mathbf{v} = \langle a, b \rangle = a\,\mathbf{i} + b\,\mathbf{j}\]</div>
+                    </div>
+                </div>
+                <div class="formula-row green">
+                    <div class="fn-label">Unit Vector in Direction of \(\mathbf{v}\)</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\hat{\mathbf{v}} = \frac{\mathbf{v}}{|\mathbf{v}|} = \left\langle \frac{a}{|\mathbf{v}|},\; \frac{b}{|\mathbf{v}|} \right\rangle\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.4rem;">
+                <li>The unit vector always has magnitude
+                    <span class="fb" id="slide-7-step-0"><span class="fb-blank">____</span><span class="fb-answer">\(1\)</span></span>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Ex 5 — Unit Vector ===== -->
+    <section class="slide grid-bg" id="slide-8" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Finding a Unit Vector</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find the unit vector in the direction of \(\mathbf{v} = \langle -5, 12 \rangle\). Write in component form and \(\mathbf{i}, \mathbf{j}\) notation.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Divide by magnitude</div>
+                        <div class="step-math">
+                            \[|\mathbf{v}| = \sqrt{25 + 144} = \sqrt{169} = 13\]
+                        </div>
+                        <div class="step-math">
+                            \[\hat{\mathbf{v}} = \left\langle \frac{-5}{13},\; \frac{12}{13} \right\rangle = \boxed{-\frac{5}{13}\,\mathbf{i} + \frac{12}{13}\,\mathbf{j}}\]
+                        </div>
+                        <div style="font-size: 0.68em; text-align: center; color: var(--text-muted);">
+                            Verify: \(\left(\frac{-5}{13}\right)^2 + \left(\frac{12}{13}\right)^2 = \frac{25+144}{169} = 1\;\checkmark\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9: Dot Product (Honors) ===== -->
+    <section class="slide grid-bg" id="slide-9" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label" style="background: purple;">Honors</div>
+            <div class="slide-title">Dot Product &amp; Angle Between Vectors</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row" style="background: #faf5ff; border-left-color: purple;">
+                    <div class="fn-label" style="color: purple;">Dot Product</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\mathbf{v} \cdot \mathbf{u} = ac + bd\]</div>
+                    </div>
+                </div>
+                <div class="formula-row" style="background: #faf5ff; border-left-color: purple;">
+                    <div class="fn-label" style="color: purple;">Angle</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\cos\theta = \frac{\mathbf{v} \cdot \mathbf{u}}{|\mathbf{v}|\,|\mathbf{u}|}\]</div>
+                    </div>
+                </div>
+            </div>
+            <div class="steps-area" style="margin-top: 0.5rem;">
+                <div class="step" id="slide-9-step-0">
+                    <div class="step-box" style="background: #faf5ff; border-left-color: purple;">
+                        <div class="step-label" style="color: purple;">Example: \(\mathbf{v} = \langle 5, 12 \rangle\) and \(\mathbf{u} = \langle -3, 4 \rangle\)</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\mathbf{v} \cdot \mathbf{u} = (5)(-3) + (12)(4) = -15 + 48 = \boxed{33}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-9-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Find the angle</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[|\mathbf{v}| = 13, \quad |\mathbf{u}| = 5 \;\Longrightarrow\; \cos\theta = \frac{33}{65} \;\Longrightarrow\; \theta \approx \boxed{59.5^\circ}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="note-box" style="margin-top: 0.4rem; border-left-color: purple; background: #faf5ff;">
+                <div class="note-title" style="color: purple;">Perpendicular Vectors</div>
+                <div class="note-copy">\(\mathbf{v} \perp \mathbf{u}\) if and only if \(\mathbf{v} \cdot \mathbf{u} = 0\).</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 10: Ex 6 — Application ===== -->
+    <section class="slide grid-bg" id="slide-10" data-steps="3">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Airplane Ground Speed &amp; Bearing</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                An airplane flies at 200 mph on compass bearing \(140^\circ\). A 16.2 mph wind blows due north. Find the actual ground speed and bearing.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-10-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Convert to standard angle</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Standard angle} = 90^\circ - 140^\circ = -50^\circ\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Airplane: } \langle 200\cos(-50^\circ),\; 200\sin(-50^\circ) \rangle \approx \langle 128.56,\; -153.21 \rangle\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Add wind vector</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Wind: } \langle 0, 16.2 \rangle \;\Longrightarrow\; \text{Sum: } \langle 128.56,\; -137.01 \rangle\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Ground speed &amp; bearing</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Speed} = \sqrt{128.56^2 + 137.01^2} \approx \boxed{187.9 \;\text{mph}}\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Bearing} = 90^\circ - \arctan\!\left(\frac{-137.01}{128.56}\right) \approx \boxed{136.8^\circ}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 11: Review ===== -->
+    <section class="slide grid-bg" id="slide-11">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Component Form</div>
+                    <div class="card-copy">Write a vector from two points, find its magnitude, and determine its direction angle.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Vector Operations</div>
+                    <div class="card-copy">Add, subtract, and scalar-multiply vectors component-wise.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Unit Vectors &amp; Applications</div>
+                    <div class="card-copy">Find unit vectors and apply vector addition to real-world motion problems.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'Definition',  slideId: 'slide-1' },
+            { label: 'Magnitude',   slideId: 'slide-3' },
+            { label: 'Operations',  slideId: 'slide-5' },
+            { label: 'Unit Vectors', slideId: 'slide-7' },
+            { label: 'Honors',     slideId: 'slide-9' },
+            { label: 'Review',     slideId: 'slide-11' }
+        ]
+    });
+</script>
+</body>
+</html>

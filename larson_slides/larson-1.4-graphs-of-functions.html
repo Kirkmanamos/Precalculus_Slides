@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.4 - Graphs of Functions</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+    <style>
+        .int-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+        .int-table th, .int-table td { padding: 0.45rem 0.6rem; border: 1px solid #e2e8f0; text-align: center; font-size: 0.95em; }
+        .int-table th { background: #f1f5f9; font-weight: 700; color: #475569; }
+        .int-table td.ans { background: #fef3c7; color: #d97706; font-weight: 700; }
+        .graph-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 0.7rem; }
+        .graph-card svg { display: block; margin: 0 auto; width: 100%; max-width: 320px; height: auto; }
+        .even-odd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .even-odd-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.8rem 1rem; }
+        .even-odd-card.even { border-color: #16a34a; background: #ecfdf5; }
+        .even-odd-card.odd  { border-color: #0891b2; background: #ecfeff; }
+    </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ============================================================
+     SLIDE 0 — TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.4 Graphs of Functions</div>
+    <div class="title-objective">Objective: Read increase/decrease intervals, locate extrema, work with step and piecewise functions, and classify functions as even, odd, or neither.</div>
+    <div class="identity-chips">
+        <span class="chip">increasing &amp; decreasing</span>
+        <span class="chip">extrema</span>
+        <span class="chip">step functions</span>
+        <span class="chip">piecewise</span>
+        <span class="chip">even &amp; odd</span>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1 — CONCEPT: Increasing, Decreasing, Constant
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-1" data-steps="3">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Increasing &amp; Decreasing Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Increasing</div>
+                <div class="card-copy">An increase in \(x\) produces an <span class="fb" id="slide-1-step-0"><span class="fb-blank">_________</span><span class="fb-answer">increase</span></span> in \(y\).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Decreasing</div>
+                <div class="card-copy">An increase in \(x\) produces a <span class="fb" id="slide-1-step-1"><span class="fb-blank">_________</span><span class="fb-answer">decrease</span></span> in \(y\).</div>
+            </div>
+        </div>
+
+        <div class="step" id="slide-1-step-2">
+            <div class="note-box navy">
+                <div class="note-title">Formal definition</div>
+                <div class="note-copy">\(f\) is <strong>increasing</strong> on an interval iff for every \(x_1 < x_2\), \(f(x_1) < f(x_2)\). <strong>Decreasing</strong> flips the inequality on \(f\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — EXAMPLE 1: Intervals from graphs
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-2" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Identify increasing, decreasing, or constant intervals</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">a) \(f(x) = x^3\)</div>
+                <svg viewBox="0 0 200 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="50" y1="10" x2="50" y2="150"/>
+                        <line x1="150" y1="10" x2="150" y2="150"/>
+                        <line x1="10" y1="40" x2="190" y2="40"/>
+                        <line x1="10" y1="120" x2="190" y2="120"/>
+                    </g>
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <path d="M 30 155 C 90 150 110 10 170 5" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+                <div class="step" id="slide-2-step-0">
+                    <div class="card-copy" style="text-align:center;">Increasing on <strong>\((-\infty,\ \infty)\)</strong></div>
+                </div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">b) Piecewise graph</div>
+                <svg viewBox="0 0 240 160">
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="60" y1="10" x2="60" y2="150"/>
+                        <line x1="120" y1="10" x2="120" y2="150"/>
+                        <line x1="180" y1="10" x2="180" y2="150"/>
+                        <line x1="10" y1="50" x2="230" y2="50"/>
+                        <line x1="10" y1="110" x2="230" y2="110"/>
+                    </g>
+                    <line x1="10" y1="80" x2="230" y2="80" stroke="#94a3b8"/>
+                    <line x1="90" y1="10" x2="90" y2="150" stroke="#94a3b8"/>
+                    <line x1="20" y1="130" x2="90" y2="50" stroke="#0891b2" stroke-width="2.5"/>
+                    <line x1="90" y1="50" x2="150" y2="80" stroke="#0891b2" stroke-width="2.5"/>
+                    <line x1="150" y1="80" x2="220" y2="80" stroke="#0891b2" stroke-width="2.5"/>
+                    <text x="93" y="98" font-size="10" fill="#64748b">0</text>
+                    <text x="150" y="98" font-size="10" fill="#64748b">2</text>
+                </svg>
+                <div class="step" id="slide-2-step-1">
+                    <div class="card-copy" style="font-size: 0.9em;">Increasing on \((-\infty,\ 0)\)</div>
+                </div>
+                <div class="step" id="slide-2-step-2">
+                    <div class="card-copy" style="font-size: 0.9em;">Decreasing on \([0,\ 2]\)</div>
+                </div>
+                <div class="step" id="slide-2-step-3">
+                    <div class="card-copy" style="font-size: 0.9em;">Constant on \((2,\ \infty)\)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — CONCEPT: Relative Extrema
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="2">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Relative Extrema</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Relative Maximum</div>
+                <div class="card-copy">A point where the function's \(y\)-value is <span class="fb" id="slide-3-step-0"><span class="fb-blank">___________</span><span class="fb-answer">greater</span></span> than all nearby points.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Relative Minimum</div>
+                <div class="card-copy">A point where the function's \(y\)-value is <span class="fb" id="slide-3-step-1"><span class="fb-blank">___________</span><span class="fb-answer">less</span></span> than all nearby points.</div>
+            </div>
+        </div>
+        <ul class="notes-list" style="margin-top: 0.8rem;">
+            <li><strong>Relative</strong> (local) extrema: compared only to <em>nearby</em> points.</li>
+            <li><strong>Absolute</strong> (global) extrema: highest / lowest points across the <em>entire domain</em>.</li>
+            <li>Every absolute extremum is also a relative one, but not vice versa.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — CONCEPT: Relative vs Absolute visualization
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Relative vs. Absolute Extrema</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="info-card teal" style="max-width: 640px; margin: 0 auto;">
+            <svg viewBox="0 0 500 240">
+                <line x1="30" y1="180" x2="480" y2="180" stroke="#94a3b8"/>
+                <line x1="40" y1="20" x2="40" y2="220" stroke="#94a3b8"/>
+                <path d="M 50 140 Q 80 220 130 160 Q 180 70 240 100 Q 290 140 340 90 Q 400 50 460 25" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                <!-- dots -->
+                <circle cx="50" cy="140" r="5" fill="#0891b2"/>
+                <circle cx="130" cy="160" r="5" fill="#dc2626"/>
+                <circle cx="210" cy="85" r="5" fill="#d97706"/>
+                <circle cx="290" cy="140" r="5" fill="#dc2626"/>
+                <circle cx="460" cy="25" r="5" fill="#16a34a"/>
+                <!-- labels -->
+                <text x="50" y="200" font-size="13" fill="#dc2626" text-anchor="middle">abs min</text>
+                <text x="130" y="200" font-size="13" fill="#dc2626" text-anchor="middle">rel min</text>
+                <text x="210" y="75" font-size="13" fill="#d97706" text-anchor="middle">rel max</text>
+                <text x="290" y="160" font-size="13" fill="#dc2626" text-anchor="middle">rel min</text>
+                <text x="460" y="15" font-size="13" fill="#16a34a" text-anchor="middle">abs max</text>
+            </svg>
+            <div class="card-copy" style="text-align:center; font-size: 0.9em;">
+                Hills &amp; valleys are <em>relative</em> extrema — the highest/lowest points overall are the <em>absolute</em> extrema.
+            </div>
+        </div>
+        <div class="step" id="slide-4-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Notation tip</div>
+                <div class="note-copy">Report extrema as points \((x,\,y)\), or give the \(y\)-value "at \(x = \dots\)" so the audience knows both location and value.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — EXAMPLE 2: Temperature model
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Temperature Model — Approximate Extrema</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">\(T(x) = 0.026x^3 - 1.03x^2 + 10.2x + 34\), \(0 \le x \le 24\), where \(x=0\) is 6 AM. Use a graphing utility to approximate the max and min temperatures.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Graph on [0, 24]</div>
+                    <div class="step-math">Plot \(T(x)\) and inspect the shape — cubic with a peak early, a dip overnight, then rising again near 24.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Approximate relative max</div>
+                    <div class="step-math">\[x \approx 6.6 \ \Rightarrow\ T \approx 64^\circ\text{F}\]
+                        <div class="annotation">\(x=6.6\) corresponds to about 12:36 PM.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Approximate relative min</div>
+                    <div class="step-math">\[x \approx 19.8 \ \Rightarrow\ T \approx 34^\circ\text{F}\]
+                        <div class="annotation">\(x=19.8\) corresponds to about 1:50 AM.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 · Check endpoints</div>
+                    <div class="step-math">\[T(0) = 34 \qquad T(24) \approx 45\]
+                        <div class="annotation">Compare to relative extrema to decide which are absolute.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[\text{Max } \approx 64^\circ\text{F at 12:36 PM},\ \ \text{Min } \approx 34^\circ\text{F at 6 AM / 1:50 AM}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — CONCEPT: Step Functions (floor / ceiling)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-6">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Famous Step Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Floor · Greatest Integer</div>
+                <div class="card-copy" style="line-height: 1.8;">
+                    Output is the <strong>greatest integer \(\le x\)</strong>.<br>
+                    Notation: \(\lfloor x \rfloor\) or \([x]\) or \([\![ x ]\!]\)<br>
+                    Also called: <em>rounding down</em>.
+                </div>
+                <svg viewBox="0 0 200 160" style="display:block; margin: 0.4rem auto;">
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <g stroke="#0891b2" stroke-width="2.5">
+                        <line x1="20" y1="140" x2="60" y2="140"/>
+                        <line x1="60" y1="120" x2="100" y2="120"/>
+                        <line x1="100" y1="100" x2="140" y2="100"/>
+                        <line x1="140" y1="80" x2="180" y2="80"/>
+                    </g>
+                    <g fill="#0891b2">
+                        <circle cx="20" cy="140" r="3.5"/>
+                        <circle cx="60" cy="120" r="3.5"/>
+                        <circle cx="100" cy="100" r="3.5"/>
+                        <circle cx="140" cy="80" r="3.5"/>
+                    </g>
+                    <g fill="#fff" stroke="#0891b2" stroke-width="1.5">
+                        <circle cx="60" cy="140" r="3.5"/>
+                        <circle cx="100" cy="120" r="3.5"/>
+                        <circle cx="140" cy="100" r="3.5"/>
+                        <circle cx="180" cy="80" r="3.5"/>
+                    </g>
+                </svg>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Ceiling · Least Integer</div>
+                <div class="card-copy" style="line-height: 1.8;">
+                    Output is the <strong>least integer \(\ge x\)</strong>.<br>
+                    Notation: \(\lceil x \rceil\) or \(] x [\)<br>
+                    Also called: <em>rounding up</em>.
+                </div>
+                <svg viewBox="0 0 200 160" style="display:block; margin: 0.4rem auto;">
+                    <line x1="10" y1="80" x2="190" y2="80" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="150" stroke="#94a3b8"/>
+                    <g stroke="#d97706" stroke-width="2.5">
+                        <line x1="20" y1="120" x2="60" y2="120"/>
+                        <line x1="60" y1="100" x2="100" y2="100"/>
+                        <line x1="100" y1="80" x2="140" y2="80"/>
+                        <line x1="140" y1="60" x2="180" y2="60"/>
+                    </g>
+                    <g fill="#d97706">
+                        <circle cx="60" cy="120" r="3.5"/>
+                        <circle cx="100" cy="100" r="3.5"/>
+                        <circle cx="140" cy="80" r="3.5"/>
+                        <circle cx="180" cy="60" r="3.5"/>
+                    </g>
+                    <g fill="#fff" stroke="#d97706" stroke-width="1.5">
+                        <circle cx="20" cy="120" r="3.5"/>
+                        <circle cx="60" cy="100" r="3.5"/>
+                        <circle cx="100" cy="80" r="3.5"/>
+                        <circle cx="140" cy="60" r="3.5"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — EXAMPLE: Floor/Ceiling table
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-7" data-steps="6">
+    <div class="slide-header">
+        <div class="concept-label">Values</div>
+        <div class="slide-title">Floor &amp; Ceiling · Practice Table</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement">Fill in \(\lfloor x \rfloor\) (floor) and \(\lceil x \rceil\) (ceiling) for each \(x\).</div>
+        <table class="int-table" style="max-width: 640px; margin: 0.8rem auto;">
+            <thead>
+                <tr><th>\(x\)</th><th>\(\lfloor x \rfloor\) floor</th><th>\(\lceil x \rceil\) ceiling</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>\(2.7\)</td>
+                    <td><span class="fb" id="slide-7-step-0"><span class="fb-blank">___</span><span class="fb-answer">2</span></span></td>
+                    <td><span class="fb" id="slide-7-step-0b"><span class="fb-blank">___</span><span class="fb-answer">3</span></span></td></tr>
+                <tr><td>\(1.5\)</td>
+                    <td><span class="fb" id="slide-7-step-1"><span class="fb-blank">___</span><span class="fb-answer">1</span></span></td>
+                    <td><span class="fb" id="slide-7-step-1b"><span class="fb-blank">___</span><span class="fb-answer">2</span></span></td></tr>
+                <tr><td>\(0.1\)</td>
+                    <td><span class="fb" id="slide-7-step-2"><span class="fb-blank">___</span><span class="fb-answer">0</span></span></td>
+                    <td><span class="fb" id="slide-7-step-2b"><span class="fb-blank">___</span><span class="fb-answer">1</span></span></td></tr>
+                <tr><td>\(-0.5\)</td>
+                    <td><span class="fb" id="slide-7-step-3"><span class="fb-blank">___</span><span class="fb-answer">-1</span></span></td>
+                    <td><span class="fb" id="slide-7-step-3b"><span class="fb-blank">___</span><span class="fb-answer">0</span></span></td></tr>
+                <tr><td>\(-1\)</td>
+                    <td><span class="fb" id="slide-7-step-4"><span class="fb-blank">___</span><span class="fb-answer">-1</span></span></td>
+                    <td><span class="fb" id="slide-7-step-4b"><span class="fb-blank">___</span><span class="fb-answer">-1</span></span></td></tr>
+                <tr><td>\(-2.1\)</td>
+                    <td><span class="fb" id="slide-7-step-5"><span class="fb-blank">___</span><span class="fb-answer">-3</span></span></td>
+                    <td><span class="fb" id="slide-7-step-5b"><span class="fb-blank">___</span><span class="fb-answer">-2</span></span></td></tr>
+            </tbody>
+        </table>
+        <div class="note-box navy">
+            <div class="note-title">Watch negatives</div>
+            <div class="note-copy">\(\lfloor -2.1 \rfloor = -3\) (go <em>further</em> left to \(-3\), not toward \(0\)). Integer inputs give \(\lfloor x \rfloor = \lceil x \rceil = x\).</div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Link "a" and "b" fill-ins to the same step so both reveal together
+    document.addEventListener('DOMContentLoaded', () => {
+        const linkB = document.querySelectorAll('[id$="b"]');
+        // handled via shared step advance — each reveal click advances to slide-7-step-N,
+        // we duplicate the reveal by observing class mutation on the 'a' counterparts.
+        for (let i = 0; i < 6; i++) {
+            const a = document.getElementById('slide-7-step-' + i);
+            const b = document.getElementById('slide-7-step-' + i + 'b');
+            if (!a || !b) continue;
+            const obs = new MutationObserver(() => b.classList.toggle('visible', a.classList.contains('visible')));
+            obs.observe(a, { attributes: true, attributeFilter: ['class'] });
+        }
+    });
+</script>
+
+<!-- ============================================================
+     SLIDE 8 — EXAMPLE 3: Graph piecewise function
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Graph the piecewise function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="problem-statement" style="text-align:center;">
+            \[f(x) = \begin{cases} -x - 4, & x < 0 \\ x^2 - 4, & 0 \le x < 3 \\ 2x - 6, & x \ge 3 \end{cases}\]
+        </div>
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Build the graph piece by piece</div>
+                <svg viewBox="0 0 340 240">
+                    <!-- grid -->
+                    <g stroke="#e2e8f0" stroke-width="0.5">
+                        <line x1="40" y1="20" x2="40" y2="220"/>
+                        <line x1="80" y1="20" x2="80" y2="220"/>
+                        <line x1="160" y1="20" x2="160" y2="220"/>
+                        <line x1="240" y1="20" x2="240" y2="220"/>
+                        <line x1="300" y1="20" x2="300" y2="220"/>
+                        <line x1="20" y1="60" x2="320" y2="60"/>
+                        <line x1="20" y1="100" x2="320" y2="100"/>
+                        <line x1="20" y1="180" x2="320" y2="180"/>
+                        <line x1="20" y1="220" x2="320" y2="220"/>
+                    </g>
+                    <line x1="20" y1="140" x2="320" y2="140" stroke="#94a3b8"/>
+                    <line x1="120" y1="20" x2="120" y2="220" stroke="#94a3b8"/>
+                    <!-- labels -->
+                    <text x="40" y="155" font-size="10" fill="#64748b" text-anchor="middle">-4</text>
+                    <text x="80" y="155" font-size="10" fill="#64748b" text-anchor="middle">-2</text>
+                    <text x="160" y="155" font-size="10" fill="#64748b" text-anchor="middle">2</text>
+                    <text x="240" y="155" font-size="10" fill="#64748b" text-anchor="middle">6</text>
+                    <text x="126" y="60" font-size="10" fill="#64748b">4</text>
+                    <text x="126" y="100" font-size="10" fill="#64748b">2</text>
+                    <text x="126" y="180" font-size="10" fill="#64748b">-2</text>
+                    <text x="126" y="220" font-size="10" fill="#64748b">-4</text>
+
+                    <!-- Piece 1: y = -x - 4 for x < 0 -->
+                    <g class="step" id="slide-8-step-0">
+                        <line x1="20" y1="60" x2="120" y2="220" stroke="#0891b2" stroke-width="2.5"/>
+                        <circle cx="120" cy="220" r="4" fill="#fff" stroke="#0891b2" stroke-width="2"/>
+                    </g>
+                    <!-- Piece 2: y = x^2 - 4 for 0 <= x < 3 (0 to 3 on x, -4 to 5 on y). At x=3, y=5. But 5 is off-grid top. Scale: 20 px per unit in x, 20 px per unit in y. x=0 at x_px=120, x=3 at 120+60=180. y=-4 at 220, y=5 at 40. -->
+                    <g class="step" id="slide-8-step-1">
+                        <!-- parabola from (0,-4) to (3, 5) passing through (2, 0) -->
+                        <path d="M 120 220 Q 150 240 160 140 Q 170 60 180 40" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                        <circle cx="120" cy="220" r="4" fill="#0891b2"/>
+                        <circle cx="180" cy="40" r="4" fill="#fff" stroke="#0891b2" stroke-width="2"/>
+                    </g>
+                    <!-- Piece 3: y = 2x - 6 for x >= 3. At x=3, y=0; at x=8, y=10 (off chart). Draw from (3,0) to (8, 10). Let's cap at edge. -->
+                    <g class="step" id="slide-8-step-2">
+                        <line x1="180" y1="140" x2="320" y2="0" stroke="#0891b2" stroke-width="2.5"/>
+                        <circle cx="180" cy="140" r="4" fill="#0891b2"/>
+                    </g>
+                </svg>
+                <div class="step" id="slide-8-step-3">
+                    <div class="card-copy" style="font-size: 0.9em; text-align: center;">Linear piece left of \(0\), parabola from \(0\) up to \(x=3\), then another line going up.</div>
+                </div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Boundary checks</div>
+                <ul class="notes-list" style="font-size: 0.9em;">
+                    <li>At \(x=0\): left piece gives \(-4\); right piece gives \(-4\). Closed dot at \((0,-4)\).</li>
+                    <li>At \(x=3\): middle piece limits to \(5\) (open), right piece gives \(0\) (closed). <em>Jump discontinuity.</em></li>
+                    <li>Each boundary respects \(<\) (open) vs. \(\le\) (closed).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — CONCEPT: Even and Odd
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-9" data-steps="1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Even &amp; Odd Functions</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card green">
+                <div class="card-title">Even · \(y\)-axis symmetry</div>
+                <div class="card-copy" style="line-height:1.8;">
+                    <strong>Definition:</strong> \(f(-x) = f(x)\)<br>
+                    <strong>Example:</strong> \(y = x^2,\ y = |x|,\ y = \cos x\)
+                </div>
+                <svg viewBox="0 0 200 120" style="display:block; margin: 0.4rem auto;">
+                    <line x1="10" y1="100" x2="190" y2="100" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="115" stroke="#94a3b8"/>
+                    <path d="M 30 15 Q 100 200 170 15" stroke="#16a34a" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Odd · origin symmetry</div>
+                <div class="card-copy" style="line-height:1.8;">
+                    <strong>Definition:</strong> \(f(-x) = -f(x)\)<br>
+                    <strong>Example:</strong> \(y = x^3,\ y = x,\ y = \sin x\)
+                </div>
+                <svg viewBox="0 0 200 120" style="display:block; margin: 0.4rem auto;">
+                    <line x1="10" y1="60" x2="190" y2="60" stroke="#94a3b8"/>
+                    <line x1="100" y1="10" x2="100" y2="115" stroke="#94a3b8"/>
+                    <path d="M 30 110 C 70 105 110 25 170 10" stroke="#0891b2" stroke-width="2.5" fill="none"/>
+                </svg>
+            </div>
+        </div>
+        <div class="step" id="slide-9-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Algebraic test</div>
+                <div class="note-copy">Plug \(-x\) into \(f\) and simplify. If it equals \(f(x)\), even. If it equals \(-f(x)\), odd. Otherwise, neither.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 10 — EXAMPLE 4: g(x) = x^3 - x
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-10" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Is \(g(x) = x^3 - x\) even, odd, or neither?</div>
+    </div>
+    <div class="slide-body">
+        <div class="steps-area">
+            <div class="step" id="slide-10-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Compute \(g(-x)\)</div>
+                    <div class="step-math">\[g(-x) = (-x)^3 - (-x) = -x^3 + x\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Compare to \(g(x)\)</div>
+                    <div class="step-math">\[-x^3 + x \ne x^3 - x \ \Rightarrow\ \text{not even}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Compare to \(-g(x)\)</div>
+                    <div class="step-math">\[-g(x) = -(x^3 - x) = -x^3 + x \ \checkmark\]
+                        <div class="annotation">Matches \(g(-x)\) exactly.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-10-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[g(x) \text{ is \textbf{odd} — origin symmetry.}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 11 — EXAMPLE 5: f(x) = |x|
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-11" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 5</div>
+        <div class="slide-title">Is \(f(x) = |x|\) even, odd, or neither?</div>
+    </div>
+    <div class="slide-body">
+        <div class="steps-area">
+            <div class="step" id="slide-11-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Compute \(f(-x)\)</div>
+                    <div class="step-math">\[f(-x) = |-x| = |x|\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Compare to \(f(x)\)</div>
+                    <div class="step-math">\[|x| = f(x) \ \checkmark\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-11-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[f(x) \text{ is \textbf{even} — }y\text{-axis symmetry.}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 12 — EXAMPLE 6: f(x) = x^3 - 1
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-12" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 6</div>
+        <div class="slide-title">Is \(f(x) = x^3 - 1\) even, odd, or neither?</div>
+    </div>
+    <div class="slide-body">
+        <div class="steps-area">
+            <div class="step" id="slide-12-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Compute \(f(-x)\)</div>
+                    <div class="step-math">\[f(-x) = (-x)^3 - 1 = -x^3 - 1\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Compare to \(f(x)\)</div>
+                    <div class="step-math">\[-x^3 - 1 \ne x^3 - 1 \ \Rightarrow\ \text{not even}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Compare to \(-f(x)\)</div>
+                    <div class="step-math">\[-f(x) = -(x^3 - 1) = -x^3 + 1\]
+                        <div class="annotation">\(-x^3 - 1 \ne -x^3 + 1\) — the constants disagree.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-12-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Conclusion</div>
+                    <div class="step-math">\[f(x) \text{ is \textbf{neither} even nor odd.}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 13 — SUMMARY
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-13">
+    <div class="slide-header">
+        <div class="concept-label">Summary</div>
+        <div class="slide-title">Big Ideas · 1.4</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid three">
+            <div class="info-card teal">
+                <div class="card-title">Intervals from graphs</div>
+                <div class="card-copy">Scan left to right — "uphill" = increasing, "downhill" = decreasing, "flat" = constant.</div>
+            </div>
+            <div class="info-card blue">
+                <div class="card-title">Extrema</div>
+                <div class="card-copy">Relative = local hills/valleys. Absolute = highest/lowest over the whole domain. Always check endpoints.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Step functions</div>
+                <div class="card-copy">Floor \(\lfloor x \rfloor\) rounds down; ceiling \(\lceil x \rceil\) rounds up. Graphs are staircases with closed/open endpoints.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Piecewise graphing</div>
+                <div class="card-copy">Graph each piece over its restricted \(x\)-range. Respect \(<\) (open) and \(\le\) (closed) at boundaries.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Even test</div>
+                <div class="card-copy">\(f(-x) = f(x)\). Graphs are symmetric about the \(y\)-axis. Only even powers &amp; \(|x|\).</div>
+            </div>
+            <div class="info-card navy">
+                <div class="card-title">Odd test</div>
+                <div class="card-copy">\(f(-x) = -f(x)\). Graphs are symmetric about the origin. Only odd powers, no constant term.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',              slideId: 'slide-0' },
+            { label: 'Increasing/Decreasing', slideId: 'slide-1' },
+            { label: 'Extrema',               slideId: 'slide-3' },
+            { label: 'Step Functions',        slideId: 'slide-6' },
+            { label: 'Piecewise',             slideId: 'slide-8' },
+            { label: 'Even & Odd',            slideId: 'slide-9' },
+            { label: 'Review',                slideId: 'slide-13' }
+        ]
+    });
+</script>
+</body>
+</html>

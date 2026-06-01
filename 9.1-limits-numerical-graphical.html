@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9.1 — Finding Limits: Numerical &amp; Graphical</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 9 · Introduction to Calculus</div>
+        <div class="title-main">9.1 Finding Limits: Numerical &amp; Graphical</div>
+        <div class="title-objective">Objective: Understand limit notation, find limits from graphs and tables, and distinguish limits from function values.</div>
+        <div class="identity-chips">
+            <span class="chip">limit notation</span>
+            <span class="chip">one-sided limits</span>
+            <span class="chip">numerical tables</span>
+            <span class="chip">limit vs. value</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Limit Notation ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Limit Notation</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Definition</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\lim_{x \to a} f(x) = L\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.6rem;">
+                <li>Read: "the limit of \(f(x)\) as \(x\) approaches
+                    <span class="fb" id="slide-1-step-0"><span class="fb-blank">______</span><span class="fb-answer">\(a\)</span></span>
+                    equals
+                    <span class="fb" id="slide-1-step-1"><span class="fb-blank">______</span><span class="fb-answer">\(L\)</span></span>."</li>
+                <li><strong>Key point:</strong> The limit describes behavior
+                    <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">near</span></span>
+                    \(a\), not <em>at</em> \(a\). The value \(f(a)\) need not exist, and even if it does, it need not equal \(L\).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 — Identify parts ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Identifying Parts of Limit Notation</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Identify \(a\), \(f(x)\), and \(L\) in the statement \(\displaystyle\lim_{x \to 2}(3x + 5) = 11\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Identify each piece</div>
+                        <div class="step-math">
+                            \[a = 2, \qquad f(x) = 3x + 5, \qquad L = 11\]
+                        </div>
+                        <div style="font-size: 0.72em; text-align: center; color: var(--text-muted);">As \(x\) gets close to 2, the output \(3x + 5\) gets close to 11.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: One-Sided Limits ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">One-Sided &amp; Two-Sided Limits</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Left-hand</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\lim_{x \to a^-} f(x) = L\]</div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">Right-hand</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\lim_{x \to a^+} f(x) = L\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>Left-hand: \(x\) approaches \(a\) from the
+                    <span class="fb" id="slide-3-step-0"><span class="fb-blank">________</span><span class="fb-answer">left</span></span>
+                    (\(x < a\)).</li>
+                <li>Right-hand: \(x\) approaches \(a\) from the
+                    <span class="fb" id="slide-3-step-1"><span class="fb-blank">________</span><span class="fb-answer">right</span></span>
+                    (\(x > a\)).</li>
+                <li>The two-sided limit exists <em>only</em> when left = right. If they differ, the limit
+                    <span class="fb" id="slide-3-step-2"><span class="fb-blank">________________________</span><span class="fb-answer">does not exist (DNE)</span></span>.</li>
+            </ul>
+            <div class="note-box navy" style="margin-top: 0.5rem;">
+                <div class="note-title">Two-Sided Limit Test</div>
+                <div class="note-copy">\(\displaystyle\lim_{x \to a} f(x) = L \;\iff\; \lim_{x \to a^-} f(x) = L \;\text{and}\; \lim_{x \to a^+} f(x) = L\)</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Ex 2 — One-Sided (DNE) ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">One-Sided Limits from a Graph (DNE)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                A piecewise function's graph approaches \(y = 8\) from the left at \(x = 2\), and \(y = 3\) from the right.
+                There is a filled dot at \((2, 3)\). Find all four quantities.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Read the graph</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\lim_{x \to 2^-} f(x) = 8, \quad \lim_{x \to 2^+} f(x) = 3, \quad \lim_{x \to 2} f(x) = \textbf{DNE}, \quad f(2) = 3\]
+                            <div class="annotation">Left \(\ne\) Right, so the two-sided limit does not exist. But the function value \(f(2) = 3\) <em>does</em> exist.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 3 — Limit ≠ f(a) ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Limit Exists but \(\ne f(a)\)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                A graph where both one-sided limits at \(x = 2\) equal 8, but \(f(2) = 4\) (filled dot below). Find the limit and \(f(2)\). Are they equal?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Analyze</div>
+                        <div class="step-math">
+                            \[\lim_{x \to 2} f(x) = 8 \qquad \text{but} \qquad f(2) = 4\]
+                        </div>
+                        <div style="font-size: 0.72em; text-align: center; color: var(--text-muted);">
+                            The limit exists and equals 8, but \(f(2) \ne \lim_{x \to 2} f(x)\). They are <strong>independent</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Key Fact ===== -->
+    <section class="slide grid-bg" id="slide-6">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Limit vs. Function Value</h2>
+        </div>
+        <div class="slide-body">
+            <div class="note-box navy" style="font-size: 0.82em; max-width: 800px; margin: 0 auto;">
+                <div class="note-title">Independent Quantities</div>
+                <div class="note-copy" style="line-height: 1.8;">
+                    The limit \(\displaystyle\lim_{x \to a} f(x)\) and the function value \(f(a)\) are <strong>independent</strong>:
+                    <ul style="margin-top: 0.3rem;">
+                        <li>The limit may exist even if \(f(a)\) is undefined.</li>
+                        <li>The limit may differ from \(f(a)\) even if both exist.</li>
+                        <li>They agree only when \(f\) is <strong>continuous</strong> at \(a\) (Section 9.3).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Numerical Method ===== -->
+    <section class="slide grid-bg" id="slide-7">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Finding a Limit Numerically (Table Method)</h2>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">1. Choose Values</div>
+                    <div class="card-copy">Pick \(x\)-values approaching \(a\) from both sides (e.g. \(a \pm 1, a \pm 0.5, a \pm 0.1, a \pm 0.01\)).</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">2. Compute \(f(x)\)</div>
+                    <div class="card-copy">Evaluate the function at each value. Record results in a table.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">3. Observe</div>
+                    <div class="card-copy">If both sides approach the same \(L\), then \(\lim_{x \to a} f(x) = L\). The table gives <strong>evidence</strong>, not proof.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Ex 4 — Numerical Table ===== -->
+    <section class="slide grid-bg" id="slide-8" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Limit from a Table</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Use a table to estimate \(\displaystyle\lim_{x \to 0}\dfrac{5\sin x}{3x}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Build the table</div>
+                        <div style="font-size: 0.62em; overflow-x: auto;">
+                            <table class="data-table" style="margin: 0.3rem auto; border-collapse: collapse;">
+                                <thead><tr style="background: var(--navy-light);"><th style="padding:4px 8px;">\(x\)</th><th style="padding:4px 8px;">\(-1\)</th><th style="padding:4px 8px;">\(-0.5\)</th><th style="padding:4px 8px;">\(-0.1\)</th><th style="padding:4px 8px;">\(-0.01\)</th><th style="padding:4px 8px;">\(0.01\)</th><th style="padding:4px 8px;">\(0.1\)</th><th style="padding:4px 8px;">\(0.5\)</th><th style="padding:4px 8px;">\(1\)</th></tr></thead>
+                                <tbody><tr>
+                                    <td style="padding:3px 8px;">\(\frac{5\sin x}{3x}\)</td>
+                                    <td style="padding:3px 8px;">1.402</td><td style="padding:3px 8px;">1.598</td><td style="padding:3px 8px;">1.664</td><td style="padding:3px 8px;">1.667</td><td style="padding:3px 8px;">1.667</td><td style="padding:3px 8px;">1.664</td><td style="padding:3px 8px;">1.598</td><td style="padding:3px 8px;">1.402</td>
+                                </tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Conclusion</div>
+                        <div class="step-math">
+                            \[\lim_{x \to 0}\frac{5\sin x}{3x} = \boxed{\frac{5}{3}}\]
+                            <div class="annotation">\(f(0)\) is undefined (division by zero), but the limit exists. Uses the fact that \(\lim_{x\to 0}\frac{\sin x}{x} = 1\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9: Ex 5 — Oscillating Function ===== -->
+    <section class="slide grid-bg" id="slide-9" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">When a Limit Does Not Exist (Oscillation)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Investigate \(\displaystyle\lim_{x \to 0} 3\sin\!\left(\frac{\pi}{x}\right)\). Does the limit exist?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-9-step-0">
+                    <div class="step-box orange">
+                        <div class="step-label">Analysis</div>
+                        <div style="font-size: 0.75em; text-align: center; line-height: 1.8;">
+                            As \(x \to 0\), the argument \(\pi/x \to \pm\infty\), causing \(\sin(\pi/x)\) to oscillate
+                            between \(-1\) and \(1\) with increasing frequency.<br>
+                            The function <strong>never settles</strong> to a single value.<br><br>
+                            <strong style="color: var(--red-accent);">The limit does not exist.</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 10: Review ===== -->
+    <section class="slide grid-bg" id="slide-10">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts before moving on.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Read Limit Notation</div>
+                    <div class="card-copy">Identify \(a\), \(f(x)\), and \(L\) in any limit expression.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">One-Sided vs. Two-Sided</div>
+                    <div class="card-copy">The two-sided limit exists only when left-hand = right-hand. Otherwise, DNE.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Table Method</div>
+                    <div class="card-copy">Approach \(a\) from both sides and see whether outputs converge to a single \(L\).</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',     slideId: 'slide-0' },
+            { label: 'Notation',     slideId: 'slide-1' },
+            { label: 'One-Sided',    slideId: 'slide-3' },
+            { label: 'Limit vs Value', slideId: 'slide-6' },
+            { label: 'Tables',       slideId: 'slide-7' },
+            { label: 'Review',       slideId: 'slide-10' }
+        ]
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9.4 — Derivatives</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 9 · Introduction to Calculus</div>
+        <div class="title-main">9.4 Derivatives</div>
+        <div class="title-objective">Objective: Compute average &amp; instantaneous rates of change, find derivatives from the definition, and write tangent-line equations.</div>
+        <div class="identity-chips">
+            <span class="chip">difference quotient</span>
+            <span class="chip">limit definition</span>
+            <span class="chip">tangent line</span>
+            <span class="chip">velocity</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: AROC ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="1">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Average Rate of Change</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Difference Quotient</div>
+                    <div class="fn-eq-stack">
+                        <div>\[\text{AROC} = \frac{f(a+h) - f(a)}{h}\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>Geometrically: slope of the
+                    <span class="fb" id="slide-1-step-0"><span class="fb-blank">____________</span><span class="fb-answer">secant line</span></span>
+                    connecting \((a, f(a))\) and \((a+h, f(a+h))\).</li>
+                <li>Also written as \(\dfrac{f(b) - f(a)}{b - a}\) where \(b = a + h\).</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 — AROC ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Average Rate of Change</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find the average rate of change of \(f\) between the points \((2, -6)\) and \((-1, 5)\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Apply the formula</div>
+                        <div class="step-math">
+                            \[\text{AROC} = \frac{5 - (-6)}{-1 - 2} = \frac{11}{-3} = \boxed{-\frac{11}{3}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Derivative Definition ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">The Derivative at a Point</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Definition</div>
+                    <div class="fn-eq-stack">
+                        <div>\[f'(a) = \lim_{h \to 0}\frac{f(a+h) - f(a)}{h}\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>\(f'(a)\) is the <strong>instantaneous rate of change</strong> of \(f\) at \(x = a\).</li>
+                <li>Geometrically: slope of the
+                    <span class="fb" id="slide-3-step-0"><span class="fb-blank">______________</span><span class="fb-answer">tangent line</span></span>
+                    at \((a, f(a))\).</li>
+                <li>If the limit DNE at \(x = a\), \(f\) is
+                    <span class="fb" id="slide-3-step-1"><span class="fb-blank">______________________</span><span class="fb-answer">not differentiable</span></span>
+                    there.</li>
+            </ul>
+            <div class="note-box navy" style="margin-top: 0.4rem;">
+                <div class="note-title">Procedure</div>
+                <div class="note-copy" style="font-size: 0.75em; line-height: 1.8;">
+                    1. Write \(f(a+h)\) by substituting \(a+h\) for \(x\). &nbsp;
+                    2. Subtract \(f(a)\) and simplify. &nbsp;
+                    3. Divide by \(h\) and cancel. &nbsp;
+                    4. Take the limit as \(h \to 0\).
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Ex 2 — Derivative of polynomial ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="3">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Derivative from the Definition</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find \(f'(a)\) for \(f(x) = x^2 - 3x + 5\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Step 1: Expand \(f(a+h)\)</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[f(a+h) = (a+h)^2 - 3(a+h) + 5 = a^2 + 2ah + h^2 - 3a - 3h + 5\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Step 2: Subtract and simplify</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[f(a+h) - f(a) = 2ah + h^2 - 3h = h(2a + h - 3)\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-2">
+                    <div class="step-box green">
+                        <div class="step-label">Steps 3–4: Divide and take limit</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\frac{h(2a + h - 3)}{h} = 2a + h - 3 \;\xrightarrow{h \to 0}\; \boxed{f'(a) = 2a - 3}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 3 — Rational Function ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Derivative of a Rational Function</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find \(f'(a)\) for \(f(x) = \dfrac{3 + x}{2 - x}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Set up and simplify</div>
+                        <div class="step-math" style="font-size: 0.72em;">
+                            \[\frac{f(a+h)-f(a)}{h} = \frac{1}{h}\left[\frac{3+a+h}{2-a-h} - \frac{3+a}{2-a}\right] = \frac{(3+a+h)(2-a)-(3+a)(2-a-h)}{h(2-a-h)(2-a)}\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.72em;">
+                            \[\text{Numerator} = 5h \;\Longrightarrow\; \frac{5h}{h(2-a-h)(2-a)} = \frac{5}{(2-a-h)(2-a)}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Take the limit</div>
+                        <div class="step-math">
+                            \[\lim_{h \to 0}\frac{5}{(2-a-h)(2-a)} = \boxed{f'(a) = \frac{5}{(2-a)^2}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Ex 4 — Square Root ===== -->
+    <section class="slide grid-bg" id="slide-6" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Derivative at a Specific Point (Conjugate)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find \(f'(36)\) for \(f(x) = 4\sqrt{x}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Set up and use conjugate</div>
+                        <div class="step-math" style="font-size: 0.72em;">
+                            \[\frac{4\sqrt{36+h} - 24}{h}\cdot\frac{4\sqrt{36+h}+24}{4\sqrt{36+h}+24} = \frac{16(36+h)-576}{h(4\sqrt{36+h}+24)} = \frac{16h}{h(4\sqrt{36+h}+24)}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Take the limit</div>
+                        <div class="step-math">
+                            \[\frac{16}{4\sqrt{36}+24} = \frac{16}{24+24} = \frac{16}{48} = \boxed{\frac{1}{3}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Tangent Line ===== -->
+    <section class="slide grid-bg" id="slide-7" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Tangent Line Equation</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Tangent Line</div>
+                    <div class="fn-eq-stack">
+                        <div>\[y = f'(a)(x - a) + f(a)\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>Point-slope form with slope
+                    <span class="fb" id="slide-7-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(f'(a)\)</span></span>
+                    through the point
+                    <span class="fb" id="slide-7-step-1"><span class="fb-blank">____________</span><span class="fb-answer">\((a, f(a))\)</span></span>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Ex 5 — Tangent Line ===== -->
+    <section class="slide grid-bg" id="slide-8" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Equation of the Tangent Line</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Find the equation of the tangent line to \(f(x) = x^2 - 4x\) at \(x = 3\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Find slope and point</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[f'(a) = 2a - 4 \;\Longrightarrow\; f'(3) = 2 \qquad f(3) = 9 - 12 = -3\]
+                        </div>
+                        <div style="font-size: 0.72em; text-align: center; color: var(--text-muted);">Slope = 2, point = \((3, -3)\)</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Write equation</div>
+                        <div class="step-math">
+                            \[y = 2(x - 3) + (-3) \;\Longrightarrow\; \boxed{y = 2x - 9}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9: Velocity ===== -->
+    <section class="slide grid-bg" id="slide-9" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Instantaneous Velocity</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Velocity</div>
+                    <div class="fn-eq-stack">
+                        <div>\[s'(a) = \lim_{h \to 0}\frac{s(a+h) - s(a)}{h}\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>Positive \(s'(a)\): moving in the
+                    <span class="fb" id="slide-9-step-0"><span class="fb-blank">__________</span><span class="fb-answer">positive</span></span>
+                    direction (upward for height).</li>
+                <li>Speed = \(|s'(a)|\) is always
+                    <span class="fb" id="slide-9-step-1"><span class="fb-blank">________________</span><span class="fb-answer">non-negative</span></span>.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 10: Ex 6 — Velocity ===== -->
+    <section class="slide grid-bg" id="slide-10" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Instantaneous Velocity</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                Height of a ball: \(s(t) = -16t^2 + 64t + 6\). Find the velocity at \(t = 1\) and \(t = 3\). Interpret each.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-10-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Find general velocity</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[s'(a) = \lim_{h \to 0}\frac{-32ah - 16h^2 + 64h}{h} = -32a + 64\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-10-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Evaluate and interpret</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[s'(1) = -32 + 64 = \boxed{32 \;\text{ft/sec (moving upward)}}\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[s'(3) = -96 + 64 = \boxed{-32 \;\text{ft/sec (moving downward)}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 11: Honors — Non-Differentiability ===== -->
+    <section class="slide grid-bg" id="slide-11">
+        <div class="slide-header">
+            <div class="ref-label" style="background: purple;">Honors</div>
+            <div class="slide-title">When Is \(f\) Not Differentiable?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.5rem;">Leibniz notation: \(f'(a)\) is also written \(\dfrac{dy}{dx}\Big|_{x=a}\).</div>
+            <div class="cards-grid">
+                <div class="info-card" style="border-left-color: purple; background: #faf5ff;">
+                    <div class="card-title" style="color: purple;">Discontinuity</div>
+                    <div class="card-copy">\(f\) is not continuous at \(a\) — cannot draw tangent.</div>
+                </div>
+                <div class="info-card" style="border-left-color: purple; background: #faf5ff;">
+                    <div class="card-title" style="color: purple;">Corner</div>
+                    <div class="card-copy">Sharp corner — left and right slopes differ (e.g. \(|x|\) at 0).</div>
+                </div>
+                <div class="info-card" style="border-left-color: purple; background: #faf5ff;">
+                    <div class="card-title" style="color: purple;">Cusp / Vertical Tangent</div>
+                    <div class="card-copy">Sharp point or vertical tangent — slope is undefined (\(\to \pm\infty\)).</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 12: Review ===== -->
+    <section class="slide grid-bg" id="slide-12">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Difference Quotient → Derivative</div>
+                    <div class="card-copy">The derivative is the limit of the difference quotient as \(h \to 0\).</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Tangent Lines</div>
+                    <div class="card-copy">Use \(f'(a)\) as slope and \((a, f(a))\) as the point to write the tangent-line equation.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Velocity</div>
+                    <div class="card-copy">Instantaneous velocity = \(s'(a)\). Positive = forward/up, negative = backward/down.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'AROC',       slideId: 'slide-1' },
+            { label: 'Definition',  slideId: 'slide-3' },
+            { label: 'Tangent Line', slideId: 'slide-7' },
+            { label: 'Velocity',   slideId: 'slide-9' },
+            { label: 'Honors',     slideId: 'slide-11' },
+            { label: 'Review',     slideId: 'slide-12' }
+        ]
+    });
+</script>
+</body>
+</html>

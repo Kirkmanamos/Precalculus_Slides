@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9.3 — Continuity</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 9 · Introduction to Calculus</div>
+        <div class="title-main">9.3 Continuity</div>
+        <div class="title-objective">Objective: State the three conditions of continuity, identify removable and jump discontinuities, and determine continuity.</div>
+        <div class="identity-chips">
+            <span class="chip">three conditions</span>
+            <span class="chip">removable discontinuity</span>
+            <span class="chip">jump discontinuity</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Three Conditions ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Continuity at a Point</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.5rem;">
+                A function \(f\) is <strong>continuous at \(x = a\)</strong> if <em>all three</em> conditions hold:
+            </div>
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Condition 1</div>
+                    <div class="fn-eq-stack">
+                        <div>
+                            <span class="fb" id="slide-1-step-0"><span class="fb-blank">__________________________</span><span class="fb-answer">\(f(a)\) exists (is defined)</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">Condition 2</div>
+                    <div class="fn-eq-stack">
+                        <div>
+                            <span class="fb" id="slide-1-step-1"><span class="fb-blank">__________________________</span><span class="fb-answer">\(\lim_{x \to a} f(x)\) exists</span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="formula-row green">
+                    <div class="fn-label">Condition 3</div>
+                    <div class="fn-eq-stack">
+                        <div>
+                            <span class="fb" id="slide-1-step-2"><span class="fb-blank">__________________________</span><span class="fb-answer">\(\lim_{x \to a} f(x) = f(a)\)</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="note-box navy" style="margin-top: 0.5rem;">
+                <div class="note-title">Key Idea</div>
+                <div class="note-copy">If any condition fails, \(f\) is <strong>discontinuous</strong> at \(x = a\). A function continuous everywhere has no holes or breaks.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Types of Discontinuity ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Types of Discontinuity</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="cards-grid">
+                <div class="info-card orange">
+                    <div class="card-title">Jump Discontinuity</div>
+                    <div class="card-copy">
+                        Both one-sided limits exist but are <strong>not equal</strong>:
+                        \(\lim_{x \to a^-} f(x) \ne \lim_{x \to a^+} f(x)\)<br><br>
+                        The graph has a
+                        <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">jump</span></span>
+                        at \(x = a\). <strong>Cannot</strong> be fixed.
+                    </div>
+                </div>
+                <div class="info-card teal">
+                    <div class="card-title">Removable Discontinuity</div>
+                    <div class="card-copy">
+                        The two-sided limit exists, but \(f(a)\) is undefined or \(f(a) \ne \lim f\).<br><br>
+                        The graph has a
+                        <span class="fb" id="slide-2-step-1"><span class="fb-blank">________</span><span class="fb-answer">hole</span></span>
+                        at \(x = a\). <strong>Can</strong> be fixed by redefining \(f(a)\).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Ex 1 — Removable ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Testing for Continuity (Removable)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Is \(f(x) = \dfrac{x^2 - 25}{x - 5}\) continuous at \(x = 5\)? Classify any discontinuity.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Check conditions</div>
+                        <div style="font-size: 0.75em; line-height: 2;">
+                            <strong>Condition 1:</strong> \(f(5) = \frac{0}{0}\) — undefined. ❌ <em>Fails.</em><br>
+                            <strong>Condition 2:</strong> \(\frac{(x-5)(x+5)}{x-5} = x + 5\); \(\lim_{x \to 5}(x+5) = 10\). ✓<br>
+                            <strong>Condition 3:</strong> Cannot check — \(f(5)\) is undefined.
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Conclusion</div>
+                        <div style="font-size: 0.78em; text-align: center; font-weight: 600;">
+                            <strong>Removable discontinuity</strong> at \(x = 5\). Redefine \(f(5) = 10\) to remove it.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Ex 2 — Jump ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Testing for Continuity (Jump)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                Is \(f(x) = \begin{cases} 4x & x \le 3 \\ 8 + x & x > 3 \end{cases}\) continuous at \(x = 3\)?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-4-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Check conditions</div>
+                        <div style="font-size: 0.75em; line-height: 2;">
+                            <strong>Condition 1:</strong> \(f(3) = 4(3) = 12\). ✓<br>
+                            <strong>Condition 2:</strong> \(\lim_{x \to 3^-} 4x = 12\) and \(\lim_{x \to 3^+}(8+x) = 11\). Left \(\ne\) Right. ❌
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-4-step-1">
+                    <div class="step-box orange">
+                        <div class="step-label">Conclusion</div>
+                        <div style="font-size: 0.78em; text-align: center; font-weight: 600;">
+                            <strong>Jump discontinuity</strong> at \(x = 3\). Cannot be removed.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 3 — Continuous piecewise ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">A Continuous Piecewise Function</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                Is \(f(x) = \begin{cases} x + 1 & x < 2 \\ 3 & x = 2 \\ x^2 - 1 & x > 2 \end{cases}\) continuous at \(x = 2\)?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box green">
+                        <div class="step-label">All three conditions</div>
+                        <div style="font-size: 0.75em; line-height: 2;">
+                            <strong>Condition 1:</strong> \(f(2) = 3\). ✓<br>
+                            <strong>Condition 2:</strong> \(\lim_{x\to2^-}(x+1) = 3\) and \(\lim_{x\to2^+}(x^2-1) = 3\). Equal — limit = 3. ✓<br>
+                            <strong>Condition 3:</strong> \(\lim_{x\to2} f(x) = 3 = f(2)\). ✓<br><br>
+                            <strong style="color: var(--green-accent);">\(f\) is continuous at \(x = 2\). ✓</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Ex 4 — Removable, undefined ===== -->
+    <section class="slide grid-bg" id="slide-6" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Removable Discontinuity (Undefined)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                Is \(f(x) = \begin{cases} \sin x & x < 0 \\ x^3 & x > 0 \end{cases}\) continuous at \(x = 0\)?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Check conditions</div>
+                        <div style="font-size: 0.75em; line-height: 2;">
+                            <strong>Condition 1:</strong> \(f(0)\) is undefined — neither piece covers \(x = 0\). ❌<br>
+                            <strong>Condition 2:</strong> \(\lim_{x\to0^-}\sin x = 0\) and \(\lim_{x\to0^+} x^3 = 0\). Limit = 0. ✓<br><br>
+                            <strong>Conclusion:</strong> <strong>Removable discontinuity</strong> at \(x = 0\). Define \(f(0) = 0\) to remove it.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Always Continuous Functions ===== -->
+    <section class="slide grid-bg" id="slide-7">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Families of Continuous Functions</h2>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Continuous Everywhere</div>
+                    <div class="card-copy">
+                        <ul style="font-size: 0.85em; line-height: 1.8; list-style: disc; padding-left: 1.2em;">
+                            <li>Polynomials</li>
+                            <li>Exponentials (\(e^x, 2^x\))</li>
+                            <li>\(\sin x\) and \(\cos x\)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Continuous on Their Domain</div>
+                    <div class="card-copy">
+                        <ul style="font-size: 0.85em; line-height: 1.8; list-style: disc; padding-left: 1.2em;">
+                            <li>Logarithms (domain \(x > 0\))</li>
+                            <li>Tangent (undef at \(\frac{\pi}{2} + k\pi\))</li>
+                            <li>Rationals (undef where denom = 0)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Review ===== -->
+    <section class="slide grid-bg" id="slide-8">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Three Conditions</div>
+                    <div class="card-copy">\(f(a)\) exists, \(\lim f\) exists, and they are equal. All three must hold.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Classify Discontinuities</div>
+                    <div class="card-copy"><strong>Removable</strong> = hole (fixable). <strong>Jump</strong> = left \(\ne\) right (not fixable).</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Common Continuous Families</div>
+                    <div class="card-copy">Polynomials, exponentials, sine/cosine are always continuous. Rationals, logs, tangent are continuous on their domain.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',        slideId: 'slide-0' },
+            { label: 'Three Conditions', slideId: 'slide-1' },
+            { label: 'Types',           slideId: 'slide-2' },
+            { label: 'Examples',        slideId: 'slide-3' },
+            { label: 'Families',        slideId: 'slide-7' },
+            { label: 'Review',          slideId: 'slide-8' }
+        ]
+    });
+</script>
+</body>
+</html>

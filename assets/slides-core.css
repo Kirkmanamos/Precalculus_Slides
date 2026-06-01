@@ -825,3 +825,8 @@ body { color: var(--text); }
         padding-left: 10px !important;
     }
 }
+
+/* SVG groups step reveals */
+g.svg-step { opacity: 0; }
+g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
+

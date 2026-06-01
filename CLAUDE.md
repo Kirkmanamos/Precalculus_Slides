@@ -16,6 +16,7 @@
 | Cross-agent handoff notes | `AGENT_HANDOFF.md` |
 | Slidev/Vue skill (PPT conversion, interactive decks) | `SKILL.md` |
 | Style preset reference | `STYLE_PRESETS.md` |
+| Structural deck verifier (run before finishing HTML edits) | `verify_decks.py` |
 
 ---
 
@@ -28,6 +29,7 @@ precalculus_slides/
 │   ├── slides-core.css           Shared baseline CSS for all decks
 │   └── slides-core.js            Shared SlidePresentation engine (window.SlidesCore)
 ├── *-assets/                     Image assets extracted from source PPTs
+├── verify_decks.py               Structural checker for shared-engine decks (run before committing HTML)
 │
 ├── slidev/                       Slidev (Vue 3) interactive decks
 │   ├── precalculus-prototype/    Main prototype — trig graphing, sliders
@@ -80,6 +82,12 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 - All math rendered via KaTeX (`\[ \]` display, `\( \)` inline). No HTML entities or Unicode math.
 - Follow the HoffMath Classroom architecture in `AGENTS.md` exactly.
 - Reference implementation: `6.7-conditional-probability.html` (canonical for the new shared-assets pattern).
+- **Before finishing any HTML edit, run `python3 verify_decks.py`** (repo root). It checks `<section>` balance, KaTeX `\(\)`/`\[\]` balance, shared-asset wiring, and `data-steps` on every shared-engine deck. Must exit 0.
+
+### LaTeX Guided Notes (companion repo)
+- The guided notes live in a **separate repo**: `/Users/kirkmanamos/Desktop/precalculus`, organized as `Unit N - .../notes/`.
+- There is **no single root `build.sh`** — each unit has its own `notes/build.sh` that compiles **four variants** (`student-regular`, `student-honors`, `teacher-regular`, `teacher-honors`). Run it from inside that unit's `notes/` folder.
+- When a slide deck and its matching notes section share a value (worked examples, coordinates, final answers), keep them **identical**. A mismatch in either is a bug — fix both and rebuild the affected unit's four variants.
 
 ### Slidev / Vue Decks
 - Stack: Slidev v52.2.0, Vue 3, KaTeX for math, SVG for graphs.
@@ -129,25 +137,35 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 | 4.5 | Trig Functions of Any Angle | ✅ Complete (5.5 standard) | — |
 | 4 (legacy) | Trig Review (4.1–4.5) | ✅ Complete (legacy `trig-review.html`) | — |
 | 4 | Spaghetti Trig Activity | ✅ Complete | — |
-| 4.6 | Graphs of Sine & Cosine | ✅ Complete (5.5 standard) | 🔄 Prototype |
-| 4.6b | Graphs of Sine & Cosine Pt 2 | ✅ Complete (5.5 standard) | — |
-| 4.7 | Modeling with Sine & Cosine | ✅ Complete (5.5 standard) | — |
-| 4.8 | Graphs of Other Trig Functions | ✅ Complete (5.5 standard) | — |
-| 4.9 | Inverse Trig Functions | ✅ Complete (5.5 standard) | 🔄 Prototype |
-| 5.1 | Using Fundamental Identities | ✅ Complete (shared-assets cleanup) | — |
-| 5.2 | Verifying Trig Identities | ✅ Complete (shared-assets cleanup) | — |
-| 5.3 | Solving Trig Equations | ✅ Complete (shared-assets cleanup) | — |
-| 5.4 | Sum and Difference Identities | ✅ Complete (shared-assets cleanup) | — |
-| 5.5 | Double &amp; Half Angle Identities | ✅ Complete (shared-assets cleanup) | — |
-| 6.1 | Sequences | ✅ Complete | — |
-| 6.2 | Arithmetic Sequences | ✅ Complete | — |
-| 6.3 | Geometric Sequences | ✅ Complete | — |
-| 6.4 | The Binomial Theorem | ✅ Complete | — |
-| 6.5 | Counting Principles | ✅ Complete | — |
-| 6.6 | Probability | ✅ Complete | — |
-| 6.7 | Conditional Probability | ✅ Complete | — |
+| 5.1 | Graphs of Sine & Cosine | ✅ Complete (5.5 standard) | 🔄 Prototype |
+| 5.2 | Graphs of Sine & Cosine Pt 2 | ✅ Complete (5.5 standard) | — |
+| 5.3 | Modeling with Sine & Cosine | ✅ Complete (5.5 standard) | — |
+| 5.4 | Graphs of Other Trig Functions | ✅ Complete (5.5 standard) | — |
+| 5.5 | Inverse Trig Functions | ✅ Complete (5.5 standard) | 🔄 Prototype |
+| 6.1 | Using Fundamental Identities | ✅ Complete (shared-assets cleanup) | — |
+| 6.2 | Verifying Trig Identities | ✅ Complete (shared-assets cleanup) | — |
+| 6.3 | Solving Trig Equations | ✅ Complete (shared-assets cleanup) | — |
+| 6.4 | Sum and Difference Identities | ✅ Complete (shared-assets cleanup) | — |
+| 6.5 | Double &amp; Half Angle Identities | ✅ Complete (shared-assets cleanup) | — |
+| 7.1 | Sequences | ✅ Complete | — |
+| 7.2 | Arithmetic Sequences | ✅ Complete | — |
+| 7.3 | Geometric Sequences | ✅ Complete | — |
+| 7.4 | The Binomial Theorem | ✅ Complete | — |
+| 7.5 | Counting Principles | ✅ Complete | — |
+| 7.6 | Probability | ✅ Complete | — |
+| 7.7 | Conditional Probability | ✅ Complete | — |
+| 8.1 | Polar Coordinates | ✅ Complete (5.5 standard) | — |
+| 8.2 | Polar Graphs | ✅ Complete (5.5 standard) | — |
+| 8.3 | Polar Form of Complex Numbers | ✅ Complete (5.5 standard) | — |
+| 8.4 | Parametric Equations | ✅ Complete (5.5 standard) | — |
+| 8.5 | Parametric Graphs | ✅ Complete (5.5 standard) | — |
+| 8.6 | Vectors | ✅ Complete (5.5 standard) | — |
+| 9.1 | Finding Limits: Numerical & Graphical | ✅ Complete (5.5 standard) | — |
+| 9.2 | Finding Limits: Properties of Limits | ✅ Complete (5.5 standard) | — |
+| 9.3 | Continuity | ✅ Complete (5.5 standard) | — |
+| 9.4 | Derivatives | ✅ Complete (5.5 standard) | — |
 
-**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.9 newly built or rebuilt to 5.5 standard**; **Unit 5 daily decks now use the shared-assets engine while preserving their existing organization and visual identity**. Pre-existing supplemental Rational Functions decks remain in place. Up next: other supplemental review materials.
+**Next up:** Unit 1 complete (1.1–1.7); **Unit 2 complete (2.1–2.8)**; **Unit 3 complete (3.1–3.5)**; **Unit 4 sections 4.1–4.5 complete**; **Unit 5 sections 5.1–5.5 newly built or rebuilt to 5.5 standard**; **Unit 6 daily decks now use the shared-assets engine while preserving their existing organization and visual identity**; **Unit 7 complete (7.1–7.7)**; **Unit 8 sections 8.1–8.6 complete**; **Unit 9 sections 9.1–9.4 complete**. Pre-existing supplemental Rational Functions decks remain in place. Up next: other supplemental review materials.
 
 ---
 

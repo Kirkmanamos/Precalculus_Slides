@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.2 - Polar Coordinates: Graphs</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- Slide 0: Title Slide -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 8 · Polar & Parametric Equations</div>
+        <div class="title-main">8.2 Polar Graphs</div>
+        <div class="title-objective">Objective: Test polar equations for symmetry, and identify and sketch standard polar curve families.</div>
+        <div class="identity-chips">
+            <span class="chip">symmetry tests</span>
+            <span class="chip">circles & cardioids</span>
+            <span class="chip">limaçons & lemniscates</span>
+            <span class="chip">rose curves</span>
+        </div>
+    </section>
+
+    <!-- Slide 1: Symmetry Tests Reference -->
+    <section class="slide grid-bg" id="slide-1" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Symmetry Tests for Polar Graphs</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.5rem;">Symmetry helps reduce the number of points needed in a t-table. These tests are <strong>sufficient</strong> but not <strong>necessary</strong>.</div>
+            <table class="data-table" style="font-size: 0.72em; width: 100%; border-collapse: collapse; margin-bottom: 0.8rem;">
+                <thead>
+                    <tr style="background: var(--navy-light);">
+                        <th style="padding: 10px; text-align: left;">Symmetry type</th>
+                        <th style="padding: 10px; text-align: left;">Substitution</th>
+                        <th style="padding: 10px; text-align: left;">Condition for symmetry</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 8px;"><strong>About the Polar Axis</strong> (x-axis)</td>
+                        <td style="padding: 8px;">Replace \((r, \theta)\) with \((r, -\theta)\)</td>
+                        <td style="padding: 8px;">
+                            <span class="fb" id="slide-1-step-0"><span class="fb-blank">________________________</span><span class="fb-answer">Equation is unchanged</span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>About the Line \(\theta = \frac{\pi}{2}\)</strong> (y-axis)</td>
+                        <td style="padding: 8px;">Replace \((r, \theta)\) with \((-r, -\theta)\)</td>
+                        <td style="padding: 8px;">
+                            <span class="fb" id="slide-1-step-1"><span class="fb-blank">________________________</span><span class="fb-answer">Equation is unchanged</span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px;"><strong>About the Pole</strong> (origin)</td>
+                        <td style="padding: 8px;">Replace \((r, \theta)\) with \((-r, \theta)\)</td>
+                        <td style="padding: 8px;">
+                            <span class="fb" id="slide-1-step-2"><span class="fb-blank">________________________</span><span class="fb-answer">Equation is unchanged</span></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="note-box navy">
+                <div class="note-title">Caution</div>
+                <div class="note-copy">
+                    A curve can be symmetric even if its symmetry test is inconclusive!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 2: Example 1 - Symmetry Test -->
+    <section class="slide grid-bg" id="slide-2" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Testing Symmetry</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Test the polar equation \(r = 2\sin\theta\) for symmetry about the line \(\theta = \frac{\pi}{2}\) (the y-axis).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Substitute \((-r, -\theta)\)</div>
+                        <div class="step-math">
+                            \[-r = 2\sin(-\theta)\]
+                        </div>
+                        <div class="step-math">
+                            \[-r = -2\sin\theta \;\Longrightarrow\; \mathbf{r = 2\sin\theta}\]
+                            <div class="annotation">Since \(\sin(-\theta) = -\sin\theta\) (odd function), the negatives cancel out, leaving the original equation unchanged.</div>
+                        </div>
+                        <div style="text-align: center; font-weight: 700; color: var(--green-accent); margin-top: 0.4rem;">
+                            Conclusion: Symmetric about \(\theta = \frac{\pi}{2}\).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Concept - Graphing Procedure -->
+    <section class="slide grid-bg" id="slide-3">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Graphing a Polar Equation</h2>
+        </div>
+        <div class="slide-body">
+            <div class="body-lead">Follow these structured steps to sketch any polar curve:</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">1. Test Symmetry</div>
+                    <div class="card-copy">Apply the x-axis, y-axis, and pole symmetry tests.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">2. Find Zeros & Max</div>
+                    <div class="card-copy">Set \(r = 0\) to find pole intercepts. Identify maximum \(|r|\) value.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">3. Build T-Table</div>
+                    <div class="card-copy">Compute values at key angles (\(\frac{\pi}{6}, \frac{\pi}{4}, \frac{\pi}{3}, \frac{\pi}{2}\)).</div>
+                </div>
+                <div class="info-card blue">
+                    <div class="card-title">4. Plot & Reflect</div>
+                    <div class="card-copy">Plot points and reflect across the line(s) of symmetry.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Worked Example - Circle r = 2sin(theta) -->
+    <section class="slide grid-bg" id="slide-4" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Graphing \(r = 2\sin\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Analyze and sketch the graph of \(r = 2\sin\theta\). Find zeros and the maximum modulus.
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-4-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Find Key Features</div>
+                            <div style="font-size: 0.72em;">
+                                <strong>Symmetry:</strong> About y-axis (tested in Ex 1).<br>
+                                <strong>Zeros:</strong> \(2\sin\theta = 0 \;\Longrightarrow\; \theta = 0, \pi\).<br>
+                                <strong>Maximum:</strong> Max \(|r| = 2\) occurs when \(\theta = \frac{\pi}{2}\).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-4-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">T-Table & Curve Type</div>
+                            <div style="font-size: 0.72em;">
+                                <strong>T-Table:</strong> \(\theta = 0 \to r=0\); \(\frac{\pi}{6} \to 1\); \(\frac{\pi}{4} \to \sqrt{2} \approx 1.4\); \(\frac{\pi}{3} \to \sqrt{3} \approx 1.7\); \(\frac{\pi}{2} \to 2\).<br>
+                                <strong>Shape:</strong> This is a <strong>circle</strong> of radius 1 centered at rectangular \((0,1)\).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <!-- Grid lines -->
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <circle cx="100" cy="100" r="35" stroke="#e2e8f0" stroke-width="1" fill="none" />
+                    <circle cx="100" cy="100" r="70" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2" fill="none" />
+                    <!-- Circle Curve r = 2sin(theta) -> Center (0, 1) -> Y_pixel = 100 - 35 = 65, Radius = 35 px -->
+                    <circle class="svg-step" id="slide-4-step-1-curve" cx="100" cy="65" r="35" fill="none" stroke="#2563eb" stroke-width="2.5" />
+                    <!-- Pole -->
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Circle: diameter 2 on y-axis</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Curve Families Reference -->
+    <section class="slide grid-bg" id="slide-5">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Standard Polar Curve Families</div>
+        </div>
+        <div class="slide-body">
+            <table class="data-table" style="font-size: 0.58em; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background: var(--navy-light);">
+                        <th style="padding: 6px; text-align: left;">Family</th>
+                        <th style="padding: 6px; text-align: left;">Equation Forms</th>
+                        <th style="padding: 6px; text-align: left;">Key Characteristics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Circle</strong></td>
+                        <td style="padding: 5px;">\(r = a\cos\theta\) or \(r = a\sin\theta\)</td>
+                        <td style="padding: 5px;">Radius \(|a|/2\); center sits on an axis.</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Cardioid</strong></td>
+                        <td style="padding: 5px;">\(r = a \pm b\cos\theta\) (or \(\sin\theta\))</td>
+                        <td style="padding: 5px;">Heart-shaped; passes through the pole (\(a/b = 1\)).</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Limaçon (Dimpled)</strong></td>
+                        <td style="padding: 5px;">\(r = a \pm b\cos\theta\) (or \(\sin\theta\))</td>
+                        <td style="padding: 5px;">Dimpled boundary, no loop (\(1 < a/b < 2\)).</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Limaçon (Inner Loop)</strong></td>
+                        <td style="padding: 5px;">\(r = a \pm b\cos\theta\) (or \(\sin\theta\))</td>
+                        <td style="padding: 5px;">Loops through the pole into \(r < 0\) region (\(a < b\)).</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Lemniscate</strong></td>
+                        <td style="padding: 5px;">\(r^2 = a^2\cos 2\theta\) or \(a^2\sin 2\theta\)</td>
+                        <td style="padding: 5px;">Figure-eight shape; maximum distance \(|a|\).</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 5px;"><strong>Rose Curve</strong></td>
+                        <td style="padding: 5px;">\(r = a\cos n\theta\) or \(a\sin n\theta\)</td>
+                        <td style="padding: 5px;">\(n\) odd \(\to n\) petals; \(n\) even \(\to 2n\) petals.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Slide 6: Example 3 - Circle r = 4cos(theta) -->
+    <section class="slide grid-bg" id="slide-6" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Graphing Circle \(r = 4\cos\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify and sketch the graph of \(r = 4\cos\theta\). Find zeros and maximum.
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-6-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Identify Features</div>
+                            <div style="font-size: 0.72em;">
+                                <strong>Symmetry:</strong> About polar axis (since \(\cos(-\theta) = \cos\theta\)).<br>
+                                <strong>Zeros:</strong> \(\cos\theta = 0 \;\Longrightarrow\; \theta = \frac{\pi}{2}, \frac{3\pi}{2}\).<br>
+                                <strong>Maximum:</strong> Max \(|r| = 4\) at \(\theta = 0, \pi\).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-6-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Resulting Curve</div>
+                            <div style="font-size: 0.72em;">
+                                <strong>Circle:</strong> Center \((2, 0)\) rectangular, radius 2.<br>
+                                Traced completely as \(\theta\) ranges from \(0\) to \(\pi\).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <circle cx="100" cy="100" r="40" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2,2" fill="none" />
+                    <!-- Circle Center (2,0) rectangular -> scale 20 -> Center pixel: (100+40, 100) = (140, 100), Radius 40px -->
+                    <circle class="svg-step" id="slide-6-step-1-curve" cx="140" cy="100" r="40" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Circle: diameter 4 on x-axis</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Example 4 - Cardioid -->
+    <section class="slide grid-bg" id="slide-7" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Cardioid \(r = 2 + 2\cos\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify and sketch \(r = 2 + 2\cos\theta\).
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-7-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Identify Type</div>
+                            <div style="font-size: 0.72em;">
+                                \(a=2, b=2 \;\Longrightarrow\; \frac{a}{b} = 1 \;\Longrightarrow\) <strong>cardioid</strong> (heart-shaped).<br>
+                                <strong>Symmetry:</strong> Symmetric about polar axis (x-axis).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-7-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Key Points</div>
+                            <div style="font-size: 0.72em;">
+                                Max \(r = 4\) at \(\theta = 0\). Zeros at \(\theta = \pi\) (enters pole).<br>
+                                Values: \(\theta = \frac{\pi}{3} \to r=3\); \(\frac{\pi}{2} \to r=2\); \(\frac{2\pi}{3} \to r=1\).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <!-- Cardioid Path. Center 100,100, scale 18. Points: (172,100), (140,53), (100,64), (91,91), (100,100) cusp -->
+                    <path class="svg-step" id="slide-7-step-1-curve" d="M 172,100 C 172,40 120,46 100,64 C 91,72 95,95 100,100 C 95,105 91,128 100,136 C 120,154 172,160 172,100 Z" fill="none" stroke="#0891b2" stroke-width="2.5" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Cardioid: symmetric about x-axis</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 8: Example 5 - Dimpled Limaçon -->
+    <section class="slide grid-bg" id="slide-8" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Dimpled Limaçon \(r = 3 + 2\cos\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify and sketch the curve \(r = 3 + 2\cos\theta\).
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-8-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Check Ratio</div>
+                            <div style="font-size: 0.72em;">
+                                \(a=3, b=2 \;\Longrightarrow\; \frac{a}{b} = 1.5\). Since \(1 < 1.5 < 2\), this is a <strong>dimpled limaçon</strong>.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-8-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Analysis</div>
+                            <div style="font-size: 0.72em;">
+                                Max \(r = 5\) at \(\theta = 0\). Min \(r = 1\) at \(\theta = \pi\).<br>
+                                Since \(r > 0\) for all \(\theta\), it never crosses the pole (no inner loop, just a dimple at \(\theta=\pi\)).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <!-- Dimpled Limacon. Scale 15. Max x = 100+75 = 175, Min x = 100-15 = 85, Dimple at left -->
+                    <path class="svg-step" id="slide-8-step-1-curve" d="M 175,100 C 175,30 115,55 100,55 C 80,55 85,95 85,100 C 85,105 80,145 100,145 C 115,145 175,170 175,100 Z" fill="none" stroke="#d97706" stroke-width="2.5" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Dimpled Limaçon: dimple at left</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 9: Example 6 - Inner Loop Limaçon -->
+    <section class="slide grid-bg" id="slide-9" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Inner-Loop Limaçon \(r = 1 + 2\cos\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify and sketch \(r = 1 + 2\cos\theta\). Note where \(r < 0\).
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-9-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Identify Loop</div>
+                            <div style="font-size: 0.72em;">
+                                \(a=1, b=2 \;\Longrightarrow\; a < b \;\Longrightarrow\) <strong>limaçon with inner loop</strong>.<br>
+                                <strong>Zeros:</strong> \(1 + 2\cos\theta = 0 \;\Longrightarrow\; \theta = \frac{2\pi}{3}, \frac{4\pi}{3}\).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-9-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Inner Loop Analysis</div>
+                            <div style="font-size: 0.72em;">
+                                For \(\theta \in \left(\frac{2\pi}{3}, \frac{4\pi}{3}\right)\), \(r < 0\), which traces the inner loop.<br>
+                                Max loop length is \(|1+2\cos\pi| = 1\) (pointing in positive x-direction).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <!-- Inner Loop Limacon. Scale 20. Max r=3 -> 160, Inner loop goes from 100,100 to 120,100 -->
+                    <path class="svg-step" id="slide-9-step-1-curve" d="M 160,100 C 160,35 110,60 100,60 C 90,60 95,95 100,100 C 110,105 120,105 120,100 C 120,95 110,95 100,100 C 95,105 90,140 100,140 C 110,140 160,165 160,100 Z" fill="none" stroke="#dc2626" stroke-width="2.5" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Inner Loop Limaçon</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 10: Example 7 - Lemniscate -->
+    <section class="slide grid-bg" id="slide-10" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 7</div>
+            <div class="slide-title">Lemniscate \(r^2 = 4\cos 2\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify and sketch the curve \(r^2 = 4\cos 2\theta\). Find zeros and max \(|r|\).
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-10-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Identify Curve</div>
+                            <div style="font-size: 0.72em;">
+                                Form \(r^2 = a^2\cos 2\theta \;\Longrightarrow\) <strong>lemniscate</strong> (figure-eight).<br>
+                                <strong>Zeros:</strong> \(\cos 2\theta = 0 \;\Longrightarrow\; 2\theta = \frac{\pi}{2} \;\Longrightarrow\; \theta = \frac{\pi}{4}\).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-10-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Domain & Max Value</div>
+                            <div style="font-size: 0.72em;">
+                                Max \(|r| = 2\) at \(\theta = 0, \pi\).<br>
+                                Undefined where \(\cos 2\theta < 0\) (e.g. \(\theta \in (\frac{\pi}{4}, \frac{3\pi}{4})\)). The graph has two symmetric loops along the polar axis.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="40" y1="40" x2="160" y2="160" stroke="#f1f5f9" stroke-width="1" /> <!-- pi/4 line -->
+                    <line x1="160" y1="40" x2="40" y2="160" stroke="#f1f5f9" stroke-width="1" /> <!-- 3pi/4 line -->
+                    <!-- Lemniscate figure-8 path. Scale 20. Max x = 100+/-40. Loops left and right -->
+                    <path class="svg-step" id="slide-10-step-1-curve" d="M 140,100 C 140,85 115,100 100,100 C 85,100 60,85 60,100 C 60,115 85,100 100,100 C 115,100 140,115 140,100 Z" fill="none" stroke="#16a34a" stroke-width="2.5" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Lemniscate: figure-eight</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 11: Example 8 - Rose Curve -->
+    <section class="slide grid-bg" id="slide-11" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 8</div>
+            <div class="slide-title">Rose Curve \(r = 2\cos 4\theta\)</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="problem-statement" style="font-size: 0.85em; margin-bottom: 0.5rem;">
+                    Identify the family and state the petal count and length for \(r = 2\cos 4\theta\).
+                    <span class="source-tag openstax">OpenStax</span>
+                </div>
+                <div class="steps-area" style="padding-bottom: 0;">
+                    <div class="step" id="slide-11-step-0">
+                        <div class="step-box teal">
+                            <div class="step-label">Petal Count Rule</div>
+                            <div style="font-size: 0.72em;">
+                                Form \(r = a\cos n\theta\) with \(n=4\) (even).<br>
+                                Since \(n\) is even, the rose curve has \(2n = 2(4) = \mathbf{8}\) petals.<br>
+                                Petal length is \(|a| = 2\).
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step" id="slide-11-step-1">
+                        <div class="step-box green">
+                            <div class="step-label">Zeros & Symmetry</div>
+                            <div style="font-size: 0.72em;">
+                                Zeros: \(\cos 4\theta = 0 \;\Longrightarrow\; 4\theta = \frac{\pi}{2} + k\pi \;\Longrightarrow\; \theta = \frac{\pi}{8} + \frac{k\pi}{4}\).<br>
+                                The first petal is centered at \(\theta = 0\) (on polar axis).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <!-- Rose Curve: 8 petals of length 30px (scale 15) -->
+                    <!-- We draw paths for petals -->
+                    <path class="svg-step" id="slide-11-step-1-curve" d="
+                        M 100,100 Q 115,90 130,100 Q 115,110 100,100
+                        M 100,100 Q 110,115 100,130 Q 90,115 100,100
+                        M 100,100 Q 85,110 70,100 Q 85,90 100,100
+                        M 100,100 Q 90,85 100,70 Q 110,85 100,100
+                        M 100,100 Q 118,98 121,121 Q 98,118 100,100
+                        M 100,100 Q 82,118 79,121 Q 98,118 100,100
+                        M 100,100 Q 82,82 79,79 Q 118,82 100,100
+                        M 100,100 Q 118,82 121,79 Q 82,118 100,100
+                    " fill="none" stroke="#2563eb" stroke-width="2" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">8-Petal Rose Curve</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 12: Honors Spiral -->
+    <section class="slide grid-bg" id="slide-12" data-steps="1">
+        <div class="slide-header">
+            <div class="ref-label" style="background: purple;">Honors Content</div>
+            <div class="slide-title">Archimedes' Spiral</div>
+        </div>
+        <div class="slide-body" style="flex-direction: row; gap: 1.5rem; align-items: center;">
+            <div style="flex: 1.2;">
+                <div class="note-box" style="border-left-color: purple; background: #faf5ff;">
+                    <div class="note-title" style="color: purple;">Spiral of Archimedes: \(r = \theta \quad (\theta \ge 0)\)</div>
+                    <div class="note-copy" style="font-size: 0.72em; line-height: 1.45;">
+                        The spiral passes through the pole at \(\theta = 0\) and moves steadily outward as the angle increases.
+                        <br><br>
+                        <strong>T-Table:</strong>
+                        \[\theta = 0 \to r = 0 \qquad \theta = \frac{\pi}{2} \approx 1.57 \qquad \theta = \pi \approx 3.14\]
+                        \[\theta = \frac{3\pi}{2} \approx 4.71 \qquad \theta = 2\pi \approx 6.28\]
+                        There is no algebraic symmetry because \(-\theta \ne \theta\).
+                    </div>
+                </div>
+            </div>
+            <div style="flex: 0.8; display: flex; justify-content: center; flex-direction: column; align-items: center;">
+                <svg width="220" height="220" viewBox="0 0 200 200" style="background: white; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <line x1="20" y1="100" x2="180" y2="100" stroke="#cbd5e1" stroke-width="1" />
+                    <line x1="100" y1="20" x2="100" y2="180" stroke="#cbd5e1" stroke-width="1" />
+                    <!-- Spiral of Archimedes (1.5 turns). Scale 8 px/unit -->
+                    <path class="svg-step" id="slide-12-step-0" d="M 100,100 C 105,96 108,108 100,112 C 88,118 92,82 108,82 C 128,82 128,124 100,137 C 62,154 75,70 120,68 C 145,68 152,145 100,162" fill="none" stroke="purple" stroke-width="2" />
+                    <circle cx="100" cy="100" r="3" fill="#475569" />
+                </svg>
+                <div class="diagram-caption" style="font-size: 0.5em; margin-top: 5px;">Archimedes' Spiral</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 13: Review checklist -->
+    <section class="slide grid-bg" id="slide-13">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts before moving on.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Test for Symmetry</div>
+                    <div class="card-copy">Apply replacement checks to predict symmetry across polar axis (cos-like), line \(\pi/2\) (sin-like), or the pole.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Identify Circles & Cardioids</div>
+                    <div class="card-copy">Recognize forms \(r=a\cos\theta\) (circles) and \(r=a\pm a\cos\theta\) (cardioids) and place their intercepts correctly.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Limaçons & Lemniscates</div>
+                    <div class="card-copy">Evaluate ratio \(a/b\) to classify limaçons (dimpled vs inner-loop) and find defining lobes of \(r^2 = a^2\cos 2\theta\).</div>
+                </div>
+                <div class="info-card blue">
+                    <div class="card-title">Sketch Rose Curves</div>
+                    <div class="card-copy">State the petal counts based on coefficient \(n\) (even \(2n\), odd \(n\)) and locate their maximum lengths.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    const presentation = SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview', slideId: 'slide-0' },
+            { label: 'Symmetry', slideId: 'slide-1' },
+            { label: 'Procedure', slideId: 'slide-3' },
+            { label: 'Circles',  slideId: 'slide-4' },
+            { label: 'Limaçons', slideId: 'slide-7' },
+            { label: 'Lemniscate', slideId: 'slide-10' },
+            { label: 'Rose Curves', slideId: 'slide-11' },
+            { label: 'Review',   slideId: 'slide-13' }
+        ]
+    });
+
+    // Special observer to reveal curves in sync with the steps
+    const slidesWithSVGs = ['slide-4', 'slide-6', 'slide-7', 'slide-8', 'slide-9', 'slide-10', 'slide-11'];
+    slidesWithSVGs.forEach(slideId => {
+        const slideEl = document.getElementById(slideId);
+        const curveEl = document.getElementById(`${slideId}-curve`);
+        if (!slideEl || !curveEl) return;
+        const observer = new MutationObserver(() => {
+            const curStep = parseInt(slideEl.dataset.currentStep ?? -1, 10);
+            curveEl.classList.toggle('visible', curStep >= 1);
+        });
+        observer.observe(slideEl, { attributes: true, attributeFilter: ['data-current-step'] });
+    });
+</script>
+</body>
+</html>

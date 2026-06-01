@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9.2 — Finding Limits: Properties of Limits</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 9 · Introduction to Calculus</div>
+        <div class="title-main">9.2 Finding Limits: Properties of Limits</div>
+        <div class="title-objective">Objective: Apply limit laws, use direct substitution, and resolve the indeterminate \(0/0\) form.</div>
+        <div class="identity-chips">
+            <span class="chip">limit laws</span>
+            <span class="chip">direct substitution</span>
+            <span class="chip">\(0/0\) form</span>
+            <span class="chip">conjugate method</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Limit Laws ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="1">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Limit Laws</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.3rem; font-size: 0.78em;">
+                Let \(\lim_{x \to a} f(x) = A\) and \(\lim_{x \to a} g(x) = B\).
+            </div>
+            <div style="font-size: 0.64em; overflow-x: auto;">
+                <table class="data-table" style="width: 100%; border-collapse: collapse;">
+                    <thead><tr style="background: var(--navy-light);">
+                        <th style="padding: 5px; text-align: left;">Law</th>
+                        <th style="padding: 5px; text-align: left;">Formula</th>
+                    </tr></thead>
+                    <tbody>
+                        <tr><td style="padding:4px 6px;">Constant</td><td style="padding:4px 6px;">\(\lim_{x\to a} k = k\)</td></tr>
+                        <tr><td style="padding:4px 6px;">Constant Multiple</td><td style="padding:4px 6px;">\(\lim_{x\to a}[k \cdot f] = kA\)</td></tr>
+                        <tr><td style="padding:4px 6px;">Sum / Difference</td><td style="padding:4px 6px;">\(\lim_{x\to a}[f \pm g] = A \pm B\)</td></tr>
+                        <tr><td style="padding:4px 6px;">Product</td><td style="padding:4px 6px;">\(\lim_{x\to a}[f \cdot g] = A \cdot B\)</td></tr>
+                        <tr><td style="padding:4px 6px;">Quotient</td><td style="padding:4px 6px;">\(\lim_{x\to a}\frac{f}{g} = \frac{A}{B}\), \(B \ne 0\)</td></tr>
+                        <tr><td style="padding:4px 6px;">Power / Root</td><td style="padding:4px 6px;">\(\lim_{x\to a}[f]^n = A^n\), \(\lim_{x\to a}\sqrt[n]{f} = \sqrt[n]{A}\)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="note-box navy" style="margin-top: 0.5rem;">
+                <div class="note-title">Polynomial Rule</div>
+                <div class="note-copy">For any polynomial \(p(x)\): \(\;\lim_{x \to a} p(x) =\)
+                    <span class="fb" id="slide-1-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(p(a)\)</span></span>
+                    (direct substitution).</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 & 2 — Direct Substitution ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Examples 1 &amp; 2</div>
+            <div class="slide-title">Direct Substitution</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate (a) \(\displaystyle\lim_{x \to 3}(2x + 5)\) and (b) \(\displaystyle\lim_{x \to 5}(2x^3 - 3x + 1)\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Part (a)</div>
+                        <div class="step-math">
+                            \[2(3) + 5 = \boxed{11}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Part (b)</div>
+                        <div class="step-math">
+                            \[2(5)^3 - 3(5) + 1 = 250 - 15 + 1 = \boxed{236}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Ex 3 — Power rule ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Limit of a Power</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 2}(3x + 1)^5\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Apply power law + substitution</div>
+                        <div class="step-math">
+                            \[[3(2) + 1]^5 = 7^5 = \boxed{16{,}807}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Indeterminate Form Reference ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="1">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">The \(0/0\) Indeterminate Form</h2>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.5rem;">If direct substitution gives \(\frac{0}{0}\), the limit may still exist but <strong>cannot be evaluated by substitution alone</strong>. Simplify first.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">1. Factoring</div>
+                    <div class="card-copy">Factor numerator (or denominator), then cancel the common factor creating the \(0/0\).</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">2. Complex Fractions</div>
+                    <div class="card-copy">Find a common denominator in the numerator, simplify, then cancel \(h\) or \((x - a)\).</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">3. Conjugate</div>
+                    <div class="card-copy">Multiply top and bottom by the
+                        <span class="fb" id="slide-4-step-0"><span class="fb-blank">______________</span><span class="fb-answer">conjugate</span></span>
+                        to eliminate a radical.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 4 — Factoring ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 4</div>
+            <div class="slide-title">Factoring Technique</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 2}\dfrac{x^2 - 6x + 8}{x - 2}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor and cancel</div>
+                        <div class="step-math">
+                            \[\frac{x^2 - 6x + 8}{x - 2} = \frac{(x-2)(x-4)}{x-2} = x - 4 \quad (x \ne 2)\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Take the limit</div>
+                        <div class="step-math">
+                            \[\lim_{x \to 2}(x - 4) = 2 - 4 = \boxed{-2}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Ex 5 — Complex Fraction ===== -->
+    <section class="slide grid-bg" id="slide-6" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 5</div>
+            <div class="slide-title">Complex Fraction Technique</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 5}\dfrac{\frac{1}{x} - \frac{1}{5}}{x - 5}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Combine fractions in numerator</div>
+                        <div class="step-math" style="font-size: 0.82em;">
+                            \[\frac{\frac{5 - x}{5x}}{x - 5} = \frac{5 - x}{5x(x - 5)} = \frac{-(x-5)}{5x(x-5)} = \frac{-1}{5x}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Take the limit</div>
+                        <div class="step-math">
+                            \[\lim_{x \to 5}\frac{-1}{5x} = \frac{-1}{25} = \boxed{-\frac{1}{25}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Ex 6 — Conjugate ===== -->
+    <section class="slide grid-bg" id="slide-7" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Conjugate Technique</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 0}\dfrac{\sqrt{25-x} - 5}{x}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-7-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Multiply by conjugate</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\frac{\sqrt{25-x}-5}{x}\cdot\frac{\sqrt{25-x}+5}{\sqrt{25-x}+5} = \frac{(25-x)-25}{x(\sqrt{25-x}+5)} = \frac{-x}{x(\sqrt{25-x}+5)}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Simplify and take limit</div>
+                        <div class="step-math">
+                            \[\frac{-1}{\sqrt{25-x}+5} \;\xrightarrow{x \to 0}\; \frac{-1}{\sqrt{25}+5} = \boxed{-\frac{1}{10}}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Ex 7 — Factoring with Radical ===== -->
+    <section class="slide grid-bg" id="slide-8" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 7</div>
+            <div class="slide-title">Factoring with a Radical</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 4}\dfrac{4 - x}{\sqrt{x} - 2}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-8-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Factor using difference of squares</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[4 - x = (\sqrt{x})^2 - 4 \;\text{reversed} = -((\sqrt{x})^2 - 4) = -(\sqrt{x}-2)(\sqrt{x}+2)\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\frac{-(\sqrt{x}-2)(\sqrt{x}+2)}{\sqrt{x}-2} = -(\sqrt{x}+2)\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-8-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Take the limit</div>
+                        <div class="step-math">
+                            \[-(\sqrt{4}+2) = -(2+2) = \boxed{-4}\]
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9: Ex 8 — Absolute Value ===== -->
+    <section class="slide grid-bg" id="slide-9" data-steps="1">
+        <div class="slide-header">
+            <div class="example-label">Example 8</div>
+            <div class="slide-title">Limit with Absolute Value</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Evaluate \(\displaystyle\lim_{x \to 7}\dfrac{|x - 7|}{x - 7}\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-9-step-0">
+                    <div class="step-box orange">
+                        <div class="step-label">Check one-sided limits</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Left } (x < 7): |x-7| = -(x-7) \;\Rightarrow\; \frac{-(x-7)}{x-7} = -1\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[\text{Right } (x > 7): |x-7| = x-7 \;\Rightarrow\; \frac{x-7}{x-7} = 1\]
+                        </div>
+                        <div style="font-size: 0.72em; text-align: center; font-weight: 700; color: var(--red-accent);">
+                            Left \(\ne\) Right \(\Rightarrow\) Limit does not exist.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 10: Review ===== -->
+    <section class="slide grid-bg" id="slide-10">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Direct Substitution</div>
+                    <div class="card-copy">For polynomials and well-behaved functions, just plug in \(a\).</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Resolve \(0/0\)</div>
+                    <div class="card-copy">Factor, simplify complex fractions, or multiply by a conjugate — then substitute.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">One-Sided Check</div>
+                    <div class="card-copy">For absolute value or piecewise, check left and right limits separately.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',      slideId: 'slide-0' },
+            { label: 'Limit Laws',    slideId: 'slide-1' },
+            { label: 'Substitution',  slideId: 'slide-2' },
+            { label: '0/0 Form',      slideId: 'slide-4' },
+            { label: 'Conjugate',     slideId: 'slide-7' },
+            { label: 'Review',        slideId: 'slide-10' }
+        ]
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.5 — Parametric Graphs &amp; Projectile Motion</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 8 · Polar &amp; Parametric Equations</div>
+        <div class="title-main">8.5 Parametric Graphs</div>
+        <div class="title-objective">Objective: Graph parametric curves with direction arrows and apply parametric equations to projectile motion.</div>
+        <div class="identity-chips">
+            <span class="chip">t-table graphing</span>
+            <span class="chip">orientation arrows</span>
+            <span class="chip">projectile motion</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Graphing Procedure ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="1">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">Graphing a Parametric Curve</h2>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">1. Build T-Table</div>
+                    <div class="card-copy">Create columns for \(t\), \(x(t)\), \(y(t)\). Evaluate at evenly-spaced values across the given interval.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">2. Plot &amp; Connect</div>
+                    <div class="card-copy">Plot each \((x, y)\) pair and connect points with a smooth curve.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">3. Add Arrows</div>
+                    <div class="card-copy">Draw
+                        <span class="fb" id="slide-1-step-0"><span class="fb-blank">____________________</span><span class="fb-answer">directional arrows</span></span>
+                        showing the path as \(t\) increases.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 — Parabola ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Graphing a Right-Opening Parabola</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Graph \(x(t) = t^2 + 1\), \(y(t) = 2 + t\) for \(-3 \le t \le 3\). Indicate direction.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">T-Table</div>
+                        <div style="font-size: 0.68em; overflow-x: auto;">
+                            <table class="data-table" style="margin: 0.3rem auto; border-collapse: collapse;">
+                                <thead><tr style="background: var(--navy-light);"><th style="padding:4px 10px;">\(t\)</th><th style="padding:4px 10px;">\(-3\)</th><th style="padding:4px 10px;">\(-2\)</th><th style="padding:4px 10px;">\(-1\)</th><th style="padding:4px 10px;">\(0\)</th><th style="padding:4px 10px;">\(1\)</th><th style="padding:4px 10px;">\(2\)</th><th style="padding:4px 10px;">\(3\)</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="padding:3px 10px;">\(x\)</td><td style="padding:3px 10px;">10</td><td style="padding:3px 10px;">5</td><td style="padding:3px 10px;">2</td><td style="padding:3px 10px;">1</td><td style="padding:3px 10px;">2</td><td style="padding:3px 10px;">5</td><td style="padding:3px 10px;">10</td></tr>
+                                    <tr><td style="padding:3px 10px;">\(y\)</td><td style="padding:3px 10px;">\(-1\)</td><td style="padding:3px 10px;">0</td><td style="padding:3px 10px;">1</td><td style="padding:3px 10px;">2</td><td style="padding:3px 10px;">3</td><td style="padding:3px 10px;">4</td><td style="padding:3px 10px;">5</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Analysis</div>
+                        <div style="font-size: 0.75em; text-align: center;">
+                            Parabola opening right; vertex \((1, 2)\) at \(t = 0\). As \(t\) increases the curve moves downward then rightward/upward.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Ex 2 — Ellipse ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Graphing an Ellipse</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Graph \(x = 2\cos t\), \(y = 4\sin t\) for \(0 \le t \le 2\pi\). Identify the curve and indicate direction.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Key Points</div>
+                        <div style="font-size: 0.68em; overflow-x: auto;">
+                            <table class="data-table" style="margin: 0.3rem auto; border-collapse: collapse;">
+                                <thead><tr style="background: var(--navy-light);"><th style="padding:4px 10px;">\(t\)</th><th style="padding:4px 10px;">\(0\)</th><th style="padding:4px 10px;">\(\pi/2\)</th><th style="padding:4px 10px;">\(\pi\)</th><th style="padding:4px 10px;">\(3\pi/2\)</th><th style="padding:4px 10px;">\(2\pi\)</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="padding:3px 10px;">\(x\)</td><td style="padding:3px 10px;">2</td><td style="padding:3px 10px;">0</td><td style="padding:3px 10px;">\(-2\)</td><td style="padding:3px 10px;">0</td><td style="padding:3px 10px;">2</td></tr>
+                                    <tr><td style="padding:3px 10px;">\(y\)</td><td style="padding:3px 10px;">0</td><td style="padding:3px 10px;">4</td><td style="padding:3px 10px;">0</td><td style="padding:3px 10px;">\(-4\)</td><td style="padding:3px 10px;">0</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Result</div>
+                        <div style="font-size: 0.75em; text-align: center;">
+                            Ellipse \(\dfrac{x^2}{4} + \dfrac{y^2}{16} = 1\); traced <strong>counterclockwise</strong> as \(t\) goes from \(0\) to \(2\pi\).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Projectile Motion Reference ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Projectile Motion Equations</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.4rem;">For an object launched at speed \(v_0\), angle \(\theta\) above horizontal, from initial height \(h\):</div>
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Horizontal</div>
+                    <div class="fn-eq-stack">
+                        <div>\[x(t) = (v_0 \cos\theta)\,t\]</div>
+                    </div>
+                </div>
+                <div class="formula-row blue">
+                    <div class="fn-label">Vertical</div>
+                    <div class="fn-eq-stack">
+                        <div>\[y(t) = -\tfrac{1}{2}g\,t^2 + (v_0 \sin\theta)\,t + h\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.5rem;">
+                <li>\(g =\)
+                    <span class="fb" id="slide-4-step-0"><span class="fb-blank">______</span><span class="fb-answer">\(32\)</span></span>
+                    ft/s² (US) or \(9.8\) m/s² (metric).</li>
+                <li>The coefficient of \(t^2\) in the vertical equation is \(\frac{1}{2}g\), so it is
+                    <span class="fb" id="slide-4-step-1"><span class="fb-blank">______</span><span class="fb-answer">\(16\)</span></span>
+                    (not 32) in ft/s² problems.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 3 — Baseball ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="4">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Projectile Motion — Baseball</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement" style="font-size: 0.82em;">
+                A baseball is hit at 140 ft/s at \(45^\circ\) from height 3 ft. (a) Write the parametric equations. (b) Position at \(t = 2\). (c) When does it land, and how far? (d) Does it clear a 10-ft fence at \(x = 400\) ft?
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">(a) Write equations</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[v_0\cos 45^\circ = v_0\sin 45^\circ = 70\sqrt{2} \approx 98.99\]
+                        </div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[x(t) = 70\sqrt{2}\,t, \qquad y(t) = -16t^2 + 70\sqrt{2}\,t + 3\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box">
+                        <div class="step-label">(b) Position at \(t = 2\)</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[x(2) \approx 198 \;\text{ft}, \qquad y(2) = -64 + 197.98 + 3 \approx 137 \;\text{ft}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-2">
+                    <div class="step-box">
+                        <div class="step-label">(c) Landing</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[y = 0: \quad -16t^2 + 98.99t + 3 = 0 \;\Longrightarrow\; t \approx 6.22 \;\text{sec}\]
+                        </div>
+                        <div style="font-size: 0.68em; text-align: center;">Distance: \(x(6.22) \approx 615.7\) ft</div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-3">
+                    <div class="step-box green">
+                        <div class="step-label">(d) Fence clearance at \(x = 400\)</div>
+                        <div class="step-math" style="font-size: 0.78em;">
+                            \[t = \frac{400}{70\sqrt{2}} \approx 4.04 \;\text{sec} \;\Longrightarrow\; y(4.04) \approx 141.8 \;\text{ft} > 10 \;\text{ft} \;\checkmark\]
+                        </div>
+                        <div style="font-size: 0.72em; text-align: center; font-weight: 700; color: var(--green-accent);">
+                            Yes — the ball clears the fence by over 130 ft.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Review ===== -->
+    <section class="slide grid-bg" id="slide-6">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Graph from a T-Table</div>
+                    <div class="card-copy">Plot \((x, y)\) pairs, connect smoothly, and add orientation arrows.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Projectile Motion</div>
+                    <div class="card-copy">Set up \(x(t)\) and \(y(t)\) from launch speed, angle, and height; answer questions about position, landing, and clearance.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',    slideId: 'slide-0' },
+            { label: 'Graphing',    slideId: 'slide-1' },
+            { label: 'Projectiles', slideId: 'slide-4' },
+            { label: 'Review',      slideId: 'slide-6' }
+        ]
+    });
+</script>
+</body>
+</html>

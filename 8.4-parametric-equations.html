@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8.4 — Parametric Equations</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+    <!-- ===== TITLE ===== -->
+    <section class="slide title-slide" id="slide-0">
+        <div class="title-section-label">Unit 8 · Polar &amp; Parametric Equations</div>
+        <div class="title-main">8.4 Parametric Equations</div>
+        <div class="title-objective">Objective: Write and interpret parametric equations, eliminate the parameter, and model linear motion.</div>
+        <div class="identity-chips">
+            <span class="chip">parameter</span>
+            <span class="chip">orientation</span>
+            <span class="chip">eliminating \(t\)</span>
+            <span class="chip">trig identity method</span>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 1: Definition ===== -->
+    <section class="slide grid-bg" id="slide-1" data-steps="3">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Parametric Equations</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="formula-grid">
+                <div class="formula-row teal">
+                    <div class="fn-label">Definition</div>
+                    <div class="fn-eq-stack">
+                        <div>\[x = f(t), \qquad y = g(t)\]</div>
+                    </div>
+                </div>
+            </div>
+            <ul class="notes-list" style="margin-top: 0.6rem;">
+                <li>Each value of \(t\) gives an ordered pair \((x(t), y(t))\) on the curve.</li>
+                <li>As \(t\) increases, the curve is traced in a specific
+                    <span class="fb" id="slide-1-step-0"><span class="fb-blank">__________</span><span class="fb-answer">direction</span></span>
+                    (called the <strong>orientation</strong>).</li>
+                <li>The parameter \(t\) often represents
+                    <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">time</span></span>,
+                    but it can be any indexing quantity.</li>
+                <li>Two parametric curves can trace the same \((x,y)\) set in
+                    <span class="fb" id="slide-1-step-2"><span class="fb-blank">____________</span><span class="fb-answer">opposite</span></span>
+                    directions — they are different curves.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 2: Ex 1 — T-table ===== -->
+    <section class="slide grid-bg" id="slide-2" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 1</div>
+            <div class="slide-title">Parametric Curve from a T-Table</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Parameterize \(y = x^2 - 1\). Build a t-table and sketch the curve with direction arrows.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-2-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Set \(x(t) = t\), \(y(t) = t^2 - 1\)</div>
+                        <div style="font-size: 0.68em; overflow-x: auto;">
+                            <table class="data-table" style="margin: 0.3rem auto; border-collapse: collapse;">
+                                <thead><tr style="background: var(--navy-light);"><th style="padding:4px 12px;">\(t\)</th><th style="padding:4px 12px;">\(x\)</th><th style="padding:4px 12px;">\(y\)</th></tr></thead>
+                                <tbody>
+                                    <tr><td style="padding:3px 12px;">\(-2\)</td><td style="padding:3px 12px;">\(-2\)</td><td style="padding:3px 12px;">\(3\)</td></tr>
+                                    <tr><td style="padding:3px 12px;">\(-1\)</td><td style="padding:3px 12px;">\(-1\)</td><td style="padding:3px 12px;">\(0\)</td></tr>
+                                    <tr><td style="padding:3px 12px;">\(0\)</td><td style="padding:3px 12px;">\(0\)</td><td style="padding:3px 12px;">\(-1\)</td></tr>
+                                    <tr><td style="padding:3px 12px;">\(1\)</td><td style="padding:3px 12px;">\(1\)</td><td style="padding:3px 12px;">\(0\)</td></tr>
+                                    <tr><td style="padding:3px 12px;">\(2\)</td><td style="padding:3px 12px;">\(2\)</td><td style="padding:3px 12px;">\(3\)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-2-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Direction</div>
+                        <div style="font-size: 0.75em; text-align: center;">
+                            Upward parabola \(y = x^2 - 1\); traced <strong>left-to-right</strong> as \(t\) increases.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 3: Ex 2 — Linear Motion ===== -->
+    <section class="slide grid-bg" id="slide-3" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 2</div>
+            <div class="slide-title">Linear Motion</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                An object travels at constant rate from \((-5, 3)\) to \((3, -1)\) in 4 seconds. Write parametric equations for its position.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-3-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Find rates</div>
+                        <div class="step-math">
+                            \[x\text{-rate} = \frac{3 - (-5)}{4} = 2 \;\text{per sec} \qquad y\text{-rate} = \frac{-1 - 3}{4} = -1 \;\text{per sec}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-3-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Write equations &amp; verify</div>
+                        <div class="step-math">
+                            \[\boxed{x(t) = 2t - 5, \quad y(t) = -t + 3}\]
+                        </div>
+                        <div style="font-size: 0.68em; text-align: center; color: var(--text-muted);">
+                            Check: \(t = 0 \to (-5, 3)\;\checkmark\); \(t = 4 \to (3, -1)\;\checkmark\)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 4: Eliminating the Parameter ===== -->
+    <section class="slide grid-bg" id="slide-4" data-steps="2">
+        <div class="slide-header">
+            <div class="ref-label">Reference</div>
+            <div class="slide-title">Eliminating the Parameter</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead" style="margin-bottom: 0.5rem;"><strong>Goal:</strong> Convert the parametric pair to a single equation in \(x\) and \(y\) only.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Algebraic Method</div>
+                    <div class="card-copy">
+                        1. Solve the easier equation for
+                        <span class="fb" id="slide-4-step-0"><span class="fb-blank">______</span><span class="fb-answer">\(t\)</span></span>.<br>
+                        2. Substitute into the other equation.<br>
+                        3. Simplify and check the domain.
+                    </div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Trig Identity Method</div>
+                    <div class="card-copy">
+                        When \(x = a\cos t\) and \(y = b\sin t\):<br>
+                        Solve for \(\cos t\) and \(\sin t\), then use
+                        \(\cos^2 t + \sin^2 t =\)
+                        <span class="fb" id="slide-4-step-1"><span class="fb-blank">____</span><span class="fb-answer">\(1\)</span></span>.
+                    </div>
+                </div>
+            </div>
+            <div class="note-box navy" style="margin-top: 0.6rem;">
+                <div class="note-title">Domain Warning</div>
+                <div class="note-copy">The Cartesian equation may have a wider domain than the parametric curve — always verify.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 5: Ex 3 — Algebraic elimination ===== -->
+    <section class="slide grid-bg" id="slide-5" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 3</div>
+            <div class="slide-title">Eliminating the Parameter (Algebraic)</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Eliminate the parameter: \(x(t) = t^2 + 1\), \(y(t) = 2 + t\). Identify the curve.
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-5-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Solve for \(t\)</div>
+                        <div class="step-math">
+                            \[y = 2 + t \;\Longrightarrow\; t = y - 2\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-5-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Substitute</div>
+                        <div class="step-math">
+                            \[x = (y - 2)^2 + 1 \;\Longrightarrow\; \boxed{x = y^2 - 4y + 5}\]
+                            <div class="annotation">Parabola opening <em>right</em> with vertex \((1, 2)\).</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 6: Ex 4 & 5 — More eliminations ===== -->
+    <section class="slide grid-bg" id="slide-6" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Examples 4 &amp; 5</div>
+            <div class="slide-title">More Elimination Practice</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Eliminate the parameter: (a) \(x = e^{-t},\; y = 3e^t\) and (b) \(x = \sqrt{t} + 2,\; y = \log t\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-6-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Part (a)</div>
+                        <div class="step-math">
+                            \[x = e^{-t} \;\Longrightarrow\; e^t = \frac{1}{x} \;\Longrightarrow\; y = \frac{3}{x}\]
+                        </div>
+                        <div style="font-size: 0.68em; text-align: center; color: var(--text-muted);">
+                            \(\boxed{y = 3/x}\) — right branch only (\(x > 0\)) since \(e^{-t} > 0\).
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-6-step-1">
+                    <div class="step-box">
+                        <div class="step-label">Part (b)</div>
+                        <div class="step-math">
+                            \[x = \sqrt{t} + 2 \;\Longrightarrow\; t = (x - 2)^2 \;\Longrightarrow\; y = \log\!\big((x-2)^2\big)\]
+                        </div>
+                        <div style="font-size: 0.68em; text-align: center; color: var(--text-muted);">
+                            \(\boxed{y = 2\log(x - 2)}\); domain \(x > 2\).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 7: Ex 6 — Trig Elimination ===== -->
+    <section class="slide grid-bg" id="slide-7" data-steps="2">
+        <div class="slide-header">
+            <div class="example-label">Example 6</div>
+            <div class="slide-title">Trig Identity Elimination</div>
+        </div>
+        <div class="slide-body">
+            <div class="problem-statement">
+                Eliminate the parameter from \(x(t) = 4\cos t,\; y(t) = 3\sin t,\; 0 \le t \le 2\pi\).
+                <span class="source-tag openstax">OpenStax</span>
+            </div>
+            <div class="steps-area">
+                <div class="step" id="slide-7-step-0">
+                    <div class="step-box teal">
+                        <div class="step-label">Isolate trig functions</div>
+                        <div class="step-math">
+                            \[\cos t = \frac{x}{4}, \qquad \sin t = \frac{y}{3}\]
+                        </div>
+                    </div>
+                </div>
+                <div class="step" id="slide-7-step-1">
+                    <div class="step-box green">
+                        <div class="step-label">Apply Pythagorean Identity</div>
+                        <div class="step-math">
+                            \[\cos^2 t + \sin^2 t = 1 \;\Longrightarrow\; \left(\frac{x}{4}\right)^2 + \left(\frac{y}{3}\right)^2 = 1\]
+                        </div>
+                        <div class="step-math">
+                            \[\boxed{\frac{x^2}{16} + \frac{y^2}{9} = 1}\]
+                            <div class="annotation">Ellipse with semi-major axis 4 (horizontal) and semi-minor axis 3 (vertical). Traced counterclockwise.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 8: Key Insight ===== -->
+    <section class="slide grid-bg" id="slide-8">
+        <div class="slide-header">
+            <span class="concept-label">Concept</span>
+            <h2 class="slide-title">What Parametric Form Tells You</h2>
+        </div>
+        <div class="slide-body">
+            <div class="body-lead">Parametric equations carry information that \(y = f(x)\) cannot:</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Direction</div>
+                    <div class="card-copy">The <strong>orientation</strong> — which way the curve is traced as \(t\) increases.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Position at Time \(t\)</div>
+                    <div class="card-copy">The exact <strong>location</strong> of an object at a specific moment.</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Self-Intersection Timing</div>
+                    <div class="card-copy">Whether a curve crosses itself at different <strong>times</strong>.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SLIDE 9: Review ===== -->
+    <section class="slide grid-bg" id="slide-9">
+        <div class="slide-header">
+            <div class="ref-label">Review</div>
+            <div class="slide-title">Can You Now...?</div>
+        </div>
+        <div class="slide-body top-layout">
+            <div class="body-lead">Review these core concepts before moving on.</div>
+            <div class="cards-grid">
+                <div class="info-card teal">
+                    <div class="card-title">Build a T-Table</div>
+                    <div class="card-copy">Evaluate \(x(t)\) and \(y(t)\) at key values, plot points, and mark direction arrows.</div>
+                </div>
+                <div class="info-card green">
+                    <div class="card-title">Eliminate the Parameter</div>
+                    <div class="card-copy">Solve for \(t\) algebraically or use the Pythagorean identity \(\cos^2 t + \sin^2 t = 1\).</div>
+                </div>
+                <div class="info-card orange">
+                    <div class="card-title">Check Domain Restrictions</div>
+                    <div class="card-copy">The Cartesian equation may be valid for more \(x\)-values than the parametric curve allows.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',   slideId: 'slide-0' },
+            { label: 'Definition', slideId: 'slide-1' },
+            { label: 'Elimination', slideId: 'slide-4' },
+            { label: 'Trig Method', slideId: 'slide-7' },
+            { label: 'Review',     slideId: 'slide-9' }
+        ]
+    });
+</script>
+</body>
+</html>

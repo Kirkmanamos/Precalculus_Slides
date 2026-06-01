@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.1 - Slopes and Equations of Lines</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="assets/slides-core.css">
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+<div class="click-hint" id="clickHint">click to advance</div>
+<div class="slides-wrapper">
+
+<!-- ============================================================
+     SLIDE 0 — TITLE
+     ============================================================ -->
+<section class="slide title-slide" id="slide-0">
+    <div class="title-section-label">Unit 1 · Function Analysis</div>
+    <div class="title-main">1.1 Slopes and Equations of Lines</div>
+    <div class="title-objective">Objective: Find slopes, write linear equations in three forms, and identify parallel and perpendicular lines.</div>
+    <div class="identity-chips">
+        <span class="chip">slope</span>
+        <span class="chip">horizontal &amp; vertical</span>
+        <span class="chip">three forms</span>
+        <span class="chip">parallel</span>
+        <span class="chip">perpendicular</span>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 1 — CONCEPT: Slope
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-1" data-steps="1">
+    <div class="slide-header">
+        <div class="concept-label">Concept</div>
+        <div class="slide-title">Slope</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">definition</div>
+                <div class="fn-eq-stack">
+                    <div>\[\text{Slope} = m = \dfrac{\text{rise}}{\text{run}} = \dfrac{y_2 - y_1}{x_2 - x_1}\]</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Positive slope</div>
+                <svg viewBox="0 0 240 140" role="img" aria-label="Line with positive slope rising left to right">
+                    <line x1="20" y1="120" x2="220" y2="30" stroke="#1e293b" stroke-width="3"/>
+                    <line x1="80" y1="93" x2="160" y2="93" stroke="#0891b2" stroke-width="2" stroke-dasharray="4 3"/>
+                    <line x1="160" y1="93" x2="160" y2="57" stroke="#d97706" stroke-width="2" stroke-dasharray="4 3"/>
+                    <text x="120" y="112" font-size="13" fill="#0891b2" text-anchor="middle" font-family="Source Sans 3">run (Δx)</text>
+                    <text x="168" y="78" font-size="13" fill="#d97706" font-family="Source Sans 3">rise (+Δy)</text>
+                </svg>
+                <div class="card-copy">Line climbs as \(x\) increases — both steps point the same direction.</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Negative slope</div>
+                <svg viewBox="0 0 240 140" role="img" aria-label="Line with negative slope falling left to right">
+                    <line x1="20" y1="30" x2="220" y2="120" stroke="#1e293b" stroke-width="3"/>
+                    <line x1="80" y1="57" x2="160" y2="57" stroke="#0891b2" stroke-width="2" stroke-dasharray="4 3"/>
+                    <line x1="160" y1="57" x2="160" y2="93" stroke="#d97706" stroke-width="2" stroke-dasharray="4 3"/>
+                    <text x="120" y="48" font-size="13" fill="#0891b2" text-anchor="middle" font-family="Source Sans 3">run (Δx)</text>
+                    <text x="168" y="82" font-size="13" fill="#d97706" font-family="Source Sans 3">rise (−Δy)</text>
+                </svg>
+                <div class="card-copy">Line falls as \(x\) increases — the vertical step flips sign.</div>
+            </div>
+        </div>
+
+        <div class="step" id="slide-1-step-0">
+            <div class="note-box navy">
+                <div class="note-title">Reading the formula</div>
+                <div class="note-copy">Slope measures <strong>change in \(y\) per unit change in \(x\)</strong>. Pick any two points on the line — the ratio is constant for every pair.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 — REFERENCE: Horizontal & Vertical Lines
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-2" data-steps="4">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Horizontal &amp; Vertical Lines</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>feature</th><th>horizontal lines</th><th>vertical lines</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>graph</th>
+                        <td>
+                            <svg viewBox="0 0 140 80" role="img" aria-label="Horizontal line">
+                                <line x1="10" y1="40" x2="130" y2="40" stroke="#2563eb" stroke-width="3"/>
+                                <line x1="70" y1="10" x2="70" y2="70" stroke="#94a3b8" stroke-width="1"/>
+                                <line x1="10" y1="40" x2="130" y2="40" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="2 2"/>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg viewBox="0 0 140 80" role="img" aria-label="Vertical line">
+                                <line x1="70" y1="10" x2="70" y2="70" stroke="#2563eb" stroke-width="3"/>
+                                <line x1="10" y1="40" x2="130" y2="40" stroke="#94a3b8" stroke-width="1"/>
+                                <line x1="70" y1="10" x2="70" y2="70" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="2 2"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>slope</th>
+                        <td>
+                            <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">\(m = 0\)</span></span>
+                        </td>
+                        <td>
+                            <span class="fb" id="slide-2-step-1"><span class="fb-blank">________</span><span class="fb-answer">undefined</span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>general equation</th>
+                        <td>
+                            <span class="fb" id="slide-2-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(y = k\)</span></span>
+                        </td>
+                        <td>
+                            <span class="fb" id="slide-2-step-3"><span class="fb-blank">________</span><span class="fb-answer">\(x = k\)</span></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 — EXAMPLE 1: Undefined slope
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-3" data-steps="3">
+    <div class="slide-header">
+        <div class="example-label">Example 1</div>
+        <div class="slide-title">Line with an Undefined Slope</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">A line passes through the point \((3,\,5)\) and has an <strong>undefined</strong> slope. Write the equation of the line.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-3-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Identify the line type</div>
+                    <div class="step-math">Undefined slope \(\Rightarrow\) the line is <strong>vertical</strong>.</div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Use the vertical-line form</div>
+                    <div class="step-math">\[x = k\]
+                        <div class="annotation">Vertical lines always look like \(x = \text{constant}\) — the \(x\)-coordinate never changes.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-3-step-2">
+                <div class="step-box dark">
+                    <div class="step-label">Answer</div>
+                    <div class="step-math">\[x = 3\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 — REFERENCE: Forms of a linear equation
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-4" data-steps="3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Three Forms of a Linear Equation</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="formula-grid">
+            <div class="formula-row teal">
+                <div class="fn-label">slope-intercept form</div>
+                <div class="fn-eq-stack">
+                    <div class="step" id="slide-4-step-0"><span class="fb-answer">\[y = mx + b\]</span></div>
+                </div>
+            </div>
+            <div class="formula-row blue">
+                <div class="fn-label">point-slope form</div>
+                <div class="fn-eq-stack">
+                    <div class="step" id="slide-4-step-1"><span class="fb-answer">\[y - y_1 = m(x - x_1)\]</span></div>
+                </div>
+            </div>
+            <div class="formula-row green">
+                <div class="fn-label">standard form</div>
+                <div class="fn-eq-stack">
+                    <div class="step" id="slide-4-step-2"><span class="fb-answer">\[Ax + By = C\]</span></div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="notes-list">
+            <li><strong>Slope-intercept</strong> is best when you know the slope and \(y\)-intercept.</li>
+            <li><strong>Point-slope</strong> is best when you know a slope and <em>any</em> point on the line.</li>
+            <li><strong>Standard</strong> form uses integer coefficients with \(A \ge 0\) — useful for systems and graphing by intercepts.</li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 — EXAMPLE 2: Write in all three forms
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-5" data-steps="4">
+    <div class="slide-header">
+        <div class="example-label">Example 2</div>
+        <div class="slide-title">Write the Equation in All Three Forms</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find an equation of the line that passes through \((1,\,-2)\) and has slope \(3\). Write your answer in all three forms.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-5-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Substitute into point-slope form</div>
+                    <div class="step-math">\[y - (-2) = 3(x - 1)\]
+                        <div class="annotation">Plug \(m = 3\), \(x_1 = 1\), \(y_1 = -2\) into \(y - y_1 = m(x - x_1)\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-1">
+                <div class="step-box">
+                    <div class="step-label">Point-slope form</div>
+                    <div class="step-math">\[y + 2 = 3(x - 1)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-2">
+                <div class="step-box">
+                    <div class="step-label">Slope-intercept form</div>
+                    <div class="step-math">\[y = 3x - 5\]
+                        <div class="annotation">Distribute \(3\) and subtract \(2\) from both sides.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-5-step-3">
+                <div class="step-box dark">
+                    <div class="step-label">Standard form</div>
+                    <div class="step-math">\[3x - y = 5\]
+                        <div class="annotation">Move \(3x\) to the left and multiply by \(-1\) so the leading coefficient is positive.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 6 — EXAMPLE 3: Real-world linear model
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-6" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 3</div>
+        <div class="slide-title">Subscriber Growth — Real-World Linear Model</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">An influencer had 120,000 subscribers in 2022 and 182,500 in 2024. Let \(x\) = years since 2020 and \(y\) = subscribers. Write a linear equation for \(y\) in terms of \(x\), then predict her subscribers in 2027.</div>
+        <div class="steps-area">
+            <div class="step" id="slide-6-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Translate to coordinate points</div>
+                    <div class="step-math">\[(2,\,120{,}000) \quad\text{and}\quad (4,\,182{,}500)\]
+                        <div class="annotation">2022 is 2 years after 2020; 2024 is 4 years after 2020.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Find the slope</div>
+                    <div class="step-math">\[m = \dfrac{182{,}500 - 120{,}000}{4 - 2} = \dfrac{62{,}500}{2} = 31{,}250\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-2">
+                <div class="step-box">
+                    <div class="step-label">Step 3 · Point-slope form</div>
+                    <div class="step-math">\[y - 120{,}000 = 31{,}250(x - 2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-3">
+                <div class="step-box green">
+                    <div class="step-label">Step 4 · Slope-intercept form</div>
+                    <div class="step-math">\[y = 31{,}250x + 57{,}500\]
+                        <div class="annotation">Distribute and add \(120{,}000\) to both sides.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-6-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Step 5 · Predict 2027 \((x = 7)\)</div>
+                    <div class="step-math">\[y = 31{,}250(7) + 57{,}500 = 276{,}250 \text{ subscribers}\]</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 7 — REFERENCE: Parallel & Perpendicular Lines
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-7" data-steps="3">
+    <div class="slide-header">
+        <div class="ref-label">Reference</div>
+        <div class="slide-title">Parallel &amp; Perpendicular Lines</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="table-shell">
+            <table class="data-table">
+                <thead>
+                    <tr><th>feature</th><th>parallel lines</th><th>perpendicular lines</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>graph</th>
+                        <td>
+                            <svg viewBox="0 0 160 110" role="img" aria-label="Two parallel lines">
+                                <defs>
+                                    <pattern id="grid-par" width="16" height="16" patternUnits="userSpaceOnUse">
+                                        <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#dbeafe" stroke-width="0.6"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="160" height="110" fill="url(#grid-par)"/>
+                                <line x1="20" y1="100" x2="80" y2="10" stroke="#1e293b" stroke-width="2.5"/>
+                                <line x1="80" y1="100" x2="140" y2="10" stroke="#1e293b" stroke-width="2.5"/>
+                            </svg>
+                        </td>
+                        <td>
+                            <svg viewBox="0 0 160 110" role="img" aria-label="Two perpendicular lines">
+                                <defs>
+                                    <pattern id="grid-perp" width="16" height="16" patternUnits="userSpaceOnUse">
+                                        <path d="M 16 0 L 0 0 0 16" fill="none" stroke="#dbeafe" stroke-width="0.6"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="160" height="110" fill="url(#grid-perp)"/>
+                                <line x1="45" y1="100" x2="105" y2="10" stroke="#7c3aed" stroke-width="2.5"/>
+                                <line x1="30" y1="40" x2="140" y2="73" stroke="#1e293b" stroke-width="2.5"/>
+                            </svg>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>slopes</th>
+                        <td>
+                            <span class="fb" id="slide-7-step-0"><span class="fb-blank">________</span><span class="fb-answer">same slope</span></span>
+                        </td>
+                        <td>
+                            <span class="fb" id="slide-7-step-1"><span class="fb-blank">________</span><span class="fb-answer">opposite reciprocals</span></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>key identity</th>
+                        <td>
+                            <span>\(m_1 = m_2\)</span>
+                        </td>
+                        <td>
+                            <span class="fb" id="slide-7-step-2"><span class="fb-blank">________</span><span class="fb-answer">\(m_1 \cdot m_2 = -1\)</span></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 8 — EXAMPLE 4: Perpendicular line
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-8" data-steps="5">
+    <div class="slide-header">
+        <div class="example-label">Example 4</div>
+        <div class="slide-title">Equation of a Perpendicular Line</div>
+    </div>
+    <div class="slide-body">
+        <div class="problem-statement">Find the slope-intercept form of the line that passes through \((2,\,-1)\) and is perpendicular to \(2x - 3y = 5\).</div>
+        <div class="steps-area">
+            <div class="step" id="slide-8-step-0">
+                <div class="step-box teal">
+                    <div class="step-label">Step 1 · Rewrite the given line in slope-intercept form</div>
+                    <div class="step-math">\[2x - 3y = 5 \;\Longrightarrow\; y = \dfrac{2}{3}x - \dfrac{5}{3}\]
+                        <div class="annotation">Solve for \(y\). Subtract \(2x\), then divide by \(-3\).</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-1">
+                <div class="step-box">
+                    <div class="step-label">Step 2 · Identify the given slope</div>
+                    <div class="step-math">\[m_{\text{given}} = \dfrac{2}{3}\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-2">
+                <div class="step-box orange">
+                    <div class="step-label">Step 3 · Take the opposite reciprocal</div>
+                    <div class="step-math">\[m_{\perp} = -\dfrac{3}{2}\]
+                        <div class="annotation">Flip the fraction and change the sign.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-3">
+                <div class="step-box">
+                    <div class="step-label">Step 4 · Point-slope form</div>
+                    <div class="step-math">\[y - (-1) = -\dfrac{3}{2}(x - 2) \;\Longrightarrow\; y + 1 = -\dfrac{3}{2}(x - 2)\]</div>
+                </div>
+            </div>
+            <div class="step" id="slide-8-step-4">
+                <div class="step-box dark">
+                    <div class="step-label">Answer — slope-intercept form</div>
+                    <div class="step-math">\[y = -\dfrac{3}{2}x + 2\]
+                        <div class="annotation">Distribute and subtract 1 from both sides.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     SLIDE 9 — REVIEW
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-9">
+    <div class="slide-header">
+        <div class="concept-label">Review</div>
+        <div class="slide-title">Take-aways</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="cards-grid">
+            <div class="info-card teal">
+                <div class="card-title">Slope is a ratio</div>
+                <div class="card-copy">\(m = \dfrac{\Delta y}{\Delta x}\). Horizontal \(\Rightarrow m=0\); vertical \(\Rightarrow m\) undefined.</div>
+            </div>
+            <div class="info-card">
+                <div class="card-title">Three forms serve different uses</div>
+                <div class="card-copy">Slope-intercept for graphing, point-slope for building from data, standard for systems.</div>
+            </div>
+            <div class="info-card green">
+                <div class="card-title">Parallel vs. perpendicular</div>
+                <div class="card-copy">Parallel: same slope. Perpendicular: opposite reciprocals (\(m_1 m_2 = -1\)).</div>
+            </div>
+            <div class="info-card orange">
+                <div class="card-title">Real-world modeling</div>
+                <div class="card-copy">Translate data to coordinates first, then pick point-slope form — the slope <em>is</em> the rate of change.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="assets/slides-core.js"></script>
+<script>
+    SlidesCore.init({
+        sectionTargets: [
+            { label: 'Overview',       slideId: 'slide-0' },
+            { label: 'Slope',          slideId: 'slide-1' },
+            { label: 'H & V',          slideId: 'slide-2' },
+            { label: 'Forms',          slideId: 'slide-4' },
+            { label: 'Real-World',     slideId: 'slide-6' },
+            { label: 'Parallel/Perp',  slideId: 'slide-7' },
+            { label: 'Review',         slideId: 'slide-9' }
+        ]
+    });
+</script>
+</body>
+</html>
