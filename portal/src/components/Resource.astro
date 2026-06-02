@@ -1,0 +1,47 @@
+---
+import type { Resource } from '../data/types';
+import { site, isExternal } from '../lib/url';
+
+interface Props {
+  resource: Resource;
+}
+const { resource } = Astro.props;
+
+// Icon + accent color per resource type.
+const META: Record<Resource['type'], { icon: string; color: string; label: string }> = {
+  slides: { icon: '🖥️', color: 'text-indigo-500', label: 'Slides' },
+  notes: { icon: '📄', color: 'text-slate-500', label: 'Notes' },
+  video: { icon: '▶️', color: 'text-blue-500', label: 'Video' },
+  key: { icon: '✅', color: 'text-amber-500', label: 'Key' },
+  worksheet: { icon: '✏️', color: 'text-rose-500', label: 'Worksheet' },
+  activity: { icon: '🧩', color: 'text-emerald-500', label: 'Activity' },
+  playground: { icon: '🎛️', color: 'text-fuchsia-500', label: 'Playground' },
+  reference: { icon: '📚', color: 'text-slate-400', label: 'Reference' },
+};
+
+const meta = META[resource.type];
+const href = resource.href ? (isExternal(resource.href) ? resource.href : site(resource.href)) : '#';
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener"
+  class="flex items-center gap-3 border-t border-slate-100 px-5 py-3 text-sm transition first:border-t-0 hover:bg-slate-50"
+>
+  <span class={meta.color} aria-hidden="true">{meta.icon}</span>
+  <span class="font-medium text-slate-700">{resource.title}</span>
+  <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium tracking-wide text-slate-500 uppercase">
+    {meta.label}
+  </span>
+  {resource.duration && <span class="ml-auto text-xs tabular-nums text-slate-400">{resource.duration}</span>}
+  <svg
+    class:list={['h-4 w-4 shrink-0 text-slate-300', resource.duration ? 'ml-2' : 'ml-auto']}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    stroke-width="2"
+  >
+    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8m9 0v9" />
+  </svg>
+</a>

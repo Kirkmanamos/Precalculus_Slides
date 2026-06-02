@@ -1,0 +1,77 @@
+name: Deploy course site to GitHub Pages
+
+# Builds the Astro portal (in portal/) and overlays it on top of the existing
+# slide decks at the repo root, then publishes the combined site to Pages.
+# Existing slide URLs (e.g. /Precalculus_Slides/4.3-...html) are unchanged;
+# the portal becomes the new index.html and adds /upcoming and /resources.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deploy at a time; don't cancel an in-progress release.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: portal/package-lock.json
+
+      - name: Install portal dependencies
+        working-directory: portal
+        run: npm ci
+
+      - name: Build portal
+        working-directory: portal
+        run: npm run build
+
+      - name: Assemble site (slides + portal overlay)
+        run: |
+          set -euo pipefail
+          # Start from the full repo (the slide decks + their asset folders),
+          # excluding source-control and build-only inputs.
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='portal' \
+            --exclude='_site' \
+            ./ _site/
+          # Overlay the built portal: its index.html replaces the old plain
+          # landing page; _astro/, upcoming/, resources/ are added alongside.
+          cp -R portal/dist/. _site/
+          # Pages on GitHub Actions does not run Jekyll, but this guarantees
+          # the _astro/ folder is never stripped.
+          touch _site/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

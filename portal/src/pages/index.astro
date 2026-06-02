@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import UnitAccordion from '../components/UnitAccordion.astro';
+import { site } from '../lib/url';
+import units from '../data/units.json';
+import type { Unit } from '../data/types';
+
+const allUnits = (units as Unit[]).slice().sort((a, b) => a.number - b.number);
+---
+
+<BaseLayout title="Kirk Amos's Precalculus Course">
+  <!-- Hero -->
+  <section
+    class="mb-8 overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-8 py-10 text-white shadow-lg"
+  >
+    <p class="text-sm font-semibold tracking-wider text-indigo-200 uppercase">
+      Kirk Amos's Precalculus Course
+    </p>
+    <h1 class="mt-2 text-3xl font-bold sm:text-4xl">Course Materials</h1>
+    <p class="mt-3 max-w-2xl text-indigo-100">
+      Interactive slide decks for every section. Open a unit below, then pick a topic.
+      New notes, worksheets, and video tutorials will appear here as they're posted.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a
+        href={site('upcoming/')}
+        class="rounded-lg bg-white/15 px-4 py-2 text-sm font-semibold backdrop-blur transition hover:bg-white/25"
+      >
+        See upcoming assignments →
+      </a>
+      <a
+        href={site('resources/')}
+        class="rounded-lg bg-white/15 px-4 py-2 text-sm font-semibold backdrop-blur transition hover:bg-white/25"
+      >
+        Helpful resources →
+      </a>
+    </div>
+  </section>
+
+  <!-- Units (accordion) -->
+  <div class="space-y-4">
+    {allUnits.map((unit, i) => <UnitAccordion unit={unit} open={i === 0} />)}
+  </div>
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Katex from '../components/Katex.astro';
+
+// Edit these lists freely. External links use full URLs; internal decks use
+// the bare filename (the base path is added automatically by <a> below).
+const references = [
+  { title: 'Desmos Graphing Calculator', href: 'https://www.desmos.com/calculator', desc: 'Free online graphing.' },
+  { title: 'Desmos Scientific Calculator', href: 'https://www.desmos.com/scientific', desc: 'For quick computations.' },
+  { title: 'GeoGebra', href: 'https://www.geogebra.org/', desc: 'Interactive geometry & algebra.' },
+];
+
+const formulas: { label: string; tex: string }[] = [
+  { label: 'Pythagorean identity', tex: '\\sin^2\\theta + \\cos^2\\theta = 1' },
+  { label: 'Average rate of change', tex: 'm = \\dfrac{f(b) - f(a)}{b - a}' },
+  { label: 'Change of base', tex: '\\log_b x = \\dfrac{\\ln x}{\\ln b}' },
+];
+---
+
+<BaseLayout title="Helpful Resources">
+  <h1 class="text-3xl font-bold text-slate-900">Helpful Resources</h1>
+  <p class="mt-2 text-slate-600">Tools, references, and a few formulas to keep handy.</p>
+
+  <section class="mt-8">
+    <h2 class="text-lg font-semibold text-slate-800">Tools</h2>
+    <div class="mt-3 grid gap-3 sm:grid-cols-2">
+      {
+        references.map((r) => (
+          <a
+            href={r.href}
+            target="_blank"
+            rel="noopener"
+            class="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition hover:border-indigo-300 hover:shadow"
+          >
+            <h3 class="font-semibold text-indigo-600">{r.title}</h3>
+            <p class="mt-1 text-sm text-slate-600">{r.desc}</p>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-lg font-semibold text-slate-800">Formula Reference</h2>
+    <p class="mt-1 text-sm text-slate-500">
+      Math rendered with KaTeX — write more in <code class="rounded bg-slate-100 px-1">resources.astro</code>.
+    </p>
+    <ul class="mt-3 divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200 bg-white">
+      {
+        formulas.map((f) => (
+          <li class="flex items-center justify-between gap-4 px-5 py-4">
+            <span class="text-sm font-medium text-slate-600">{f.label}</span>
+            <span class="text-slate-900"><Katex math={f.tex} /></span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,0 +1,66 @@
+---
+import '../styles/global.css';
+import { site } from '../lib/url';
+
+interface Props {
+  title?: string;
+}
+const { title = "Kirk Amos's Precalculus Course" } = Astro.props;
+
+const nav = [
+  { label: 'Course', href: site() },
+  { label: 'Upcoming', href: site('upcoming/') },
+  { label: 'Resources', href: site('resources/') },
+];
+
+// Normalize for active-state comparison (ignore trailing slash differences).
+const here = Astro.url.pathname.replace(/\/$/, '');
+const isActive = (href: string) => here === href.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <!-- KaTeX stylesheet — required to display build-time math. -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <a href={site()} class="text-lg font-bold tracking-tight text-slate-900">
+          Kirk Amos's <span class="text-indigo-600">Precalculus Course</span>
+        </a>
+        <nav class="flex gap-1 text-sm font-medium">
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                class:list={[
+                  'rounded-md px-3 py-2 transition hover:bg-slate-100',
+                  isActive(item.href) ? 'text-indigo-600' : 'text-slate-600',
+                ]}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main class="mx-auto max-w-5xl px-4 py-8">
+      <slot />
+    </main>
+
+    <footer class="mt-12 border-t border-slate-200 py-8 text-center text-sm text-slate-400">
+      Precalculus &amp; Trigonometry · Course materials · Built with Astro
+    </footer>
+  </body>
+</html>

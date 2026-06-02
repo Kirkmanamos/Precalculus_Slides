@@ -1,0 +1,20 @@
+---
+import katex from 'katex';
+
+interface Props {
+  /** The LaTeX source, e.g. "\\frac{y_2 - y_1}{x_2 - x_1}". */
+  math: string;
+  /** Display mode renders centered block math; default is inline. */
+  display?: boolean;
+}
+const { math, display = false } = Astro.props;
+
+// Rendered at build time → ships as plain HTML+CSS. Requires the KaTeX
+// stylesheet, which BaseLayout already loads.
+const html = katex.renderToString(math, {
+  displayMode: display,
+  throwOnError: false,
+});
+---
+
+<Fragment set:html={html} />
