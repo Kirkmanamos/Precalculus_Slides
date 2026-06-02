@@ -249,6 +249,9 @@
   {
     "number": 6,
     "title": "Trigonometric Identities and Equations",
+    "resources": [
+      { "type": "notes", "title": "Unit 6 Notes — Honors (PDF)", "href": "notes/unit-6-notes-honors.pdf" }
+    ],
     "topics": [
       {
         "number": "6.1",
@@ -293,6 +296,9 @@
   {
     "number": 7,
     "title": "Sequences, Series, and Probability",
+    "resources": [
+      { "type": "notes", "title": "Unit 7 Notes — Honors (PDF)", "href": "notes/unit-7-notes-honors.pdf" }
+    ],
     "topics": [
       {
         "number": "7.1",

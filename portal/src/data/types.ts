@@ -35,5 +35,10 @@ export interface Unit {
   title: string;
   /** Optional one-line blurb shown under the unit title. */
   blurb?: string;
+  /**
+   * Optional unit-wide resources (e.g. the full-unit notes PDF) shown in a
+   * strip directly under the unit header, above the per-topic rows.
+   */
+  resources?: Resource[];
   topics: Topic[];
 }
