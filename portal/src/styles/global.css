@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+/* Progress checkbox: an empty circle that fills green with a white check
+   when the resource is marked complete (state restored from localStorage). */
+.progress-check {
+  appearance: none;
+  -webkit-appearance: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 0.85rem;
+}
+.progress-check:checked {
+  border-color: #10b981; /* emerald-500 */
+  background-color: #10b981;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+}
+
+/* Smooth scroll with offset so anchored units clear the sticky header. */
+html {
+  scroll-padding-top: 5rem;
+}

@@ -1,0 +1,30 @@
+---
+import type { Unit } from '../data/types';
+
+interface Props {
+  unit: Unit;
+}
+const { unit } = Astro.props;
+const n = unit.number;
+const topicCount = unit.topics.length;
+---
+
+<a
+  href={`#unit-${n}`}
+  data-unit-card={n}
+  class="group flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-300 hover:shadow"
+>
+  <p class="text-xs font-semibold tracking-wider text-indigo-500 uppercase">Unit {n}</p>
+  <h3 class="mt-1 font-bold text-slate-900">{unit.title}</h3>
+  <p class="mt-1 text-xs text-slate-500">{topicCount} topics</p>
+
+  <!-- Mini progress bar (filled by the client script) -->
+  <div class="mt-4 flex items-center gap-2">
+    <div class="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+      <div class="h-full w-0 rounded-full bg-emerald-500 transition-all" data-card-bar></div>
+    </div>
+    <span class="text-xs font-semibold text-slate-400 tabular-nums" data-card-pct>0%</span>
+  </div>
+
+  <span class="mt-4 text-sm font-semibold text-indigo-600 group-hover:underline">Start Unit →</span>
+</a>

@@ -4,10 +4,12 @@ import { site, isExternal } from '../lib/url';
 
 interface Props {
   resource: Resource;
+  /** Stable id used for localStorage progress; when set with progress, a checkbox shows. */
+  rid?: string;
+  progress?: boolean;
 }
-const { resource } = Astro.props;
+const { resource, rid, progress = false } = Astro.props;
 
-// Icon + accent color per resource type.
 const META: Record<Resource['type'], { icon: string; color: string; label: string }> = {
   slides: { icon: '🖥️', color: 'text-indigo-500', label: 'Slides' },
   notes: { icon: '📄', color: 'text-slate-500', label: 'Notes' },
@@ -23,25 +25,32 @@ const meta = META[resource.type];
 const href = resource.href ? (isExternal(resource.href) ? resource.href : site(resource.href)) : '#';
 ---
 
-<a
-  href={href}
-  target="_blank"
-  rel="noopener"
-  class="flex items-center gap-3 border-t border-slate-100 px-5 py-3 text-sm transition first:border-t-0 hover:bg-slate-50"
->
-  <span class={meta.color} aria-hidden="true">{meta.icon}</span>
-  <span class="font-medium text-slate-700">{resource.title}</span>
-  <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium tracking-wide text-slate-500 uppercase">
-    {meta.label}
-  </span>
-  {resource.duration && <span class="ml-auto text-xs tabular-nums text-slate-400">{resource.duration}</span>}
-  <svg
-    class:list={['h-4 w-4 shrink-0 text-slate-300', resource.duration ? 'ml-2' : 'ml-auto']}
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    stroke-width="2"
-  >
-    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8m9 0v9" />
-  </svg>
-</a>
+<div class="flex items-center gap-3 border-t border-slate-100 px-5 py-3 text-sm transition first:border-t-0 hover:bg-slate-50">
+  {
+    progress && rid && (
+      <input
+        type="checkbox"
+        data-rid={rid}
+        aria-label={`Mark ${resource.title} complete`}
+        class="progress-check h-5 w-5 shrink-0 cursor-pointer rounded-full border-2 border-slate-300 transition hover:border-emerald-400"
+      />
+    )
+  }
+  <a href={href} target="_blank" rel="noopener" class="flex flex-1 items-center gap-3 overflow-hidden">
+    <span class={meta.color} aria-hidden="true">{meta.icon}</span>
+    <span class="truncate font-medium text-slate-700">{resource.title}</span>
+    <span class="hidden shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium tracking-wide text-slate-500 uppercase sm:inline">
+      {meta.label}
+    </span>
+    {resource.duration && <span class="ml-auto shrink-0 text-xs tabular-nums text-slate-400">{resource.duration}</span>}
+    <svg
+      class:list={['h-4 w-4 shrink-0 text-slate-300', resource.duration ? '' : 'ml-auto']}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8m9 0v9"></path>
+    </svg>
+  </a>
+</div>

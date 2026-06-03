@@ -3,59 +3,92 @@
     "number": 1,
     "title": "Function Analysis",
     "blurb": "Functions, transformations, and inverses.",
-    "resources": [
-      { "type": "notes", "title": "Unit 1 Notes — Honors (PDF)", "href": "notes/unit-1-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "1.1",
         "title": "Functions and Function Notation",
         "resources": [
-          { "type": "slides", "title": "Slides 1.1", "href": "1.1-functions-and-function-notation.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.1",
+            "href": "1.1-functions-and-function-notation.html"
+          }
         ]
       },
       {
         "number": "1.2",
         "title": "Domain and Range",
         "resources": [
-          { "type": "slides", "title": "Slides 1.2", "href": "1.2-domain-and-range.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.2",
+            "href": "1.2-domain-and-range.html"
+          }
         ]
       },
       {
         "number": "1.3",
         "title": "Rates of Change and Behavior of Graphs",
         "resources": [
-          { "type": "slides", "title": "Slides 1.3", "href": "1.3-rates-of-change-and-behavior-of-graphs.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.3",
+            "href": "1.3-rates-of-change-and-behavior-of-graphs.html"
+          }
         ]
       },
       {
         "number": "1.4",
         "title": "Composition of Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 1.4", "href": "1.4-composition-of-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.4",
+            "href": "1.4-composition-of-functions.html"
+          }
         ]
       },
       {
         "number": "1.5",
         "title": "Transformation of Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 1.5", "href": "1.5-transformation-of-functions.html" },
-          { "type": "playground", "title": "Transformations Playground", "href": "1.5-transformations-playground.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.5",
+            "href": "1.5-transformation-of-functions.html"
+          },
+          {
+            "type": "playground",
+            "title": "Transformations Playground",
+            "href": "1.5-transformations-playground.html"
+          }
         ]
       },
       {
         "number": "1.6",
         "title": "Absolute Value Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 1.6", "href": "1.6-absolute-value-functions.html" },
-          { "type": "playground", "title": "Operations Playground", "href": "1.6-operations-playground.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.6",
+            "href": "1.6-absolute-value-functions.html"
+          },
+          {
+            "type": "playground",
+            "title": "Operations Playground",
+            "href": "1.6-operations-playground.html"
+          }
         ]
       },
       {
         "number": "1.7",
         "title": "Inverse Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 1.7", "href": "1.7-inverse-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 1.7",
+            "href": "1.7-inverse-functions.html"
+          }
         ]
       }
     ]
@@ -63,66 +96,103 @@
   {
     "number": 2,
     "title": "Polynomial & Rational Functions",
-    "resources": [
-      { "type": "notes", "title": "Unit 2 Notes — Honors (PDF)", "href": "notes/unit-2-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "2.1",
         "title": "Quadratic Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 2.1", "href": "2.1-quadratic-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.1",
+            "href": "2.1-quadratic-functions.html"
+          }
         ]
       },
       {
         "number": "2.2",
         "title": "Graphs of Polynomial Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 2.2", "href": "2.2-graphs-of-polynomial-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.2",
+            "href": "2.2-graphs-of-polynomial-functions.html"
+          }
         ]
       },
       {
         "number": "2.3",
         "title": "Zeros of Polynomial Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 2.3", "href": "2.3-zeros-of-polynomial-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.3",
+            "href": "2.3-zeros-of-polynomial-functions.html"
+          }
         ]
       },
       {
         "number": "2.4",
         "title": "Dividing Polynomials",
         "resources": [
-          { "type": "slides", "title": "Slides 2.4", "href": "2.4-dividing-polynomials.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.4",
+            "href": "2.4-dividing-polynomials.html"
+          }
         ]
       },
       {
         "number": "2.5",
         "title": "Complex Numbers",
         "resources": [
-          { "type": "slides", "title": "Slides 2.5", "href": "2.5-complex-numbers.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.5",
+            "href": "2.5-complex-numbers.html"
+          }
         ]
       },
       {
         "number": "2.6",
         "title": "Fundamental Theorem of Algebra",
         "resources": [
-          { "type": "slides", "title": "Slides 2.6", "href": "2.6-fundamental-theorem-of-algebra.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.6",
+            "href": "2.6-fundamental-theorem-of-algebra.html"
+          }
         ]
       },
       {
         "number": "2.7",
         "title": "Rational Functions and Asymptotes",
         "resources": [
-          { "type": "slides", "title": "Slides 2.7", "href": "2.7-rational-functions-and-asymptotes.html" },
-          { "type": "reference", "title": "Rational Features (reference)", "href": "RationalFeatures.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.7",
+            "href": "2.7-rational-functions-and-asymptotes.html"
+          },
+          {
+            "type": "reference",
+            "title": "Rational Features (reference)",
+            "href": "RationalFeatures.html"
+          }
         ]
       },
       {
         "number": "2.8",
         "title": "Graphs of Rational Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 2.8", "href": "2.8-graphs-of-rational-functions.html" },
-          { "type": "reference", "title": "Rational Graphing (reference)", "href": "RationalGraphing.html" }
+          {
+            "type": "slides",
+            "title": "Slides 2.8",
+            "href": "2.8-graphs-of-rational-functions.html"
+          },
+          {
+            "type": "reference",
+            "title": "Rational Graphing (reference)",
+            "href": "RationalGraphing.html"
+          }
         ]
       }
     ]
@@ -130,43 +200,60 @@
   {
     "number": 3,
     "title": "Exponential & Logarithmic Functions",
-    "resources": [
-      { "type": "notes", "title": "Unit 3 Notes — Honors (PDF)", "href": "notes/unit-3-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "3.1",
         "title": "Exponential Functions and Their Graphs",
         "resources": [
-          { "type": "slides", "title": "Slides 3.1", "href": "3.1-exponential-functions-and-their-graphs.html" }
+          {
+            "type": "slides",
+            "title": "Slides 3.1",
+            "href": "3.1-exponential-functions-and-their-graphs.html"
+          }
         ]
       },
       {
         "number": "3.2",
         "title": "Logarithmic Functions and Their Graphs",
         "resources": [
-          { "type": "slides", "title": "Slides 3.2", "href": "3.2-logarithmic-functions-and-their-graphs.html" }
+          {
+            "type": "slides",
+            "title": "Slides 3.2",
+            "href": "3.2-logarithmic-functions-and-their-graphs.html"
+          }
         ]
       },
       {
         "number": "3.3",
         "title": "Properties of Logarithms",
         "resources": [
-          { "type": "slides", "title": "Slides 3.3", "href": "3.3-properties-of-logarithms.html" }
+          {
+            "type": "slides",
+            "title": "Slides 3.3",
+            "href": "3.3-properties-of-logarithms.html"
+          }
         ]
       },
       {
         "number": "3.4",
         "title": "Solving Exponential and Logarithmic Equations",
         "resources": [
-          { "type": "slides", "title": "Slides 3.4", "href": "3.4-solving-exponential-and-log-equations.html" }
+          {
+            "type": "slides",
+            "title": "Slides 3.4",
+            "href": "3.4-solving-exponential-and-log-equations.html"
+          }
         ]
       },
       {
         "number": "3.5",
         "title": "Exponential Applications",
         "resources": [
-          { "type": "slides", "title": "Slides 3.5", "href": "3.5-exponential-applications.html" }
+          {
+            "type": "slides",
+            "title": "Slides 3.5",
+            "href": "3.5-exponential-applications.html"
+          }
         ]
       }
     ]
@@ -174,45 +261,70 @@
   {
     "number": 4,
     "title": "Trigonometric Functions",
-    "resources": [
-      { "type": "notes", "title": "Unit 4 Notes — Honors (PDF)", "href": "notes/unit-4-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "4.1",
         "title": "Angles, Radian, and Degree Measure",
         "resources": [
-          { "type": "slides", "title": "Slides 4.1", "href": "4.1-angles-radian-degree-measure.html" }
+          {
+            "type": "slides",
+            "title": "Slides 4.1",
+            "href": "4.1-angles-radian-degree-measure.html"
+          }
         ]
       },
       {
         "number": "4.2",
         "title": "Linear and Angular Speed",
         "resources": [
-          { "type": "slides", "title": "Slides 4.2", "href": "4.2-linear-and-angular-speed.html" }
+          {
+            "type": "slides",
+            "title": "Slides 4.2",
+            "href": "4.2-linear-and-angular-speed.html"
+          }
         ]
       },
       {
         "number": "4.3",
         "title": "Trig Functions: The Unit Circle",
         "resources": [
-          { "type": "slides", "title": "Slides 4.3", "href": "4.3-trig-functions-unit-circle.html" }
+          {
+            "type": "slides",
+            "title": "Slides 4.3",
+            "href": "4.3-trig-functions-unit-circle.html"
+          }
         ]
       },
       {
         "number": "4.4",
         "title": "Trig Functions of Any Angle",
         "resources": [
-          { "type": "slides", "title": "Slides 4.4", "href": "4.4-trig-functions-of-any-angle.html" }
+          {
+            "type": "slides",
+            "title": "Slides 4.4",
+            "href": "4.4-trig-functions-of-any-angle.html"
+          }
         ]
       },
       {
         "number": "4.5",
         "title": "Right Triangle Trigonometry",
         "resources": [
-          { "type": "slides", "title": "Slides 4.5", "href": "4.5-right-triangle-trigonometry.html" },
-          { "type": "activity", "title": "Spaghetti Trig Activity", "href": "Spaghetti_Trig_Slides.html" },
-          { "type": "reference", "title": "Review 4.1–4.5 (legacy)", "href": "trig-review.html" }
+          {
+            "type": "slides",
+            "title": "Slides 4.5",
+            "href": "4.5-right-triangle-trigonometry.html"
+          },
+          {
+            "type": "activity",
+            "title": "Spaghetti Trig Activity",
+            "href": "Spaghetti_Trig_Slides.html"
+          },
+          {
+            "type": "reference",
+            "title": "Review 4.1–4.5 (legacy)",
+            "href": "trig-review.html"
+          }
         ]
       }
     ]
@@ -220,43 +332,60 @@
   {
     "number": 5,
     "title": "Periodic Functions",
-    "resources": [
-      { "type": "notes", "title": "Unit 5 Notes — Honors (PDF)", "href": "notes/unit-5-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "5.1",
         "title": "Graphs of Sine and Cosine",
         "resources": [
-          { "type": "slides", "title": "Slides 5.1", "href": "5.1-graphs-sine-cosine.html" }
+          {
+            "type": "slides",
+            "title": "Slides 5.1",
+            "href": "5.1-graphs-sine-cosine.html"
+          }
         ]
       },
       {
         "number": "5.2",
         "title": "Graphs of Sine and Cosine (Part 2)",
         "resources": [
-          { "type": "slides", "title": "Slides 5.2", "href": "5.2-graphs-sine-cosine-part2.html" }
+          {
+            "type": "slides",
+            "title": "Slides 5.2",
+            "href": "5.2-graphs-sine-cosine-part2.html"
+          }
         ]
       },
       {
         "number": "5.3",
         "title": "Modeling with Sine and Cosine",
         "resources": [
-          { "type": "slides", "title": "Slides 5.3", "href": "5.3-modeling-sine-cosine.html" }
+          {
+            "type": "slides",
+            "title": "Slides 5.3",
+            "href": "5.3-modeling-sine-cosine.html"
+          }
         ]
       },
       {
         "number": "5.4",
         "title": "Graphs of Other Trig Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 5.4", "href": "5.4-graphs-other-trig-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 5.4",
+            "href": "5.4-graphs-other-trig-functions.html"
+          }
         ]
       },
       {
         "number": "5.5",
         "title": "Inverse Trig Functions",
         "resources": [
-          { "type": "slides", "title": "Slides 5.5", "href": "5.5-inverse-trig-functions.html" }
+          {
+            "type": "slides",
+            "title": "Slides 5.5",
+            "href": "5.5-inverse-trig-functions.html"
+          }
         ]
       }
     ]
@@ -264,46 +393,75 @@
   {
     "number": 6,
     "title": "Trigonometric Identities and Equations",
-    "resources": [
-      { "type": "notes", "title": "Unit 6 Notes — Honors (PDF)", "href": "notes/unit-6-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "6.1",
         "title": "Using Fundamental Identities",
         "resources": [
-          { "type": "slides", "title": "Slides 6.1", "href": "6.1-fundamental-identities.html" }
+          {
+            "type": "slides",
+            "title": "Slides 6.1",
+            "href": "6.1-fundamental-identities.html"
+          }
         ]
       },
       {
         "number": "6.2",
         "title": "Verifying Trig Identities",
         "resources": [
-          { "type": "slides", "title": "Slides 6.2", "href": "6.2-verifying-trig-identities.html" }
+          {
+            "type": "slides",
+            "title": "Slides 6.2",
+            "href": "6.2-verifying-trig-identities.html"
+          }
         ]
       },
       {
         "number": "6.3",
         "title": "Solving Trig Equations",
         "resources": [
-          { "type": "slides", "title": "Slides 6.3", "href": "6.3-solving-trig-equations.html" },
-          { "type": "slides", "title": "Amplitude-Phase Form", "href": "6.3-amplitude-phase-form.html" },
-          { "type": "reference", "title": "6.1–6.3 Review", "href": "6.1-6.3-review.html" },
-          { "type": "activity", "title": "6.1–6.3 Stations Activity (printable)", "href": "6.1-6.3-stations-activity.html" }
+          {
+            "type": "slides",
+            "title": "Slides 6.3",
+            "href": "6.3-solving-trig-equations.html"
+          },
+          {
+            "type": "slides",
+            "title": "Amplitude-Phase Form",
+            "href": "6.3-amplitude-phase-form.html"
+          },
+          {
+            "type": "reference",
+            "title": "6.1–6.3 Review",
+            "href": "6.1-6.3-review.html"
+          },
+          {
+            "type": "activity",
+            "title": "6.1–6.3 Stations Activity (printable)",
+            "href": "6.1-6.3-stations-activity.html"
+          }
         ]
       },
       {
         "number": "6.4",
         "title": "Sum and Difference Identities",
         "resources": [
-          { "type": "slides", "title": "Slides 6.4", "href": "6.4-sum-and-difference.html" }
+          {
+            "type": "slides",
+            "title": "Slides 6.4",
+            "href": "6.4-sum-and-difference.html"
+          }
         ]
       },
       {
         "number": "6.5",
         "title": "Double & Half Angle Identities",
         "resources": [
-          { "type": "slides", "title": "Slides 6.5", "href": "6.5-double-half-angle.html" }
+          {
+            "type": "slides",
+            "title": "Slides 6.5",
+            "href": "6.5-double-half-angle.html"
+          }
         ]
       }
     ]
@@ -311,57 +469,82 @@
   {
     "number": 7,
     "title": "Sequences, Series, and Probability",
-    "resources": [
-      { "type": "notes", "title": "Unit 7 Notes — Honors (PDF)", "href": "notes/unit-7-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "7.1",
         "title": "Sequences",
         "resources": [
-          { "type": "slides", "title": "Slides 7.1", "href": "7.1-sequences.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.1",
+            "href": "7.1-sequences.html"
+          }
         ]
       },
       {
         "number": "7.2",
         "title": "Arithmetic Sequences",
         "resources": [
-          { "type": "slides", "title": "Slides 7.2", "href": "7.2-arithmetic-sequences.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.2",
+            "href": "7.2-arithmetic-sequences.html"
+          }
         ]
       },
       {
         "number": "7.3",
         "title": "Geometric Sequences",
         "resources": [
-          { "type": "slides", "title": "Slides 7.3", "href": "7.3-geometric-sequences.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.3",
+            "href": "7.3-geometric-sequences.html"
+          }
         ]
       },
       {
         "number": "7.4",
         "title": "The Binomial Theorem",
         "resources": [
-          { "type": "slides", "title": "Slides 7.4", "href": "7.4-binomial-theorem.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.4",
+            "href": "7.4-binomial-theorem.html"
+          }
         ]
       },
       {
         "number": "7.5",
         "title": "Counting Principles",
         "resources": [
-          { "type": "slides", "title": "Slides 7.5", "href": "7.5-counting-principles.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.5",
+            "href": "7.5-counting-principles.html"
+          }
         ]
       },
       {
         "number": "7.6",
         "title": "Probability",
         "resources": [
-          { "type": "slides", "title": "Slides 7.6", "href": "7.6-probability.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.6",
+            "href": "7.6-probability.html"
+          }
         ]
       },
       {
         "number": "7.7",
         "title": "Conditional Probability",
         "resources": [
-          { "type": "slides", "title": "Slides 7.7", "href": "7.7-conditional-probability.html" }
+          {
+            "type": "slides",
+            "title": "Slides 7.7",
+            "href": "7.7-conditional-probability.html"
+          }
         ]
       }
     ]
@@ -369,50 +552,71 @@
   {
     "number": 8,
     "title": "Polar & Parametric Equations",
-    "resources": [
-      { "type": "notes", "title": "Unit 8 Notes — Honors (PDF)", "href": "notes/unit-8-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "8.1",
         "title": "Polar Coordinates",
         "resources": [
-          { "type": "slides", "title": "Slides 8.1", "href": "8.1-polar-coordinates.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.1",
+            "href": "8.1-polar-coordinates.html"
+          }
         ]
       },
       {
         "number": "8.2",
         "title": "Polar Graphs",
         "resources": [
-          { "type": "slides", "title": "Slides 8.2", "href": "8.2-polar-graphs.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.2",
+            "href": "8.2-polar-graphs.html"
+          }
         ]
       },
       {
         "number": "8.3",
         "title": "Polar Form of Complex Numbers",
         "resources": [
-          { "type": "slides", "title": "Slides 8.3", "href": "8.3-polar-complex-numbers.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.3",
+            "href": "8.3-polar-complex-numbers.html"
+          }
         ]
       },
       {
         "number": "8.4",
         "title": "Parametric Equations",
         "resources": [
-          { "type": "slides", "title": "Slides 8.4", "href": "8.4-parametric-equations.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.4",
+            "href": "8.4-parametric-equations.html"
+          }
         ]
       },
       {
         "number": "8.5",
         "title": "Parametric Graphs",
         "resources": [
-          { "type": "slides", "title": "Slides 8.5", "href": "8.5-parametric-graphs.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.5",
+            "href": "8.5-parametric-graphs.html"
+          }
         ]
       },
       {
         "number": "8.6",
         "title": "Vectors",
         "resources": [
-          { "type": "slides", "title": "Slides 8.6", "href": "8.6-vectors.html" }
+          {
+            "type": "slides",
+            "title": "Slides 8.6",
+            "href": "8.6-vectors.html"
+          }
         ]
       }
     ]
@@ -420,36 +624,49 @@
   {
     "number": 9,
     "title": "Introduction to Calculus",
-    "resources": [
-      { "type": "notes", "title": "Unit 9 Notes — Honors (PDF)", "href": "notes/unit-9-notes-honors.pdf" }
-    ],
     "topics": [
       {
         "number": "9.1",
         "title": "Finding Limits: Numerical & Graphical",
         "resources": [
-          { "type": "slides", "title": "Slides 9.1", "href": "9.1-limits-numerical-graphical.html" }
+          {
+            "type": "slides",
+            "title": "Slides 9.1",
+            "href": "9.1-limits-numerical-graphical.html"
+          }
         ]
       },
       {
         "number": "9.2",
         "title": "Finding Limits: Properties of Limits",
         "resources": [
-          { "type": "slides", "title": "Slides 9.2", "href": "9.2-limits-properties.html" }
+          {
+            "type": "slides",
+            "title": "Slides 9.2",
+            "href": "9.2-limits-properties.html"
+          }
         ]
       },
       {
         "number": "9.3",
         "title": "Continuity",
         "resources": [
-          { "type": "slides", "title": "Slides 9.3", "href": "9.3-continuity.html" }
+          {
+            "type": "slides",
+            "title": "Slides 9.3",
+            "href": "9.3-continuity.html"
+          }
         ]
       },
       {
         "number": "9.4",
         "title": "Derivatives",
         "resources": [
-          { "type": "slides", "title": "Slides 9.4", "href": "9.4-derivatives.html" }
+          {
+            "type": "slides",
+            "title": "Slides 9.4",
+            "href": "9.4-derivatives.html"
+          }
         ]
       }
     ]

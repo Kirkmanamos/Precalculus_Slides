@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CourseHero from '../../components/CourseHero.astro';
+import CourseSidebar from '../../components/CourseSidebar.astro';
+import UnitCard from '../../components/UnitCard.astro';
+import UnitAccordion from '../../components/UnitAccordion.astro';
+import { courses, type Course } from '../../data/courses';
+import unitsData from '../../data/units.json';
+import type { Unit } from '../../data/types';
+
+export function getStaticPaths() {
+  return courses.map((course) => ({ params: { course: course.id }, props: { course } }));
+}
+
+interface Props {
+  course: Course;
+}
+const { course } = Astro.props;
+const units = (unitsData as Unit[]).slice().sort((a, b) => a.number - b.number);
+---
+
+<BaseLayout title={`${course.name} — Kirk Amos's Math`} contained={false}>
+  <div data-course={course.id} class="mx-auto max-w-7xl px-4 pb-12">
+    <CourseHero course={course} />
+
+    <!-- Continue where you left off (populated by the progress script) -->
+    <a
+      data-continue
+      href="#"
+      hidden
+      class="mb-8 flex items-center justify-between gap-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-4 text-white shadow-md transition hover:brightness-105"
+    >
+      <span>
+        <span class="block text-xs font-semibold tracking-wider text-indigo-200 uppercase">
+          Pick up where you left off
+        </span>
+        <span class="text-lg font-bold" data-continue-label></span>
+      </span>
+      <span class="shrink-0 text-sm font-semibold">Continue →</span>
+    </a>
+
+    <div class="grid gap-8 lg:grid-cols-[15rem_1fr]">
+      <CourseSidebar course={course} units={units} />
+
+      <div>
+        <!-- Course Overview -->
+        <section id="overview" class="scroll-mt-20">
+          <div class="flex items-baseline justify-between">
+            <h2 class="text-2xl font-bold text-slate-900">Course Overview</h2>
+            <span class="text-sm font-semibold text-slate-500">
+              <span data-course-pct>0%</span> complete
+            </span>
+          </div>
+          <div class="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {units.map((u) => <UnitCard unit={u} />)}
+          </div>
+        </section>
+
+        <!-- Accordion units -->
+        <section class="mt-10 space-y-4">
+          {units.map((u, i) => <UnitAccordion unit={u} course={course} open={i === 0} />)}
+        </section>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // --- Progress tracking (per course, per browser, via localStorage) ---
+  const root = document.querySelector('[data-course]') as HTMLElement | null;
+  if (root) {
+    const KEY = 'progress:' + root.dataset.course;
+    const load = (): Record<string, boolean> => {
+      try {
+        return JSON.parse(localStorage.getItem(KEY) || '{}');
+      } catch {
+        return {};
+      }
+    };
+    const save = (s: Record<string, boolean>) => localStorage.setItem(KEY, JSON.stringify(s));
+    const store = load();
+
+    const checks = Array.from(document.querySelectorAll<HTMLInputElement>('.progress-check'));
+    const pct = (done: number, total: number) => (total ? Math.round((done / total) * 100) : 0);
+
+    function recompute() {
+      // Per-unit + matching overview card.
+      document.querySelectorAll<HTMLElement>('details.unit').forEach((unitEl) => {
+        const n = unitEl.dataset.unit!;
+        const within = unitEl.querySelectorAll<HTMLInputElement>('.progress-check');
+        const done = Array.from(within).filter((c) => c.checked).length;
+        const p = pct(done, within.length);
+        unitEl.querySelector<HTMLElement>('[data-unit-pct]')!.textContent = p + '%';
+        unitEl.querySelector<HTMLElement>('[data-unit-bar]')!.style.width = p + '%';
+        const card = document.querySelector<HTMLElement>(`[data-unit-card="${n}"]`);
+        if (card) {
+          card.querySelector<HTMLElement>('[data-card-pct]')!.textContent = p + '%';
+          card.querySelector<HTMLElement>('[data-card-bar]')!.style.width = p + '%';
+        }
+      });
+
+      // Course-wide percentage.
+      const done = checks.filter((c) => c.checked).length;
+      const overall = document.querySelector<HTMLElement>('[data-course-pct]');
+      if (overall) overall.textContent = pct(done, checks.length) + '%';
+
+      // "Pick up where you left off" = first incomplete resource.
+      const next = checks.find((c) => !c.checked);
+      const banner = document.querySelector<HTMLAnchorElement>('[data-continue]');
+      if (banner) {
+        if (next) {
+          const row = next.parentElement!;
+          const link = row.querySelector<HTMLAnchorElement>('a');
+          const title = row.querySelector<HTMLElement>('.truncate')?.textContent ?? 'Continue';
+          const unitNo = next.closest<HTMLElement>('details.unit')?.dataset.unit;
+          banner.href = link?.getAttribute('href') ?? '#';
+          if (link?.target) banner.target = link.target;
+          banner.querySelector<HTMLElement>('[data-continue-label]')!.textContent =
+            (unitNo ? `Unit ${unitNo} · ` : '') + title;
+          banner.hidden = false;
+        } else {
+          banner.hidden = true;
+        }
+      }
+    }
+
+    // Restore state + wire changes.
+    checks.forEach((c) => {
+      c.checked = !!store[c.dataset.rid!];
+      c.addEventListener('change', () => {
+        if (c.checked) store[c.dataset.rid!] = true;
+        else delete store[c.dataset.rid!];
+        save(store);
+        recompute();
+      });
+    });
+
+    // Reset a single unit.
+    document.querySelectorAll<HTMLButtonElement>('[data-reset-unit]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const n = btn.dataset.resetUnit!;
+        document
+          .getElementById('unit-' + n)!
+          .querySelectorAll<HTMLInputElement>('.progress-check')
+          .forEach((c) => {
+            c.checked = false;
+            delete store[c.dataset.rid!];
+          });
+        save(store);
+        recompute();
+      });
+    });
+
+    // Reset the whole course.
+    document.querySelectorAll<HTMLButtonElement>('[data-reset-course]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!confirm('Reset all progress for this course?')) return;
+        checks.forEach((c) => (c.checked = false));
+        Object.keys(store).forEach((k) => delete store[k]);
+        save(store);
+        recompute();
+      });
+    });
+
+    recompute();
+  }
+</script>

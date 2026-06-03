@@ -1,21 +1,29 @@
 ---
 import '../styles/global.css';
 import { site } from '../lib/url';
+import { courses } from '../data/courses';
 
 interface Props {
   title?: string;
+  /** Constrain the main content to a centered column. Class pages set false. */
+  contained?: boolean;
 }
-const { title = "Kirk Amos's Precalculus Course" } = Astro.props;
+const { title = "Kirk Amos's Precalculus Course", contained = true } = Astro.props;
 
 const nav = [
-  { label: 'Course', href: site() },
+  { label: 'Home', href: site() },
+  ...courses.map((c) => ({ label: c.nav ?? c.name, href: site(`${c.id}/`) })),
   { label: 'Upcoming', href: site('upcoming/') },
   { label: 'Resources', href: site('resources/') },
 ];
 
-// Normalize for active-state comparison (ignore trailing slash differences).
+// Active when the current path starts with the nav target (so /precalculus/…
+// keeps the Precalculus tab active). Home matches only exactly.
 const here = Astro.url.pathname.replace(/\/$/, '');
-const isActive = (href: string) => here === href.replace(/\/$/, '');
+const isActive = (href: string) => {
+  const h = href.replace(/\/$/, '');
+  return h === site().replace(/\/$/, '') ? here === h : here === h || here.startsWith(h + '/');
+};
 ---
 
 <!doctype html>
@@ -24,7 +32,6 @@ const isActive = (href: string) => here === href.replace(/\/$/, '');
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <!-- KaTeX stylesheet — required to display build-time math. -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
@@ -32,12 +39,12 @@ const isActive = (href: string) => here === href.replace(/\/$/, '');
     />
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-800 antialiased">
-    <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
-      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <a href={site()} class="text-lg font-bold tracking-tight text-slate-900">
-          Kirk Amos's <span class="text-indigo-600">Precalculus Course</span>
+    <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+        <a href={site()} class="shrink-0 text-lg font-bold tracking-tight text-slate-900">
+          Kirk Amos's <span class="text-indigo-600">Math</span>
         </a>
-        <nav class="flex gap-1 text-sm font-medium">
+        <nav class="flex flex-wrap items-center gap-1 text-sm font-medium">
           {
             nav.map((item) => (
               <a
@@ -55,12 +62,20 @@ const isActive = (href: string) => here === href.replace(/\/$/, '');
       </div>
     </header>
 
-    <main class="mx-auto max-w-5xl px-4 py-8">
-      <slot />
-    </main>
+    {
+      contained ? (
+        <main class="mx-auto max-w-5xl px-4 py-8">
+          <slot />
+        </main>
+      ) : (
+        <main>
+          <slot />
+        </main>
+      )
+    }
 
     <footer class="mt-12 border-t border-slate-200 py-8 text-center text-sm text-slate-400">
-      Precalculus &amp; Trigonometry · Course materials · Built with Astro
+      Kirk Amos's Precalculus Course · Built with Astro
     </footer>
   </body>
 </html>

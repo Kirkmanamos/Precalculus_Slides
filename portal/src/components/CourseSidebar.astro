@@ -1,0 +1,43 @@
+---
+import type { Unit } from '../data/types';
+import type { Course } from '../data/courses';
+
+interface Props {
+  course: Course;
+  units: Unit[];
+}
+const { course, units } = Astro.props;
+---
+
+<aside class="lg:sticky lg:top-20 lg:h-[calc(100vh-6rem)] lg:overflow-y-auto">
+  <nav class="space-y-1 pr-2">
+    <p class="px-3 pb-2 text-xs font-bold tracking-wider text-slate-400 uppercase">{course.name}</p>
+
+    <a
+      href="#overview"
+      class="block rounded-lg bg-indigo-50 px-3 py-2 text-sm font-semibold text-indigo-700"
+    >
+      Course Overview
+    </a>
+
+    {
+      units.map((u) => (
+        <a
+          href={`#unit-${u.number}`}
+          class="block rounded-lg px-3 py-2 transition hover:bg-slate-100"
+        >
+          <span class="text-sm font-semibold text-slate-800">Unit {u.number}</span>
+          <span class="block truncate text-xs text-slate-500">{u.title}</span>
+        </a>
+      ))
+    }
+
+    <button
+      type="button"
+      data-reset-course
+      class="mt-2 block w-full px-3 py-2 text-left text-sm font-medium text-rose-500 transition hover:text-rose-600"
+    >
+      ↺ Reset all progress
+    </button>
+  </nav>
+</aside>
