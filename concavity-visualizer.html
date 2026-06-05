@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 &amp; 9.4 Concavity &amp; Inflection Visualizer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --gold: #ca8a04;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --soft-purple: #f5f3ff;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            padding: 22px;
+            overflow-y: auto;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        .app {
+            width: min(1440px, 100%);
+            display: grid;
+            grid-template-columns: 320px minmax(560px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Controls */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 20px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin-top: 4px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .control-section {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preset-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .toggle-btn.active {
+            background: var(--soft-blue);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .toggle-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 2px solid #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .toggle-btn.active .toggle-indicator {
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+
+        .toggle-indicator::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 1px;
+            display: none;
+        }
+
+        .toggle-btn.active .toggle-indicator::after {
+            display: block;
+        }
+
+        .slider-container {
+            display: grid;
+            gap: 6px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            background: #cbd5e1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--navy);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* CENTER PANEL: Stage with two stacked graphs */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 14px;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .graph-wrap {
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-svg {
+            width: 100%;
+            min-height: 240px;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .graph-svg.f-x {
+            min-height: 290px;
+        }
+
+        .graph-svg.df-x {
+            min-height: 190px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        /* Animated Cup Card */
+        .cup-card {
+            background: var(--soft-blue);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: var(--transition);
+        }
+
+        .cup-card.concave-up {
+            background: var(--soft-green);
+            border-color: #bbf7d0;
+        }
+
+        .cup-card.concave-down {
+            background: var(--soft-orange);
+            border-color: #fde68a;
+        }
+
+        .cup-svg-container {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .cup-graphic {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cup-status-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .cup-status-title {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .cup-card.concave-up .cup-status-title { color: var(--green); }
+        .cup-card.concave-down .cup-status-title { color: var(--orange); }
+
+        .cup-status-desc {
+            font-size: 0.78rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* RIGHT PANEL: Inspector */
+        .inspector {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .readout-card.highlight {
+            border-left: 4px solid var(--purple);
+            background: var(--soft-purple);
+        }
+
+        .readout-card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .equation-box {
+            font-size: 1.05rem;
+            text-align: center;
+            padding: 6px 0;
+            overflow-x: auto;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inspector-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.85rem;
+        }
+
+        .inspector-row:last-child {
+            border-bottom: none;
+        }
+
+        .inspector-row .label {
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .inspector-row .val {
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        /* SVG styles */
+        .axis-line { stroke: #94a3b8; stroke-width: 1.25; }
+        .grid-line { stroke: #f1f5f9; stroke-width: 0.75; }
+        .curve { fill: none; stroke: var(--navy); stroke-width: 3; stroke-linecap: round; }
+        .deriv-curve { fill: none; stroke: var(--purple); stroke-width: 2.25; stroke-dasharray: 4 2; opacity: 0.8; }
+        .tangent-line { fill: none; stroke: var(--blue); stroke-width: 1.75; }
+        .tracker-line { stroke: #94a3b8; stroke-width: 1.25; stroke-dasharray: 3 3; }
+        .tracker-dot { fill: var(--navy); stroke: white; stroke-width: 2; r: 5.5; }
+        .tracker-dot.deriv { fill: var(--purple); }
+        .inflection-dot { fill: var(--gold); stroke: white; stroke-width: 2; r: 6; cursor: help; }
+        
+        /* Shading overlays */
+        .shade-up { fill: var(--soft-green); opacity: 0.45; }
+        .shade-down { fill: var(--soft-orange); opacity: 0.45; }
+
+        .axis-label {
+            font-size: 10px;
+            fill: var(--muted);
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        /* Quiz Module */
+        .quiz-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header {
+            background: var(--navy);
+            color: white;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-body {
+            padding: 14px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-q {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .quiz-opts {
+            display: grid;
+            gap: 6px;
+        }
+
+        .quiz-opt {
+            background: var(--soft);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-opt:hover {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .quiz-opt.correct {
+            background: var(--soft-green);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .quiz-opt.incorrect {
+            background: #fff5f5;
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .quiz-feedback {
+            font-size: 0.8rem;
+            font-weight: 700;
+            min-height: 18px;
+        }
+
+        .quiz-footer {
+            padding: 10px 14px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 1200px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+            html, body {
+                overflow-y: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ============================================================
+         LEFT PANEL — CONTROLS
+         ============================================================ -->
+    <aside class="panel controls" aria-label="Visualizer Controls">
+        <div class="brand">
+            <span class="section-label">Section 1.3 &amp; 9.4</span>
+            <h1>Concavity Visualizer</h1>
+        </div>
+
+        <!-- Presets Section -->
+        <section class="control-section">
+            <h2 class="group-title">Function Presets</h2>
+            <select class="preset-select" id="presetSelect">
+                <option value="cubic">Cubic Polynomial: 1/6 x³ - x</option>
+                <option value="sine">Trigonometric: 2 sin(x)</option>
+                <option value="bell">Gaussian Bell Curve: 8 / (x² + 2)</option>
+                <option value="quartic">Quartic Double-Well: 1/12 x⁴ - x²</option>
+                <option value="parabola">Parabola (Constant Concavity): 1/4 x² - 1</option>
+            </select>
+        </section>
+
+        <!-- Toggle Controls -->
+        <section class="control-section" style="gap: 10px;">
+            <h2 class="group-title">Visual Overlays</h2>
+            
+            <button class="toggle-btn active" id="toggleTangentBtn">
+                <span class="toggle-indicator"></span>
+                <span>Show Tangent Line</span>
+            </button>
+            
+            <button class="toggle-btn active" id="toggleDerivBtn">
+                <span class="toggle-indicator"></span>
+                <span>Show Derivative f'(x)</span>
+            </button>
+
+            <button class="toggle-btn active" id="toggleShadingBtn">
+                <span class="toggle-indicator"></span>
+                <span>Shade Concavity Intervals</span>
+            </button>
+        </section>
+
+        <!-- Drag Tracker Slider -->
+        <section class="control-section">
+            <h2 class="group-title">Tracker X Position</h2>
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Position x</span>
+                    <span id="sliderValX">0.00</span>
+                </div>
+                <input type="range" class="slider" id="trackerSlider" min="-4.5" max="4.5" step="0.05" value="0.00">
+            </div>
+        </section>
+    </aside>
+
+    <!-- ============================================================
+         CENTER PANEL — STACKED GRAPH CANVAS
+         ============================================================ -->
+    <main class="panel stage" aria-label="Visual Graphs">
+        <header class="stage-header">
+            <h2 class="stage-title">Interactive Graphs</h2>
+            <span id="coordReadout" style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">Hover/Drag graph to move tangent</span>
+        </header>
+
+        <!-- Staged Graph Containers -->
+        <div class="graph-wrap" style="flex-direction: column;">
+            <!-- Top SVG: f(x) and Tangent -->
+            <svg class="graph-svg f-x" id="svgFx" viewBox="0 0 600 300">
+                <!-- Concavity Shading Background -->
+                <g id="fxShading"></g>
+                <!-- Mathematical grid lines -->
+                <g id="fxGrid"></g>
+                <!-- Tangent line -->
+                <line class="tangent-line" id="tangentLine" x1="0" y1="0" x2="0" y2="0" display="none"></line>
+                <!-- f(x) curve -->
+                <path class="curve" id="fxCurve" d=""></path>
+                <!-- Inflection dots -->
+                <g id="inflectionGroup"></g>
+                <!-- Vert tracker line -->
+                <line class="tracker-line" id="fxTrackerVert"></line>
+                <!-- Point of tangency -->
+                <circle class="tracker-dot" id="fxTrackerDot" cx="0" cy="0"></circle>
+            </svg>
+
+            <!-- Bottom SVG: f'(x) (slope) -->
+            <svg class="graph-svg df-x" id="svgDfx" viewBox="0 0 600 200">
+                <g id="dfxGrid"></g>
+                <!-- f'(x) curve -->
+                <path class="deriv-curve" id="dfxCurve" d="" display="none"></path>
+                <!-- Vert tracker line -->
+                <line class="tracker-line" id="dfxTrackerVert"></line>
+                <!-- Slope point tracker -->
+                <circle class="tracker-dot deriv" id="dfxTrackerDot" cx="0" cy="0"></circle>
+            </svg>
+        </div>
+
+        <!-- Animated Cup Test widget -->
+        <div class="cup-card" id="cupWidget">
+            <div class="cup-svg-container">
+                <svg class="cup-graphic" id="cupSvg" viewBox="0 0 100 100">
+                    <!-- Liquid inside -->
+                    <path id="cupLiquid" d="M 25 50 Q 50 65 75 50 L 70 80 Q 50 85 30 80 Z" fill="#3b82f6" opacity="0.8"></path>
+                    <!-- The Bowl -->
+                    <path d="M 20 40 L 28 80 Q 50 88 72 80 L 80 40" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round"></path>
+                    <!-- Handle -->
+                    <path d="M 22 45 Q 8 50 24 72" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round"></path>
+                    <!-- Spilled liquid droplets (hidden by default) -->
+                    <g id="spillDrops" display="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" fill="none">
+                        <line x1="35" y1="90" x2="35" y2="105"></line>
+                        <line x1="50" y1="92" x2="50" y2="110"></line>
+                        <line x1="65" y1="90" x2="65" y2="105"></line>
+                    </g>
+                </svg>
+            </div>
+            <div class="cup-status-text">
+                <span class="cup-status-title" id="cupTitle">Holds Water</span>
+                <span class="cup-status-desc" id="cupDesc">f''(x) > 0: Concave Up (Tangent slope is increasing)</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+         RIGHT PANEL — INSPECTOR & EXPLAINER
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebraic Analysis">
+        <!-- Formulas Card -->
+        <div class="readout-card highlight">
+            <div class="readout-card-title">Calculus Derivatives</div>
+            <div class="equation-box" id="eqReadoutFx">f(x) = \frac{1}{6}x^3 - x</div>
+            <div class="equation-box" id="eqReadoutDfx" style="font-size:0.95em; color:var(--purple); border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px;">f'(x) = \frac{1}{2}x^2 - 1</div>
+            <div class="equation-box" id="eqReadoutDdfx" style="font-size:0.95em; color:var(--gold); border-top:1px dashed #cbd5e1; margin-top:4px; padding-top:4px;">f''(x) = x</div>
+        </div>
+
+        <!-- Coordinate Values Card -->
+        <div class="readout-card">
+            <div class="readout-card-title">Tangent Slope Analyzer</div>
+            <div class="inspector-row">
+                <span class="label">Tracker Coordinate x</span>
+                <span class="val" id="readoutX">0.00</span>
+            </div>
+            <div class="inspector-row">
+                <span class="label">Height y = f(x)</span>
+                <span class="val" id="readoutY">0.00</span>
+            </div>
+            <div class="inspector-row" style="color: var(--blue);">
+                <span class="label" style="color: var(--blue);">Tangent Slope f'(x)</span>
+                <span class="val" id="readoutSlope">-1.00</span>
+            </div>
+            <div class="inspector-row" style="color: var(--gold);">
+                <span class="label" style="color: var(--gold);">Second Derivative f''(x)</span>
+                <span class="val" id="readoutConcavity">0.00</span>
+            </div>
+        </div>
+
+        <!-- Concavity Info Checklist -->
+        <div class="readout-card">
+            <div class="readout-card-title">Inflection Point Checklist</div>
+            <div class="inspector-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                <span class="label" id="inflectCheckTitle">Inflection points of this function:</span>
+                <span id="inflectCheckText" style="font-size: 0.82rem; line-height: 1.4; color: var(--ink);">
+                    x = 0 is an inflection point because f''(0) = 0 and concavity changes signs from negative to positive.
+                </span>
+            </div>
+        </div>
+
+        <!-- Interactive Quiz Card -->
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <span>Concavity &amp; Inflection Quiz</span>
+                <span id="quizScore">Score: 0/0</span>
+            </div>
+            <div class="quiz-body">
+                <div class="quiz-q" id="quizQuestion">Test your concavity intuition!</div>
+                <div class="quiz-opts" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+            </div>
+            <div class="quiz-footer">
+                <button class="btn-small btn-secondary" id="quizResetBtn" style="display:none;">Next Question</button>
+                <button class="btn-small btn-primary" id="quizStartBtn" style="width: 100%;">Start Quiz</button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function() {
+    /* ============================================================
+       STATE & CONFIG
+       ============================================================ */
+    let currentX = 0.0;
+    let currentPreset = 'cubic';
+    
+    // Toggle overlays
+    let showTangent = true;
+    let showDerivative = true;
+    let showShading = true;
+
+    // Quiz module state
+    let quizActive = false;
+    let quizCorrectCount = 0;
+    let quizTotalCount = 0;
+    let currentQuizData = null;
+
+    // Bounds for graphs
+    const minX = -5, maxX = 5;
+    const minY = -4, maxY = 4; // Top graph
+    const minDy = -3, maxDy = 3; // Bottom graph
+
+    // SVG coordinate projections
+    const cx = 300;
+    const cy = 150;
+    const cy_deriv = 100;
+    const scaleX = 60; // 600 px / 10 units
+    const scaleY = 37.5; // 300 px / 8 units
+    const scaleY_deriv = 33.333333333333336; // 200 px / 6 units
+
+    function toSvgX(x) { return cx + x * scaleX; }
+    function toSvgY(y) { return cy - y * scaleY; }
+    function toSvgY_deriv(y) { return cy_deriv - y * scaleY_deriv; }
+
+    // Presets definitions
+    const presets = {
+        cubic: {
+            f: x => (1/6) * x * x * x - x,
+            df: x => 0.5 * x * x - 1,
+            ddf: x => x,
+            inflections: [0],
+            fLaTeX: "f(x) = \\frac{1}{6}x^3 - x",
+            dfLaTeX: "f'(x) = \\frac{1}{2}x^2 - 1",
+            ddfLaTeX: "f''(x) = x",
+            desc: "Inflection point at $x = 0$. For $x < 0$, $f''(x) < 0$ (Concave Down). For $x > 0$, $f''(x) > 0$ (Concave Up)."
+        },
+        sine: {
+            f: x => 2.0 * Math.sin(x),
+            df: x => 2.0 * Math.cos(x),
+            ddf: x => -2.0 * Math.sin(x),
+            inflections: [-Math.PI, 0, Math.PI],
+            fLaTeX: "f(x) = 2\\sin(x)",
+            dfLaTeX: "f'(x) = 2\\cos(x)",
+            ddfLaTeX: "f''(x) = -2\\sin(x)",
+            desc: "Inflection points at $x = -\\pi, 0, \\pi$ (where $\\sin(x) = 0$). Concavity switches periodically."
+        },
+        bell: {
+            f: x => 8.0 / (x * x + 2.0),
+            df: x => (-16.0 * x) / Math.pow(x * x + 2.0, 2),
+            ddf: x => 16.0 * (3.0 * x * x - 2.0) / Math.pow(x * x + 2.0, 3),
+            inflections: [-Math.sqrt(2/3), Math.sqrt(2/3)], // +- 0.816
+            fLaTeX: "f(x) = \\frac{8}{x^2+2}",
+            dfLaTeX: "f'(x) = \\frac{-16x}{(x^2+2)^2}",
+            ddfLaTeX: "f''(x) = \\frac{16(3x^2-2)}{(x^2+2)^3}",
+            desc: "Inflection points at $x \\approx \\pm 0.82$ (where $3x^2 - 2 = 0$). Concave Up at the outer tails; Concave Down at the central peak."
+        },
+        quartic: {
+            f: x => (1/12) * Math.pow(x, 4) - x * x,
+            df: x => (1/3) * x * x * x - 2 * x,
+            ddf: x => x * x - 2,
+            inflections: [-Math.sqrt(2), Math.sqrt(2)], // +- 1.414
+            fLaTeX: "f(x) = \\frac{1}{12}x^4 - x^2",
+            dfLaTeX: "f'(x) = \\frac{1}{3}x^3 - 2x",
+            ddfLaTeX: "f''(x) = x^2 - 2",
+            desc: "Double-well quartic has inflection points at $x = \\pm\\sqrt{2} \\approx \\pm 1.41$. Concave Down in the middle; Concave Up on the outer branches."
+        },
+        parabola: {
+            f: x => 0.25 * x * x - 1,
+            df: x => 0.5 * x,
+            ddf: x => 0.5,
+            inflections: [],
+            fLaTeX: "f(x) = \\frac{1}{4}x^2 - 1",
+            dfLaTeX: "f'(x) = \\frac{1}{2}x",
+            ddfLaTeX: "f''(x) = 0.5",
+            desc: "Parabola has no inflection points. Second derivative is constant $f''(x) = 0.5 > 0$, so it is always Concave Up."
+        }
+    };
+
+    // DOM references
+    const presetSelect = document.getElementById('presetSelect');
+    const toggleTangentBtn = document.getElementById('toggleTangentBtn');
+    const toggleDerivBtn = document.getElementById('toggleDerivBtn');
+    const toggleShadingBtn = document.getElementById('toggleShadingBtn');
+    const trackerSlider = document.getElementById('trackerSlider');
+    const sliderValX = document.getElementById('sliderValX');
+    const coordReadout = document.getElementById('coordReadout');
+
+    const svgFx = document.getElementById('svgFx');
+    const svgDfx = document.getElementById('svgDfx');
+    const fxShading = document.getElementById('fxShading');
+    const fxGrid = document.getElementById('fxGrid');
+    const dfxGrid = document.getElementById('dfxGrid');
+    const fxCurve = document.getElementById('fxCurve');
+    const dfxCurve = document.getElementById('dfxCurve');
+    const tangentLine = document.getElementById('tangentLine');
+    const inflectionGroup = document.getElementById('inflectionGroup');
+    const fxTrackerVert = document.getElementById('fxTrackerVert');
+    const dfxTrackerVert = document.getElementById('dfxTrackerVert');
+    const fxTrackerDot = document.getElementById('fxTrackerDot');
+    const dfxTrackerDot = document.getElementById('dfxTrackerDot');
+
+    // Cup test elements
+    const cupWidget = document.getElementById('cupWidget');
+    const cupSvg = document.getElementById('cupSvg');
+    const cupLiquid = document.getElementById('cupLiquid');
+    const spillDrops = document.getElementById('spillDrops');
+    const cupTitle = document.getElementById('cupTitle');
+    const cupDesc = document.getElementById('cupDesc');
+
+    // Right inspector
+    const eqReadoutFx = document.getElementById('eqReadoutFx');
+    const eqReadoutDfx = document.getElementById('eqReadoutDfx');
+    const eqReadoutDdfx = document.getElementById('eqReadoutDdfx');
+    const readoutX = document.getElementById('readoutX');
+    const readoutY = document.getElementById('readoutY');
+    const readoutSlope = document.getElementById('readoutSlope');
+    const readoutConcavity = document.getElementById('readoutConcavity');
+    const inflectCheckTitle = document.getElementById('inflectCheckTitle');
+    const inflectCheckText = document.getElementById('inflectCheckText');
+
+    // Quiz
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScore = document.getElementById('quizScore');
+    const quizStartBtn = document.getElementById('quizStartBtn');
+    const quizResetBtn = document.getElementById('quizResetBtn');
+
+    /* ============================================================
+       GRIDS INITIALIZATION
+       ============================================================ */
+    function drawCartesianGrids() {
+        // Draw f(x) Grid
+        fxGrid.innerHTML = '';
+        dfxGrid.innerHTML = '';
+
+        // Horiz grid lines
+        for (let y = -3; y <= 3; y++) {
+            if (y === 0) continue;
+            let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', 0);
+            line.setAttribute('y1', toSvgY(y));
+            line.setAttribute('x2', 600);
+            line.setAttribute('y2', toSvgY(y));
+            fxGrid.appendChild(line);
+
+            let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', cx + 15);
+            txt.setAttribute('y', toSvgY(y));
+            txt.textContent = y;
+            fxGrid.appendChild(txt);
+        }
+
+        // Vert grid lines (shared x)
+        for (let x = -4; x <= 4; x++) {
+            if (x === 0) continue;
+            let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', toSvgX(x));
+            line.setAttribute('y1', 0);
+            line.setAttribute('x2', toSvgX(x));
+            line.setAttribute('y2', 300);
+            fxGrid.appendChild(line);
+
+            let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', toSvgX(x));
+            txt.setAttribute('y', cy + 15);
+            txt.textContent = x;
+            fxGrid.appendChild(txt);
+        }
+
+        // Axes Top
+        let xAxisFx = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxisFx.setAttribute('class', 'axis-line');
+        xAxisFx.setAttribute('x1', 0); xAxisFx.setAttribute('y1', toSvgY(0));
+        xAxisFx.setAttribute('x2', 600); xAxisFx.setAttribute('y2', toSvgY(0));
+        fxGrid.appendChild(xAxisFx);
+
+        let yAxisFx = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxisFx.setAttribute('class', 'axis-line');
+        yAxisFx.setAttribute('x1', toSvgX(0)); yAxisFx.setAttribute('y1', 0);
+        yAxisFx.setAttribute('x2', toSvgX(0)); yAxisFx.setAttribute('y2', 300);
+        fxGrid.appendChild(yAxisFx);
+
+
+        // Bottom Grid f'(x)
+        for (let y = -2; y <= 2; y++) {
+            if (y === 0) continue;
+            let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', 0);
+            line.setAttribute('y1', toSvgY_deriv(y));
+            line.setAttribute('x2', 600);
+            line.setAttribute('y2', toSvgY_deriv(y));
+            dfxGrid.appendChild(line);
+
+            let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', cx + 15);
+            txt.setAttribute('y', toSvgY_deriv(y));
+            txt.textContent = y;
+            dfxGrid.appendChild(txt);
+        }
+
+        for (let x = -4; x <= 4; x++) {
+            if (x === 0) continue;
+            let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', toSvgX(x));
+            line.setAttribute('y1', 0);
+            line.setAttribute('x2', toSvgX(x));
+            line.setAttribute('y2', 200);
+            dfxGrid.appendChild(line);
+
+            let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', toSvgX(x));
+            txt.setAttribute('y', cy_deriv + 15);
+            txt.textContent = x;
+            dfxGrid.appendChild(txt);
+        }
+
+        let xAxisDfx = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxisDfx.setAttribute('class', 'axis-line');
+        xAxisDfx.setAttribute('x1', 0); xAxisDfx.setAttribute('y1', toSvgY_deriv(0));
+        xAxisDfx.setAttribute('x2', 600); xAxisDfx.setAttribute('y2', toSvgY_deriv(0));
+        dfxGrid.appendChild(xAxisDfx);
+
+        let yAxisDfx = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxisDfx.setAttribute('class', 'axis-line');
+        yAxisDfx.setAttribute('x1', toSvgX(0)); yAxisDfx.setAttribute('y1', 0);
+        yAxisDfx.setAttribute('x2', toSvgX(0)); yAxisDfx.setAttribute('y2', 200);
+        dfxGrid.appendChild(yAxisDfx);
+    }
+
+    /* ============================================================
+       RENDER LOGIC
+       ============================================================ */
+    function render() {
+        const p = presets[currentPreset];
+        
+        // 1. Equations Readout
+        katex.render(p.fLaTeX, eqReadoutFx, { throwOnError: false });
+        katex.render(p.dfLaTeX, eqReadoutDfx, { throwOnError: false });
+        katex.render(p.ddfLaTeX, eqReadoutDdfx, { throwOnError: false });
+
+        // 2. Draw Curve paths
+        drawCurves(p);
+
+        // 3. Highlight/shade concavity intervals
+        drawConcavityShading(p);
+
+        // 4. Place Inflection Points
+        drawInflections(p);
+
+        // 5. Update Interactive Tangent/Slop values
+        updateTracker(p);
+
+        // 6. Inflection text checklist
+        inflectCheckTitle.textContent = `Inflection points of this function:`;
+        inflectCheckText.innerHTML = p.desc;
+        try {
+            renderMathInElement(inflectCheckText, {
+                delimiters: [
+                    { left: '$', right: '$', display: false }
+                ],
+                throwOnError: false
+            });
+        } catch(e) {}
+    }
+
+    function drawCurves(p) {
+        // Top curve f(x)
+        let fxPath = "";
+        let dfxPath = "";
+        let first = true;
+        let step = 0.05;
+
+        for (let x = -5.05; x <= 5.05; x += step) {
+            let y = p.f(x);
+            let dy = p.df(x);
+
+            // top curve
+            let cappedY = Math.max(-10, Math.min(10, y));
+            let px = toSvgX(x);
+            let py = toSvgY(cappedY);
+            if (first) {
+                fxPath += `M ${px} ${py}`;
+            } else {
+                fxPath += ` L ${px} ${py}`;
+            }
+
+            // bottom curve
+            let cappedDy = Math.max(-10, Math.min(10, dy));
+            let pdy = toSvgY_deriv(cappedDy);
+            if (first) {
+                dfxPath += `M ${px} ${pdy}`;
+                first = false;
+            } else {
+                dfxPath += ` L ${px} ${pdy}`;
+            }
+        }
+
+        fxCurve.setAttribute('d', fxPath);
+        dfxCurve.setAttribute('d', dfxPath);
+        dfxCurve.setAttribute('display', showDerivative ? 'block' : 'none');
+    }
+
+    function drawConcavityShading(p) {
+        fxShading.innerHTML = '';
+        if (!showShading) return;
+
+        // Concavity interval division
+        // We find signs of ddf(x) at multiple sample points
+        // Let's divide [-5, 5] into small blocks and shade them
+        let step = 0.05;
+        let startX = -5;
+        let currentSign = Math.sign(p.ddf(startX));
+
+        for (let x = -5; x <= 5.01; x += step) {
+            let sign = Math.sign(p.ddf(x));
+            // If sign changed or we reached the end
+            if (sign !== currentSign || x > 5) {
+                let endX = x;
+                // Draw shading rect from startX to endX
+                let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('class', currentSign >= 0 ? 'shade-up' : 'shade-down');
+                rect.setAttribute('x', toSvgX(startX));
+                rect.setAttribute('y', 0);
+                rect.setAttribute('width', toSvgX(endX) - toSvgX(startX));
+                rect.setAttribute('height', 300);
+                fxShading.appendChild(rect);
+
+                startX = endX;
+                currentSign = sign;
+            }
+        }
+    }
+
+    function drawInflections(p) {
+        inflectionGroup.innerHTML = '';
+        p.inflections.forEach(x => {
+            if (x >= -5 && x <= 5) {
+                let y = p.f(x);
+                let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('class', 'inflection-dot');
+                circle.setAttribute('cx', toSvgX(x));
+                circle.setAttribute('cy', toSvgY(y));
+                
+                // Tooltip info
+                let title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+                title.textContent = `Inflection Point at x = ${x.toFixed(2)}`;
+                circle.appendChild(title);
+
+                inflectionGroup.appendChild(circle);
+            }
+        });
+    }
+
+    function updateTracker(p) {
+        let x = currentX;
+        let y = p.f(x);
+        let dy = p.df(x);
+        let ddy = p.ddf(x);
+
+        // 1. Text readouts
+        sliderValX.textContent = x.toFixed(2);
+        trackerSlider.value = x.toFixed(2);
+        coordReadout.textContent = `Point: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+        
+        readoutX.textContent = x.toFixed(2);
+        readoutY.textContent = y.toFixed(2);
+        readoutSlope.textContent = dy.toFixed(2);
+        readoutConcavity.textContent = ddy.toFixed(2);
+
+        // 2. SVG Tracker elements positioning
+        fxTrackerVert.setAttribute('x1', toSvgX(x));
+        fxTrackerVert.setAttribute('y1', 0);
+        fxTrackerVert.setAttribute('x2', toSvgX(x));
+        fxTrackerVert.setAttribute('y2', 300);
+        fxTrackerDot.setAttribute('cx', toSvgX(x));
+        fxTrackerDot.setAttribute('cy', toSvgY(y));
+
+        dfxTrackerVert.setAttribute('x1', toSvgX(x));
+        dfxTrackerVert.setAttribute('y1', 0);
+        dfxTrackerVert.setAttribute('x2', toSvgX(x));
+        dfxTrackerVert.setAttribute('y2', 200);
+        dfxTrackerDot.setAttribute('cx', toSvgX(x));
+        dfxTrackerDot.setAttribute('cy', toSvgY_deriv(dy));
+
+        dfxTrackerVert.setAttribute('display', showDerivative ? 'block' : 'none');
+        dfxTrackerDot.setAttribute('display', showDerivative ? 'block' : 'none');
+
+        // 3. Tangent Line equation: y_tangent = dy * (X_var - x) + y
+        if (showTangent) {
+            tangentLine.setAttribute('display', 'block');
+            // Find endpoints at X = -6 and X = 6
+            let y1 = dy * (-6 - x) + y;
+            let y2 = dy * (6 - x) + y;
+            tangentLine.setAttribute('x1', toSvgX(-6));
+            tangentLine.setAttribute('y1', toSvgY(y1));
+            tangentLine.setAttribute('x2', toSvgX(6));
+            tangentLine.setAttribute('y2', toSvgY(y2));
+        } else {
+            tangentLine.setAttribute('display', 'none');
+        }
+
+        // 4. Update Cup Test Graphic
+        updateCupGraphic(ddy);
+    }
+
+    function updateCupGraphic(ddy) {
+        if (Math.abs(ddy) < 1e-4) {
+            // Inflection point: Flat / Straight cup
+            cupWidget.className = "cup-card";
+            cupSvg.style.transform = 'rotate(0deg)';
+            cupLiquid.setAttribute('d', "M 25 50 Q 50 50 75 50 L 70 80 Q 50 80 30 80 Z"); // flat liquid
+            spillDrops.setAttribute('display', 'none');
+            cupTitle.textContent = "Inflection Point (Flat)";
+            cupDesc.textContent = "f''(x) = 0: Concavity is changing at this coordinate.";
+        } else if (ddy > 0) {
+            // Concave Up: Holds water
+            cupWidget.className = "cup-card concave-up";
+            cupSvg.style.transform = 'rotate(0deg)';
+            cupLiquid.setAttribute('d', "M 25 50 Q 50 65 75 50 L 70 80 Q 50 85 30 80 Z"); // filled liquid
+            spillDrops.setAttribute('display', 'none');
+            cupTitle.textContent = "Holds Water (Concave Up)";
+            cupDesc.textContent = `f''(x) = ${ddy.toFixed(2)} > 0: tangent line is UNDER the curve.`;
+        } else {
+            // Concave Down: Spills water
+            cupWidget.className = "cup-card concave-down";
+            // Rotate cup 180deg to spill
+            cupSvg.style.transform = 'rotate(180deg)';
+            cupLiquid.setAttribute('d', "M 25 55 Q 50 45 75 55 L 70 80 Q 50 80 30 80 Z"); // emptyish/dropping
+            spillDrops.setAttribute('display', 'block');
+            cupTitle.textContent = "Spills Water (Concave Down)";
+            cupDesc.textContent = `f''(x) = ${ddy.toFixed(2)} < 0: tangent line is OVER the curve.`;
+        }
+    }
+
+    /* ============================================================
+       INTERACTION LISTENERS
+       ============================================================ */
+    trackerSlider.addEventListener('input', e => {
+        currentX = parseFloat(e.target.value);
+        updateTracker(presets[currentPreset]);
+    });
+
+    presetSelect.addEventListener('change', e => {
+        currentPreset = e.target.value;
+        currentX = 0; // reset
+        render();
+    });
+
+    function setupToggle(btn, callback) {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            callback(btn.classList.contains('active'));
+            render();
+        });
+    }
+
+    setupToggle(toggleTangentBtn, val => showTangent = val);
+    setupToggle(toggleDerivBtn, val => showDerivative = val);
+    setupToggle(toggleShadingBtn, val => showShading = val);
+
+    // Mouse drag directly on graph canvas
+    function handleGraphDrag(e, svgElement) {
+        const rect = svgElement.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        
+        // Map mouseX (0 to rect.width) to Cartesian x (-5 to 5)
+        let cartX = -5 + (mouseX / rect.width) * 10;
+        
+        // Clamp cartX
+        currentX = Math.max(-4.5, Math.min(4.5, cartX));
+        updateTracker(presets[currentPreset]);
+    }
+
+    function attachDragHandlers(svgElement) {
+        let isDragging = false;
+        
+        svgElement.addEventListener('mousedown', e => {
+            isDragging = true;
+            handleGraphDrag(e, svgElement);
+        });
+        
+        document.addEventListener('mousemove', e => {
+            if (isDragging) {
+                handleGraphDrag(e, svgElement);
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Touch support
+        svgElement.addEventListener('touchstart', e => {
+            isDragging = true;
+            handleGraphDrag(e.touches[0], svgElement);
+        }, { passive: true });
+
+        svgElement.addEventListener('touchmove', e => {
+            if (isDragging) {
+                handleGraphDrag(e.touches[0], svgElement);
+            }
+        }, { passive: true });
+
+        svgElement.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+    }
+
+    attachDragHandlers(svgFx);
+    attachDragHandlers(svgDfx);
+
+    /* ============================================================
+       QUIZ SYSTEM
+       ============================================================ */
+    const quizQuestions = [
+        {
+            q: "At x = -2, is the cubic function concave UP or concave DOWN?",
+            preset: "cubic",
+            xVal: -2,
+            opts: ["Concave Up (∪)", "Concave Down (∩)", "Inflection Point"],
+            ans: "Concave Down (∩)",
+            feedback: "Correct! The second derivative of the cubic function at x = -2 is f''(-2) = -2 < 0, meaning it is concave down."
+        },
+        {
+            q: "Where is the inflection point of the cubic function f(x) = 1/6 x³ - x?",
+            preset: "cubic",
+            opts: ["x = -1", "x = 0", "x = 1", "x = 2"],
+            ans: "x = 0",
+            feedback: "Correct! The second derivative is f''(x) = x, which equals 0 at x = 0 and changes signs."
+        },
+        {
+            q: "For the sine function f(x) = 2 sin(x), what is the concavity at x = 2.0 (radians)?",
+            preset: "sine",
+            xVal: 2.0,
+            opts: ["Concave Up (∪)", "Concave Down (∩)", "Inflection Point"],
+            ans: "Concave Down (∩)",
+            feedback: "Correct! f''(2.0) = -2 sin(2.0) ≈ -1.82 < 0, so the graph is concave down."
+        },
+        {
+            q: "What is the concavity of the Gaussian bell curve at the peak (x = 0)?",
+            preset: "bell",
+            xVal: 0.0,
+            opts: ["Concave Up (∪)", "Concave Down (∩)", "Inflection Point"],
+            ans: "Concave Down (∩)",
+            feedback: "Correct! At x = 0, the bell curve is concave down (spills water) to form its peak."
+        },
+        {
+            q: "For the double-well quartic, which of these is an inflection point?",
+            preset: "quartic",
+            opts: ["x = 0", "x = 1", "x ≈ 1.41 (√2)", "x = 2"],
+            ans: "x ≈ 1.41 (√2)",
+            feedback: "Correct! Setting f''(x) = x² - 2 = 0 gives inflection points at x = ±√2 ≈ ±1.41."
+        },
+        {
+            q: "Does the parabola f(x) = 1/4 x² - 1 have any inflection points?",
+            preset: "parabola",
+            opts: ["Yes, at x = 0", "Yes, at x = 1", "No inflection points"],
+            ans: "No inflection points",
+            feedback: "Correct! A quadratic has constant concavity (f''(x) = 0.5 everywhere) and never changes concavity."
+        }
+    ];
+
+    function startQuizQuestion() {
+        quizFeedback.textContent = '';
+        quizFeedback.style.color = '';
+        quizOptions.innerHTML = '';
+
+        // Select a random question
+        let q = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+        currentQuizData = q;
+
+        // Force preset change to match question context
+        currentPreset = q.preset;
+        presetSelect.value = q.preset;
+        
+        // If question specifies an xVal, move tracker there so they can inspect it!
+        if (q.xVal !== undefined) {
+            currentX = q.xVal;
+        } else {
+            currentX = 0;
+        }
+
+        render();
+
+        quizQuestion.textContent = q.q;
+
+        q.opts.forEach(opt => {
+            let btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.textContent = opt;
+            btn.addEventListener('click', () => handleQuizAnswer(btn, opt, q.ans, q.feedback));
+            quizOptions.appendChild(btn);
+        });
+    }
+
+    function handleQuizAnswer(selectedBtn, chosenOpt, correctAns, feedbackText) {
+        document.querySelectorAll('.quiz-opt').forEach(btn => {
+            btn.disabled = true;
+            if (btn.textContent === correctAns) {
+                btn.classList.add('correct');
+            }
+        });
+
+        quizTotalCount++;
+        if (chosenOpt === correctAns) {
+            quizCorrectCount++;
+            quizFeedback.textContent = feedbackText;
+            quizFeedback.style.color = "var(--green)";
+        } else {
+            selectedBtn.classList.add('incorrect');
+            quizFeedback.textContent = `Incorrect. ${feedbackText}`;
+            quizFeedback.style.color = "var(--red)";
+        }
+
+        quizScore.textContent = `Score: ${quizCorrectCount}/${quizTotalCount}`;
+        quizResetBtn.style.display = 'block';
+    }
+
+    quizStartBtn.addEventListener('click', () => {
+        quizActive = true;
+        quizStartBtn.style.display = 'none';
+        quizResetBtn.style.display = 'block';
+        startQuizQuestion();
+    });
+
+    quizResetBtn.addEventListener('click', () => {
+        startQuizQuestion();
+    });
+
+    /* ============================================================
+       INITIALIZATION
+       ============================================================ */
+    drawCartesianGrids();
+    render();
+})();
+</script>
+</body>
+</html>

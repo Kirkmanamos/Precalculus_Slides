@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1.3 Graph Behavior Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --soft-red: #fef2f2;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            padding: 22px;
+            overflow-x: hidden;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100vh - 44px);
+            display: grid;
+            grid-template-columns: 310px minmax(560px, 1fr) 330px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Controls */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 20px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin-top: 4px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .control-section {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .preset-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: var(--ink);
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .preset-select:hover, .preset-select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 11px 14px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .toggle-btn:hover {
+            border-color: #94a3b8;
+            background: var(--soft);
+        }
+
+        .toggle-btn.active[data-type="increasing"] {
+            border-color: var(--green);
+            background: var(--soft-green);
+            color: #15803d;
+        }
+
+        .toggle-btn.active[data-type="decreasing"] {
+            border-color: var(--orange);
+            background: var(--soft-orange);
+            color: #b45309;
+        }
+
+        .toggle-btn.active[data-type="positive"] {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+            color: #1d4ed8;
+        }
+
+        .toggle-btn.active[data-type="negative"] {
+            border-color: var(--red);
+            background: var(--soft-red);
+            color: #b91c1c;
+        }
+
+        .toggle-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #cbd5e1;
+            transition: var(--transition);
+        }
+
+        .toggle-btn.active .toggle-indicator {
+            background: currentColor;
+            transform: scale(1.2);
+        }
+
+        .slider-container {
+            display: grid;
+            gap: 6px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--navy);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* CENTER PANEL: Canvas area */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            position: relative;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stage-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: crosshair;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 100%;
+            min-height: 480px;
+            user-select: none;
+        }
+
+        /* RIGHT PANEL: Inspector */
+        .inspector {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 18px;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .readout-card.highlight {
+            border-left: 4px solid var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .readout-card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .equation-box {
+            font-size: 1rem;
+            text-align: center;
+            padding: 8px 0;
+            overflow-x: auto;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.88rem;
+        }
+
+        .tracker-cell {
+            background: white;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tracker-cell .val {
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--navy);
+        }
+
+        .interval-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.88rem;
+        }
+
+        .interval-row:last-child {
+            border-bottom: none;
+        }
+
+        .interval-row .tag {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .interval-row .tag::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .interval-row.increasing .tag::before { background: var(--green); }
+        .interval-row.decreasing .tag::before { background: var(--orange); }
+        .interval-row.positive .tag::before { background: var(--blue); }
+        .interval-row.negative .tag::before { background: var(--red); }
+
+        .interval-row .math {
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        /* QUIZ MODULE */
+        .quiz-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header {
+            background: var(--navy);
+            color: white;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-body {
+            padding: 14px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-q {
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 8px;
+        }
+
+        .quiz-opt {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.8rem;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-opt:hover {
+            background: var(--soft-blue);
+            border-color: var(--blue);
+        }
+
+        .quiz-opt.correct {
+            background: var(--soft-green);
+            border-color: var(--green);
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .quiz-opt.incorrect {
+            background: var(--soft-red);
+            border-color: var(--red);
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .quiz-feedback {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 4px;
+            min-height: 18px;
+        }
+
+        .quiz-feedback.correct { color: var(--green); }
+        .quiz-feedback.incorrect { color: var(--red); }
+
+        .quiz-footer {
+            padding: 10px 14px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* SVG styles */
+        .axis-line {
+            stroke: #94a3b8;
+            stroke-width: 1.5;
+        }
+
+        .grid-line {
+            stroke: #e2e8f0;
+            stroke-width: 0.75;
+        }
+
+        .function-curve {
+            fill: none;
+            stroke: var(--navy);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .asymptote-line {
+            stroke: var(--red);
+            stroke-width: 1.5;
+            stroke-dasharray: 6 4;
+        }
+
+        .inflection-marker {
+            fill: gold;
+            stroke: var(--navy);
+            stroke-width: 1.5;
+        }
+
+        .extremum-marker {
+            stroke: white;
+            stroke-width: 2;
+        }
+
+        .extremum-marker.max {
+            fill: var(--green);
+        }
+
+        .extremum-marker.min {
+            fill: var(--red);
+        }
+
+        .tracker-line {
+            stroke: var(--muted);
+            stroke-width: 1.25;
+            stroke-dasharray: 4 4;
+        }
+
+        .tracker-dot {
+            fill: var(--blue);
+            stroke: white;
+            stroke-width: 2.5;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .tangent-line {
+            stroke: #64748b;
+            stroke-width: 1.5;
+            stroke-dasharray: 3 3;
+            opacity: 0.7;
+        }
+
+        .tangent-arrow {
+            stroke-width: 3;
+            stroke-linecap: round;
+            fill: none;
+        }
+
+        .shading {
+            opacity: 0.14;
+            pointer-events: none;
+        }
+
+        .shading.increasing { fill: var(--green); }
+        .shading.decreasing { fill: var(--orange); }
+        .shading.positive { fill: var(--blue); }
+        .shading.negative { fill: var(--red); }
+
+        .axis-label {
+            font-size: 11px;
+            fill: var(--muted);
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        @media (max-width: 1200px) {
+            .app {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            body {
+                overflow-y: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ============================================================
+         LEFT PANEL — CONTROLS
+         ============================================================ -->
+    <aside class="panel controls" aria-label="Explorer Controls">
+        <div class="brand">
+            <span class="section-label">Section 1.3</span>
+            <h1>Graph Behavior</h1>
+        </div>
+
+        <!-- Preset Selection -->
+        <section class="control-section">
+            <h2 class="group-title">Function Presets</h2>
+            <select class="preset-select" id="presetSelect" aria-label="Select function preset">
+                <option value="cubic">f(x) = 0.2x³ - 2.4x (Cubic)</option>
+                <option value="parabola">f(x) = -0.5(x-2)² + 3.5 (Quadratic)</option>
+                <option value="quartic">f(x) = 0.1x⁴ - 0.8x² + 1 (Polynomial)</option>
+                <option value="rational1">f(x) = 4x / (x² + 1) (Rational: Smooth)</option>
+                <option value="rational2">f(x) = (x² - 1) / (x² - 4) (Rational: Asymptotes)</option>
+                <option value="sine">f(x) = 1.5 sin(x) + 0.3x (Trigonometric)</option>
+                <option value="gaussian">f(x) = 3 e^(-0.2x²) (Bell Curve)</option>
+                <option value="piecewise">f(x) = Piecewise Function (Sharp/Jump)</option>
+            </select>
+        </section>
+
+        <!-- Interval Shading Toggles -->
+        <section class="control-section">
+            <h2 class="group-title">Region Shading</h2>
+            <div style="display: grid; gap: 8px;">
+                <button class="toggle-btn" data-type="increasing">
+                    <span>Increasing (f'(x) > 0)</span>
+                    <span class="toggle-indicator"></span>
+                </button>
+                <button class="toggle-btn" data-type="decreasing">
+                    <span>Decreasing (f'(x) < 0)</span>
+                    <span class="toggle-indicator"></span>
+                </button>
+                <button class="toggle-btn" data-type="positive">
+                    <span>Positive (f(x) > 0)</span>
+                    <span class="toggle-indicator"></span>
+                </button>
+                <button class="toggle-btn" data-type="negative">
+                    <span>Negative (f(x) < 0)</span>
+                    <span class="toggle-indicator"></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Dragger Slider Input -->
+        <section class="control-section">
+            <h2 class="group-title">Position Tracker</h2>
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Coordinate x</span>
+                    <span id="sliderVal">0.00</span>
+                </div>
+                <input type="range" class="slider" id="xSlider" min="-6" max="6" step="0.01" value="0">
+            </div>
+        </section>
+    </aside>
+
+    <!-- ============================================================
+         CENTER PANEL — GRAPH CANVAS
+         ============================================================ -->
+    <main class="panel stage" aria-label="Visual Graph Display">
+        <header class="stage-header">
+            <h2 class="stage-title" id="presetTitle">Function Graph</h2>
+            <span style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">Drag mouse on graph to move tracker</span>
+        </header>
+
+        <div class="canvas-container" id="canvasWrap">
+            <svg class="graph-svg" id="graphSvg" viewBox="0 0 680 520">
+                <!-- SVG elements will be drawn dynamically -->
+                <defs>
+                    <!-- Marker for tangent vector arrow -->
+                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+                    </marker>
+                    <marker id="arrow-green" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--green)"/>
+                    </marker>
+                    <marker id="arrow-orange" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--orange)"/>
+                    </marker>
+                </defs>
+
+                <!-- Grid and shading groups -->
+                <g id="gridGroup"></g>
+                <g id="shadingGroup"></g>
+                <g id="asymptoteGroup"></g>
+
+                <!-- Graph path -->
+                <path class="function-curve" id="funcCurve" d=""></path>
+
+                <!-- Extrema and features -->
+                <g id="markersGroup"></g>
+
+                <!-- Active x-tracker elements -->
+                <line class="tracker-line" id="trackerLine" x1="0" y1="35" x2="0" y2="485"></line>
+                <path class="tangent-line" id="tangentLine" d=""></path>
+                <path class="tangent-arrow" id="tangentArrow" d="" marker-end=""></path>
+                <circle class="tracker-dot" id="trackerDot" r="7.5" cx="0" cy="0"></circle>
+            </svg>
+        </div>
+    </main>
+
+    <!-- ============================================================
+         RIGHT PANEL — ALGEBRA INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebraic readout">
+        <!-- Equation read-out -->
+        <div class="readout-card highlight">
+            <div class="readout-card-title">Active Equation</div>
+            <div class="equation-box" id="equationReadout"></div>
+        </div>
+
+        <!-- Draggable Point Read-out -->
+        <div class="readout-card">
+            <div class="readout-card-title">Tracker Coordinates</div>
+            <div class="tracker-grid">
+                <div class="tracker-cell">
+                    <span class="readout-card-title" style="font-size:0.6rem;">Input (x)</span>
+                    <span class="val" id="readoutX">0.00</span>
+                </div>
+                <div class="tracker-cell">
+                    <span class="readout-card-title" style="font-size:0.6rem;">Output f(x)</span>
+                    <span class="val" id="readoutY">0.00</span>
+                </div>
+            </div>
+            <div class="tracker-cell" style="margin-top: 4px;">
+                <span class="readout-card-title" style="font-size:0.6rem;">Tangent Slope f'(x)</span>
+                <span class="val" id="readoutSlope">0.00</span>
+            </div>
+        </div>
+
+        <!-- Intervals lists -->
+        <div class="readout-card">
+            <div class="readout-card-title">Interval Analysis</div>
+            <div id="intervalsBox">
+                <!-- Intervals readouts generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Extrema lists -->
+        <div class="readout-card">
+            <div class="readout-card-title">Extrema & Features</div>
+            <div id="extremaBox" style="font-size: 0.88rem; display: grid; gap: 4px;">
+                <!-- Extrema list generated dynamically -->
+            </div>
+        </div>
+
+        <!-- Quiz Panel -->
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <span>Quiz Module</span>
+                <span id="quizScore">Score: 0/0</span>
+            </div>
+            <div class="quiz-body">
+                <div class="quiz-q" id="quizQuestion">Generating question...</div>
+                <div class="quiz-options" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+            </div>
+            <div class="quiz-footer">
+                <button class="btn-small btn-secondary" id="quizSkipBtn">Skip</button>
+                <button class="btn-small btn-primary" id="quizNextBtn" style="display: none;">Next</button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function() {
+    /* ============================================================
+       STATE & PARAMETERS
+       ============================================================ */
+    let currentPreset = 'cubic';
+    let xTracker = 0.0;
+    const activeShadings = {
+        increasing: false,
+        decreasing: false,
+        positive: false,
+        negative: false
+    };
+
+    // Viewport dimensions
+    const SVG_W = 680;
+    const SVG_H = 520;
+    const cx = 340; // center X
+    const cy = 260; // center Y
+    const scaleX = 50; // pixels per X unit
+    const scaleY = 50; // pixels per Y unit
+
+    // Bounds in math coordinates
+    const minX = -6;
+    const maxX = 6;
+    const minY = -4.5;
+    const maxY = 4.5;
+
+    // DOM references
+    const svg = document.getElementById('graphSvg');
+    const gridGroup = document.getElementById('gridGroup');
+    const shadingGroup = document.getElementById('shadingGroup');
+    const asymptoteGroup = document.getElementById('asymptoteGroup');
+    const markersGroup = document.getElementById('markersGroup');
+    const funcCurve = document.getElementById('funcCurve');
+    const trackerLine = document.getElementById('trackerLine');
+    const trackerDot = document.getElementById('trackerDot');
+    const tangentLine = document.getElementById('tangentLine');
+    const tangentArrow = document.getElementById('tangentArrow');
+
+    const presetSelect = document.getElementById('presetSelect');
+    const xSlider = document.getElementById('xSlider');
+    const sliderVal = document.getElementById('sliderVal');
+    const presetTitle = document.getElementById('presetTitle');
+
+    const equationReadout = document.getElementById('equationReadout');
+    const readoutX = document.getElementById('readoutX');
+    const readoutY = document.getElementById('readoutY');
+    const readoutSlope = document.getElementById('readoutSlope');
+    const intervalsBox = document.getElementById('intervalsBox');
+    const extremaBox = document.getElementById('extremaBox');
+
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScore = document.getElementById('quizScore');
+    const quizNextBtn = document.getElementById('quizNextBtn');
+    const quizSkipBtn = document.getElementById('quizSkipBtn');
+
+    /* ============================================================
+       PRESET CONFIGURATIONS & MATHEMATICAL SPECIFICATIONS
+       ============================================================ */
+    const presets = {
+        cubic: {
+            title: "Cubic Polynomial: f(x) = 0.2x³ - 2.4x",
+            tex: "f(x) = 0.2x^3 - 2.4x",
+            f: x => 0.2 * Math.pow(x, 3) - 2.4 * x,
+            df: x => 0.6 * Math.pow(x, 2) - 2.4,
+            asymptotes: { v: [], h: null },
+            extrema: [
+                { type: 'local max', x: -2.0, y: 3.2 },
+                { type: 'local min', x: 2.0, y: -3.2 }
+            ],
+            // Pre-calculated intervals for cleaner math displays (supports KaTeX)
+            intervals: {
+                increasing: ["(-\\infty, -2)", "(2, \\infty)"],
+                decreasing: ["(-2, 2)"],
+                positive: ["(-\\sqrt{12}, 0)", "(\\sqrt{12}, \\infty)"],
+                negative: ["(-\\infty, -\\sqrt{12})", "(0, \\sqrt{12})"]
+            },
+            roots: [-Math.sqrt(12), 0, Math.sqrt(12)]
+        },
+        parabola: {
+            title: "Quadratic Function: f(x) = -0.5(x-2)² + 3.5",
+            tex: "f(x) = -0.5(x-2)^2 + 3.5",
+            f: x => -0.5 * Math.pow(x - 2, 2) + 3.5,
+            df: x => -(x - 2),
+            asymptotes: { v: [], h: null },
+            extrema: [
+                { type: 'local max', x: 2.0, y: 3.5 }
+            ],
+            intervals: {
+                increasing: ["(-\\infty, 2)"],
+                decreasing: ["(2, \\infty)"],
+                positive: ["(2-\\sqrt{7}, 2+\\sqrt{7})"],
+                negative: ["(-\\infty, 2-\\sqrt{7})", "(2+\\sqrt{7}, \\infty)"]
+            },
+            roots: [2 - Math.sqrt(7), 2 + Math.sqrt(7)]
+        },
+        quartic: {
+            title: "Quartic Polynomial: f(x) = 0.1x⁴ - 0.8x² + 1",
+            tex: "f(x) = 0.1x^4 - 0.8x^2 + 1",
+            f: x => 0.1 * Math.pow(x, 4) - 0.8 * Math.pow(x, 2) + 1,
+            df: x => 0.4 * Math.pow(x, 3) - 1.6 * x,
+            asymptotes: { v: [], h: null },
+            extrema: [
+                { type: 'local min', x: -2.0, y: -0.6 },
+                { type: 'local max', x: 0.0, y: 1.0 },
+                { type: 'local min', x: 2.0, y: -0.6 }
+            ],
+            intervals: {
+                increasing: ["(-2, 0)", "(2, \\infty)"],
+                decreasing: ["(-\\infty, -2)", "(0, 2)"],
+                positive: ["(-\\infty, -2.54)", "(-1.24, 1.24)", "(2.54, \\infty)"],
+                negative: ["(-2.54, -1.24)", "(1.24, 2.54)"]
+            },
+            roots: [
+                -Math.sqrt(4 + Math.sqrt(6)),
+                -Math.sqrt(4 - Math.sqrt(6)),
+                Math.sqrt(4 - Math.sqrt(6)),
+                Math.sqrt(4 + Math.sqrt(6))
+            ],
+            rootTex: {
+                r1: "\\approx 1.24",
+                r2: "\\approx 2.54"
+            }
+        },
+        rational1: {
+            title: "Rational (Continuous): f(x) = 4x / (x² + 1)",
+            tex: "f(x) = \\frac{4x}{x^2 + 1}",
+            f: x => (4 * x) / (x * x + 1),
+            df: x => (4 - 4 * x * x) / Math.pow(x * x + 1, 2),
+            asymptotes: { v: [], h: 0 },
+            extrema: [
+                { type: 'local min', x: -1.0, y: -2.0 },
+                { type: 'local max', x: 1.0, y: 2.0 }
+            ],
+            intervals: {
+                increasing: ["(-1, 1)"],
+                decreasing: ["(-\\infty, -1)", "(1, \\infty)"],
+                positive: ["(0, \\infty)"],
+                negative: ["(-\\infty, 0)"]
+            },
+            roots: [0]
+        },
+        rational2: {
+            title: "Rational (Asymptotic): f(x) = (x²-1) / (x²-4)",
+            tex: "f(x) = \\frac{x^2 - 1}{x^2 - 4}",
+            f: x => (x * x - 1) / (x * x - 4),
+            df: x => (-6 * x) / Math.pow(x * x - 4, 2),
+            asymptotes: { v: [-2, 2], h: 1 },
+            extrema: [
+                { type: 'local max', x: 0.0, y: 0.25 }
+            ],
+            intervals: {
+                increasing: ["(-\\infty, -2)", "(-2, 0)"],
+                decreasing: ["(0, 2)", "(2, \\infty)"],
+                positive: ["(-\\infty, -2)", "(-1, 1)", "(2, \\infty)"],
+                negative: ["(-2, -1)", "(1, 2)"]
+            },
+            roots: [-1, 1]
+        },
+        sine: {
+            title: "Trigonometric: f(x) = 1.5 sin(x) + 0.3x",
+            tex: "f(x) = 1.5 \\sin(x) + 0.3x",
+            f: x => 1.5 * Math.sin(x) + 0.3 * x,
+            df: x => 1.5 * Math.cos(x) + 0.3,
+            asymptotes: { v: [], h: null },
+            extrema: [
+                { type: 'local max', x: -4.51, y: 0.12 },
+                { type: 'local min', x: -1.77, y: -2.0 },
+                { type: 'local max', x: 1.77, y: 2.0 },
+                { type: 'local min', x: 4.51, y: -0.12 }
+            ],
+            intervals: {
+                increasing: ["(-\\infty, -4.51)", "(-1.77, 1.77)", "(4.51, \\infty)"],
+                decreasing: ["(-4.51, -1.77)", "(1.77, 4.51)"],
+                positive: ["(-5.25, -3.42)", "(0, 3.42)", "(5.25, \\infty)"],
+                negative: ["(-\\infty, -5.25)", "(-3.42, 0)", "(3.42, 5.25)"]
+            },
+            roots: [-5.25, -3.42, 0, 3.42, 5.25]
+        },
+        gaussian: {
+            title: "Gaussian Curve: f(x) = 3 e^(-0.2x²)",
+            tex: "f(x) = 3e^{-0.2x^2}",
+            f: x => 3 * Math.exp(-0.2 * x * x),
+            df: x => -1.2 * x * Math.exp(-0.2 * x * x),
+            asymptotes: { v: [], h: 0 },
+            extrema: [
+                { type: 'local max', x: 0.0, y: 3.0 }
+            ],
+            intervals: {
+                increasing: ["(-\\infty, 0)"],
+                decreasing: ["(0, \\infty)"],
+                positive: ["(-\\infty, \\infty)"],
+                negative: []
+            },
+            roots: []
+        },
+        piecewise: {
+            title: "Piecewise: Jump at x=-1, Corner at x=2",
+            tex: "f(x) = \\begin{cases} x + 3 & x < -1 \\\\ -x^2 + 2 & -1 \\le x < 2 \\\\ 0.5x - 3 & x \\ge 2 \\end{cases}",
+            f: x => {
+                if (x < -1) return x + 3;
+                if (x < 2) return -x * x + 2;
+                return 0.5 * x - 3;
+            },
+            df: x => {
+                if (x < -1) return 1.0;
+                if (x < 2) return -2 * x;
+                return 0.5;
+            },
+            asymptotes: { v: [], h: null },
+            extrema: [
+                { type: 'local max', x: 0.0, y: 2.0 },
+                { type: 'discontinuity jump', x: -1.0, y: 2.0, y2: 1.0 },
+                { type: 'sharp local min', x: 2.0, y: -2.0 }
+            ],
+            intervals: {
+                increasing: ["(-\\infty, -1)", "(-1, 0)", "(2, \\infty)"],
+                decreasing: ["(0, 2)"],
+                positive: ["(-3, 1.41)"],
+                negative: ["(-\\infty, -3)", "(1.41, 6)", "(6, \\infty)"]
+            },
+            roots: [-3, Math.sqrt(2), 6]
+        }
+    };
+
+    /* ============================================================
+       COORDINATE CONVERSIONS
+       ============================================================ */
+    function toSvgX(x) { return cx + x * scaleX; }
+    function toSvgY(y) { return cy - y * scaleY; }
+    function toMathX(px) { return (px - cx) / scaleX; }
+    function toMathY(py) { return (cy - py) / scaleY; }
+
+    /* ============================================================
+       GRID & AXIS DRAWING
+       ============================================================ */
+    function drawGrid() {
+        gridGroup.innerHTML = '';
+        
+        // Horizontal grid lines & labels
+        for (let y = -4; y <= 4; y++) {
+            if (y === 0) continue;
+            const py = toSvgY(y);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', 40);
+            line.setAttribute('y1', py);
+            line.setAttribute('x2', 640);
+            line.setAttribute('y2', py);
+            gridGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', cx - 14);
+            txt.setAttribute('y', py);
+            txt.setAttribute('style', 'text-anchor: end;');
+            txt.textContent = y;
+            gridGroup.appendChild(txt);
+        }
+
+        // Vertical grid lines & labels
+        for (let x = -6; x <= 6; x++) {
+            if (x === 0) continue;
+            const px = toSvgX(x);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', px);
+            line.setAttribute('y1', 35);
+            line.setAttribute('x2', px);
+            line.setAttribute('y2', 485);
+            gridGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', px);
+            txt.setAttribute('y', cy + 14);
+            txt.textContent = x;
+            gridGroup.appendChild(txt);
+        }
+
+        // X Axis
+        const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxis.setAttribute('class', 'axis-line');
+        xAxis.setAttribute('x1', 35);
+        xAxis.setAttribute('y1', cy);
+        xAxis.setAttribute('x2', 645);
+        xAxis.setAttribute('y2', cy);
+        gridGroup.appendChild(xAxis);
+
+        // Y Axis
+        const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxis.setAttribute('class', 'axis-line');
+        yAxis.setAttribute('x1', cx);
+        yAxis.setAttribute('y1', 30);
+        yAxis.setAttribute('x2', cx);
+        yAxis.setAttribute('y2', 490);
+        gridGroup.appendChild(yAxis);
+        
+        // Axis arrows
+        // X Arrow
+        const xArrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        xArrow.setAttribute('d', `M 645 ${cy-4} L 651 ${cy} L 645 ${cy+4} Z`);
+        xArrow.setAttribute('fill', '#94a3b8');
+        gridGroup.appendChild(xArrow);
+        // Y Arrow
+        const yArrow = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        yArrow.setAttribute('d', `M ${cx-4} 30 L ${cx} 24 L ${cx+4} 30 Z`);
+        yArrow.setAttribute('fill', '#94a3b8');
+        gridGroup.appendChild(yArrow);
+
+        // Origin label
+        const originLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        originLabel.setAttribute('class', 'axis-label');
+        originLabel.setAttribute('x', cx - 10);
+        originLabel.setAttribute('y', cy + 12);
+        originLabel.textContent = "0";
+        gridGroup.appendChild(originLabel);
+    }
+
+    /* ============================================================
+       INTERVAL CALCULATOR & SHADING
+       ============================================================ */
+    function drawShading() {
+        shadingGroup.innerHTML = '';
+        const preset = presets[currentPreset];
+        const step = 0.02;
+
+        if (activeShadings.increasing || activeShadings.decreasing) {
+            let currentPath = null;
+            let currentType = null;
+
+            for (let x = minX; x <= maxX; x += step) {
+                if (isNearVA(x, preset.asymptotes.v)) {
+                    if (currentPath) {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                        shadingGroup.appendChild(currentPath);
+                        currentPath = null;
+                    }
+                    currentType = null;
+                    continue;
+                }
+
+                const yVal = preset.f(x);
+                const slope = preset.df(x);
+                const isInc = slope > 0.001;
+                const isDec = slope < -0.001;
+                const type = isInc ? 'increasing' : (isDec ? 'decreasing' : null);
+
+                const active = (type === 'increasing' && activeShadings.increasing) || 
+                               (type === 'decreasing' && activeShadings.decreasing);
+
+                if (active) {
+                    const px = toSvgX(x);
+                    const py = toSvgY(yVal);
+                    if (currentType !== type) {
+                        if (currentPath) {
+                            currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                            shadingGroup.appendChild(currentPath);
+                        }
+                        currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        currentPath.setAttribute('class', `shading ${type}`);
+                        currentPath.setAttribute('d', `M ${px} ${cy} L ${px} ${py}`);
+                        currentType = type;
+                    } else {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${px} ${py}`);
+                    }
+                } else {
+                    if (currentPath) {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                        shadingGroup.appendChild(currentPath);
+                        currentPath = null;
+                    }
+                    currentType = null;
+                }
+            }
+            if (currentPath) {
+                currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(maxX)} ${cy} Z`);
+                shadingGroup.appendChild(currentPath);
+            }
+        }
+
+        if (activeShadings.positive || activeShadings.negative) {
+            let currentPath = null;
+            let currentType = null;
+
+            for (let x = minX; x <= maxX; x += step) {
+                if (isNearVA(x, preset.asymptotes.v)) {
+                    if (currentPath) {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                        shadingGroup.appendChild(currentPath);
+                        currentPath = null;
+                    }
+                    currentType = null;
+                    continue;
+                }
+
+                const yVal = preset.f(x);
+                const isPos = yVal > 0.001;
+                const isNeg = yVal < -0.001;
+                const type = isPos ? 'positive' : (isNeg ? 'negative' : null);
+
+                const active = (type === 'positive' && activeShadings.positive) || 
+                               (type === 'negative' && activeShadings.negative);
+
+                if (active) {
+                    const px = toSvgX(x);
+                    const py = toSvgY(yVal);
+                    if (currentType !== type) {
+                        if (currentPath) {
+                            currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                            shadingGroup.appendChild(currentPath);
+                        }
+                        currentPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                        currentPath.setAttribute('class', `shading ${type}`);
+                        currentPath.setAttribute('d', `M ${px} ${cy} L ${px} ${py}`);
+                        currentType = type;
+                    } else {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${px} ${py}`);
+                    }
+                } else {
+                    if (currentPath) {
+                        currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(x)} ${cy} Z`);
+                        shadingGroup.appendChild(currentPath);
+                        currentPath = null;
+                    }
+                    currentType = null;
+                }
+            }
+            if (currentPath) {
+                currentPath.setAttribute('d', currentPath.getAttribute('d') + ` L ${toSvgX(maxX)} ${cy} Z`);
+                shadingGroup.appendChild(currentPath);
+            }
+        }
+    }
+
+    function isNearVA(x, vas) {
+        for (const va of vas) {
+            if (Math.abs(x - va) < 0.1) return true;
+        }
+        return false;
+    }
+
+    /* ============================================================
+       DRAW FUNCTION CURVE & ASYMPTOTES
+       ============================================================ */
+    function drawCurve() {
+        const preset = presets[currentPreset];
+        let d = '';
+        const step = 0.02;
+        let isFirst = true;
+
+        for (let x = minX; x <= maxX; x += step) {
+            let skip = false;
+            for (const va of preset.asymptotes.v) {
+                if (Math.abs(x - va) < 0.05) {
+                    skip = true;
+                    break;
+                }
+            }
+
+            if (skip) {
+                isFirst = true;
+                continue;
+            }
+
+            const yVal = preset.f(x);
+            if (yVal > maxY + 5 || yVal < minY - 5) {
+                isFirst = true;
+                continue;
+            }
+
+            const px = toSvgX(x);
+            const py = toSvgY(yVal);
+            if (isFirst) {
+                d += `M ${px} ${py}`;
+                isFirst = false;
+            } else {
+                d += ` L ${px} ${py}`;
+            }
+        }
+        funcCurve.setAttribute('d', d);
+
+        // Draw asymptotes
+        asymptoteGroup.innerHTML = '';
+        for (const va of preset.asymptotes.v) {
+            const px = toSvgX(va);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'asymptote-line');
+            line.setAttribute('x1', px);
+            line.setAttribute('y1', 35);
+            line.setAttribute('x2', px);
+            line.setAttribute('y2', 485);
+            asymptoteGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('x', px + 6);
+            txt.setAttribute('y', 45);
+            txt.setAttribute('fill', 'var(--red)');
+            txt.setAttribute('font-size', '11px');
+            txt.setAttribute('font-weight', '700');
+            txt.textContent = `x = ${va}`;
+            asymptoteGroup.appendChild(txt);
+        }
+
+        if (preset.asymptotes.h !== null) {
+            const py = toSvgY(preset.asymptotes.h);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'asymptote-line');
+            line.setAttribute('style', 'stroke: var(--blue);');
+            line.setAttribute('x1', 40);
+            line.setAttribute('y1', py);
+            line.setAttribute('x2', 640);
+            line.setAttribute('y2', py);
+            asymptoteGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('x', 600);
+            txt.setAttribute('y', py - 8);
+            txt.setAttribute('fill', 'var(--blue)');
+            txt.setAttribute('font-size', '11px');
+            txt.setAttribute('font-weight', '700');
+            txt.setAttribute('text-anchor', 'end');
+            txt.textContent = `y = ${preset.asymptotes.h}`;
+            asymptoteGroup.appendChild(txt);
+        }
+    }
+
+    /* ============================================================
+       EXTREMA & FEATURES READOUT
+       ============================================================ */
+    function drawMarkersAndReadout() {
+        markersGroup.innerHTML = '';
+        extremaBox.innerHTML = '';
+        const preset = presets[currentPreset];
+
+        preset.extrema.forEach((pt, index) => {
+            const px = toSvgX(pt.x);
+            const py = toSvgY(pt.y);
+
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            let markerClass = 'extremum-marker ';
+            let extLabelClass = '';
+            
+            if (pt.type === 'local max') {
+                markerClass += 'max';
+                extLabelClass = 'color: var(--green);';
+            } else if (pt.type === 'local min') {
+                markerClass += 'min';
+                extLabelClass = 'color: var(--red);';
+            } else if (pt.type === 'sharp local min') {
+                markerClass += 'min';
+                extLabelClass = 'color: var(--red); font-weight: 700;';
+            } else {
+                markerClass = '';
+                extLabelClass = 'color: var(--orange);';
+            }
+
+            if (pt.type !== 'discontinuity jump') {
+                circle.setAttribute('class', markerClass);
+                circle.setAttribute('r', '6');
+                circle.setAttribute('cx', px);
+                circle.setAttribute('cy', py);
+                markersGroup.appendChild(circle);
+            } else {
+                const circleOpen = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circleOpen.setAttribute('cx', px);
+                circleOpen.setAttribute('cy', py);
+                circleOpen.setAttribute('r', '5.5');
+                circleOpen.setAttribute('fill', 'white');
+                circleOpen.setAttribute('stroke', 'var(--orange)');
+                circleOpen.setAttribute('stroke-width', '2');
+                markersGroup.appendChild(circleOpen);
+
+                const circleClosed = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circleClosed.setAttribute('cx', px);
+                circleClosed.setAttribute('cy', toSvgY(pt.y2));
+                circleClosed.setAttribute('r', '5.5');
+                circleClosed.setAttribute('fill', 'var(--orange)');
+                markersGroup.appendChild(circleClosed);
+            }
+
+            if (preset.extrema.length <= 4 && pt.type !== 'discontinuity jump') {
+                const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                label.setAttribute('x', px);
+                label.setAttribute('y', py - 12);
+                label.setAttribute('font-size', '10px');
+                label.setAttribute('font-weight', '700');
+                label.setAttribute('fill', 'var(--ink)');
+                label.setAttribute('text-anchor', 'middle');
+                label.textContent = `(${pt.x}, ${pt.y})`;
+                markersGroup.appendChild(label);
+            }
+
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '4px 0';
+            row.style.borderBottom = '1px solid #f1f5f9';
+
+            let desc = pt.type.toUpperCase();
+            if (pt.type === 'discontinuity jump') {
+                row.innerHTML = `<span style="${extLabelClass}">Jump Discontinuity</span> <strong style="font-family: monospace;">x = ${pt.x}</strong>`;
+            } else {
+                row.innerHTML = `<span style="${extLabelClass}">${desc}</span> <strong style="font-family: monospace;">(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})</strong>`;
+            }
+            extremaBox.appendChild(row);
+        });
+
+        if (preset.asymptotes.v.length > 0) {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '4px 0';
+            row.style.borderBottom = '1px solid #f1f5f9';
+            row.innerHTML = `<span style="color:var(--red);">Vert. Asymptotes</span> <strong style="font-family: monospace;">x = ${preset.asymptotes.v.join(', ')}</strong>`;
+            extremaBox.appendChild(row);
+        }
+        if (preset.asymptotes.h !== null) {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '4px 0';
+            row.style.borderBottom = '1px solid #f1f5f9';
+            row.innerHTML = `<span style="color:var(--blue);">Horiz. Asymptote</span> <strong style="font-family: monospace;">y = ${preset.asymptotes.h}</strong>`;
+            extremaBox.appendChild(row);
+        }
+        if (preset.roots.length > 0) {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.justifyContent = 'space-between';
+            row.style.padding = '4px 0';
+            row.style.borderBottom = '1px solid #f1f5f9';
+            const rootCoords = preset.roots.map(r => r.toFixed(2));
+            row.innerHTML = `<span style="color:var(--teal);">x-Intercepts (Roots)</span> <strong style="font-family: monospace; font-size:0.8rem;">x ≈ ${rootCoords.join(', ')}</strong>`;
+            extremaBox.appendChild(row);
+        }
+    }
+
+    /* ============================================================
+       ACTIVE X-TRACKER GRAPHICS & READOUT
+       ============================================================ */
+    function updateTracker() {
+        const preset = presets[currentPreset];
+        let x = xTracker;
+
+        if (x < minX) x = minX;
+        if (x > maxX) x = maxX;
+
+        let yVal = preset.f(x);
+        let slope = preset.df(x);
+
+        const px = toSvgX(x);
+        const py = toSvgY(yVal);
+
+        trackerLine.setAttribute('x1', px);
+        trackerLine.setAttribute('x2', px);
+        trackerDot.setAttribute('cx', px);
+        trackerDot.setAttribute('cy', py);
+
+        let atVA = false;
+        for (const va of preset.asymptotes.v) {
+            if (Math.abs(x - va) < 0.05) atVA = true;
+        }
+
+        if (atVA || yVal > maxY + 1 || yVal < minY - 1) {
+            trackerDot.setAttribute('display', 'none');
+            trackerLine.setAttribute('display', 'none');
+            tangentLine.setAttribute('display', 'none');
+            tangentArrow.setAttribute('display', 'none');
+
+            readoutX.textContent = x.toFixed(2);
+            readoutY.textContent = "Undefined";
+            readoutSlope.textContent = "Undefined";
+            return;
+        } else {
+            trackerDot.setAttribute('display', 'inline');
+            trackerLine.setAttribute('display', 'inline');
+            tangentLine.setAttribute('display', 'inline');
+            tangentArrow.setAttribute('display', 'inline');
+        }
+
+        const dx = 0.8;
+        const x1 = x - dx;
+        const y1 = yVal + slope * (-dx);
+        const x2 = x + dx;
+        const y2 = yVal + slope * dx;
+
+        tangentLine.setAttribute('d', `M ${toSvgX(x1)} ${toSvgY(y1)} L ${toSvgX(x2)} ${toSvgY(y2)}`);
+
+        const angle = Math.atan2(slope * scaleY, scaleX);
+        const arrowLength = 45;
+        const ax2 = px + arrowLength * Math.cos(angle);
+        const ay2 = py - arrowLength * Math.sin(angle);
+
+        tangentArrow.setAttribute('d', `M ${px} ${py} L ${ax2} ${ay2}`);
+        
+        if (Math.abs(slope) < 0.01) {
+            tangentArrow.setAttribute('stroke', '#64748b');
+            tangentArrow.setAttribute('marker-end', 'url(#arrow)');
+        } else if (slope > 0) {
+            tangentArrow.setAttribute('stroke', 'var(--green)');
+            tangentArrow.setAttribute('marker-end', 'url(#arrow-green)');
+        } else {
+            tangentArrow.setAttribute('stroke', 'var(--orange)');
+            tangentArrow.setAttribute('marker-end', 'url(#arrow-orange)');
+        }
+
+        readoutX.textContent = x.toFixed(2);
+        readoutY.textContent = yVal.toFixed(2);
+        readoutSlope.textContent = slope.toFixed(2);
+
+        xSlider.value = x.toFixed(2);
+        sliderVal.textContent = x.toFixed(2);
+    }
+
+    function updateIntervalList() {
+        const preset = presets[currentPreset];
+        intervalsBox.innerHTML = '';
+
+        const types = ['increasing', 'decreasing', 'positive', 'negative'];
+        types.forEach(t => {
+            const list = preset.intervals[t];
+            let intervalsTex = list.length > 0 ? list.join(' \\cup ') : '\\emptyset';
+
+            const row = document.createElement('div');
+            row.className = `interval-row ${t}`;
+            row.innerHTML = `
+                <span class="tag">${t.charAt(0).toUpperCase() + t.slice(1)}</span>
+                <span class="math">\\(${intervalsTex}\\)</span>
+            `;
+            intervalsBox.appendChild(row);
+        });
+
+        renderMathInElement(intervalsBox, {
+            delimiters: [
+                { left: '\\[', right: '\\]', display: true  },
+                { left: '\\(', right: '\\)', display: false }
+            ],
+            throwOnError: false
+        });
+    }
+
+    function render() {
+        const preset = presets[currentPreset];
+        presetTitle.textContent = preset.title;
+
+        katex.render(preset.tex, equationReadout, { throwOnError: false, displayMode: true });
+
+        drawGrid();
+        drawShading();
+        drawCurve();
+        drawMarkersAndReadout();
+        updateTracker();
+        updateIntervalList();
+    }
+
+    /* ============================================================
+       DRAG AND DROP POINTER HANDLERS
+       ============================================================ */
+    let isDragging = false;
+    const canvasWrap = document.getElementById('canvasWrap');
+
+    function handlePointerDown(e) {
+        isDragging = true;
+        updateTrackerFromEvent(e);
+        canvasWrap.setPointerCapture(e.pointerId);
+    }
+
+    function handlePointerMove(e) {
+        if (!isDragging) return;
+        updateTrackerFromEvent(e);
+    }
+
+    function handlePointerUp(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        canvasWrap.releasePointerCapture(e.pointerId);
+    }
+
+    function updateTrackerFromEvent(e) {
+        const rect = canvasWrap.getBoundingClientRect();
+        const svgScaleX = SVG_W / rect.width;
+        const relativeX = (e.clientX - rect.left) * svgScaleX;
+        
+        xTracker = toMathX(relativeX);
+        updateTracker();
+    }
+
+    /* ============================================================
+       QUIZ SYSTEM
+       ============================================================ */
+    let quizState = {
+        questionType: '',
+        correctIndex: 0,
+        answered: false,
+        scoreCorrect: 0,
+        scoreTotal: 0
+    };
+
+    const quizPool = [
+        { type: 'increasing', text: 'On which of the following intervals is the function $f(x)$ strictly INCREASING?' },
+        { type: 'decreasing', text: 'On which of the following intervals is the function $f(x)$ strictly DECREASING?' },
+        { type: 'positive', text: 'On which of the following intervals is the function $f(x)$ strictly POSITIVE ($f(x) > 0$)?' },
+        { type: 'negative', text: 'On which of the following intervals is the function $f(x)$ strictly NEGATIVE ($f(x) < 0$)?' }
+    ];
+
+    function generateQuizQuestion() {
+        quizState.answered = false;
+        quizFeedback.innerHTML = '';
+        quizFeedback.className = 'quiz-feedback';
+        quizNextBtn.style.display = 'none';
+
+        const presetKeys = Object.keys(presets);
+        const randomPresetKey = presetKeys[Math.floor(Math.random() * presetKeys.length)];
+        
+        currentPreset = randomPresetKey;
+        presetSelect.value = randomPresetKey;
+        render();
+
+        const question = quizPool[Math.floor(Math.random() * quizPool.length)];
+        quizState.questionType = question.type;
+
+        quizQuestion.innerHTML = question.text.replace('$f(x)$', `\\(${presets[randomPresetKey].tex}\\)`);
+
+        const correctIntervalList = presets[randomPresetKey].intervals[question.type];
+        let correctTex = correctIntervalList.length > 0 ? correctIntervalList.join(' \\cup ') : '\\emptyset';
+
+        const optionsList = [];
+        optionsList.push({ tex: correctTex, correct: true });
+
+        const allIntervals = [];
+        presetKeys.forEach(k => {
+            const list = presets[k].intervals[question.type];
+            let tex = list.length > 0 ? list.join(' \\cup ') : '\\emptyset';
+            if (tex !== correctTex && !allIntervals.includes(tex)) {
+                allIntervals.push(tex);
+            }
+        });
+
+        allIntervals.sort(() => 0.5 - Math.random());
+        const distractorsCount = Math.min(allIntervals.length, 3);
+        for (let i = 0; i < distractorsCount; i++) {
+            optionsList.push({ tex: allIntervals[i], correct: false });
+        }
+
+        while (optionsList.length < 4) {
+            optionsList.push({ tex: `(-${Math.floor(Math.random()*4+1)}, ${Math.floor(Math.random()*4+1)})`, correct: false });
+        }
+
+        optionsList.sort(() => 0.5 - Math.random());
+        quizState.correctIndex = optionsList.findIndex(o => o.correct);
+
+        quizOptions.innerHTML = '';
+        optionsList.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.innerHTML = `<span class="letter">${String.fromCharCode(65 + idx)})</span> <span class="math">\\(${opt.tex}\\)</span>`;
+            btn.addEventListener('click', () => handleQuizAnswer(idx, btn));
+            quizOptions.appendChild(btn);
+        });
+
+        renderMathInElement(document.querySelector('.quiz-container'), {
+            delimiters: [
+                { left: '\\[', right: '\\]', display: true  },
+                { left: '\\(', right: '\\)', display: false }
+            ],
+            throwOnError: false
+        });
+    }
+
+    function handleQuizAnswer(index, btnElement) {
+        if (quizState.answered) return;
+        quizState.answered = true;
+        quizState.scoreTotal++;
+
+        const optionButtons = Array.from(quizOptions.querySelectorAll('.quiz-opt'));
+        
+        if (index === quizState.correctIndex) {
+            btnElement.classList.add('correct');
+            quizFeedback.textContent = "Correct! Well analyzed.";
+            quizFeedback.className = "quiz-feedback correct";
+            quizState.scoreCorrect++;
+        } else {
+            btnElement.classList.add('incorrect');
+            optionButtons[quizState.correctIndex].classList.add('correct');
+            quizFeedback.textContent = "Incorrect. Check the graph behavior regions.";
+            quizFeedback.className = "quiz-feedback incorrect";
+        }
+
+        quizScore.textContent = `Score: ${quizState.scoreCorrect}/${quizState.scoreTotal}`;
+        quizNextBtn.style.display = 'block';
+    }
+
+    /* ============================================================
+       EVENT BINDING & INITIALIZATION
+       ============================================================ */
+    function bindEvents() {
+        presetSelect.addEventListener('change', e => {
+            currentPreset = e.target.value;
+            xTracker = 0.0;
+            xSlider.value = 0;
+            sliderVal.textContent = "0.00";
+            render();
+        });
+
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.dataset.type;
+                activeShadings[type] = !activeShadings[type];
+                btn.classList.toggle('active');
+                drawShading();
+            });
+        });
+
+        xSlider.addEventListener('input', e => {
+            xTracker = parseFloat(e.target.value);
+            updateTracker();
+        });
+
+        canvasWrap.addEventListener('pointerdown', handlePointerDown);
+        canvasWrap.addEventListener('pointermove', handlePointerMove);
+        canvasWrap.addEventListener('pointerup', handlePointerUp);
+
+        quizNextBtn.addEventListener('click', () => {
+            generateQuizQuestion();
+        });
+        quizSkipBtn.addEventListener('click', () => {
+            generateQuizQuestion();
+        });
+    }
+
+    bindEvents();
+    render();
+    generateQuizQuestion();
+
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+})();
+</script>
+
+</body>
+</html>

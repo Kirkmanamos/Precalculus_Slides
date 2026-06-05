@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP Precalculus Feature Identifier</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --gold: #ca8a04;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --soft-purple: #f5f3ff;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            padding: 22px;
+            overflow-y: auto;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        .app {
+            width: min(1440px, 100%);
+            display: grid;
+            grid-template-columns: 320px minmax(560px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Controls */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 20px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin-top: 4px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .control-section {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .preset-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .toggle-btn:hover {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .toggle-btn.active {
+            background: var(--soft-blue);
+            border-color: var(--blue);
+            color: var(--blue);
+        }
+
+        .toggle-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 2px solid #94a3b8;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .toggle-btn.active .toggle-indicator {
+            border-color: var(--blue);
+            background: var(--blue);
+        }
+
+        .toggle-indicator::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 1px;
+            display: none;
+        }
+
+        .toggle-btn.active .toggle-indicator::after {
+            display: block;
+        }
+
+        /* CENTER PANEL: Stage with canvas & scorecard */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 14px;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .graph-wrap {
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 400px;
+            user-select: none;
+        }
+
+        /* Scorecard Grid */
+        .scorecard-wrap {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .scorecard-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy);
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scorecard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .scorecard-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .scorecard-item label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .scorecard-select {
+            width: 100%;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .scorecard-select:hover {
+            border-color: var(--blue);
+        }
+
+        .scorecard-select.correct {
+            border-color: var(--green);
+            background-color: var(--soft-green);
+            color: var(--green);
+        }
+
+        .scorecard-select.incorrect {
+            border-color: var(--red);
+            background-color: #fff5f5;
+            color: var(--red);
+        }
+
+        .scorecard-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        /* RIGHT PANEL: Inspector / Solutions */
+        .inspector {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .readout-card.highlight {
+            border-left: 4px solid var(--purple);
+            background: var(--soft-purple);
+        }
+
+        .readout-card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .equation-box {
+            font-size: 1.05rem;
+            text-align: center;
+            padding: 6px 0;
+            overflow-x: auto;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .solution-box {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--ink);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .solution-step {
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 8px;
+        }
+
+        .solution-step:last-child {
+            border-bottom: none;
+        }
+
+        .solution-step-title {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+
+        /* SVG styles */
+        .axis-line { stroke: #475569; stroke-width: 1.5; }
+        .grid-line { stroke: #e2e8f0; stroke-width: 0.75; }
+        
+        .curve { fill: none; stroke: var(--navy); stroke-width: 3.5; stroke-linecap: round; }
+        .curve-hole { fill: white; stroke: var(--purple); stroke-width: 2.25; r: 5.5; }
+        
+        .va-line { stroke: var(--red); stroke-width: 1.75; stroke-dasharray: 6 4; }
+        .ha-line { stroke: var(--blue); stroke-width: 1.75; stroke-dasharray: 6 4; }
+        
+        .tracker-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+        .tracker-dot { fill: var(--navy); stroke: white; stroke-width: 2; r: 6; }
+        
+        .extrema-dot { stroke: white; stroke-width: 1.5; r: 5.5; cursor: help; }
+        .extrema-dot.max { fill: var(--green); }
+        .extrema-dot.min { fill: var(--orange); }
+
+        .shade-incr { fill: var(--soft-green); opacity: 0.35; }
+        .shade-decr { fill: var(--soft-orange); opacity: 0.35; }
+        .shade-pos { fill: var(--soft-blue); opacity: 0.35; }
+        .shade-neg { fill: #fff5f5; opacity: 0.35; }
+        .shade-up { fill: var(--soft-green); opacity: 0.35; }
+        .shade-down { fill: var(--soft-orange); opacity: 0.35; }
+
+        .axis-label {
+            font-size: 11px;
+            fill: var(--muted);
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        /* Feedback badges */
+        .score-badge {
+            background: var(--navy);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .score-badge.win { background: var(--green); }
+
+        .btn-small {
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #cbd5e1;
+            color: var(--navy);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 1200px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+            html, body {
+                overflow-y: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ============================================================
+         LEFT PANEL — CONTROLS
+         ============================================================ -->
+    <aside class="panel controls" aria-label="Visualizer Controls">
+        <div class="brand">
+            <span class="section-label">AP Precalculus Review</span>
+            <h1>Feature Identifier</h1>
+        </div>
+
+        <!-- Presets Selection -->
+        <section class="control-section">
+            <h2 class="group-title">Function Family Presets</h2>
+            <select class="preset-select" id="presetSelect">
+                <option value="cubic">Cubic Polynomial (Domain &amp; Extrema)</option>
+                <option value="rational">Rational Function (Asymptotes &amp; Domain)</option>
+                <option value="trig">Trigonometric Cosine Wave</option>
+                <option value="exponential">Exponential Growth (HA &amp; Range)</option>
+                <option value="logarithmic">Logarithmic Curve (VA &amp; Domain)</option>
+                <option value="hole">Rational Function with a Hole</option>
+            </select>
+            <button class="btn-small btn-primary" id="btnRandomQuiz" style="margin-top: 6px;">Load Random Quiz Function</button>
+        </section>
+
+        <!-- Cheat Sheet Highlights -->
+        <section class="control-section" style="gap: 10px;">
+            <h2 class="group-title">Visual Assistance Overlays</h2>
+            
+            <button class="toggle-btn" id="toggleIncDecBtn">
+                <span class="toggle-indicator"></span>
+                <span>Highlight Increase/Decrease</span>
+            </button>
+            
+            <button class="toggle-btn" id="togglePosNegBtn">
+                <span class="toggle-indicator"></span>
+                <span>Highlight Positive/Negative</span>
+            </button>
+            
+            <button class="toggle-btn" id="toggleConcavityBtn">
+                <span class="toggle-indicator"></span>
+                <span>Shade Concavity (Cup Test)</span>
+            </button>
+        </section>
+
+        <!-- Tracker value -->
+        <section class="control-section">
+            <h2 class="group-title">Interactive coordinate tracker</h2>
+            <div style="font-size:0.85rem; color:var(--muted); line-height:1.4;">
+                Hover or touch drag on the graph curve to read coordinate positions, intercepts, or extrema values in real time.
+            </div>
+        </section>
+    </aside>
+
+    <!-- ============================================================
+         CENTER PANEL — INTERACTIVE GRAPH & SCORECARD
+         ============================================================ -->
+    <main class="panel stage" aria-label="Interactive Scorecard Area">
+        <header class="stage-header">
+            <h2 class="stage-title">Function Visual Curve</h2>
+            <span id="trackerReadout" style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">Hover graph to track coordinates</span>
+        </header>
+
+        <div class="graph-wrap">
+            <svg class="graph-svg" id="graphSvg" viewBox="-6 -6 12 12">
+                <g id="gridLines"></g>
+                <g transform="scale(1, -1)">
+                    <!-- Feature Shading Overlays -->
+                    <g id="overlayShading"></g>
+                    <!-- Asymptotes behind curve -->
+                    <line class="ha-line" id="haLine" x1="-7" y1="0" x2="7" y2="0" display="none"></line>
+                    <g id="vaGroup"></g>
+                    <!-- Curve path -->
+                    <path class="curve" id="curvePath" d=""></path>
+                    <!-- Extrema points -->
+                    <g id="extremaGroup"></g>
+                    <!-- Holes -->
+                    <g id="holesGroup"></g>
+                    
+                    <!-- Mouse tracker Vert line -->
+                    <line class="tracker-line" id="trackerVert" x1="0" y1="-7" x2="0" y2="7" display="none"></line>
+                    <circle class="tracker-dot" id="trackerDot" cx="0" cy="0" display="none"></circle>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Scorecard Widget -->
+        <div class="scorecard-wrap">
+            <div class="scorecard-title">
+                <span>AP Precalculus Scorecard Challenge</span>
+                <span class="score-badge" id="scorecardBadge">Unsubmitted</span>
+            </div>
+            <div class="scorecard-grid">
+                <!-- Scorecard Items populated dynamically -->
+                <div class="scorecard-item">
+                    <label>Domain</label>
+                    <select class="scorecard-select" id="scoreSelectDomain"></select>
+                </div>
+                <div class="scorecard-item">
+                    <label>Range</label>
+                    <select class="scorecard-select" id="scoreSelectRange"></select>
+                </div>
+                <div class="scorecard-item">
+                    <label>Increasing Intervals</label>
+                    <select class="scorecard-select" id="scoreSelectIncreasing"></select>
+                </div>
+                <div class="scorecard-item">
+                    <label>Concavity Intervals</label>
+                    <select class="scorecard-select" id="scoreSelectConcavity"></select>
+                </div>
+                <div class="scorecard-item">
+                    <label>Asymptotes &amp; Holes</label>
+                    <select class="scorecard-select" id="scoreSelectAsymptotes"></select>
+                </div>
+                <div class="scorecard-item">
+                    <label>End Behavior limits</label>
+                    <select class="scorecard-select" id="scoreSelectEndBehavior"></select>
+                </div>
+            </div>
+            <div class="scorecard-actions">
+                <button class="btn-small btn-secondary" id="btnScorecardReset">Reset Answers</button>
+                <button class="btn-small btn-primary" id="btnScorecardSubmit">Check My Scorecard</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+         RIGHT PANEL — INSPECTOR / SOLUTION DETAILS
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebraic solution readout">
+        <!-- Equation Box -->
+        <div class="readout-card highlight">
+            <div class="readout-card-title">Function Equation</div>
+            <div class="equation-box" id="eqReadout">f(x) = \text{?}</div>
+        </div>
+
+        <!-- Solutions panel -->
+        <div class="readout-card">
+            <div class="readout-card-title" id="solutionTitle">Solution Explanations</div>
+            <div class="solution-box" id="solutionContainer">
+                <div style="text-align: center; color: var(--muted); font-weight: 600; padding: 20px 0;">
+                    Submit your scorecard on the left to unlock step-by-step mathematical explanations!
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function() {
+    /* ============================================================
+       STATE & DATABASE OF FUNCTIONS
+       ============================================================ */
+    let currentPreset = 'cubic';
+    
+    // Highlights toggles
+    let highlightIncDec = false;
+    let highlightPosNeg = false;
+    let highlightConcavity = false;
+
+    let isScorecardSubmitted = false;
+
+    // ViewBox limits
+    const minX = -6, maxX = 6;
+    const minY = -6, maxY = 6;
+
+    // Math Functions Database
+    const functionsDb = {
+        cubic: {
+            title: "Cubic Polynomial: 1/4 x³ - 3x",
+            fLaTeX: "f(x) = \\frac{1}{4}x^3 - 3x",
+            f: x => 0.25 * x * x * x - 3 * x,
+            df: x => 0.75 * x * x - 3,
+            ddf: x => 1.5 * x,
+            extrema: [
+                { x: -2, y: 4, type: 'max' },
+                { x: 2, y: -4, type: 'min' }
+            ],
+            holes: [],
+            VAs: [],
+            HAs: [],
+            // Scorecard Correct Values
+            answers: {
+                domain: "(-\\infty, \\infty)",
+                range: "(-\\infty, \\infty)",
+                increasing: "(-\\infty, -2) \\cup (2, \\infty)",
+                concavity: "Up: (0, \\infty), Down: (-\\infty, 0)",
+                asymptotes: "None",
+                endBehavior: "\\lim_{x \\to \\infty} f(x) = \\infty"
+            },
+            // Options lists
+            options: {
+                domain: ["(-\\infty, \\infty)", "[-6, 6]", "x \\neq 0", "(-\\infty, 2) \\cup (2, \\infty)"],
+                range: ["(-\\infty, \\infty)", "[-4, 4]", "[-2, 2]", "(-4, \\infty)"],
+                increasing: ["(-\\infty, -2) \\cup (2, \\infty)", "(-2, 2)", "(-\\infty, 0)", "(0, \\infty)"],
+                concavity: ["Up: (0, \\infty), Down: (-\\infty, 0)", "Up: (-\\infty, 0), Down: (0, \\infty)", "Always Concave Up", "No concavity"],
+                asymptotes: ["None", "VA at x=2", "HA at y=0", "VA at x=0, HA at y=2"],
+                endBehavior: ["\\lim_{x \\to \\infty} f(x) = \\infty", "\\lim_{x \\to \\infty} f(x) = -\\infty", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = 4"]
+            },
+            // Written solution steps
+            solution: [
+                {
+                    title: "Domain & Range",
+                    text: "Since $f(x)$ is a polynomial function, there are no denominator zeros or square roots. The domain is $(-\\infty, \\infty)$. As an odd-degree polynomial, the graph extends from $-\\infty$ to $\\infty$ vertically, so the range is also $(-\\infty, \\infty)$."
+                },
+                {
+                    title: "Increasing/Decreasing",
+                    text: "The derivative is $f'(x) = 0.75x^2 - 3$. Setting $f'(x) = 0$ yields critical points at $x = \\pm 2$. Using a sign chart, $f'(x) > 0$ on $(-\\infty, -2) \\cup (2, \\infty)$ (increasing) and $f'(x) < 0$ on $(-2, 2)$ (decreasing). Local max is $(-2, 4)$ and local min is $(2, -4)$."
+                },
+                {
+                    title: "Concavity & Inflections",
+                    text: "The second derivative is $f''(x) = 1.5x$. $f''(x) = 0$ at $x = 0$. For $x > 0$, $f''(x) > 0$ (Concave Up); for $x < 0$, $f''(x) < 0$ (Concave Down). A sign change occurs at $x = 0$, giving an inflection point at $(0, 0)$."
+                },
+                {
+                    title: "Asymptotes & End Behavior",
+                    text: "Polynomials have no asymptotes or holes. For end behavior, the leading term is $+0.25x^3$. As $x \\to \\infty$, the term behaves as $x^3 \\to \\infty$. Thus, $\\lim_{x \\to \\infty} f(x) = \\infty$ and $\\lim_{x \\to -\\infty} f(x) = -\\infty$."
+                }
+            ]
+        },
+        rational: {
+            title: "Rational Function: (x - 3) / (x - 1)",
+            fLaTeX: "f(x) = \\frac{x - 3}{x - 1}",
+            f: x => Math.abs(x - 1) < 0.05 ? NaN : (x - 3) / (x - 1),
+            df: x => 2.0 / Math.pow(x - 1, 2),
+            ddf: x => -4.0 / Math.pow(x - 1, 3),
+            extrema: [],
+            holes: [],
+            VAs: [1],
+            HAs: [1],
+            answers: {
+                domain: "x \\neq 1",
+                range: "y \\neq 1",
+                increasing: "Always Increasing",
+                concavity: "Up: (-\\infty, 1), Down: (1, \\infty)",
+                asymptotes: "VA: x = 1, HA: y = 1",
+                endBehavior: "\\lim_{x \\to \\infty} f(x) = 1"
+            },
+            options: {
+                domain: ["x \\neq 1", "x \\neq 3", "(-\\infty, \\infty)", "x \\neq 1, 3"],
+                range: ["y \\neq 1", "y \\neq 0", "(-\\infty, \\infty)", "y \\neq 3"],
+                increasing: ["Always Increasing", "Always Decreasing", "Increasing on (1, \\infty)", "Decreasing on (-\\infty, 1)"],
+                concavity: ["Up: (-\\infty, 1), Down: (1, \\infty)", "Up: (1, \\infty), Down: (-\\infty, 1)", "Always Concave Down", "No concavity"],
+                asymptotes: ["VA: x = 1, HA: y = 1", "VA: x = 3, HA: y = 0", "VA: x = 1, HA: y = 0", "VA: x = -1, HA: y = 1"],
+                endBehavior: ["\\lim_{x \\to \\infty} f(x) = 1", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = \\infty", "\\lim_{x \\to \\infty} f(x) = -3"]
+            },
+            solution: [
+                {
+                    title: "Domain & Asymptotes",
+                    text: "The denominator is zero when $x - 1 = 0 \\implies x = 1$. Since $x-1$ is not a common factor with the numerator, there is a **Vertical Asymptote** at $x = 1$. The domain is all real numbers except $1$ ($x \\neq 1$)."
+                },
+                {
+                    title: "Horizontal Asymptote & Range",
+                    text: "The degrees of the numerator and denominator are both 1 (equal). Comparing leading coefficients gives $\\frac{1}{1} = 1$. Thus, there is a **Horizontal Asymptote** at $y = 1$. The range excludes the horizontal asymptote value, so it is $y \\neq 1$."
+                },
+                {
+                    title: "Slope & Concavity",
+                    text: "First derivative: $f'(x) = \\frac{2}{(x-1)^2}$. Since the numerator is positive and denominator is squared (always positive), $f'(x) > 0$ for all $x \\neq 1$. The function is **always increasing** on its domain. Second derivative: $f''(x) = \\frac{-4}{(x-1)^3}$. If $x < 1$, $(x-1)^3 < 0 \\implies f''(x) > 0$ (Concave Up). If $x > 1$, $(x-1)^3 > 0 \\implies f''(x) < 0$ (Concave Down). No inflection point exists because the concavity changes at a discontinuity ($x=1$)."
+                }
+            ]
+        },
+        trig: {
+            title: "Trigonometric Wave: 2 cos(x)",
+            fLaTeX: "f(x) = 2\\cos(x)",
+            f: x => 2 * Math.cos(x),
+            df: x => -2 * Math.sin(x),
+            ddf: x => -2 * Math.cos(x),
+            extrema: [
+                { x: -Math.PI, y: -2, type: 'min' },
+                { x: 0, y: 2, type: 'max' },
+                { x: Math.PI, y: -2, type: 'min' }
+            ],
+            holes: [],
+            VAs: [],
+            HAs: [],
+            answers: {
+                domain: "(-\\infty, \\infty)",
+                range: "[-2, 2]",
+                increasing: "Incr: (-\\pi, 0), Decr: (-5, -\\pi) \\cup (0, \\pi)",
+                concavity: "Down: (-\\pi/2, \\pi/2), Up: (-5, -\\pi/2) \\cup (\\pi/2, 5)",
+                asymptotes: "None",
+                endBehavior: "Oscillates (No Limit)"
+            },
+            options: {
+                domain: ["(-\\infty, \\infty)", "[-5, 5]", "x \\neq 0", "(-\\pi, \\pi)"],
+                range: ["[-2, 2]", "[-1, 1]", "(-\\infty, \\infty)", "[-2, 0]"],
+                increasing: ["Incr: (-\\pi, 0), Decr: (-5, -\\pi) \\cup (0, \\pi)", "Incr: (0, \\pi), Decr: (-\\pi, 0)", "Always Increasing", "Always Decreasing"],
+                concavity: ["Down: (-\\pi/2, \\pi/2), Up: (-5, -\\pi/2) \\cup (\\pi/2, 5)", "Up: (-\\pi/2, \\pi/2), Down: (-5, -\\pi/2) \\cup (\\pi/2, 5)", "Always Concave Down", "Down: (-\\pi, \\pi), Up: elsewhere"],
+                asymptotes: ["None", "HA at y=0", "VA at x=0", "HA at y=2"],
+                endBehavior: ["Oscillates (No Limit)", "\\lim_{x \\to \\infty} f(x) = 2", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = \\infty"]
+            },
+            solution: [
+                {
+                    title: "Domain & Range",
+                    text: "The cosine function is defined for all real numbers, so the domain is $(-\\infty, \\infty)$. The basic cosine function ranges from $-1$ to $1$. Multiplying by the amplitude $2$ stretches it vertically, so the range is $[-2, 2]$."
+                },
+                {
+                    title: "Slope & Extrema",
+                    text: "Derivative: $f'(x) = -2\\sin(x)$. Setting $f'(x) = 0$ on the visual interval $[-5, 5]$ gives critical points at $x = -\\pi, 0, \\pi$. $f'(x) > 0$ on $(-\\pi, 0)$ (increasing). $f'(x) < 0$ on $(-5, -\\pi) \\cup (0, \\pi)$ (decreasing). Thus, we have a Local Max at $(0, 2)$ and Local Minima at $(-\\pi, -2)$ and $(\\pi, -2)$."
+                },
+                {
+                    title: "Concavity & Inflections",
+                    text: "Second derivative: $f''(x) = -2\\cos(x)$. Inflection points occur where $\\cos(x) = 0 \\implies x = \\pm \\pi/2 \\approx \\pm 1.57$. Shading details: $f''(x) < 0$ on $(-\\pi/2, \\pi/2)$ (Concave Down, spills water); $f''(x) > 0$ on $(-5, -\\pi/2) \\cup (\\pi/2, 5)$ (Concave Up, holds water)."
+                },
+                {
+                    title: "End Behavior",
+                    text: "Because cosine is a periodic wave, its values oscillate between $-2$ and $2$ forever as $x \\to \\pm\\infty$. It does not settle on a single value or grow infinitely. Thus, the limit as $x \\to \\infty$ **oscillates and does not exist**."
+                }
+            ]
+        },
+        exponential: {
+            title: "Exponential Growth: 2^x - 3",
+            fLaTeX: "f(x) = 2^x - 3",
+            f: x => Math.pow(2, x) - 3,
+            df: x => Math.log(2) * Math.pow(2, x),
+            ddf: x => Math.pow(Math.log(2), 2) * Math.pow(2, x),
+            extrema: [],
+            holes: [],
+            VAs: [],
+            HAs: [-3],
+            answers: {
+                domain: "(-\\infty, \\infty)",
+                range: "(-3, \\infty)",
+                increasing: "Always Increasing",
+                concavity: "Always Concave Up",
+                asymptotes: "HA: y = -3 at -\\infty",
+                endBehavior: "\\lim_{x \\to \\infty} f(x) = \\infty"
+            },
+            options: {
+                domain: ["(-\\infty, \\infty)", "x &gt; -3", "x &gt; 0", "(-\\infty, 0)"],
+                range: ["(-3, \\infty)", "[-3, \\infty)", "(-\\infty, \\infty)", "(0, \\infty)"],
+                increasing: ["Always Increasing", "Always Decreasing", "Increasing on (0, \\infty)", "Decreasing on (-\\infty, 0)"],
+                concavity: ["Always Concave Up", "Always Concave Down", "Up: (0, \\infty), Down: (-\\infty, 0)", "No concavity"],
+                asymptotes: ["HA: y = -3 at -\\infty", "HA: y = 0", "VA at x = -3", "HA: y = 3"],
+                endBehavior: ["\\lim_{x \\to \\infty} f(x) = \\infty", "\\lim_{x \\to \\infty} f(x) = -3", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = 2"]
+            },
+            solution: [
+                {
+                    title: "Domain & Asymptotes",
+                    text: "Exponential functions are defined for all real numbers, so the domain is $(-\\infty, \\infty)$. As $x \\to -\\infty$, $2^x \\to 0$. Therefore, $f(x) \\to -3$. This creates a **Horizontal Asymptote** at $y = -3$ on the left side of the graph."
+                },
+                {
+                    title: "Range & Intercepts",
+                    text: "Since $2^x > 0$ always, $2^x - 3 > -3$ always. The range is $(-3, \\infty)$. The y-intercept is at $f(0) = 2^0 - 3 = -2$. The x-intercept is when $2^x - 3 = 0 \\implies 2^x = 3 \\implies x = \\log_2 3 \\approx 1.58$."
+                },
+                {
+                    title: "Slope & Concavity",
+                    text: "Derivative: $f'(x) = \\ln(2) \\cdot 2^x$. Since $\\ln(2) > 0$ and $2^x > 0$, $f'(x) > 0$ for all $x$. The function is **always increasing**. Second derivative: $f''(x) = (\\ln 2)^2 \\cdot 2^x > 0$. The graph is **always concave up** (holds water). There are no inflection points."
+                }
+            ]
+        },
+        logarithmic: {
+            title: "Logarithmic Curve: ln(x + 2)",
+            fLaTeX: "f(x) = \\ln(x + 2)",
+            f: x => x <= -2 ? NaN : Math.log(x + 2),
+            df: x => x <= -2 ? NaN : 1.0 / (x + 2),
+            ddf: x => x <= -2 ? NaN : -1.0 / Math.pow(x + 2, 2),
+            extrema: [],
+            holes: [],
+            VAs: [-2],
+            HAs: [],
+            answers: {
+                domain: "(-2, \\infty)",
+                range: "(-\\infty, \\infty)",
+                increasing: "Always Increasing",
+                concavity: "Always Concave Down",
+                asymptotes: "VA: x = -2",
+                endBehavior: "\\lim_{x \\to \\infty} f(x) = \\infty"
+            },
+            options: {
+                domain: ["(-2, \\infty)", "[-2, \\infty)", "(-\\infty, \\infty)", "x \\neq -2"],
+                range: ["(-\\infty, \\infty)", "(0, \\infty)", "(-2, \\infty)", "[-2, 2]"],
+                increasing: ["Always Increasing", "Always Decreasing", "Increasing on (-2, 0)", "Decreasing on (0, \\infty)"],
+                concavity: ["Always Concave Down", "Always Concave Up", "Up: (-2, \\infty)", "No concavity"],
+                asymptotes: ["VA: x = -2", "HA: y = 0", "VA: x = 2", "VA: x = -2, HA: y = 0"],
+                endBehavior: ["\\lim_{x \\to \\infty} f(x) = \\infty", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = e", "\\lim_{x \\to \\infty} f(x) = -2"]
+            },
+            solution: [
+                {
+                    title: "Domain & Asymptotes",
+                    text: "Logarithms are only defined for positive arguments, so we require $x + 2 > 0 \\implies x > -2$. The domain is $(-2, \\infty)$. As $x$ approaches $-2$ from the right, the argument $x+2 \\to 0^+$, which means $\\ln(x+2) \\to -\\infty$. This produces a **Vertical Asymptote** at $x = -2$."
+                },
+                {
+                    title: "Range & Intercepts",
+                    text: "The range of logarithmic functions is $(-\\infty, \\infty)$. The x-intercept occurs when $\\ln(x+2) = 0 \\implies x + 2 = 1 \\implies x = -1$. The y-intercept is at $f(0) = \\ln(2) \\approx 0.69$."
+                },
+                {
+                    title: "Slope & Concavity",
+                    text: "Derivative: $f'(x) = \\frac{1}{x+2}$. Since $x > -2$, $x+2 > 0 \\implies f'(x) > 0$. The function is **always increasing**. Second derivative: $f''(x) = -\\frac{1}{(x+2)^2}$. The numerator is negative and the denominator is squared (positive), so $f''(x) < 0$ always. The graph is **always concave down** (spills water). No inflection points."
+                }
+            ]
+        },
+        hole: {
+            title: "Rational with Hole: (x² - 4) / (x - 2)",
+            fLaTeX: "f(x) = \\frac{x^2 - 4}{x - 2}",
+            f: x => Math.abs(x - 2) < 0.05 ? NaN : (x*x - 4) / (x - 2),
+            df: x => 1,
+            ddf: x => 0,
+            extrema: [],
+            holes: [{ x: 2, y: 4 }],
+            VAs: [],
+            HAs: [],
+            answers: {
+                domain: "x \\neq 2",
+                range: "y \\neq 4",
+                increasing: "Always Increasing",
+                concavity: "No concavity",
+                asymptotes: "Hole at (2, 4)",
+                endBehavior: "\\lim_{x \\to \\infty} f(x) = \\infty"
+            },
+            options: {
+                domain: ["x \\neq 2", "x \\neq -2", "(-\\infty, \\infty)", "x \\neq 2, -2"],
+                range: ["y \\neq 4", "y \\neq 2", "(-\\infty, \\infty)", "y \\neq 0"],
+                increasing: ["Always Increasing", "Always Decreasing", "Increasing on (2, \\infty)", "Decreasing on (-\\infty, 2)"],
+                concavity: ["No concavity", "Always Concave Up", "Always Concave Down", "Flat at x=2"],
+                asymptotes: ["Hole at (2, 4)", "VA at x = 2", "VA: x = 2, HA: y = 2", "Hole at (2, 4), VA at x = 2"],
+                endBehavior: ["\\lim_{x \\to \\infty} f(x) = \\infty", "\\lim_{x \\to \\infty} f(x) = 4", "\\lim_{x \\to \\infty} f(x) = 0", "\\lim_{x \\to \\infty} f(x) = -\\infty"]
+            },
+            solution: [
+                {
+                    title: "Holes & Domain",
+                    text: "Factoring the numerator: $x^2 - 4 = (x-2)(x+2)$. The function can be rewritten as $f(x) = \\frac{(x-2)(x+2)}{x-2}$. Since $x-2$ is in both numerator and denominator, it cancels out. This creates a **Hole** at $x = 2$. The domain is all real numbers except $2$ ($x \\neq 2$)."
+                },
+                {
+                    title: "Simplified Form & Range",
+                    text: "For all $x \\neq 2$, the function simplifies to the linear equation $f_{simpl}(x) = x + 2$. The hole's y-coordinate is $f_{simpl}(2) = 2 + 2 = 4$. So the hole is located at coordinates $(2, 4)$. The range excludes the hole's height, so it is $y \\neq 4$."
+                },
+                {
+                    title: "Slope & Concavity",
+                    text: "The graph is a straight line $y = x+2$ (with a missing point). The slope is constant at $1$. Thus, $f'(x) = 1 > 0$ always (always increasing). The second derivative is $f''(x) = 0$. Since there is no curvature, the function has **no concavity** and no inflection points."
+                }
+            ]
+        }
+    };
+
+    // DOM References
+    const presetSelect = document.getElementById('presetSelect');
+    const btnRandomQuiz = document.getElementById('btnRandomQuiz');
+    const toggleIncDecBtn = document.getElementById('toggleIncDecBtn');
+    const togglePosNegBtn = document.getElementById('togglePosNegBtn');
+    const toggleConcavityBtn = document.getElementById('toggleConcavityBtn');
+
+    const graphSvg = document.getElementById('graphSvg');
+    const gridLines = document.getElementById('gridLines');
+    const overlayShading = document.getElementById('overlayShading');
+    const haLine = document.getElementById('haLine');
+    const vaGroup = document.getElementById('vaGroup');
+    const curvePath = document.getElementById('curvePath');
+    const extremaGroup = document.getElementById('extremaGroup');
+    const holesGroup = document.getElementById('holesGroup');
+    const trackerVert = document.getElementById('trackerVert');
+    const trackerDot = document.getElementById('trackerDot');
+    const trackerReadout = document.getElementById('trackerReadout');
+
+    const scoreSelectDomain = document.getElementById('scoreSelectDomain');
+    const scoreSelectRange = document.getElementById('scoreSelectRange');
+    const scoreSelectIncreasing = document.getElementById('scoreSelectIncreasing');
+    const scoreSelectConcavity = document.getElementById('scoreSelectConcavity');
+    const scoreSelectAsymptotes = document.getElementById('scoreSelectAsymptotes');
+    const scoreSelectEndBehavior = document.getElementById('scoreSelectEndBehavior');
+
+    const btnScorecardReset = document.getElementById('btnScorecardReset');
+    const btnScorecardSubmit = document.getElementById('btnScorecardSubmit');
+    const scorecardBadge = document.getElementById('scorecardBadge');
+
+    const eqReadout = document.getElementById('eqReadout');
+    const solutionContainer = document.getElementById('solutionContainer');
+
+    /* ============================================================
+       INIT GRID
+       ============================================================ */
+    function initGrid() {
+        gridLines.innerHTML = '';
+        // Grid lines every 1 unit
+        for (let i = -6; i <= 6; i++) {
+            if (i === 0) continue;
+            // Vert
+            let vLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            vLine.setAttribute('class', 'grid-line');
+            vLine.setAttribute('x1', i); vLine.setAttribute('y1', -6);
+            vLine.setAttribute('x2', i); vLine.setAttribute('y2', 6);
+            gridLines.appendChild(vLine);
+
+            // Horiz
+            let hLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            hLine.setAttribute('class', 'grid-line');
+            hLine.setAttribute('x1', -6); hLine.setAttribute('y1', i);
+            hLine.setAttribute('x2', 6); hLine.setAttribute('y2', i);
+            gridLines.appendChild(hLine);
+        }
+
+        // Axes
+        let xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxis.setAttribute('class', 'axis-line');
+        xAxis.setAttribute('x1', -6.5); xAxis.setAttribute('y1', 0);
+        xAxis.setAttribute('x2', 6.5); xAxis.setAttribute('y2', 0);
+        gridLines.appendChild(xAxis);
+
+        let yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxis.setAttribute('class', 'axis-line');
+        yAxis.setAttribute('x1', 0); yAxis.setAttribute('y1', -6.5);
+        yAxis.setAttribute('x2', 0); yAxis.setAttribute('y2', 6.5);
+        gridLines.appendChild(yAxis);
+
+        // Axis numeric labels
+        const ticks = [-5, -2, 2, 5];
+        ticks.forEach(val => {
+            let txtX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txtX.setAttribute('class', 'axis-label');
+            txtX.setAttribute('x', val);
+            txtX.setAttribute('y', 0.3);
+            txtX.textContent = val;
+            gridLines.appendChild(txtX);
+
+            let txtY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txtY.setAttribute('class', 'axis-label');
+            txtY.setAttribute('x', 0.3);
+            txtY.setAttribute('y', -val); // flip Y for text
+            txtY.textContent = val;
+            gridLines.appendChild(txtY);
+        });
+    }
+
+    /* ============================================================
+       SCORECARD OPTIONS POPULATION
+       ============================================================ */
+    function populateScorecardOptions(fnData) {
+        function fillSelect(selectEl, opts, placeholder) {
+            selectEl.innerHTML = '';
+            
+            // Add blank default
+            let defOpt = document.createElement('option');
+            defOpt.value = '';
+            defOpt.textContent = placeholder;
+            selectEl.appendChild(defOpt);
+
+            opts.forEach(opt => {
+                let o = document.createElement('option');
+                o.value = opt;
+                o.textContent = opt;
+                selectEl.appendChild(o);
+            });
+            selectEl.className = 'scorecard-select';
+            selectEl.disabled = false;
+        }
+
+        fillSelect(scoreSelectDomain, fnData.options.domain, "-- Select Domain --");
+        fillSelect(scoreSelectRange, fnData.options.range, "-- Select Range --");
+        fillSelect(scoreSelectIncreasing, fnData.options.increasing, "-- Select Incr/Decr --");
+        fillSelect(scoreSelectConcavity, fnData.options.concavity, "-- Select Concavity --");
+        fillSelect(scoreSelectAsymptotes, fnData.options.asymptotes, "-- Select Asymptotes --");
+        fillSelect(scoreSelectEndBehavior, fnData.options.endBehavior, "-- Select End Behavior --");
+    }
+
+    /* ============================================================
+       REDRAW & UPDATE ROUTINE
+       ============================================================ */
+    let activeFn = null;
+
+    function refresh() {
+        activeFn = functionsDb[currentPreset];
+        
+        // 1. Math formulas
+        katex.render(activeFn.fLaTeX, eqReadout, { throwOnError: false });
+
+        // 2. Clear solution container
+        if (!isScorecardSubmitted) {
+            solutionContainer.innerHTML = `
+            <div style="text-align: center; color: var(--muted); font-weight: 600; padding: 20px 0;">
+                Submit your scorecard on the left to unlock step-by-step mathematical explanations!
+            </div>`;
+        } else {
+            revealSolutions();
+        }
+
+        // 3. Draw Curves
+        drawCurveAndFeatures();
+
+        // 4. Draw Shading Overlays
+        drawOverlays();
+    }
+
+    function drawCurveAndFeatures() {
+        vaGroup.innerHTML = '';
+        extremaGroup.innerHTML = '';
+        holesGroup.innerHTML = '';
+        haLine.setAttribute('display', 'none');
+
+        // Draw f(x) curve
+        let d = "";
+        let first = true;
+        let step = 0.05;
+
+        // Collect VAs and holes to split domain
+        let sortedVAs = [...activeFn.VAs].sort((a,b) => a-b);
+        let sortedHoles = activeFn.holes.map(h => h.x).sort((a,b) => a-b);
+        let criticalX = Array.from(new Set([...sortedVAs, ...sortedHoles])).sort((a,b) => a-b);
+
+        // Split into intervals
+        let intervals = [];
+        let start = -7;
+        let eps = 0.06;
+        for (let crit of criticalX) {
+            if (crit > -7 && crit < 7) {
+                intervals.push([start, crit - eps]);
+                start = crit + eps;
+            }
+        }
+        intervals.push([start, 7]);
+
+        for (let interval of intervals) {
+            for (let x = interval[0]; x <= interval[1]; x += step) {
+                let y = activeFn.f(x);
+                if (isNaN(y) || !isFinite(y)) continue;
+                let cappedY = Math.max(-10, Math.min(10, y));
+
+                if (first) {
+                    d += `M ${x} ${cappedY}`;
+                    first = false;
+                } else {
+                    d += ` L ${x} ${cappedY}`;
+                }
+            }
+            first = true; // reset for next branch
+        }
+
+        curvePath.setAttribute('d', d);
+
+        // Draw VAs
+        activeFn.VAs.forEach(va => {
+            let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'va-line');
+            line.setAttribute('x1', va); line.setAttribute('y1', -7);
+            line.setAttribute('x2', va); line.setAttribute('y2', 7);
+            line.setAttribute('vector-effect', 'non-scaling-stroke');
+            vaGroup.appendChild(line);
+        });
+
+        // Draw HAs
+        activeFn.HAs.forEach(ha => {
+            haLine.setAttribute('y1', ha);
+            haLine.setAttribute('y2', ha);
+            haLine.setAttribute('display', 'block');
+            haLine.setAttribute('vector-effect', 'non-scaling-stroke');
+        });
+
+        // Draw Extrema dots
+        activeFn.extrema.forEach(pt => {
+            let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', `extrema-dot ${pt.type}`);
+            circle.setAttribute('cx', pt.x);
+            circle.setAttribute('cy', pt.y);
+            
+            let title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `Local ${pt.type === 'max' ? 'Maximum' : 'Minimum'} at (${pt.x}, ${pt.y})`;
+            circle.appendChild(title);
+            
+            extremaGroup.appendChild(circle);
+        });
+
+        // Draw Holes
+        activeFn.holes.forEach(h => {
+            let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('class', 'curve-hole');
+            circle.setAttribute('cx', h.x);
+            circle.setAttribute('cy', h.y);
+            circle.setAttribute('vector-effect', 'non-scaling-stroke');
+            
+            let title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `Hole at (${h.x}, ${h.y})`;
+            circle.appendChild(title);
+            
+            holesGroup.appendChild(circle);
+        });
+    }
+
+    function drawOverlays() {
+        overlayShading.innerHTML = '';
+        let step = 0.05;
+
+        // 1. Highlight Increase/Decrease (green for increasing, orange for decreasing)
+        if (highlightIncDec) {
+            let startX = -6;
+            let currentSign = Math.sign(activeFn.df(startX));
+
+            for (let x = -6; x <= 6.01; x += step) {
+                let sign = Math.sign(activeFn.df(x));
+                if (sign !== currentSign || x > 6) {
+                    let endX = x;
+                    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('class', currentSign >= 0 ? 'shade-incr' : 'shade-decr');
+                    rect.setAttribute('x', startX); rect.setAttribute('y', -6);
+                    rect.setAttribute('width', endX - startX); rect.setAttribute('height', 12);
+                    overlayShading.appendChild(rect);
+
+                    startX = endX;
+                    currentSign = sign;
+                }
+            }
+        }
+
+        // 2. Highlight Positive/Negative (blue above axis, red below axis)
+        if (highlightPosNeg) {
+            let startX = -6;
+            let currentSign = Math.sign(activeFn.f(startX));
+
+            for (let x = -6; x <= 6.01; x += step) {
+                let sign = Math.sign(activeFn.f(x));
+                if (sign !== currentSign || x > 6) {
+                    let endX = x;
+                    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('class', currentSign >= 0 ? 'shade-pos' : 'shade-neg');
+                    rect.setAttribute('x', startX); rect.setAttribute('y', currentSign >= 0 ? 0 : -6);
+                    rect.setAttribute('width', endX - startX); rect.setAttribute('height', 6);
+                    overlayShading.appendChild(rect);
+
+                    startX = endX;
+                    currentSign = sign;
+                }
+            }
+        }
+
+        // 3. Highlight Concavity Shading (green concave up, orange concave down)
+        if (highlightConcavity) {
+            let startX = -6;
+            let currentSign = Math.sign(activeFn.ddf(startX));
+
+            for (let x = -6; x <= 6.01; x += step) {
+                let sign = Math.sign(activeFn.ddf(x));
+                if (sign !== currentSign || x > 6) {
+                    let endX = x;
+                    let rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    rect.setAttribute('class', currentSign >= 0 ? 'shade-up' : 'shade-down');
+                    rect.setAttribute('x', startX); rect.setAttribute('y', -6);
+                    rect.setAttribute('width', endX - startX); rect.setAttribute('height', 12);
+                    overlayShading.appendChild(rect);
+
+                    startX = endX;
+                    currentSign = sign;
+                }
+            }
+        }
+    }
+
+    /* ============================================================
+       COORDINATE MOUSE/TOUCH INTERACTION
+       ============================================================ */
+    function getMouseCartesian(e) {
+        const rect = graphSvg.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // ViewBox is -6 to 6 (width 12, height 12)
+        const cartX = -6 + (mouseX / rect.width) * 12;
+        const cartY = 6 - (mouseY / rect.height) * 12; // Inverted Y
+
+        return { x: cartX, y: cartY };
+    }
+
+    graphSvg.addEventListener('mousemove', e => {
+        if (!activeFn) return;
+        const cart = getMouseCartesian(e);
+        const x = cart.x;
+        const y = activeFn.f(x);
+
+        // Check proximity to holes or VAs to prevent tracking
+        let isNearDiscontinuity = activeFn.VAs.some(va => Math.abs(x - va) < 0.2) ||
+                                  activeFn.holes.some(h => Math.abs(x - h.x) < 0.2);
+
+        if (!isNaN(y) && isFinite(y) && !isNearDiscontinuity && y >= -6 && y <= 6) {
+            trackerVert.setAttribute('x1', x);
+            trackerVert.setAttribute('x2', x);
+            trackerVert.setAttribute('display', 'block');
+
+            trackerDot.setAttribute('cx', x);
+            trackerDot.setAttribute('cy', y);
+            trackerDot.setAttribute('display', 'block');
+
+            trackerReadout.textContent = `Tracker Point: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+        } else {
+            hideTracker();
+        }
+    });
+
+    graphSvg.addEventListener('mouseleave', () => {
+        hideTracker();
+    });
+
+    function hideTracker() {
+        trackerVert.setAttribute('display', 'none');
+        trackerDot.setAttribute('display', 'none');
+        trackerReadout.textContent = "Hover graph to track coordinates";
+    }
+
+    /* ============================================================
+       OVERLAYS TOGGLE BUTTONS
+       ============================================================ */
+    function attachToggle(btn, callback) {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            callback(btn.classList.contains('active'));
+            refresh();
+        });
+    }
+
+    attachToggle(toggleIncDecBtn, val => highlightIncDec = val);
+    attachToggle(togglePosNegBtn, val => highlightPosNeg = val);
+    attachToggle(toggleConcavityBtn, val => highlightConcavity = val);
+
+    /* ============================================================
+       SCORECARD SUBMISSION & RESET
+       ============================================================ */
+    function checkScorecard() {
+        let score = 0;
+        let total = 6;
+
+        function checkItem(selectEl, correctVal) {
+            let val = selectEl.value;
+            selectEl.disabled = true;
+            if (val === correctVal) {
+                selectEl.className = 'scorecard-select correct';
+                score++;
+            } else {
+                selectEl.className = 'scorecard-select incorrect';
+            }
+        }
+
+        checkItem(scoreSelectDomain, activeFn.answers.domain);
+        checkItem(scoreSelectRange, activeFn.answers.range);
+        checkItem(scoreSelectIncreasing, activeFn.answers.increasing);
+        checkItem(scoreSelectConcavity, activeFn.answers.concavity);
+        checkItem(scoreSelectAsymptotes, activeFn.answers.asymptotes);
+        checkItem(scoreSelectEndBehavior, activeFn.answers.endBehavior);
+
+        isScorecardSubmitted = true;
+        
+        // Update badge
+        scorecardBadge.textContent = `Score: ${score}/${total}`;
+        if (score === total) {
+            scorecardBadge.className = 'score-badge win';
+        } else {
+            scorecardBadge.className = 'score-badge';
+        }
+
+        // Reveal solution steps on the right panel
+        revealSolutions();
+    }
+
+    function resetScorecard() {
+        isScorecardSubmitted = false;
+        scorecardBadge.textContent = "Unsubmitted";
+        scorecardBadge.className = 'score-badge';
+        
+        populateScorecardOptions(activeFn);
+        refresh();
+    }
+
+    function revealSolutions() {
+        solutionContainer.innerHTML = '';
+        activeFn.solution.forEach(step => {
+            let card = document.createElement('div');
+            card.className = 'solution-step';
+            card.innerHTML = `
+                <div class="solution-step-title">${step.title}</div>
+                <div style="margin-top:2px;">${step.text}</div>
+            `;
+            solutionContainer.appendChild(card);
+        });
+
+        // Render math in the solution container
+        try {
+            renderMathInElement(solutionContainer, {
+                delimiters: [
+                    { left: '$', right: '$', display: false },
+                    { left: '$$', right: '$$', display: true }
+                ],
+                throwOnError: false
+            });
+        } catch (e) {}
+    }
+
+    btnScorecardSubmit.addEventListener('click', checkScorecard);
+    btnScorecardReset.addEventListener('click', resetScorecard);
+
+    /* ============================================================
+       PRESET / RANDOM QUIZ SELECTOR
+       ============================================================ */
+    presetSelect.addEventListener('change', e => {
+        currentPreset = e.target.value;
+        resetScorecard();
+    });
+
+    btnRandomQuiz.addEventListener('click', () => {
+        let keys = Object.keys(functionsDb);
+        // Pick a random key different from current
+        let newKey = keys[Math.floor(Math.random() * keys.length)];
+        while (newKey === currentPreset && keys.length > 1) {
+            newKey = keys[Math.floor(Math.random() * keys.length)];
+        }
+        currentPreset = newKey;
+        presetSelect.value = newKey;
+        resetScorecard();
+    });
+
+    /* ============================================================
+       INITIALIZATION
+       ============================================================ */
+    initGrid();
+    activeFn = functionsDb[currentPreset];
+    populateScorecardOptions(activeFn);
+    refresh();
+})();
+</script>
+</body>
+</html>

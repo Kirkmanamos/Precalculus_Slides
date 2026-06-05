@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.7 Rational Asymptotes Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --soft-purple: #f5f3ff;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            padding: 22px;
+            overflow-y: auto;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        .app {
+            width: min(1440px, 100%);
+            display: grid;
+            grid-template-columns: 320px minmax(560px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Controls */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 20px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin-top: 4px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .control-section {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #e2e8f0;
+            padding: 3px;
+            border-radius: 8px;
+        }
+
+        .mode-btn {
+            background: transparent;
+            border: none;
+            padding: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--muted);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--navy);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .preset-select {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background-color: white;
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .coefficient-sliders {
+            display: grid;
+            gap: 12px;
+        }
+
+        .slider-group {
+            background: var(--soft);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .slider-group-title {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .slider-container {
+            display: grid;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .slider-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 5px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            background: #cbd5e1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--navy);
+            cursor: pointer;
+        }
+
+        /* Factor Builder Grid */
+        .factor-builder-wrap {
+            display: grid;
+            gap: 12px;
+        }
+
+        .factor-chip-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+        }
+
+        .factor-chip {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 2px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .factor-chip:hover {
+            border-color: var(--teal);
+            background: var(--soft-teal);
+        }
+
+        .factor-chip.active {
+            background: var(--teal);
+            color: white;
+            border-color: var(--teal);
+        }
+
+        .builder-box {
+            background: var(--soft);
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 8px;
+            min-height: 54px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-content: center;
+        }
+
+        .active-factor-tag {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .factor-close {
+            color: var(--red);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 2px;
+        }
+
+        /* CENTER PANEL: Canvas area */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            position: relative;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stage-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 100%;
+            min-height: 520px;
+            user-select: none;
+            cursor: crosshair;
+        }
+
+        /* Approach Panel */
+        .approach-panel {
+            background: var(--soft-orange);
+            border: 1px solid #fde68a;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .approach-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .approach-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-approach {
+            flex: 1;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-approach:hover:not(:disabled) {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        .btn-approach:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* RIGHT PANEL: Inspector */
+        .inspector {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .readout-card.highlight {
+            border-left: 4px solid var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .readout-card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .equation-box {
+            font-size: 1.05rem;
+            text-align: center;
+            padding: 6px 0;
+            overflow-x: auto;
+            min-height: 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        /* Degree visualizer */
+        .degree-comp-grid {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+        }
+
+        .deg-bar {
+            background: var(--soft-blue);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 8px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .deg-bar.active {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+
+        .deg-relation {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--muted);
+        }
+
+        /* Checklist */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.82rem;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-bullet {
+            font-size: 0.95rem;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        .check-bullet.hole { color: var(--purple); }
+        .check-bullet.va { color: var(--red); }
+        .check-bullet.ha { color: var(--blue); }
+        .check-bullet.intercept { color: var(--green); }
+
+        .checklist-item .label {
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .checklist-item .desc {
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        /* SVG grid & layout */
+        .axis-line { stroke: #475569; stroke-width: 1.5; }
+        .grid-line { stroke: #e2e8f0; stroke-width: 0.75; }
+        .curve { fill: none; stroke: var(--navy); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+        .slant-asymptote { fill: none; stroke: var(--blue); stroke-width: 1.75; stroke-dasharray: 6 4; }
+        .va-line { stroke: var(--red); stroke-width: 1.75; stroke-dasharray: 6 4; }
+        .ha-line { stroke: var(--blue); stroke-width: 1.75; stroke-dasharray: 6 4; }
+        .intercept-dot { stroke: white; stroke-width: 1.5; r: 5; }
+        .intercept-dot.x-int { fill: var(--green); }
+        .intercept-dot.y-int { fill: var(--teal); }
+        .hole-circle { fill: white; stroke: var(--purple); stroke-width: 2; r: 5.5; }
+        .tracker-line { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+        .tracker-dot { fill: var(--navy); stroke: white; stroke-width: 2; r: 6; }
+        
+        .limit-anim-dot { fill: var(--orange); stroke: white; stroke-width: 2; r: 6.5; }
+
+        .axis-label {
+            font-size: 11px;
+            fill: var(--muted);
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: var(--navy);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            pointer-events: none;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        /* Quiz Module */
+        .quiz-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header {
+            background: var(--navy);
+            color: white;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-body {
+            padding: 14px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .quiz-q {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .quiz-opts {
+            display: grid;
+            gap: 6px;
+        }
+
+        .quiz-opt {
+            background: var(--soft);
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quiz-opt:hover {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+        }
+
+        .quiz-opt.correct {
+            background: var(--soft-green);
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .quiz-opt.incorrect {
+            background: #fff5f5;
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .quiz-feedback {
+            font-size: 0.8rem;
+            font-weight: 700;
+            min-height: 18px;
+        }
+
+        .quiz-footer {
+            padding: 10px 14px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        @media (max-width: 1200px) {
+            .app {
+                grid-template-columns: 1fr;
+            }
+            html, body {
+                overflow-y: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ============================================================
+         LEFT PANEL — CONTROLS
+         ============================================================ -->
+    <aside class="panel controls" aria-label="Explorer Controls">
+        <div class="brand">
+            <span class="section-label">Section 2.7</span>
+            <h1>Asymptote Explorer</h1>
+        </div>
+
+        <!-- Preset Functions -->
+        <section class="control-section">
+            <h2 class="group-title">Select Preset</h2>
+            <select class="preset-select" id="presetSelect">
+                <option value="classic">The Classic Hole &amp; VA</option>
+                <option value="simple">Linear / Linear (Simple VA/HA)</option>
+                <option value="degLess">HA at y = 0 (with Hole)</option>
+                <option value="doubleVa">Two VAs, HA at y = 0</option>
+                <option value="slant">Slant Asymptote</option>
+                <option value="lineHole">Line with a Hole</option>
+                <option value="quadQuad">Quadratic / Quadratic (2 VAs)</option>
+            </select>
+        </section>
+
+        <!-- Input Mode Selection -->
+        <section class="control-section">
+            <h2 class="group-title">Input Mode</h2>
+            <div class="mode-selector">
+                <button class="mode-btn active" id="modeStandardBtn">Sliders</button>
+                <button class="mode-btn" id="modeFactoredBtn">Factor Builder</button>
+            </div>
+        </section>
+
+        <!-- Mode A: Standard Sliders -->
+        <section class="control-section coefficient-sliders" id="standardControls">
+            <div class="slider-group">
+                <div class="slider-group-title">Numerator: Ax² + Bx + C</div>
+                
+                <div class="slider-container">
+                    <div class="slider-label"><span>A (x²)</span><span id="sliderValA">1</span></div>
+                    <input type="range" class="slider" id="sliderA" min="-3" max="3" value="1">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label"><span>B (x)</span><span id="sliderValB">-3</span></div>
+                    <input type="range" class="slider" id="sliderB" min="-6" max="6" value="-3">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label"><span>C (constant)</span><span id="sliderValC">-4</span></div>
+                    <input type="range" class="slider" id="sliderC" min="-6" max="6" value="-4">
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-group-title">Denominator: Px² + Qx + R</div>
+                
+                <div class="slider-container">
+                    <div class="slider-label"><span>P (x²)</span><span id="sliderValP">1</span></div>
+                    <input type="range" class="slider" id="sliderP" min="-3" max="3" value="1">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label"><span>Q (x)</span><span id="sliderValQ">0</span></div>
+                    <input type="range" class="slider" id="sliderQ" min="-6" max="6" value="0">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label"><span>R (constant)</span><span id="sliderValR">-1</span></div>
+                    <input type="range" class="slider" id="sliderR" min="-6" max="6" value="-1">
+                </div>
+            </div>
+        </section>
+
+        <!-- Mode B: Factored Builder -->
+        <section class="control-section factor-builder-wrap" id="factoredControls" style="display: none;">
+            <div class="slider-group">
+                <div class="slider-group-title">Numerator factors</div>
+                <div class="factor-chip-row">
+                    <button class="factor-chip" data-type="num" data-val="3">x + 3</button>
+                    <button class="factor-chip" data-type="num" data-val="2">x + 2</button>
+                    <button class="factor-chip" data-type="num" data-val="1">x + 1</button>
+                    <button class="factor-chip" data-type="num" data-val="0">x</button>
+                </div>
+                <div class="factor-chip-row" style="margin-top: 4px;">
+                    <button class="factor-chip" data-type="num" data-val="-1">x - 1</button>
+                    <button class="factor-chip" data-type="num" data-val="-2">x - 2</button>
+                    <button class="factor-chip" data-type="num" data-val="-3">x - 3</button>
+                </div>
+                <div class="builder-box" id="numFactorBox" style="margin-top: 8px;"></div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-group-title">Denominator factors</div>
+                <div class="factor-chip-row">
+                    <button class="factor-chip" data-type="den" data-val="3">x + 3</button>
+                    <button class="factor-chip" data-type="den" data-val="2">x + 2</button>
+                    <button class="factor-chip" data-type="den" data-val="1">x + 1</button>
+                    <button class="factor-chip" data-type="den" data-val="0">x</button>
+                </div>
+                <div class="factor-chip-row" style="margin-top: 4px;">
+                    <button class="factor-chip" data-type="den" data-val="-1">x - 1</button>
+                    <button class="factor-chip" data-type="den" data-val="-2">x - 2</button>
+                    <button class="factor-chip" data-type="den" data-val="-3">x - 3</button>
+                </div>
+                <div class="builder-box" id="denFactorBox" style="margin-top: 8px;"></div>
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-group-title">Leading Coefficient Scale (k)</div>
+                <div class="slider-container">
+                    <div class="slider-label"><span>Scale Value</span><span id="factoredKVal">1</span></div>
+                    <input type="range" class="slider" id="sliderFactoredK" min="-3" max="3" step="1" value="1">
+                </div>
+            </div>
+        </section>
+    </aside>
+
+    <!-- ============================================================
+         CENTER PANEL — GRAPH CANVAS
+         ============================================================ -->
+    <main class="panel stage" aria-label="Visual Graph Display">
+        <header class="stage-header">
+            <h2 class="stage-title">Rational Graph</h2>
+            <span id="canvasCoordsText" style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">Hover graph to track coordinates</span>
+        </header>
+
+        <div class="canvas-container" id="canvasWrap">
+            <div class="tooltip" id="graphTooltip"></div>
+            <svg class="graph-svg" id="graphSvg" viewBox="0 0 600 600">
+                <g id="gridLines"></g>
+                <!-- Slant asymptote -->
+                <line class="slant-asymptote" id="slantLine" x1="0" y1="0" x2="0" y2="0" display="none"></line>
+                <!-- Horizontal asymptote -->
+                <line class="ha-line" id="haLine" x1="0" y1="0" x2="0" y2="0" display="none"></line>
+                <!-- Vertical asymptotes -->
+                <g id="vaGroup"></g>
+                <!-- Curve paths -->
+                <g id="curveGroup"></g>
+                <!-- Intercepts -->
+                <circle class="intercept-dot x-int" id="xIntDot1" cx="0" cy="0" display="none"></circle>
+                <circle class="intercept-dot x-int" id="xIntDot2" cx="0" cy="0" display="none"></circle>
+                <circle class="intercept-dot y-int" id="yIntDot" cx="0" cy="0" display="none"></circle>
+                <!-- Holes -->
+                <g id="holesGroup"></g>
+                
+                <!-- Mouse tracker point -->
+                <line class="tracker-line" id="trackerVert" x1="0" y1="0" x2="0" y2="0" display="none"></line>
+                <line class="tracker-line" id="trackerHoriz" x1="0" y1="0" x2="0" y2="0" display="none"></line>
+                <circle class="tracker-dot" id="trackerDot" cx="0" cy="0" display="none"></circle>
+                
+                <!-- Limit animation point -->
+                <circle class="limit-anim-dot" id="limitAnimDot" cx="0" cy="0" display="none"></circle>
+            </svg>
+        </div>
+
+        <!-- Limit Approach Animation Panel -->
+        <section class="control-section" style="padding: 10px 0 0 0; border: none; margin-top: 10px;">
+            <div class="approach-panel" id="approachCard" style="display: none;">
+                <div class="approach-header">
+                    <span>Explore Asymptotic Behavior</span>
+                    <span id="limitFormulaText" style="font-family: monospace;"></span>
+                </div>
+                <div class="approach-controls">
+                    <select class="preset-select" id="vaSelect" style="flex: 1; padding: 4px 8px; font-size: 0.8rem;"></select>
+                    <button class="btn-approach" id="btnLeftLimit">Approach from Left (c⁻)</button>
+                    <button class="btn-approach" id="btnRightLimit">Approach from Right (c⁺)</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ============================================================
+         RIGHT PANEL — INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebraic analysis">
+        <!-- Equation Card -->
+        <div class="readout-card highlight">
+            <div class="readout-card-title">Function Equation</div>
+            <div class="equation-box" id="equationReadout"></div>
+        </div>
+
+        <!-- Degree Comparison -->
+        <div class="readout-card">
+            <div class="readout-card-title">Degree Comparison</div>
+            <div class="degree-comp-grid">
+                <div class="deg-bar" id="degNBox">Num Degree n = 2</div>
+                <div class="deg-relation" id="degRelation">&gt;</div>
+                <div class="deg-bar" id="degDBox">Den Degree m = 1</div>
+            </div>
+            <div class="inspector-row" style="font-size: 0.82rem; padding: 4px 0;">
+                <span class="label">Asymptote Rule</span>
+                <span class="val" id="degRuleText" style="color: var(--blue);">n > m + 1 → Slant</span>
+            </div>
+        </div>
+
+        <!-- Feature Checklist -->
+        <div class="readout-card">
+            <div class="readout-card-title">Feature Checklist</div>
+            <div class="checklist-items" id="checklistContainer">
+                <!-- Checklist items populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Rational Quiz Card -->
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <span>Identify Rational Features Quiz</span>
+                <span id="quizScore">Score: 0/0</span>
+            </div>
+            <div class="quiz-body">
+                <div class="quiz-q" id="quizQuestion">Generate a question to test your knowledge!</div>
+                <div class="quiz-opts" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+            </div>
+            <div class="quiz-footer">
+                <button class="btn-small btn-secondary" id="quizResetBtn" style="display:none;">Next Question</button>
+                <button class="btn-small btn-primary" id="quizStartBtn" style="width: 100%;">Start Quiz</button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function() {
+    /* ============================================================
+       STATE VARIABLES
+       ============================================================ */
+    let inputMode = 'standard'; // 'standard' or 'factored'
+    
+    // Standard Coefficients
+    let coeffA = 1, coeffB = -3, coeffC = -4; // Numerator
+    let coeffP = 1, coeffQ = 0, coeffR = -1;  // Denominator
+
+    // Factored Builders
+    let numFactors = [4, -1]; // representing (x - 4), (x + 1)
+    let denFactors = [1, -1]; // representing (x - 1), (x + 1)
+    let factoredK = 1;
+
+    // Limit Approach Animation
+    let isAnimating = false;
+    let animTimer = null;
+
+    // Quiz State
+    let quizMode = false;
+    let quizQuestionData = null;
+    let quizScoreCorrect = 0;
+    let quizScoreTotal = 0;
+
+    // Coordinates mapping
+    const minX = -10;
+    const maxX = 10;
+    const minY = -10;
+    const maxY = 10;
+
+    // SVG coordinate projections
+    const cx = 300;
+    const cy = 300;
+    const scaleX = 600 / 22; // 600 px / 22 units
+    const scaleY = 600 / 22; // 600 px / 22 units
+
+    function toSvgX(x) { return cx + x * scaleX; }
+    function toSvgY(y) { return cy - y * scaleY; }
+
+    // DOM References
+    const presetSelect = document.getElementById('presetSelect');
+    const modeStandardBtn = document.getElementById('modeStandardBtn');
+    const modeFactoredBtn = document.getElementById('modeFactoredBtn');
+    const standardControls = document.getElementById('standardControls');
+    const factoredControls = document.getElementById('factoredControls');
+
+    // Standard sliders
+    const sliderA = document.getElementById('sliderA');
+    const sliderB = document.getElementById('sliderB');
+    const sliderC = document.getElementById('sliderC');
+    const sliderP = document.getElementById('sliderP');
+    const sliderQ = document.getElementById('sliderQ');
+    const sliderR = document.getElementById('sliderR');
+    const sliderValA = document.getElementById('sliderValA');
+    const sliderValB = document.getElementById('sliderValB');
+    const sliderValC = document.getElementById('sliderValC');
+    const sliderValP = document.getElementById('sliderValP');
+    const sliderValQ = document.getElementById('sliderValQ');
+    const sliderValR = document.getElementById('sliderValR');
+
+    // Factored builder
+    const numFactorBox = document.getElementById('numFactorBox');
+    const denFactorBox = document.getElementById('denFactorBox');
+    const sliderFactoredK = document.getElementById('sliderFactoredK');
+    const factoredKVal = document.getElementById('factoredKVal');
+
+    // Canvas elements
+    const svg = document.getElementById('graphSvg');
+    const gridLines = document.getElementById('gridLines');
+    const vaGroup = document.getElementById('vaGroup');
+    const holesGroup = document.getElementById('holesGroup');
+    const curveGroup = document.getElementById('curveGroup');
+    const slantLine = document.getElementById('slantLine');
+    const haLine = document.getElementById('haLine');
+    const xIntDot1 = document.getElementById('xIntDot1');
+    const xIntDot2 = document.getElementById('xIntDot2');
+    const yIntDot = document.getElementById('yIntDot');
+    const trackerVert = document.getElementById('trackerVert');
+    const trackerHoriz = document.getElementById('trackerHoriz');
+    const trackerDot = document.getElementById('trackerDot');
+    const limitAnimDot = document.getElementById('limitAnimDot');
+    
+    // Animation controls
+    const approachCard = document.getElementById('approachCard');
+    const vaSelect = document.getElementById('vaSelect');
+    const btnLeftLimit = document.getElementById('btnLeftLimit');
+    const btnRightLimit = document.getElementById('btnRightLimit');
+    const limitFormulaText = document.getElementById('limitFormulaText');
+    const canvasCoordsText = document.getElementById('canvasCoordsText');
+    const graphTooltip = document.getElementById('graphTooltip');
+
+    // Inspector
+    const equationReadout = document.getElementById('equationReadout');
+    const degNBox = document.getElementById('degNBox');
+    const degDBox = document.getElementById('degDBox');
+    const degRelation = document.getElementById('degRelation');
+    const degRuleText = document.getElementById('degRuleText');
+    const checklistContainer = document.getElementById('checklistContainer');
+
+    // Quiz
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScore = document.getElementById('quizScore');
+    const quizStartBtn = document.getElementById('quizStartBtn');
+    const quizResetBtn = document.getElementById('quizResetBtn');
+
+    /* ============================================================
+       INIT GRID LINES
+       ============================================================ */
+    function initGrid() {
+        gridLines.innerHTML = '';
+        // Grid lines
+        for (let i = -10; i <= 10; i++) {
+            if (i === 0) continue;
+            // Vertical grid lines
+            let vLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            vLine.setAttribute('class', 'grid-line');
+            vLine.setAttribute('x1', toSvgX(i));
+            vLine.setAttribute('y1', toSvgY(-10));
+            vLine.setAttribute('x2', toSvgX(i));
+            vLine.setAttribute('y2', toSvgY(10));
+            gridLines.appendChild(vLine);
+
+            // Horizontal grid lines
+            let hLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            hLine.setAttribute('class', 'grid-line');
+            hLine.setAttribute('x1', toSvgX(-10));
+            hLine.setAttribute('y1', toSvgY(i));
+            hLine.setAttribute('x2', toSvgX(10));
+            hLine.setAttribute('y2', toSvgY(i));
+            gridLines.appendChild(hLine);
+        }
+
+        // Axes
+        let xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxis.setAttribute('class', 'axis-line');
+        xAxis.setAttribute('x1', 0);
+        xAxis.setAttribute('y1', toSvgY(0));
+        xAxis.setAttribute('x2', 600);
+        xAxis.setAttribute('y2', toSvgY(0));
+        gridLines.appendChild(xAxis);
+
+        let yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxis.setAttribute('class', 'axis-line');
+        yAxis.setAttribute('x1', toSvgX(0));
+        yAxis.setAttribute('y1', 0);
+        yAxis.setAttribute('x2', toSvgX(0));
+        yAxis.setAttribute('y2', 600);
+        gridLines.appendChild(yAxis);
+
+        // Labels
+        const labels = [-10, -5, 5, 10];
+        labels.forEach(val => {
+            // X-axis label (SVG space, Y = 0.5)
+            let txtX = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txtX.setAttribute('class', 'axis-label');
+            txtX.setAttribute('x', toSvgX(val));
+            txtX.setAttribute('y', toSvgY(-0.6));
+            txtX.textContent = val;
+            gridLines.appendChild(txtX);
+
+            // Y-axis label (SVG space, X = 0.5)
+            let txtY = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txtY.setAttribute('class', 'axis-label');
+            txtY.setAttribute('x', toSvgX(0.6));
+            txtY.setAttribute('y', toSvgY(val));
+            txtY.textContent = val;
+            gridLines.appendChild(txtY);
+        });
+    }
+
+    /* ============================================================
+       MATH & ANALYSIS ENGINE
+       ============================================================ */
+    function formatFractionOrFloat(num, den) {
+        if (den < 0) {
+            num = -num;
+            den = -den;
+        }
+        let g = gcd(Math.abs(num), Math.abs(den));
+        num = num / g;
+        den = den / g;
+        if (den === 1) return num.toString();
+        let sign = num < 0 ? "-" : "";
+        return `${sign}\\frac{${Math.abs(num)}}{${den}}`;
+    }
+
+    function formatLinear(slope, intercept) {
+        let termX = "";
+        if (Math.abs(slope - 1) < 1e-9) termX = "x";
+        else if (Math.abs(slope + 1) < 1e-9) termX = "-x";
+        else termX = `${toLaTeXFraction(slope)}x`;
+
+        if (Math.abs(intercept) < 1e-9) return termX;
+        let sign = intercept < 0 ? "-" : "+";
+        let termConst = toLaTeXFraction(Math.abs(intercept));
+        return `${termX} ${sign} ${termConst}`;
+    }
+
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    function toLaTeXFraction(val) {
+        if (Math.abs(val) < 1e-9) return "0";
+        if (Math.abs(val - Math.round(val)) < 1e-4) return Math.round(val).toString();
+        for (let d = 2; d <= 24; d++) {
+            let n = val * d;
+            if (Math.abs(n - Math.round(n)) < 1e-3) {
+                let num = Math.round(n);
+                let sign = num < 0 ? "-" : "";
+                return `${sign}\\frac{${Math.abs(num)}}{${d}}`;
+            }
+        }
+        return val.toFixed(2);
+    }
+
+    function getPolynomialLaTeX(A, B, C) {
+        if (A === 0 && B === 0 && C === 0) return "0";
+        let terms = [];
+        if (A !== 0) {
+            let coeff = A === 1 ? "" : (A === -1 ? "-" : A.toString());
+            terms.push(`${coeff}x^2`);
+        }
+        if (B !== 0) {
+            let sign = B > 0 ? (terms.length > 0 ? "+" : "") : "-";
+            let coeff = Math.abs(B) === 1 ? "" : Math.abs(B).toString();
+            terms.push(`${sign}${coeff}x`);
+        }
+        if (C !== 0) {
+            let sign = C > 0 ? (terms.length > 0 ? "+" : "") : "-";
+            terms.push(`${sign}${Math.abs(C)}`);
+        }
+        return terms.join("");
+    }
+
+    function analyzeRational() {
+        let A, B, C, P, Q, R;
+
+        if (inputMode === 'standard') {
+            A = coeffA; B = coeffB; C = coeffC;
+            P = coeffP; Q = coeffQ; R = coeffR;
+        } else {
+            // Expand factored form to coefficients
+            // N(x) = k * (x - r1) * (x - r2)
+            // D(x) = (x - s1) * (x - s2)
+            let nRoots = numFactors;
+            let dRoots = denFactors;
+            let k = factoredK;
+
+            // Numerator expansion
+            if (nRoots.length === 0) {
+                A = 0; B = 0; C = k;
+            } else if (nRoots.length === 1) {
+                A = 0; B = k; C = -k * nRoots[0];
+            } else {
+                A = k;
+                B = -k * (nRoots[0] + nRoots[1]);
+                C = k * nRoots[0] * nRoots[1];
+            }
+
+            // Denominator expansion
+            if (dRoots.length === 0) {
+                P = 0; Q = 0; R = 1;
+            } else if (dRoots.length === 1) {
+                P = 0; Q = 1; R = -dRoots[0];
+            } else {
+                P = 1;
+                Q = -(dRoots[0] + dRoots[1]);
+                R = dRoots[0] * dRoots[1];
+            }
+        }
+
+        // Find numerator roots (zeros)
+        let numRoots = [];
+        if (A === 0) {
+            if (B !== 0) numRoots.push(-C / B);
+        } else {
+            let disc = B*B - 4*A*C;
+            if (disc > 0) {
+                numRoots.push((-B + Math.sqrt(disc)) / (2*A));
+                numRoots.push((-B - Math.sqrt(disc)) / (2*A));
+            } else if (Math.abs(disc) < 1e-9) {
+                numRoots.push(-B / (2*A));
+                numRoots.push(-B / (2*A)); // double root
+            }
+        }
+
+        // Find denominator roots (zeros)
+        let denRoots = [];
+        if (P === 0) {
+            if (Q !== 0) denRoots.push(-R / Q);
+        } else {
+            let disc = Q*Q - 4*P*R;
+            if (disc > 0) {
+                denRoots.push((-Q + Math.sqrt(disc)) / (2*P));
+                denRoots.push((-Q - Math.sqrt(disc)) / (2*P));
+            } else if (Math.abs(disc) < 1e-9) {
+                denRoots.push(-Q / (2*P));
+                denRoots.push(-Q / (2*P)); // double root
+            }
+        }
+
+        // Identify holes vs VAs
+        let holes = [];
+        let VAs = [];
+        let xInts = [];
+
+        // Check each denominator root
+        let tempNumRoots = [...numRoots];
+        let cancelledNumIndices = new Set();
+        
+        // Group and count denominator roots
+        let denCounts = {};
+        denRoots.forEach(r => {
+            let key = r.toFixed(5);
+            denCounts[key] = (denCounts[key] || 0) + 1;
+        });
+
+        // Group and count numerator roots
+        let numCounts = {};
+        numRoots.forEach(r => {
+            let key = r.toFixed(5);
+            numCounts[key] = (numCounts[key] || 0) + 1;
+        });
+
+        // Unique denominator roots
+        let uniqueDen = Array.from(new Set(denRoots.map(r => r.toFixed(5)))).map(Number);
+        
+        uniqueDen.forEach(rKey => {
+            let keyStr = rKey.toFixed(5);
+            let dCount = denCounts[keyStr];
+            let nCount = numCounts[keyStr] || 0;
+
+            if (nCount >= dCount) {
+                // Completely cancels the denominator -> Hole
+                holes.push(rKey);
+            } else {
+                // Denominator multiplicity is higher -> Vertical Asymptote
+                VAs.push(rKey);
+            }
+        });
+
+        // Collect remaining numerator roots as actual x-intercepts
+        let uniqueNum = Array.from(new Set(numRoots.map(r => r.toFixed(5)))).map(Number);
+        uniqueNum.forEach(rKey => {
+            let keyStr = rKey.toFixed(5);
+            let nCount = numCounts[keyStr];
+            let dCount = denCounts[keyStr] || 0;
+            if (nCount > dCount) {
+                xInts.push(rKey);
+            }
+        });
+
+        // Y-intercept
+        let yInt = null;
+        if (Math.abs(R) > 1e-9) {
+            yInt = C / R;
+        }
+
+        // Simplified function evaluator (divides out matching roots)
+        function evalSimpl(x) {
+            let num = A === 0 ? (B === 0 ? C : B*x + C) : A*x*x + B*x + C;
+            let den = P === 0 ? (Q === 0 ? R : Q*x + R) : P*x*x + Q*x + R;
+            
+            // Divide out the common factors
+            uniqueDen.forEach(rKey => {
+                let keyStr = rKey.toFixed(5);
+                let dCount = denCounts[keyStr];
+                let nCount = numCounts[keyStr] || 0;
+                let commonMult = Math.min(nCount, dCount);
+                if (commonMult > 0) {
+                    let div = Math.pow(x - rKey, commonMult);
+                    num /= div;
+                    den /= div;
+                }
+            });
+
+            if (Math.abs(den) < 1e-9) return NaN;
+            return num / den;
+        }
+
+        // Degree variables
+        let nDeg = A !== 0 ? 2 : (B !== 0 ? 1 : 0);
+        let dDeg = P !== 0 ? 2 : (Q !== 0 ? 1 : 0);
+
+        // Horizontal or Slant asymptote
+        let HA = null;
+        if (nDeg < dDeg) {
+            HA = { type: 'horizontal', val: 0, eq: 'y = 0', desc: "n < m → HA is y = 0" };
+        } else if (nDeg === dDeg) {
+            let leadN = A !== 0 ? A : (B !== 0 ? B : C);
+            let leadD = P !== 0 ? P : (Q !== 0 ? Q : R);
+            let val = leadN / leadD;
+            HA = { type: 'horizontal', val: val, eq: `y = ${toLaTeXFraction(val)}`, desc: `n = m → HA is ratio of lead coefficients: y = \\frac{${leadN}}{${leadD}}` };
+        } else if (nDeg === dDeg + 1) {
+            // Slant asymptote by division
+            // If den is Qx + R, num is Ax^2 + Bx + C
+            if (Math.abs(Q) > 1e-9) {
+                let slope = A / Q;
+                let intercept = (B - A * R / Q) / Q;
+                HA = { type: 'slant', slope: slope, intercept: intercept, eq: `y = ${formatLinear(slope, intercept)}`, desc: "n = m + 1 → Slant Asymptote found by polynomial division" };
+            }
+        } else {
+            HA = { type: 'none', eq: 'None', desc: "n > m + 1 → No horizontal or slant asymptote" };
+        }
+
+        // Hole coordinates
+        let holeCoords = [];
+        holes.forEach(hx => {
+            let hy = evalSimpl(hx);
+            if (!isNaN(hy)) {
+                holeCoords.push({ x: hx, y: hy });
+            }
+        });
+
+        // Build factored form equation strings
+        let factorNumStr = "";
+        let factorDenStr = "";
+
+        if (inputMode === 'standard') {
+            // Find numerical factor approximations
+            factorNumStr = getFactoredApproxLaTeX(A, B, C, numRoots);
+            factorDenStr = getFactoredApproxLaTeX(P, Q, R, denRoots);
+        } else {
+            // Build directly from active factor chips
+            let kStr = factoredK === 1 ? "" : (factoredK === -1 ? "-" : factoredK.toString());
+            factorNumStr = kStr + numFactors.map(r => r === 0 ? "x" : `(x ${r < 0 ? "+" : "-"} ${Math.abs(r)})`).join("");
+            if (numFactors.length === 0) factorNumStr = factoredK.toString();
+
+            factorDenStr = denFactors.map(r => r === 0 ? "x" : `(x ${r < 0 ? "+" : "-"} ${Math.abs(r)})`).join("");
+            if (denFactors.length === 0) factorDenStr = "1";
+        }
+
+        return {
+            A, B, C, P, Q, R,
+            nDeg, dDeg,
+            holes: holeCoords,
+            VAs,
+            xInts,
+            yInt,
+            HA,
+            evalSimpl,
+            factorNumStr,
+            factorDenStr
+        };
+    }
+
+    function getFactoredApproxLaTeX(lead, constCoeff, lastCoeff, roots) {
+        if (lead === 0 && constCoeff === 0) return lastCoeff.toString();
+        let rootsList = [...roots];
+        let coeffStr = lead === 0 ? (constCoeff === 1 ? "" : (constCoeff === -1 ? "-" : constCoeff.toString())) : (lead === 1 ? "" : (lead === -1 ? "-" : lead.toString()));
+        
+        let unique = Array.from(new Set(rootsList.map(r => r.toFixed(2)))).map(Number);
+        let parts = [];
+        
+        unique.forEach(r => {
+            let count = rootsList.filter(x => Math.abs(x - r) < 0.05).length;
+            let term = "";
+            if (Math.abs(r) < 0.01) {
+                term = "x";
+            } else {
+                let sign = r < 0 ? "+" : "-";
+                term = `(x ${sign} ${toLaTeXFraction(Math.abs(r))})`;
+            }
+            if (count > 1) term += `^${count}`;
+            parts.push(term);
+        });
+
+        let ans = coeffStr + parts.join("");
+        return ans === "" ? "1" : ans;
+    }
+
+    /* ============================================================
+       UPDATE INTERACTIVE DISPLAY
+       ============================================================ */
+    let activeAnalysis = null;
+
+    function refresh() {
+        activeAnalysis = analyzeRational();
+        
+        // 1. Math equations readout
+        let numStd = getPolynomialLaTeX(activeAnalysis.A, activeAnalysis.B, activeAnalysis.C);
+        let denStd = getPolynomialLaTeX(activeAnalysis.P, activeAnalysis.Q, activeAnalysis.R);
+        
+        // Factored version with crossed out terms
+        let equationHTML = `\\[ f(x) = \\frac{${numStd}}{${denStd}} \\]`;
+        if (activeAnalysis.factorNumStr !== numStd || activeAnalysis.factorDenStr !== denStd) {
+            equationHTML += `<div style="font-size:0.85em; color:var(--muted); margin-top:4px;">Factored Form:</div>`;
+            equationHTML += `\\[ f(x) = \\frac{${activeAnalysis.factorNumStr}}{${activeAnalysis.factorDenStr}} \\]`;
+        }
+        equationReadout.innerHTML = equationHTML;
+
+        // 2. Degree Bars
+        degNBox.textContent = `Num Degree n = ${activeAnalysis.nDeg}`;
+        degDBox.textContent = `Den Degree m = ${activeAnalysis.dDeg}`;
+        
+        degNBox.classList.toggle('active', activeAnalysis.nDeg >= activeAnalysis.dDeg);
+        degDBox.classList.toggle('active', activeAnalysis.dDeg > activeAnalysis.nDeg);
+
+        if (activeAnalysis.nDeg < activeAnalysis.dDeg) {
+            degRelation.textContent = "<";
+            degRuleText.textContent = "n < m → Horizontal Asymptote at y = 0";
+        } else if (activeAnalysis.nDeg === activeAnalysis.dDeg) {
+            degRelation.textContent = "=";
+            degRuleText.textContent = `n = m → HA is ratio of leading terms: ${activeAnalysis.HA.eq}`;
+        } else if (activeAnalysis.nDeg === activeAnalysis.dDeg + 1) {
+            degRelation.textContent = ">";
+            degRuleText.textContent = `n = m + 1 → Slant Asymptote: ${activeAnalysis.HA.eq}`;
+        } else {
+            degRelation.textContent = "»";
+            degRuleText.textContent = "n > m + 1 → No horizontal/slant asymptote";
+        }
+
+        // 3. Feature Checklist
+        let checklistHTML = "";
+        
+        // Holes
+        if (activeAnalysis.holes.length > 0) {
+            activeAnalysis.holes.forEach(h => {
+                checklistHTML += `
+                <div class="checklist-item">
+                    <span class="check-bullet hole">●</span>
+                    <div>
+                        <div class="label">Hole at x = ${toLaTeXFraction(h.x)}</div>
+                        <div class="desc">Common factor cancels. Coordinates: \\((${toLaTeXFraction(h.x)}, ${toLaTeXFraction(h.y)})\\)</div>
+                    </div>
+                </div>`;
+            });
+        } else {
+            checklistHTML += `
+            <div class="checklist-item">
+                <span class="check-bullet" style="color:#cbd5e1;">○</span>
+                <div>
+                    <div class="label">Holes: None</div>
+                    <div class="desc">No common factors between numerator and denominator.</div>
+                </div>
+            </div>`;
+        }
+
+        // Vertical Asymptotes
+        if (activeAnalysis.VAs.length > 0) {
+            activeAnalysis.VAs.forEach(va => {
+                checklistHTML += `
+                <div class="checklist-item">
+                    <span class="check-bullet va">■</span>
+                    <div>
+                        <div class="label">Vertical Asymptote: x = ${toLaTeXFraction(va)}</div>
+                        <div class="desc">Denominator is zero (non-cancelling factor). Graph goes to \\(\\pm\\infty\\).</div>
+                    </div>
+                </div>`;
+            });
+        } else {
+            checklistHTML += `
+            <div class="checklist-item">
+                <span class="check-bullet" style="color:#cbd5e1;">○</span>
+                <div>
+                    <div class="label">Vertical Asymptotes: None</div>
+                    <div class="desc">Denominator is never zero for real numbers.</div>
+                </div>
+            </div>`;
+        }
+
+        // Horizontal/Oblique Asymptote
+        if (activeAnalysis.HA.type !== 'none') {
+            let label = activeAnalysis.HA.type === 'horizontal' ? "Horizontal Asymptote" : "Slant Asymptote";
+            checklistHTML += `
+            <div class="checklist-item">
+                <span class="check-bullet ha">■</span>
+                <div>
+                    <div class="label">${label}: ${activeAnalysis.HA.eq}</div>
+                    <div class="desc">${activeAnalysis.HA.desc}</div>
+                </div>
+            </div>`;
+        } else {
+            checklistHTML += `
+            <div class="checklist-item">
+                <span class="check-bullet" style="color:#cbd5e1;">○</span>
+                <div>
+                    <div class="label">End Behavior Asymptote: None</div>
+                    <div class="desc">Numerator degree exceeds denominator by 2+.</div>
+                </div>
+            </div>`;
+        }
+
+        // Intercepts
+        let interceptsDesc = [];
+        if (activeAnalysis.xInts.length > 0) {
+            let pts = activeAnalysis.xInts.map(x => `(${toLaTeXFraction(x)}, 0)`).join(", ");
+            interceptsDesc.push(`x-int: ${pts}`);
+        } else {
+            interceptsDesc.push(`x-int: None`);
+        }
+        
+        if (activeAnalysis.yInt !== null) {
+            interceptsDesc.push(`y-int: (0, ${toLaTeXFraction(activeAnalysis.yInt)})`);
+        } else {
+            interceptsDesc.push(`y-int: None`);
+        }
+
+        checklistHTML += `
+        <div class="checklist-item">
+            <span class="check-bullet intercept">▲</span>
+            <div>
+                <div class="label">Intercepts</div>
+                <div class="desc">${interceptsDesc.join(" &bull; ")}</div>
+            </div>
+        </div>`;
+
+        checklistContainer.innerHTML = checklistHTML;
+
+        // Render KaTeX for equationBox & checklist
+        try {
+            renderMathInElement(equationReadout, { throwOnError: false });
+            renderMathInElement(checklistContainer, {
+                delimiters: [
+                    { left: '\\(', right: '\\)', display: false },
+                    { left: '\\[', right: '\\]', display: true }
+                ],
+                throwOnError: false
+            });
+        } catch (e) {
+            console.error(e);
+        }
+
+        // 4. Draw SVG Curves & Features
+        drawGraph();
+
+        // 5. Update Limit Approach Card
+        updateApproachCard();
+    }
+
+    /* ============================================================
+       SVG GRAPH RENDERING
+       ============================================================ */
+    function drawGraph() {
+        // Clear dynamic elements
+        vaGroup.innerHTML = '';
+        holesGroup.innerHTML = '';
+        curveGroup.innerHTML = '';
+
+        if (!activeAnalysis) return;
+
+        // Draw Vertical Asymptotes
+        activeAnalysis.VAs.forEach(va => {
+            if (va >= -10 && va <= 10) {
+                let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('class', 'va-line');
+                line.setAttribute('x1', toSvgX(va));
+                line.setAttribute('y1', 0);
+                line.setAttribute('x2', toSvgX(va));
+                line.setAttribute('y2', 600);
+                line.setAttribute('vector-effect', 'non-scaling-stroke');
+                vaGroup.appendChild(line);
+            }
+        });
+
+        // Draw Horizontal Asymptote
+        if (activeAnalysis.HA.type === 'horizontal') {
+            let yVal = activeAnalysis.HA.val;
+            if (yVal >= -10 && yVal <= 10) {
+                haLine.setAttribute('x1', 0);
+                haLine.setAttribute('y1', toSvgY(yVal));
+                haLine.setAttribute('x2', 600);
+                haLine.setAttribute('y2', toSvgY(yVal));
+                haLine.setAttribute('display', 'block');
+                haLine.setAttribute('vector-effect', 'non-scaling-stroke');
+            } else {
+                haLine.setAttribute('display', 'none');
+            }
+            slantLine.setAttribute('display', 'none');
+        } else if (activeAnalysis.HA.type === 'slant') {
+            // Draw slant line: y = m*x + b
+            let m = activeAnalysis.HA.slope;
+            let b = activeAnalysis.HA.intercept;
+            
+            // Coordinates of endpoints at x = -12 and x = 12
+            let y1 = m * (-12) + b;
+            let y2 = m * 12 + b;
+            
+            slantLine.setAttribute('x1', toSvgX(-12));
+            slantLine.setAttribute('y1', toSvgY(y1));
+            slantLine.setAttribute('x2', toSvgX(12));
+            slantLine.setAttribute('y2', toSvgY(y2));
+            slantLine.setAttribute('display', 'block');
+            slantLine.setAttribute('vector-effect', 'non-scaling-stroke');
+            
+            haLine.setAttribute('display', 'none');
+        } else {
+            haLine.setAttribute('display', 'none');
+            slantLine.setAttribute('display', 'none');
+        }
+
+        // Draw Intercepts
+        if (activeAnalysis.xInts.length > 0 && activeAnalysis.xInts[0] >= -10 && activeAnalysis.xInts[0] <= 10) {
+            xIntDot1.setAttribute('cx', toSvgX(activeAnalysis.xInts[0]));
+            xIntDot1.setAttribute('cy', toSvgY(0));
+            xIntDot1.setAttribute('display', 'block');
+        } else {
+            xIntDot1.setAttribute('display', 'none');
+        }
+
+        if (activeAnalysis.xInts.length > 1 && activeAnalysis.xInts[1] >= -10 && activeAnalysis.xInts[1] <= 10) {
+            xIntDot2.setAttribute('cx', toSvgX(activeAnalysis.xInts[1]));
+            xIntDot2.setAttribute('cy', toSvgY(0));
+            xIntDot2.setAttribute('display', 'block');
+        } else {
+            xIntDot2.setAttribute('display', 'none');
+        }
+
+        if (activeAnalysis.yInt !== null && activeAnalysis.yInt >= -10 && activeAnalysis.yInt <= 10) {
+            yIntDot.setAttribute('cx', toSvgX(0));
+            yIntDot.setAttribute('cy', toSvgY(activeAnalysis.yInt));
+            yIntDot.setAttribute('display', 'block');
+        } else {
+            yIntDot.setAttribute('display', 'none');
+        }
+
+        // Draw Curve Branches
+        let paths = getCurvePaths(activeAnalysis.VAs, activeAnalysis.evalSimpl);
+        paths.forEach(d => {
+            let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', 'curve');
+            path.setAttribute('d', d);
+            path.setAttribute('vector-effect', 'non-scaling-stroke');
+            curveGroup.appendChild(path);
+        });
+
+        // Draw Holes (Open circles)
+        activeAnalysis.holes.forEach(h => {
+            if (h.x >= -10 && h.x <= 10 && h.y >= -10 && h.y <= 10) {
+                let circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('class', 'hole-circle');
+                circle.setAttribute('cx', toSvgX(h.x));
+                circle.setAttribute('cy', toSvgY(h.y));
+                circle.setAttribute('vector-effect', 'non-scaling-stroke');
+                holesGroup.appendChild(circle);
+            }
+        });
+    }
+
+    function getCurvePaths(VAs, evalFn) {
+        let sortedVAs = [...VAs].sort((a, b) => a - b);
+        let intervals = [];
+        let start = -12;
+        let eps = 0.04; // small margin near VA to prevent curve shooting off too much
+        
+        for (let va of sortedVAs) {
+            if (va > -12 && va < 12) {
+                intervals.push([start, va - eps]);
+                start = va + eps;
+            }
+        }
+        intervals.push([start, 12]);
+        
+        let paths = [];
+        for (let interval of intervals) {
+            let d = "";
+            let first = true;
+            let step = 0.05;
+            for (let x = interval[0]; x <= interval[1]; x += step) {
+                let y = evalFn(x);
+                if (isNaN(y) || !isFinite(y)) continue;
+                
+                // Cap coordinates for cleaner visuals in SVG
+                let cappedY = y;
+                if (y > 15) cappedY = 15;
+                if (y < -15) cappedY = -15;
+
+                let px = toSvgX(x);
+                let py = toSvgY(cappedY);
+
+                if (first) {
+                    d += `M ${px} ${py}`;
+                    first = false;
+                } else {
+                    d += ` L ${px} ${py}`;
+                }
+            }
+            if (d.length > 0) paths.push(d);
+        }
+        return paths;
+    }
+
+    /* ============================================================
+       COORDINATE MOUSE/TRACKER LISTENERS
+       ============================================================ */
+    // Convert SVG mouse coords to cartesian
+    function getMouseCartesian(e) {
+        const rect = svg.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Convert client pixels to SVG viewBox pixels (0 to 600)
+        const svgX = (mouseX / rect.width) * 600;
+        const svgY = (mouseY / rect.height) * 600;
+
+        // Convert SVG viewBox pixels to math coordinates
+        const cartX = (svgX - cx) / scaleX;
+        const cartY = (cy - svgY) / scaleY;
+
+        return { x: cartX, y: cartY };
+    }
+
+    svg.addEventListener('mousemove', e => {
+        if (isAnimating || !activeAnalysis) return;
+
+        const cart = getMouseCartesian(e);
+        const x = cart.x;
+
+        // Find nearest branch y
+        let y = activeAnalysis.evalSimpl(x);
+        
+        // Check if x is near a VA or Hole
+        let isNearVA = activeAnalysis.VAs.some(va => Math.abs(x - va) < 0.2);
+        let isNearHole = activeAnalysis.holes.some(h => Math.abs(x - h.x) < 0.25);
+
+        if (!isNaN(y) && isFinite(y) && !isNearVA && y >= -10 && y <= 10) {
+            // Update tooltip & tracker line/dots
+            trackerVert.setAttribute('x1', toSvgX(x));
+            trackerVert.setAttribute('y1', 0);
+            trackerVert.setAttribute('x2', toSvgX(x));
+            trackerVert.setAttribute('y2', 600);
+            trackerVert.setAttribute('display', 'block');
+
+            trackerHoriz.setAttribute('x1', 0);
+            trackerHoriz.setAttribute('y1', toSvgY(y));
+            trackerHoriz.setAttribute('x2', 600);
+            trackerHoriz.setAttribute('y2', toSvgY(y));
+            trackerHoriz.setAttribute('display', 'block');
+
+            trackerDot.setAttribute('cx', toSvgX(x));
+            trackerDot.setAttribute('cy', toSvgY(y));
+            trackerDot.setAttribute('display', 'block');
+
+            canvasCoordsText.textContent = `Cursor: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+            
+            // Tooltip position
+            const rect = svg.getBoundingClientRect();
+            const wrapRect = canvasWrap.getBoundingClientRect();
+            // Map cartesian coordinates to tooltip pixel coordinates (relative to canvasWrap)
+            const tooltipX = (rect.left - wrapRect.left) + (toSvgX(x) / 600) * rect.width + 12;
+            const tooltipY = (rect.top - wrapRect.top) + (toSvgY(y) / 600) * rect.height - 30;
+
+            graphTooltip.style.left = `${tooltipX}px`;
+            graphTooltip.style.top = `${tooltipY}px`;
+            
+            let displayY = y.toFixed(2);
+            if (isNearHole) {
+                let hole = activeAnalysis.holes.find(h => Math.abs(x - h.x) < 0.25);
+                displayY = `Undefined (Hole at y ≈ ${hole.y.toFixed(2)})`;
+            }
+            graphTooltip.innerHTML = `x: ${x.toFixed(2)}<br>y: ${displayY}`;
+            graphTooltip.style.display = 'block';
+        } else {
+            hideTracker();
+        }
+    });
+
+    svg.addEventListener('mouseleave', () => {
+        hideTracker();
+    });
+
+    function hideTracker() {
+        trackerVert.setAttribute('display', 'none');
+        trackerHoriz.setAttribute('display', 'none');
+        trackerDot.setAttribute('display', 'none');
+        graphTooltip.style.display = 'none';
+        canvasCoordsText.textContent = `Hover graph to track coordinates`;
+    }
+
+    /* ============================================================
+       LIMIT APPROACH ANIMATION
+       ============================================================ */
+    function updateApproachCard() {
+        if (!activeAnalysis || activeAnalysis.VAs.length === 0) {
+            approachCard.style.display = 'none';
+            return;
+        }
+
+        approachCard.style.display = 'block';
+        let currentOptions = Array.from(vaSelect.options).map(o => o.value);
+        let newVAs = activeAnalysis.VAs.map(va => va.toFixed(3));
+        
+        // Rebuild VA select if options changed
+        if (JSON.stringify(currentOptions) !== JSON.stringify(newVAs)) {
+            vaSelect.innerHTML = '';
+            activeAnalysis.VAs.forEach(va => {
+                let opt = document.createElement('option');
+                opt.value = va.toFixed(3);
+                opt.textContent = `Approach VA at x = ${toLaTeXFraction(va)}`;
+                vaSelect.appendChild(opt);
+            });
+        }
+    }
+
+    function startLimitAnimation(direction) {
+        if (isAnimating) {
+            clearInterval(animTimer);
+        }
+
+        isAnimating = true;
+        btnLeftLimit.disabled = true;
+        btnRightLimit.disabled = true;
+        
+        let targetVa = parseFloat(vaSelect.value);
+        let startX = direction === 'left' ? targetVa - 2.5 : targetVa + 2.5;
+        let endX = direction === 'left' ? targetVa - 0.05 : targetVa + 0.05;
+        
+        let steps = 40;
+        let currentStep = 0;
+        limitAnimDot.setAttribute('display', 'block');
+
+        animTimer = setInterval(() => {
+            currentStep++;
+            let t = currentStep / steps;
+            
+            // Linear interpolation of X approaching target
+            let x = startX + t * (endX - startX);
+            let y = activeAnalysis.evalSimpl(x);
+
+            if (!isNaN(y) && isFinite(y)) {
+                limitAnimDot.setAttribute('cx', toSvgX(x));
+                limitAnimDot.setAttribute('cy', toSvgY(y));
+
+                // Update limit formula readout
+                let dirSym = direction === 'left' ? '-' : '+';
+                let infSym = y > 0 ? '\\infty' : '-\\infty';
+                let limitLaTeX = `\\lim_{x \\to ${toLaTeXFraction(targetVa)}^{${dirSym}}} f(x) = ${infSym}`;
+                
+                limitFormulaText.innerHTML = ``;
+                katex.render(limitLaTeX, limitFormulaText, { throwOnError: false });
+
+                canvasCoordsText.textContent = `Animating: x = ${x.toFixed(3)}, f(x) = ${y.toFixed(1)}`;
+            }
+
+            if (currentStep >= steps) {
+                clearInterval(animTimer);
+                isAnimating = false;
+                btnLeftLimit.disabled = false;
+                btnRightLimit.disabled = false;
+                setTimeout(() => {
+                    limitAnimDot.setAttribute('display', 'none');
+                }, 2000);
+            }
+        }, 40);
+    }
+
+    btnLeftLimit.addEventListener('click', () => startLimitAnimation('left'));
+    btnRightLimit.addEventListener('click', () => startLimitAnimation('right'));
+
+    /* ============================================================
+       PRESETS CONFIGURATION
+       ============================================================ */
+    const presets = {
+        classic: {
+            mode: 'standard',
+            sliders: [1, -3, -4, 1, 0, -1], // A, B, C, P, Q, R
+            numFactors: [4, -1],
+            denFactors: [1, -1],
+            k: 1
+        },
+        simple: {
+            mode: 'standard',
+            sliders: [0, 2, -4, 0, 1, 1], // (2x-4)/(x+1)
+            numFactors: [2],
+            denFactors: [-1],
+            k: 2
+        },
+        degLess: {
+            mode: 'factored',
+            numFactors: [-2], // x + 2
+            denFactors: [2, -2], // (x-2)(x+2) -> HA y=0, hole at x=-2, VA at x=2
+            k: 1
+        },
+        doubleVa: {
+            mode: 'standard',
+            sliders: [0, 0, 2, 1, -2, -3], // 2 / (x^2 - 2x - 3)
+            numFactors: [],
+            denFactors: [3, -1],
+            k: 2
+        },
+        slant: {
+            mode: 'standard',
+            sliders: [1, -1, -2, 0, 1, -3], // (x^2-x-2)/(x-3)
+            numFactors: [2, -1],
+            denFactors: [3],
+            k: 1
+        },
+        lineHole: {
+            mode: 'standard',
+            sliders: [1, -1, -2, 0, 1, -2], // (x^2-x-2)/(x-2) -> line y = x+1, hole at x=2
+            numFactors: [2, -1],
+            denFactors: [2],
+            k: 1
+        },
+        quadQuad: {
+            mode: 'standard',
+            sliders: [2, 0, -8, 1, 0, -9], // (2x^2-8)/(x^2-9)
+            numFactors: [2, -2],
+            denFactors: [3, -3],
+            k: 2
+        }
+    };
+
+    function applyPreset(name) {
+        let p = presets[name];
+        if (!p) return;
+
+        inputMode = p.mode;
+        
+        if (p.mode === 'standard') {
+            coeffA = p.sliders[0]; coeffB = p.sliders[1]; coeffC = p.sliders[2];
+            coeffP = p.sliders[3]; coeffQ = p.sliders[4]; coeffR = p.sliders[5];
+
+            // Sync sliders
+            sliderA.value = coeffA; sliderB.value = coeffB; sliderC.value = coeffC;
+            sliderP.value = coeffP; sliderQ.value = coeffQ; sliderR.value = coeffR;
+            
+            sliderValA.textContent = coeffA;
+            sliderValB.textContent = coeffB;
+            sliderValC.textContent = coeffC;
+            sliderValP.textContent = coeffP;
+            sliderValQ.textContent = coeffQ;
+            sliderValR.textContent = coeffR;
+        } else {
+            numFactors = [...p.numFactors];
+            denFactors = [...p.denFactors];
+            factoredK = p.k;
+
+            sliderFactoredK.value = factoredK;
+            factoredKVal.textContent = factoredK;
+
+            rebuildFactorChips();
+        }
+
+        // Toggle UI panels
+        toggleModeUI();
+        refresh();
+    }
+
+    presetSelect.addEventListener('change', e => {
+        applyPreset(e.target.value);
+    });
+
+    /* ============================================================
+       COEFFICIENT INPUTS EVENT LISTENERS
+       ============================================================ */
+    function attachSliderListeners(slider, valSpan, setter) {
+        slider.addEventListener('input', e => {
+            let val = parseInt(e.target.value);
+            valSpan.textContent = val;
+            setter(val);
+            refresh();
+        });
+    }
+
+    attachSliderListeners(sliderA, sliderValA, v => coeffA = v);
+    attachSliderListeners(sliderB, sliderValB, v => coeffB = v);
+    attachSliderListeners(sliderC, sliderValC, v => coeffC = v);
+    attachSliderListeners(sliderP, sliderValP, v => coeffP = v);
+    attachSliderListeners(sliderQ, sliderValQ, v => coeffQ = v);
+    attachSliderListeners(sliderR, sliderValR, v => coeffR = v);
+
+    /* ============================================================
+       FACTORED FORM BUILDER CODE
+       ============================================================ */
+    sliderFactoredK.addEventListener('input', e => {
+        factoredK = parseInt(e.target.value);
+        if (factoredK === 0) factoredK = 1; // don't allow zero leading coefficient scale
+        factoredKVal.textContent = factoredK;
+        refresh();
+    });
+
+    document.querySelectorAll('.factor-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            let type = btn.dataset.type;
+            let val = parseInt(btn.dataset.val);
+
+            if (type === 'num') {
+                if (numFactors.length < 2) {
+                    numFactors.push(val);
+                    rebuildFactorChips();
+                    refresh();
+                }
+            } else {
+                if (denFactors.length < 2) {
+                    denFactors.push(val);
+                    rebuildFactorChips();
+                    refresh();
+                }
+            }
+        });
+    });
+
+    function rebuildFactorChips() {
+        // Clear containers
+        numFactorBox.innerHTML = '';
+        denFactorBox.innerHTML = '';
+
+        // Add numerator factors
+        numFactors.forEach((val, idx) => {
+            let tag = document.createElement('span');
+            tag.className = 'active-factor-tag';
+            let label = val === 0 ? "x" : `(x ${val < 0 ? "+" : "-"} ${Math.abs(val)})`;
+            tag.innerHTML = `${label} <span class="factor-close" data-type="num" data-idx="${idx}">&times;</span>`;
+            numFactorBox.appendChild(tag);
+        });
+
+        // Add denominator factors
+        denFactors.forEach((val, idx) => {
+            let tag = document.createElement('span');
+            tag.className = 'active-factor-tag';
+            let label = val === 0 ? "x" : `(x ${val < 0 ? "+" : "-"} ${Math.abs(val)})`;
+            tag.innerHTML = `${label} <span class="factor-close" data-type="den" data-idx="${idx}">&times;</span>`;
+            denFactorBox.appendChild(tag);
+        });
+
+        // Attach close listeners
+        document.querySelectorAll('.factor-close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', e => {
+                e.stopPropagation();
+                let type = closeBtn.dataset.type;
+                let idx = parseInt(closeBtn.dataset.idx);
+                if (type === 'num') {
+                    numFactors.splice(idx, 1);
+                } else {
+                    denFactors.splice(idx, 1);
+                }
+                rebuildFactorChips();
+                refresh();
+            });
+        });
+    }
+
+    /* ============================================================
+       MODE SWITCHING UI
+       ============================================================ */
+    function toggleModeUI() {
+        if (inputMode === 'standard') {
+            modeStandardBtn.classList.add('active');
+            modeFactoredBtn.classList.remove('active');
+            standardControls.style.display = 'grid';
+            factoredControls.style.display = 'none';
+        } else {
+            modeStandardBtn.classList.remove('active');
+            modeFactoredBtn.classList.add('active');
+            standardControls.style.display = 'none';
+            factoredControls.style.display = 'grid';
+        }
+    }
+
+    modeStandardBtn.addEventListener('click', () => {
+        inputMode = 'standard';
+        toggleModeUI();
+        refresh();
+    });
+
+    modeFactoredBtn.addEventListener('click', () => {
+        inputMode = 'factored';
+        toggleModeUI();
+        refresh();
+    });
+
+    /* ============================================================
+       QUIZ SYSTEM
+       ============================================================ */
+    const quizQuestions = [
+        {
+            type: 'holes',
+            q: "How many HOLES does this rational function have?",
+            opts: ["0", "1", "2", "3"],
+            solve: (analysis) => analysis.holes.length.toString()
+        },
+        {
+            type: 'va',
+            q: "How many VERTICAL ASYMPTOTES does this function have?",
+            opts: ["0", "1", "2", "3"],
+            solve: (analysis) => analysis.VAs.length.toString()
+        },
+        {
+            type: 'ha',
+            q: "What is the equation of the HORIZONTAL or SLANT asymptote?",
+            opts: [], // filled dynamically
+            solve: (analysis) => {
+                if (analysis.HA.type === 'none') return "None";
+                // Get sanitized equation string
+                return analysis.HA.eq.replace(/\s+/g, '');
+            }
+        }
+    ];
+
+    function startQuizQuestion() {
+        quizQuestion.style.color = "var(--navy)";
+        quizFeedback.textContent = '';
+        quizFeedback.style.color = '';
+        quizOptions.innerHTML = '';
+
+        // Select a random question template
+        let qTemplate = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+        
+        // Generate a random rational function for the quiz!
+        // We will randomly adjust standard coefficients
+        coeffA = Math.floor(Math.random() * 3); // 0, 1, 2
+        coeffB = Math.floor(Math.random() * 7) - 3;
+        coeffC = Math.floor(Math.random() * 7) - 3;
+        
+        // Ensure Denominator doesn't evaluate to constant zero
+        coeffP = Math.floor(Math.random() * 2) + 1; // 1, 2
+        coeffQ = Math.floor(Math.random() * 5) - 2;
+        coeffR = Math.floor(Math.random() * 5) - 2;
+
+        inputMode = 'standard';
+        toggleModeUI();
+        refresh(); // Calculates activeAnalysis
+
+        quizQuestion.textContent = qTemplate.q;
+        let correctAnswer = qTemplate.solve(activeAnalysis);
+
+        let options = [];
+        if (qTemplate.type === 'holes' || qTemplate.type === 'va') {
+            options = [...qTemplate.opts];
+        } else {
+            // HA/Slant options (Dynamic)
+            // Always include "None" and the correct answer
+            let correctVal = activeAnalysis.HA.type === 'none' ? "None" : activeAnalysis.HA.eq;
+            options.push(correctVal);
+            if (activeAnalysis.HA.type !== 'none') {
+                options.push("None");
+            }
+            // Add some distractors
+            if (activeAnalysis.HA.type !== 'slant') {
+                options.push("y = 0");
+                options.push("y = 2");
+                options.push("y = -1");
+            } else {
+                options.push("y = x");
+                options.push("y = 2x - 1");
+                options.push("y = -x + 3");
+            }
+            // Filter unique options
+            options = Array.from(new Set(options));
+        }
+
+        // Shuffle options
+        options.sort(() => Math.random() - 0.5);
+
+        // Render option buttons
+        options.forEach(opt => {
+            let btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            // Render nice text for KaTeX formula if it matches y = ...
+            btn.textContent = opt;
+            btn.addEventListener('click', () => handleQuizAnswer(btn, opt, correctAnswer));
+            quizOptions.appendChild(btn);
+        });
+
+        quizQuestionData = {
+            correctAnswer: correctAnswer,
+            template: qTemplate
+        };
+    }
+
+    function handleQuizAnswer(selectedBtn, chosenOpt, correctAns) {
+        // Disable all option buttons
+        document.querySelectorAll('.quiz-opt').forEach(btn => {
+            btn.disabled = true;
+            let optVal = btn.textContent;
+            let optValSanitized = optVal.replace(/\s+/g, '');
+            let correctSanitized = correctAns.replace(/\s+/g, '');
+
+            if (optValSanitized === correctSanitized) {
+                btn.classList.add('correct');
+            }
+        });
+
+        let chosenSanitized = chosenOpt.replace(/\s+/g, '');
+        let correctSanitized = correctAns.replace(/\s+/g, '');
+
+        quizScoreTotal++;
+        if (chosenSanitized === correctSanitized) {
+            quizScoreCorrect++;
+            quizFeedback.textContent = "Correct! Great job.";
+            quizFeedback.style.color = "var(--green)";
+        } else {
+            selectedBtn.classList.add('incorrect');
+            quizFeedback.textContent = `Incorrect. The correct answer is: ${correctAns}`;
+            quizFeedback.style.color = "var(--red)";
+        }
+
+        quizScore.textContent = `Score: ${quizScoreCorrect}/${quizScoreTotal}`;
+        quizResetBtn.style.display = 'block';
+    }
+
+    quizStartBtn.addEventListener('click', () => {
+        quizMode = true;
+        quizStartBtn.style.display = 'none';
+        quizResetBtn.style.display = 'block';
+        startQuizQuestion();
+    });
+
+    quizResetBtn.addEventListener('click', () => {
+        startQuizQuestion();
+    });
+
+    /* ============================================================
+       INIT & RUN ON LOAD
+       ============================================================ */
+    initGrid();
+    applyPreset('classic');
+})();
+</script>
+</body>
+</html>

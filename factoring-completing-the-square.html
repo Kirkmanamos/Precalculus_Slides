@@ -1,0 +1,1853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completing the Square — Geometric Proof & Sandbox Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+
+            /* Geometry colors */
+            --area-x2: #1e40af;
+            --area-x2-fill: rgba(30, 64, 175, 0.12);
+            --area-bx: #0891b2;
+            --area-bx-fill: rgba(8, 145, 178, 0.15);
+            --area-corner: #d97706;
+            --area-corner-fill: rgba(217, 119, 6, 0.18);
+            --result-fill: rgba(22, 163, 74, 0.12);
+            --result-stroke: #16a34a;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-columns: 290px minmax(520px, 1fr) 320px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        /* ============================================================
+           CONTROLS PANEL (left)
+           ============================================================ */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: auto;
+        }
+
+        .brand {
+            padding: 18px 18px 14px;
+            background: var(--navy);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .section-label {
+            font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin: 4px 0 0; font-size: 1.45rem; line-height: 1.1;
+        }
+
+        .brand p {
+            margin-top: 6px; color: #93c5fd;
+            font-size: 0.82rem; line-height: 1.35;
+        }
+
+        .control-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+        }
+
+        .control-group { display: grid; gap: 10px; }
+
+        .group-title {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+        }
+
+        .slider-row {
+            display: grid; gap: 7px; padding: 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: var(--soft);
+        }
+
+        .slider-head {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 10px;
+        }
+
+        .slider-head label {
+            font-size: 0.9rem; font-weight: 700; color: #334155;
+        }
+
+        output {
+            min-width: 3.8rem; text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800; color: var(--teal);
+        }
+
+        input[type="range"] { width: 100%; accent-color: var(--teal); }
+
+        .preset-grid { display: grid; gap: 8px; }
+
+        .preset-btn {
+            min-height: 40px; padding: 8px 10px; border-radius: 8px;
+            background: var(--soft-teal); color: #0f766e;
+            border: 1px solid #99f6e4; text-align: left; font-weight: 800;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .preset-btn:hover, .preset-btn:focus-visible {
+            outline: 0; transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+        }
+
+        .step-nav {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+
+        .nav-btn {
+            min-height: 44px; border-radius: 8px;
+            background: var(--navy); color: white;
+            font-weight: 800; font-size: 0.9rem;
+            transition: transform 0.18s ease, background 0.18s ease;
+        }
+        .nav-btn:hover { background: var(--blue); transform: translateY(-1px); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; background: #94a3b8; }
+
+        .nav-btn.reset-btn {
+            grid-column: 1 / -1;
+            background: var(--soft-orange); color: var(--orange);
+            border: 1px solid #fcd34d;
+        }
+        .nav-btn.reset-btn:hover { background: #fef3c7; }
+
+        /* ============================================================
+           STAGE PANEL (center)
+           ============================================================ */
+        .stage {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px 8px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .tab-container {
+            display: flex; gap: 6px;
+        }
+
+        .tab-btn {
+            background: none; border: none; padding: 6px 14px; border-radius: 6px;
+            font-size: 0.88rem; font-weight: 700; color: var(--muted);
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover {
+            color: var(--navy); background: rgba(37, 99, 235, 0.06);
+        }
+        .tab-btn.active {
+            color: white; background: var(--navy);
+        }
+
+        .step-badge {
+            display: inline-flex; align-items: center;
+            min-height: 28px; padding: 3px 12px; border-radius: 999px;
+            font-size: 0.78rem; font-weight: 800;
+            color: white; background: var(--teal);
+        }
+
+        .canvas-wrap {
+            position: relative; min-height: 0;
+            padding: 16px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .geo-svg {
+            width: 100%; height: 100%;
+            min-height: 480px; max-height: 620px;
+            display: block; border-radius: 8px;
+            background: white; border: 1px solid #dbeafe;
+        }
+
+        /* SVG text defaults */
+        .geo-svg text {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+        }
+
+        .dim-label {
+            font-size: 13px; fill: var(--ink);
+        }
+        .area-label {
+            font-size: 15px; font-weight: 800;
+        }
+
+        /* Animated transitions on shapes */
+        .geo-svg rect, .geo-svg polygon, .geo-svg line, .geo-svg path, .geo-svg g {
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+        }
+
+        /* Sandbox Draggable Styles */
+        .drag-piece {
+            transition: opacity 0.2s ease, stroke-width 0.2s ease;
+            user-select: none;
+        }
+        .drag-piece:hover {
+            opacity: 0.9;
+        }
+
+        /* ============================================================
+           INSPECTOR PANEL (right)
+           ============================================================ */
+        .inspector {
+            display: flex; flex-direction: column;
+            overflow: auto; min-height: 0;
+            padding: 16px; gap: 16px;
+        }
+
+        .readout { display: grid; gap: 10px; }
+
+        .readout-title {
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+        }
+
+        .eq-card {
+            padding: 14px; border-radius: 10px;
+            border: 1px solid #e2e8f0; background: var(--soft);
+            text-align: center; min-height: 56px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px;
+        }
+
+        .eq-card.highlight {
+            background: var(--soft-green); border-color: var(--green);
+        }
+
+        .step-explain {
+            padding: 12px 14px; border-radius: 10px;
+            border-left: 4px solid var(--teal);
+            background: var(--soft-teal);
+            font-size: 0.88rem; line-height: 1.55;
+            color: var(--ink);
+        }
+
+        .step-explain strong { color: var(--navy); }
+
+        .step-explain.green { border-color: var(--green); background: var(--soft-green); }
+        .step-explain.orange { border-color: var(--orange); background: var(--soft-orange); }
+        .step-explain.blue { border-color: var(--blue); background: var(--soft-blue); }
+
+        .verify-grid {
+            display: grid; gap: 8px;
+        }
+
+        .verify-row {
+            display: grid; grid-template-columns: 1fr auto 1fr;
+            gap: 8px; align-items: center;
+            padding: 10px; border-radius: 8px;
+            background: var(--soft); border: 1px solid #e2e8f0;
+        }
+
+        .verify-row .label {
+            font-size: 0.72rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--muted); margin-bottom: 2px;
+        }
+
+        .verify-row .value {
+            font-size: 0.95rem; font-weight: 800; color: var(--navy);
+        }
+
+        .verify-row .equals {
+            font-size: 1.3rem; font-weight: 900; color: var(--green);
+        }
+
+        .check-mark {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--green); color: white;
+            font-size: 1rem; font-weight: 900;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1180px) {
+            body { padding: 12px; }
+            .app {
+                grid-template-columns: minmax(260px, 310px) minmax(480px, 1fr);
+            }
+            .inspector {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                align-items: start;
+            }
+        }
+
+        @media (max-width: 860px) {
+            body { padding: 0; }
+            .app {
+                min-height: 100svh;
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .panel { border-radius: 0; box-shadow: none; border-left: 0; border-right: 0; }
+            .stage { min-height: 560px; }
+            .inspector { grid-column: auto; grid-template-columns: 1fr; }
+            .geo-svg { min-height: 380px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main class="app" aria-label="Completing the Square Playground">
+
+    <!-- ============================================================
+         LEFT — CONTROLS
+         ============================================================ -->
+    <section class="panel controls" aria-label="Controls">
+        <div class="brand">
+            <div class="section-label">Factoring Playground</div>
+            <h1>Completing the Square</h1>
+            <p>Visualize how \(ax^2 + bx + c\) converts to vertex form geometrically and graphically.</p>
+        </div>
+        <div class="control-scroll">
+            <div class="control-group">
+                <div class="group-title">Parameters</div>
+                
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="sliderA">Coefficient <em>a</em></label>
+                        <output id="outA">1</output>
+                    </div>
+                    <input id="sliderA" type="range" min="1" max="3" step="1" value="1">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="sliderB">Coefficient <em>b</em> (even)</label>
+                        <output id="outB">6</output>
+                    </div>
+                    <input id="sliderB" type="range" min="2" max="8" step="2" value="6">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="sliderC">Constant <em>c</em></label>
+                        <output id="outC">5</output>
+                    </div>
+                    <input id="sliderC" type="range" min="-5" max="5" step="1" value="5">
+                </div>
+            </div>
+
+            <!-- Steps Mode Controls -->
+            <div class="control-group" id="stepGroup">
+                <div class="group-title">Step Through Proof</div>
+                <div class="step-nav">
+                    <button class="nav-btn" id="prevBtn" disabled>← Back</button>
+                    <button class="nav-btn" id="nextBtn">Next →</button>
+                    <button class="nav-btn reset-btn" id="resetBtn">Reset</button>
+                </div>
+            </div>
+
+            <!-- Sandbox Mode Controls -->
+            <div class="control-group" id="sandboxGroup" style="display:none;">
+                <div class="group-title">Sandbox Controls</div>
+                <button class="nav-btn" id="sandboxAutoBtn" style="background:var(--blue);">Auto-Arrange Pieces</button>
+                <button class="nav-btn" id="sandboxCompleteBtn" style="display:none; background:var(--orange);">Complete Square</button>
+                <button class="nav-btn reset-btn" id="sandboxResetBtn">Reset Sandbox</button>
+            </div>
+
+            <div class="control-group" id="presetsGroup">
+                <div class="group-title">Preset Examples</div>
+                <div class="preset-grid">
+                    <button class="preset-btn" data-a="1" data-b="6" data-c="5">\(x^2 + 6x + 5 = (x+3)^2 - 4\)</button>
+                    <button class="preset-btn" data-a="1" data-b="4" data-c="3">\(x^2 + 4x + 3 = (x+2)^2 - 1\)</button>
+                    <button class="preset-btn" data-a="2" data-b="8" data-c="7">\(2x^2 + 8x + 7 = 2(x+2)^2 - 1\)</button>
+                    <button class="preset-btn" data-a="3" data-b="6" data-c="5">\(3x^2 + 6x + 5 = 3(x+1)^2 + 2\)</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         CENTER — GEOMETRIC & GRAPHICAL CANVAS
+         ============================================================ -->
+    <section class="panel stage" aria-label="Proof and graph canvas">
+        <div class="stage-header">
+            <div class="tab-container">
+                <button class="tab-btn active" id="tabGeo">Geometric Model</button>
+                <button class="tab-btn" id="tabGraph">Parabola Graph</button>
+                <button class="tab-btn" id="tabSandbox">Sandbox Mode</button>
+            </div>
+            <span class="step-badge" id="stepBadge">Step 1 of 6</span>
+        </div>
+        <div class="canvas-wrap">
+            <svg class="geo-svg" id="geoSvg" viewBox="0 0 680 520" role="img"
+                 aria-labelledby="geoTitle geoDesc">
+                <title id="geoTitle">Completing the square visual proof</title>
+                <desc id="geoDesc">An interactive canvas demonstrating completing the square visually, graphically, or as a drag-and-drop sandbox.</desc>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         RIGHT — ALGEBRA INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebra inspector">
+        <div class="readout">
+            <div class="readout-title">Current Equation</div>
+            <div class="eq-card" id="eqDisplay"></div>
+        </div>
+
+        <div class="readout">
+            <div class="readout-title">What's Happening</div>
+            <div class="step-explain" id="stepExplain"></div>
+        </div>
+
+        <div class="readout">
+            <div class="readout-title">Numeric Verification</div>
+            <div class="verify-grid" id="verifyGrid"></div>
+        </div>
+    </aside>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function () {
+    /* ============================================================
+       STATE
+       ============================================================ */
+    let a = 1, b = 6, c = 5, step = 0;
+    let activeTab = 'geo'; // 'geo', 'graph', or 'sandbox'
+    const TOTAL_STEPS = 6;
+    const SVG_W = 680, SVG_H = 520;
+
+    const svg = document.getElementById('geoSvg');
+    const ns = 'http://www.w3.org/2000/svg';
+
+    /* DOM refs */
+    const sliderA = document.getElementById('sliderA');
+    const sliderB = document.getElementById('sliderB');
+    const sliderC = document.getElementById('sliderC');
+    const outA = document.getElementById('outA');
+    const outB = document.getElementById('outB');
+    const outC = document.getElementById('outC');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const stepBadge = document.getElementById('stepBadge');
+    const eqDisplay = document.getElementById('eqDisplay');
+    const stepExplain = document.getElementById('stepExplain');
+    const verifyGrid = document.getElementById('verifyGrid');
+    const tabGeo = document.getElementById('tabGeo');
+    const tabGraph = document.getElementById('tabGraph');
+    const tabSandbox = document.getElementById('tabSandbox');
+    const stepGroup = document.getElementById('stepGroup');
+    const sandboxGroup = document.getElementById('sandboxGroup');
+
+    /* Sandbox Drag State */
+    let dragElement = null;
+    let dragOffset = { x: 0, y: 0 };
+    let sliceAnimation = null;
+    let sandboxState = {
+        x2Split: false,
+        bxSplit: false,
+        completed: false,
+        pieces: ['x2', 'bx'],
+        message: "Drag the <strong>bx</strong> or <strong>x²</strong> piece into the <strong>Splitter Zone</strong> to see how splitting works! Drop it in the dashed box.",
+        messageClass: ''
+    };
+
+    let sandboxPositions = {};
+    const x_px = 120;
+    const scaleVal = 14; 
+    let b_px = scaleVal * b;
+    let b_half_px = b_px / 2;
+
+    /* ============================================================
+       MATH UTILITIES
+       ============================================================ */
+    function gcd(x, y) {
+        x = Math.abs(x);
+        y = Math.abs(y);
+        while(y) {
+            var t = y;
+            y = x % y;
+            x = t;
+        }
+        return x;
+    }
+
+    function latexFrac(num, den) {
+        if (num === 0) return '0';
+        const g = gcd(num, den);
+        let n = num / g;
+        let d = den / g;
+        if (d < 0) { n = -n; d = -d; }
+        if (d === 1) return `${n}`;
+        return `\\frac{${n}}{${d}}`;
+    }
+
+    function formatConstant(val) {
+        if (val === 0) return '';
+        return val > 0 ? `+ ${val}` : `- ${Math.abs(val)}`;
+    }
+
+    function getStandardFormTex() {
+        const aPart = a === 1 ? 'x^2' : `${a}x^2`;
+        const bPart = b === 0 ? '' : `+ ${b}x`;
+        const cPart = formatConstant(c);
+        return `f(x) = ${aPart} ${bPart} ${cPart}`;
+    }
+
+    function getVertexFormTex() {
+        const hVal = -b / (2 * a);
+        let inside = '';
+        if (hVal === 0) {
+            inside = 'x^2';
+        } else {
+            const sign = hVal < 0 ? '+' : '-';
+            const absHStr = latexFrac(Math.abs(b), 2 * a);
+            inside = `\\left(x ${sign} ${absHStr}\\right)^2`;
+        }
+
+        const aPart = a === 1 ? '' : `${a}`;
+        const kNum = 4 * a * c - b * b;
+        const kDen = 4 * a;
+        let kPart = '';
+        if (kNum !== 0) {
+            const kG = gcd(kNum, kDen);
+            let kn = kNum / kG;
+            let kd = kDen / kG;
+            if (kd < 0) { kn = -kn; kd = -kd; }
+            kPart = kn > 0 ? `+ ${latexFrac(kn, kd)}` : `- ${latexFrac(Math.abs(kn), kd)}`;
+        }
+
+        return `f(x) = ${aPart}${inside} ${kPart}`;
+    }
+
+    /* ============================================================
+       SVG HELPERS
+       ============================================================ */
+    function clearSvg() { svg.innerHTML = ''; }
+
+    function rect(x, y, w, h, fill, stroke, strokeW, dash, parent) {
+        const r = document.createElementNS(ns, 'rect');
+        r.setAttribute('x', x); r.setAttribute('y', y);
+        r.setAttribute('width', Math.max(0, w)); r.setAttribute('height', Math.max(0, h));
+        r.setAttribute('fill', fill || 'none');
+        r.setAttribute('stroke', stroke || '#334155');
+        r.setAttribute('stroke-width', strokeW || 2);
+        r.setAttribute('rx', 4);
+        if (dash) r.setAttribute('stroke-dasharray', dash);
+        (parent || svg).appendChild(r);
+        return r;
+    }
+
+    function line(x1, y1, x2, y2, stroke, strokeW, dash, parent) {
+        const l = document.createElementNS(ns, 'line');
+        l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+        l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+        l.setAttribute('stroke', stroke || '#64748b');
+        l.setAttribute('stroke-width', strokeW || 1.5);
+        if (dash) l.setAttribute('stroke-dasharray', dash);
+        (parent || svg).appendChild(l);
+        return l;
+    }
+
+    function dimLine(x1, y1, x2, y2, color, parent) {
+        const g = document.createElementNS(ns, 'g');
+        const l = document.createElementNS(ns, 'line');
+        l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+        l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+        l.setAttribute('stroke', color || '#64748b');
+        l.setAttribute('stroke-width', 1.5);
+        l.setAttribute('stroke-dasharray', '3 2');
+        g.appendChild(l);
+
+        const isHoriz = Math.abs(y1 - y2) < 1;
+        if (isHoriz) {
+            [x1, x2].forEach(x => {
+                const t = document.createElementNS(ns, 'line');
+                t.setAttribute('x1', x); t.setAttribute('x2', x);
+                t.setAttribute('y1', y1 - 4); t.setAttribute('y2', y1 + 4);
+                t.setAttribute('stroke', color || '#64748b');
+                t.setAttribute('stroke-width', 1.5);
+                g.appendChild(t);
+            });
+        } else {
+            [y1, y2].forEach(y => {
+                const t = document.createElementNS(ns, 'line');
+                t.setAttribute('x1', x1 - 4); t.setAttribute('x2', x1 + 4);
+                t.setAttribute('y1', y); t.setAttribute('y2', y);
+                t.setAttribute('stroke', color || '#64748b');
+                t.setAttribute('stroke-width', 1.5);
+                g.appendChild(t);
+            });
+        }
+        (parent || svg).appendChild(g);
+        return g;
+    }
+
+    function text(x, y, content, opts, parent) {
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('x', x); t.setAttribute('y', y);
+        t.setAttribute('text-anchor', opts?.anchor || 'middle');
+        t.setAttribute('dominant-baseline', 'middle');
+        t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+        t.setAttribute('font-size', opts?.size || 14);
+        t.setAttribute('font-weight', opts?.weight || 700);
+        t.setAttribute('fill', opts?.color || '#1e293b');
+        if (opts?.style) t.setAttribute('font-style', opts.style);
+        t.textContent = content;
+        (parent || svg).appendChild(t);
+        return t;
+    }
+
+    function katexInSvg(x, y, tex, opts, parent) {
+        const fo = document.createElementNS(ns, 'foreignObject');
+        const w = opts?.width || 120;
+        const h = opts?.height || 42;
+        fo.setAttribute('x', x - w / 2);
+        fo.setAttribute('y', y - h / 2);
+        fo.setAttribute('width', w);
+        fo.setAttribute('height', h);
+        const div = document.createElement('div');
+        div.style.cssText = `display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:${opts?.fontSize || '15px'};color:${opts?.color || 'inherit'};`;
+        katex.render(tex, div, { throwOnError: false, displayMode: false });
+        fo.appendChild(div);
+        (parent || svg).appendChild(fo);
+        return fo;
+    }
+
+    /* ============================================================
+       GEOMETRIC MODEL DRAWING
+       ============================================================ */
+    function renderGeoCanvas() {
+        clearSvg();
+
+        let x_px_local, scaleValLocal;
+        if (a === 1) {
+            x_px_local = 160;
+            scaleValLocal = 20;
+        } else if (a === 2) {
+            x_px_local = 120;
+            scaleValLocal = 14;
+        } else {
+            x_px_local = 90;
+            scaleValLocal = 10;
+        }
+
+        const b_px_local = scaleValLocal * (b / a);
+        const b_half_px_local = b_px_local / 2;
+
+        const gap = a === 1 ? 0 : (a === 2 ? 50 : 30);
+        const rowH = x_px_local + (step >= 2 ? b_half_px_local : 0);
+        const totalH = a * rowH + (a - 1) * gap;
+
+        const startY = (SVG_H - totalH) / 2 + 10;
+        const startX = SVG_W / 2 - (x_px_local + (step >= 2 ? b_half_px_local : b_px_local)) / 2 - 30;
+
+        for (let i = 0; i < a; i++) {
+            const oy = startY + i * (rowH + gap);
+            const ox = startX;
+
+            if (step === 0) {
+                rect(ox, oy, x_px_local, x_px_local, 'var(--area-x2-fill)', 'var(--area-x2)', 2.5);
+                katexInSvg(ox + x_px_local/2, oy + x_px_local/2, `x^2`, { fontSize: '18px' });
+                dimLine(ox, oy - 14, ox + x_px_local, oy - 14, 'var(--area-x2)');
+                text(ox + x_px_local/2, oy - 26, 'x', { size: 14 });
+
+                dimLine(ox - 14, oy, ox - 14, oy + x_px_local, 'var(--area-x2)');
+                text(ox - 24, oy + x_px_local/2, 'x', { size: 14 });
+
+                rect(ox + x_px_local, oy, b_px_local, x_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 2);
+                katexInSvg(ox + x_px_local + b_px_local/2, oy + x_px_local/2, `${latexFrac(b, a)}x`, { fontSize: '16px' });
+                dimLine(ox + x_px_local, oy - 14, ox + x_px_local + b_px_local, oy - 14, 'var(--area-bx)');
+                katexInSvg(ox + x_px_local + b_px_local/2, oy - 26, `${latexFrac(b, a)}`, { fontSize: '13px' });
+            }
+            else if (step === 1) {
+                rect(ox, oy, x_px_local, x_px_local, 'var(--area-x2-fill)', 'var(--area-x2)', 2.5);
+                katexInSvg(ox + x_px_local/2, oy + x_px_local/2, `x^2`, { fontSize: '18px' });
+                dimLine(ox, oy - 14, ox + x_px_local, oy - 14, 'var(--area-x2)');
+                text(ox + x_px_local/2, oy - 26, 'x', { size: 14 });
+                dimLine(ox - 14, oy, ox - 14, oy + x_px_local, 'var(--area-x2)');
+                text(ox - 24, oy + x_px_local/2, 'x', { size: 14 });
+
+                rect(ox + x_px_local, oy, b_half_px_local, x_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5);
+                rect(ox + x_px_local + b_half_px_local, oy, b_half_px_local, x_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5);
+
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy + x_px_local/2, `${latexFrac(b, 2*a)}x`, { fontSize: '13px', width: 60 });
+                katexInSvg(ox + x_px_local + b_half_px_local + b_half_px_local/2, oy + x_px_local/2, `${latexFrac(b, 2*a)}x`, { fontSize: '13px', width: 60 });
+
+                line(ox + x_px_local + b_half_px_local, oy, ox + x_px_local + b_half_px_local, oy + x_px_local, '#f59e0b', 2, '5 3');
+                text(ox + x_px_local + b_half_px_local, oy - 12, '✂', { size: 15, color: '#f59e0b' });
+            }
+            else if (step === 2) {
+                rect(ox, oy, x_px_local, x_px_local, 'var(--area-x2-fill)', 'var(--area-x2)', 2.5);
+                katexInSvg(ox + x_px_local/2, oy + x_px_local/2, `x^2`, { fontSize: '18px' });
+
+                rect(ox + x_px_local, oy, b_half_px_local, x_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 2);
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy + x_px_local/2, `${latexFrac(b, 2*a)}x`, { fontSize: '13px', width: 65 });
+
+                rect(ox, oy + x_px_local, x_px_local, b_half_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 2);
+                katexInSvg(ox + x_px_local/2, oy + x_px_local + b_half_px_local/2, `${latexFrac(b, 2*a)}x`, { fontSize: '13px', width: 65 });
+
+                dimLine(ox, oy - 14, ox + x_px_local, oy - 14, 'var(--area-x2)');
+                text(ox + x_px_local/2, oy - 26, 'x', { size: 14 });
+                dimLine(ox - 14, oy, ox - 14, oy + x_px_local, 'var(--area-x2)');
+                text(ox - 24, oy + x_px_local/2, 'x', { size: 14 });
+
+                dimLine(ox + x_px_local + b_half_px_local + 14, oy, ox + x_px_local + b_half_px_local + 14, oy + x_px_local, 'var(--area-bx)');
+                text(ox + x_px_local + b_half_px_local + 24, oy + x_px_local/2, 'x', { size: 13 });
+                dimLine(ox + x_px_local, oy - 14, ox + x_px_local + b_half_px_local, oy - 14, 'var(--area-bx)');
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy - 28, `${latexFrac(b, 2*a)}`, { fontSize: '12px', width: 50 });
+
+                dimLine(ox - 14, oy + x_px_local, ox - 14, oy + x_px_local + b_half_px_local, 'var(--area-bx)');
+                katexInSvg(ox - 30, oy + x_px_local + b_half_px_local/2, `${latexFrac(b, 2*a)}`, { fontSize: '12px', width: 50 });
+            }
+            else if (step === 3) {
+                rect(ox, oy, x_px_local, x_px_local, 'var(--area-x2-fill)', 'var(--area-x2)', 2.5);
+                katexInSvg(ox + x_px_local/2, oy + x_px_local/2, `x^2`, { fontSize: '18px' });
+
+                rect(ox + x_px_local, oy, b_half_px_local, x_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 2);
+                rect(ox, oy + x_px_local, x_px_local, b_half_px_local, 'var(--area-bx-fill)', 'var(--area-bx)', 2);
+
+                rect(ox + x_px_local, oy + x_px_local, b_half_px_local, b_half_px_local, 'none', 'var(--area-corner)', 2, '4 3');
+                text(ox + x_px_local + b_half_px_local/2, oy + x_px_local + b_half_px_local/2, '?', { size: 18, color: 'var(--area-corner)', weight: 900 });
+
+                dimLine(ox, oy - 14, ox + x_px_local, oy - 14, 'var(--area-x2)');
+                text(ox + x_px_local/2, oy - 26, 'x', { size: 14 });
+                dimLine(ox - 14, oy, ox - 14, oy + x_px_local, 'var(--area-x2)');
+                text(ox - 24, oy + x_px_local/2, 'x', { size: 14 });
+
+                dimLine(ox + x_px_local, oy + x_px_local + b_half_px_local + 14, ox + x_px_local + b_half_px_local, oy + x_px_local + b_half_px_local + 14, 'var(--area-corner)');
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy + x_px_local + b_half_px_local + 28, `${latexFrac(b, 2*a)}`, { fontSize: '11px', width: 50, color: 'var(--area-corner)' });
+
+                dimLine(ox + x_px_local + b_half_px_local + 14, oy + x_px_local, ox + x_px_local + b_half_px_local + 14, oy + x_px_local + b_half_px_local, 'var(--area-corner)');
+                katexInSvg(ox + x_px_local + b_half_px_local + 30, oy + x_px_local + b_half_px_local/2, `${latexFrac(b, 2*a)}`, { fontSize: '11px', width: 50, color: 'var(--area-corner)' });
+            }
+            else if (step === 4 || step === 5) {
+                rect(ox, oy, x_px_local + b_half_px_local, x_px_local + b_half_px_local, 'var(--result-fill)', 'var(--result-stroke)', 3);
+
+                rect(ox, oy, x_px_local, x_px_local, 'none', 'rgba(30, 64, 175, 0.15)', 1);
+                rect(ox + x_px_local, oy, b_half_px_local, x_px_local, 'none', 'rgba(8, 145, 178, 0.15)', 1);
+                rect(ox, oy + x_px_local, x_px_local, b_half_px_local, 'none', 'rgba(8, 145, 178, 0.15)', 1);
+
+                rect(ox + x_px_local, oy + x_px_local, b_half_px_local, b_half_px_local, 'var(--area-corner-fill)', 'var(--area-corner)', 2);
+
+                katexInSvg(ox + x_px_local/2, oy + x_px_local/2, `x^2`, { fontSize: '15px' });
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy + x_px_local/2, `\\frac{b}{2a}x`, { fontSize: '11px', width: 55 });
+                katexInSvg(ox + x_px_local/2, oy + x_px_local + b_half_px_local/2, `\\frac{b}{2a}x`, { fontSize: '11px', width: 55 });
+                
+                katexInSvg(ox + x_px_local + b_half_px_local/2, oy + x_px_local + b_half_px_local/2, `\\left(\\frac{b}{2a}\\right)^2`, { fontSize: '11px', width: 55, color: 'var(--area-corner)' });
+
+                dimLine(ox, oy - 20, ox + x_px_local + b_half_px_local, oy - 20, 'var(--result-stroke)');
+                katexInSvg(ox + (x_px_local + b_half_px_local)/2, oy - 38, `x + ${latexFrac(b, 2*a)}`, { fontSize: '15px', width: 120 });
+
+                dimLine(ox - 20, oy, ox - 20, oy + x_px_local + b_half_px_local, 'var(--result-stroke)');
+                katexInSvg(ox - 65, oy + (x_px_local + b_half_px_local)/2, `x + ${latexFrac(b, 2*a)}`, { fontSize: '15px', width: 120 });
+
+                if (step === 4) {
+                    katexInSvg(ox + (x_px_local + b_half_px_local)/2, oy + (x_px_local + b_half_px_local)/2 - 10, `\\text{Area} = \\left(x + ${latexFrac(b, 2*a)}\\right)^2`, { fontSize: '14px', width: 160 });
+                }
+            }
+        }
+
+        if (step === 5) {
+            const boxY = SVG_H - 75;
+            rect(40, boxY, SVG_W - 80, 60, 'var(--soft-green)', 'var(--green)', 1.5);
+            const simplifiedVertexForm = getVertexFormTex().replace('f(x) = ', '');
+            katexInSvg(SVG_W / 2, boxY + 30, `ax^2 + bx + c = ${a}\\left(x + ${latexFrac(b, 2*a)}\\right)^2 - ${a}\\left(${latexFrac(b, 2*a)}\\right)^2 + ${c} = ${simplifiedVertexForm}`, { fontSize: '16px', width: 580 });
+        }
+    }
+
+    /* ============================================================
+       PARABOLA GRAPH DRAWING
+       ============================================================ */
+    function renderGraphCanvas() {
+        clearSvg();
+
+        const cx = 340, cy = 260; 
+        const scaleGrid = 32;     
+
+        for (let xVal = -9; xVal <= 9; xVal++) {
+            const sx = cx + xVal * scaleGrid;
+            line(sx, 0, sx, SVG_H, '#e2e8f0', xVal === 0 ? 2 : 1);
+            if (xVal !== 0) {
+                text(sx, cy + 14, xVal, { size: 10, color: '#94a3b8' });
+            }
+        }
+        for (let yVal = -7; yVal <= 7; yVal++) {
+            const sy = cy - yVal * scaleGrid;
+            line(0, sy, SVG_W, sy, '#e2e8f0', yVal === 0 ? 2 : 1);
+            if (yVal !== 0) {
+                text(cx - 14, sy, yVal, { size: 10, color: '#94a3b8', anchor: 'end' });
+            }
+        }
+
+        text(SVG_W - 15, cy - 12, 'x', { size: 14, style: 'italic' });
+        text(cx + 12, 15, 'y', { size: 14, style: 'italic' });
+        text(cx - 10, cy + 12, '0', { size: 10, color: '#64748b' });
+
+        const pts = [];
+        const xMin = -cx / scaleGrid;
+        const xMax = (SVG_W - cx) / scaleGrid;
+        const sampleStep = 0.05;
+
+        for (let mx = xMin; mx <= xMax; mx += sampleStep) {
+            let my = a * mx * mx + b * mx + c;
+            let sx = cx + mx * scaleGrid;
+            let sy = cy - my * scaleGrid;
+            pts.push(`${sx},${sy}`);
+        }
+
+        const poly = document.createElementNS(ns, 'polyline');
+        poly.setAttribute('points', pts.join(' '));
+        poly.setAttribute('stroke', 'var(--blue)');
+        poly.setAttribute('stroke-width', 3);
+        poly.setAttribute('fill', 'none');
+        svg.appendChild(poly);
+
+        const hVal = -b / (2 * a);
+        const kVal = c - (b * b) / (4 * a);
+        const v_sx = cx + hVal * scaleGrid;
+        const v_sy = cy - kVal * scaleGrid;
+
+        line(v_sx, 0, v_sx, SVG_H, 'var(--red)', 2.2, '5 4');
+
+        const dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('cx', v_sx);
+        dot.setAttribute('cy', v_sy);
+        dot.setAttribute('r', 7);
+        dot.setAttribute('fill', 'var(--red)');
+        dot.setAttribute('stroke', 'white');
+        dot.setAttribute('stroke-width', 2);
+        svg.appendChild(dot);
+
+        const hLabel = latexFrac(-b, 2 * a);
+        const kLabel = latexFrac(4 * a * c - b * b, 4 * a);
+        const cardWidth = 140;
+        const cardHeight = 44;
+        const cardX = v_sx + 15 > SVG_W - cardWidth ? v_sx - cardWidth - 15 : v_sx + 15;
+        const cardY = v_sy - 15 < 15 ? v_sy + 15 : v_sy - 45;
+
+        rect(cardX, cardY, cardWidth, cardHeight, 'rgba(255, 255, 255, 0.95)', 'var(--red)', 1.5);
+        katexInSvg(cardX + cardWidth/2, cardY + cardHeight/2, `\\text{Vertex } \\left(${hLabel}, ${kLabel}\\right)`, { fontSize: '13px', width: cardWidth, color: 'var(--red)' });
+
+        const y_sy = cy - c * scaleGrid;
+        const yDot = document.createElementNS(ns, 'circle');
+        yDot.setAttribute('cx', cx);
+        yDot.setAttribute('cy', y_sy);
+        yDot.setAttribute('r', 5);
+        yDot.setAttribute('fill', 'var(--teal)');
+        yDot.setAttribute('stroke', 'white');
+        yDot.setAttribute('stroke-width', 1.5);
+        svg.appendChild(yDot);
+
+        const yLblW = 100;
+        const yLblH = 34;
+        const yLblX = cx + 12 > SVG_W - yLblW ? cx - yLblW - 12 : cx + 12;
+        const yLblY = y_sy - 17;
+        rect(yLblX, yLblY, yLblW, yLblH, 'rgba(255,255,255,0.92)', 'var(--teal)', 1);
+        katexInSvg(yLblX + yLblW/2, yLblY + yLblH/2, `(0, ${c})`, { fontSize: '12px', width: yLblW, color: 'var(--teal)' });
+
+        const disc = b * b - 4 * a * c;
+        if (disc >= 0) {
+            const r1 = (-b + Math.sqrt(disc)) / (2 * a);
+            const r2 = (-b - Math.sqrt(disc)) / (2 * a);
+
+            [r1, r2].forEach(r => {
+                const x_sx = cx + r * scaleGrid;
+                const xDot = document.createElementNS(ns, 'circle');
+                xDot.setAttribute('cx', x_sx);
+                xDot.setAttribute('cy', cy);
+                xDot.setAttribute('r', 5);
+                xDot.setAttribute('fill', 'var(--green)');
+                xDot.setAttribute('stroke', 'white');
+                xDot.setAttribute('stroke-width', 1.5);
+                svg.appendChild(xDot);
+
+                const xLblW = 60;
+                const xLblH = 26;
+                const xLblY = cy - 35;
+                rect(x_sx - xLblW/2, xLblY, xLblW, xLblH, 'rgba(255,255,255,0.92)', 'var(--green)', 1);
+                katexInSvg(x_sx, xLblY + xLblH/2, `${r.toFixed(2)}`, { fontSize: '11px', width: xLblW, color: 'var(--green)' });
+            });
+        }
+    }
+
+    /* ============================================================
+       SANDBOX MODE DRAWING & LOGIC
+       ============================================================ */
+    function checkOverlap(px, py) {
+        return (px >= 440 && px <= 640 && py >= 30 && py <= 150);
+    }
+
+    function animateSlice(pId) {
+        let start = null;
+        const duration = 600;
+        
+        // Remove the unsplit piece immediately so it doesn't render elsewhere
+        sandboxState.pieces = sandboxState.pieces.filter(p => p !== pId);
+        
+        function step(timestamp) {
+            if (!start) start = timestamp;
+            const elapsed = timestamp - start;
+            const progress = Math.min(elapsed / duration, 1);
+            
+            sliceAnimation = { type: pId, progress: progress };
+            render();
+            
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                sliceAnimation = null;
+                if (pId === 'bx') {
+                    sandboxState.bxSplit = true;
+                    sandboxState.pieces.push('bx1', 'bx2');
+                    sandboxState.message = "Success! Split the linear term \\(bx\\) into two equal pieces of size \\(\\frac{b}{2a}x = "+latexFrac(b, 2*a)+"x\\). Drag them into the Assembly Area!";
+                    sandboxState.messageClass = 'green';
+                } else if (pId === 'x2') {
+                    sandboxState.x2Split = true;
+                    sandboxState.pieces.push('x21', 'x22');
+                    sandboxState.message = "Warning! Splitting the quadratic term \\(x^2\\) is a <strong>useless strategy</strong> for completing the square. Drag them to see why!";
+                    sandboxState.messageClass = 'orange';
+                }
+                resetPositions();
+                render();
+            }
+        }
+        requestAnimationFrame(step);
+    }
+
+    function splitPiece(pId) {
+        if (pId === 'bx' || pId === 'x2') {
+            animateSlice(pId);
+        }
+    }
+
+    function resetPositions() {
+        const b_coeff = b / a;
+        b_px = scaleVal * b_coeff;
+        b_half_px = b_px / 2;
+
+        sandboxPositions = {
+            'x2': { x: 480, y: 190 },
+            'bx': { x: 480, y: 350 },
+            'bx1': { x: 450, y: 190, rotated: false },
+            'bx2': { x: 550, y: 190, rotated: false },
+            'x21': { x: 450, y: 190, rotated: false },
+            'x22': { x: 550, y: 190, rotated: false }
+        };
+    }
+
+    function resetSandbox() {
+        sandboxState.x2Split = false;
+        sandboxState.bxSplit = false;
+        sandboxState.completed = false;
+        sandboxState.pieces = ['x2', 'bx'];
+        sandboxState.message = "Drag the <strong>bx</strong> or <strong>x²</strong> piece into the <strong>Splitter Zone</strong> to see how splitting works! Drop it in the dashed box.";
+        sandboxState.messageClass = '';
+        sliceAnimation = null;
+        
+        resetPositions();
+        document.getElementById('sandboxCompleteBtn').style.display = 'none';
+        render();
+    }
+
+    function autoArrangeSandbox() {
+        const cx = 120, cy = 250;
+        
+        if (sandboxState.bxSplit && !sandboxState.x2Split) {
+            sandboxPositions['x2'].x = cx;
+            sandboxPositions['x2'].y = cy;
+            
+            sandboxPositions['bx1'].x = cx + x_px;
+            sandboxPositions['bx1'].y = cy;
+            sandboxPositions['bx1'].rotated = false;
+            
+            sandboxPositions['bx2'].x = cx;
+            sandboxPositions['bx2'].y = cy + x_px;
+            sandboxPositions['bx2'].rotated = true;
+
+            sandboxState.message = "Arranged! We placed the two \\(\\frac{b}{2a}x = "+latexFrac(b, 2*a)+"x\\) rectangles on the sides of \\(x^2\\). Do you see the missing corner? Click <strong>Complete Square</strong> to finish it!";
+            sandboxState.messageClass = 'green';
+            document.getElementById('sandboxCompleteBtn').style.display = 'inline-block';
+            render();
+        } 
+        else if (sandboxState.x2Split) {
+            sandboxPositions['x21'].x = cx;
+            sandboxPositions['x21'].y = cy;
+            sandboxPositions['x21'].rotated = false;
+            
+            sandboxPositions['x22'].x = cx + x_px/2;
+            sandboxPositions['x22'].y = cy;
+            sandboxPositions['x22'].rotated = false;
+            
+            if (sandboxPositions['bx']) {
+                sandboxPositions['bx'].x = cx + x_px;
+                sandboxPositions['bx'].y = cy;
+            }
+
+            sandboxState.message = "This shape is a rectangle of size \\((x + " + latexFrac(b, a) + ") \\times x\\), but it is NOT a square! By splitting \\(x^2\\) into two pieces of size \\(0.5x \\times x\\), the dimensions are mismatched. There is no simple constant corner we can add to complete the square. This is why we must split the linear term \\(bx\\) instead!";
+            sandboxState.messageClass = 'orange';
+            render();
+        } else {
+            sandboxState.message = "Please split a piece first before trying to arrange them!";
+            sandboxState.messageClass = 'orange';
+            render();
+        }
+    }
+
+    function completeSandboxSquare() {
+        sandboxState.completed = true;
+        const b2_val = latexFrac(b, 2*a);
+        const b2_sq_val = latexFrac(b*b, 4*a*a);
+        sandboxState.message = "Square Completed! By adding the corner piece of area \\(\\left(\\frac{b}{2a}\\right)^2 = "+b2_sq_val+"\\), we have completed the square! The final expression inside the parenthesis is \\(\\left(x + "+b2_val+"\\right)^2 - "+b2_sq_val+"\\).";
+        sandboxState.messageClass = 'green';
+        render();
+    }
+
+    function checkSnapping(pId) {
+        const cx = 120, cy = 250;
+        const pos = sandboxPositions[pId];
+        if (!pos) return;
+
+        // 1. If we are dragging x2 (unsplit)
+        if (pId === 'x2') {
+            const dist = Math.hypot(pos.x - cx, pos.y - cy);
+            if (dist < 40) {
+                pos.x = cx;
+                pos.y = cy;
+                sandboxState.message = "Snapped! x² is locked in the Assembly Area. Now drag the linear term bx to the Splitter Zone to cut it in half, then snap the pieces to the sides!";
+                sandboxState.messageClass = 'green';
+            }
+        }
+        
+        // 2. If we are dragging bx (unsplit)
+        if (pId === 'bx') {
+            const isX2Snapped = (sandboxPositions['x2'] && sandboxPositions['x2'].x === cx && sandboxPositions['x2'].y === cy);
+            if (isX2Snapped) {
+                const targetX = cx + x_px;
+                const targetY = cy;
+                const dist = Math.hypot(pos.x - targetX, pos.y - targetY);
+                if (dist < 40) {
+                    pos.x = targetX;
+                    pos.y = targetY;
+                    sandboxState.message = "Snug fit! But this forms a rectangle of sides \\(x\) and \\(x + "+latexFrac(b, a)+"\\). We can't complete a square this way. Drag it to the Splitter Zone to divide it!";
+                    sandboxState.messageClass = 'orange';
+                }
+            }
+        }
+
+        // 3. If we have split bx into bx1 and bx2
+        if (pId === 'bx1' || pId === 'bx2') {
+            const isX2Snapped = (sandboxPositions['x2'] && sandboxPositions['x2'].x === cx && sandboxPositions['x2'].y === cy && sandboxState.pieces.includes('x2'));
+            if (isX2Snapped) {
+                const rightX = cx + x_px;
+                const rightY = cy;
+                const bottomX = cx;
+                const bottomY = cy + x_px;
+
+                const distRight = Math.hypot(pos.x - rightX, pos.y - rightY);
+                const distBottom = Math.hypot(pos.x - bottomX, pos.y - bottomY);
+
+                if (distRight < 40) {
+                    const otherId = pId === 'bx1' ? 'bx2' : 'bx1';
+                    const isOtherAtRight = (sandboxPositions[otherId] && sandboxPositions[otherId].x === rightX && sandboxPositions[otherId].y === rightY);
+                    if (!isOtherAtRight) {
+                        pos.x = rightX;
+                        pos.y = rightY;
+                        pos.rotated = false;
+                        sandboxState.message = "Snapped vertical piece! Now place the other piece at the bottom.";
+                        sandboxState.messageClass = 'green';
+                    }
+                } else if (distBottom < 40) {
+                    const otherId = pId === 'bx1' ? 'bx2' : 'bx1';
+                    const isOtherAtBottom = (sandboxPositions[otherId] && sandboxPositions[otherId].x === bottomX && sandboxPositions[otherId].y === bottomY);
+                    if (!isOtherAtBottom) {
+                        pos.x = bottomX;
+                        pos.y = bottomY;
+                        pos.rotated = true;
+                        sandboxState.message = "Snapped horizontal piece! It auto-rotated to fit the bottom of x².";
+                        sandboxState.messageClass = 'green';
+                    }
+                }
+                
+                checkIfSandboxCompleteReady();
+            } else {
+                sandboxState.message = "First drag the x² square into the Assembly Workspace before snapping the linear pieces!";
+                sandboxState.messageClass = 'orange';
+            }
+        }
+
+        // 4. If we split x2 into x21 and x22 (useless strategy)
+        if (pId === 'x21' || pId === 'x22') {
+            if (pId === 'x21') {
+                const dist = Math.hypot(pos.x - cx, pos.y - cy);
+                if (dist < 40) {
+                    pos.x = cx;
+                    pos.y = cy;
+                    pos.rotated = false;
+                    sandboxState.message = "Placed the first half of x² (\\(0.5x^2\\)). Try snapping the second half next to it or at the bottom.";
+                    sandboxState.messageClass = 'orange';
+                }
+            } else if (pId === 'x22') {
+                const isX21Snapped = (sandboxPositions['x21'] && sandboxPositions['x21'].x === cx && sandboxPositions['x21'].y === cy);
+                if (isX21Snapped) {
+                    const rightX = cx + x_px/2;
+                    const rightY = cy;
+                    const bottomX = cx;
+                    const bottomY = cy + x_px;
+
+                    const distRight = Math.hypot(pos.x - rightX, pos.y - rightY);
+                    const distBottom = Math.hypot(pos.x - bottomX, pos.y - bottomY);
+
+                    if (distRight < 40) {
+                        pos.x = rightX;
+                        pos.y = rightY;
+                        pos.rotated = false;
+                        sandboxState.message = "Reassembled x² square. But this leaves us with the same problem: how do we factor the remaining bx term?";
+                        sandboxState.messageClass = 'orange';
+                    } else if (distBottom < 40) {
+                        pos.x = bottomX;
+                        pos.y = bottomY;
+                        pos.rotated = true;
+                        sandboxState.message = "Snapped to the bottom! Notice the mismatched dimensions: the top-left is \\(0.5x \\times x\\), and the bottom is \\(x \\times 0.5x\\). This doesn't form a square!";
+                        sandboxState.messageClass = 'orange';
+                    }
+                }
+            }
+            
+            checkX2Uselessness();
+        }
+    }
+
+    function checkIfSandboxCompleteReady() {
+        const cx = 120, cy = 250;
+        const p1 = sandboxPositions['bx1'];
+        const p2 = sandboxPositions['bx2'];
+        if (!p1 || !p2) return;
+
+        const isP1Right = (p1.x === cx + x_px && p1.y === cy);
+        const isP1Bottom = (p1.x === cx && p1.y === cy + x_px);
+        const isP2Right = (p2.x === cx + x_px && p2.y === cy);
+        const isP2Bottom = (p2.x === cx && p2.y === cy + x_px);
+
+        if ((isP1Right && isP2Bottom) || (isP1Bottom && isP2Right)) {
+            sandboxState.message = "Perfect! The two halves of \\(bx\\) are arranged symmetrically on the right and bottom of \\(x^2\\). The shape is almost a square, except for the missing corner in the bottom-right! Click <strong>Complete Square</strong> to complete it.";
+            sandboxState.messageClass = 'green';
+            document.getElementById('sandboxCompleteBtn').style.display = 'inline-block';
+        } else {
+            document.getElementById('sandboxCompleteBtn').style.display = 'none';
+        }
+    }
+
+    function checkX2Uselessness() {
+        const cx = 120, cy = 250;
+        const isX21AtCenter = (sandboxPositions['x21'] && sandboxPositions['x21'].x === cx && sandboxPositions['x21'].y === cy);
+        if (!isX21AtCenter) return;
+
+        const isX22AtBottom = (sandboxPositions['x22'] && sandboxPositions['x22'].x === cx && sandboxPositions['x22'].y === cy + x_px && sandboxPositions['x22'].rotated);
+        const isX22AtRight = (sandboxPositions['x22'] && sandboxPositions['x22'].x === cx + x_px/2 && sandboxPositions['x22'].y === cy && !sandboxPositions['x22'].rotated);
+
+        if (isX22AtBottom) {
+            sandboxState.message = "Dimensional Conflict! By placing \\(0.5x^2\\) at the bottom and \\(0.5x^2\\) on the left, we have a width of \\(x\\) (for the bottom piece) but height of \\(1.5x\\) (left + bottom). To make this a square, the missing corner would be \\(0.5x \\times 0.5x = 0.25x^2\\) (which depends on \\(x\\)). This is not a constant, so we cannot complete it! This shows why splitting \\(x^2\\) is a useless strategy.";
+            sandboxState.messageClass = 'orange';
+        } else if (isX22AtRight && sandboxPositions['bx']) {
+            const isBxSnapped = (sandboxPositions['bx'].x === cx + x_px && sandboxPositions['bx'].y === cy);
+            if (isBxSnapped) {
+                sandboxState.message = "Reassembled x² next to bx. This forms a rectangle of side \\(x\\) and \\(x + "+latexFrac(b, a)+"\\). The sides are unequal, and you are back to square one! This proves that splitting \\(x^2\\) is useless for completing the square.";
+                sandboxState.messageClass = 'orange';
+            }
+        }
+    }
+
+    function showTargets(pId) {
+        const cx = 120, cy = 250;
+        const targets = ['target-x2', 'target-bx-right', 'target-bx-right-half', 'target-bx-bottom-half', 'target-x21', 'target-x22-right', 'target-x22-bottom'];
+        targets.forEach(tId => {
+            const el = document.getElementById(tId);
+            if (el) el.setAttribute('display', 'none');
+        });
+
+        if (pId === 'x2') {
+            document.getElementById('target-x2')?.setAttribute('display', 'block');
+        } else if (pId === 'bx') {
+            const isX2Snapped = (sandboxPositions['x2'] && sandboxPositions['x2'].x === cx && sandboxPositions['x2'].y === cy);
+            if (isX2Snapped) {
+                document.getElementById('target-bx-right')?.setAttribute('display', 'block');
+            }
+        } else if (pId === 'bx1' || pId === 'bx2') {
+            const isX2Snapped = (sandboxPositions['x2'] && sandboxPositions['x2'].x === cx && sandboxPositions['x2'].y === cy && sandboxState.pieces.includes('x2'));
+            if (isX2Snapped) {
+                const rightX = cx + x_px, rightY = cy;
+                const bottomX = cx, bottomY = cy + x_px;
+                const otherId = pId === 'bx1' ? 'bx2' : 'bx1';
+                
+                const otherPos = sandboxPositions[otherId];
+                const isOtherAtRight = (otherPos && otherPos.x === rightX && otherPos.y === rightY);
+                const isOtherAtBottom = (otherPos && otherPos.x === bottomX && otherPos.y === bottomY);
+                
+                if (!isOtherAtRight) {
+                    document.getElementById('target-bx-right-half')?.setAttribute('display', 'block');
+                }
+                if (!isOtherAtBottom) {
+                    document.getElementById('target-bx-bottom-half')?.setAttribute('display', 'block');
+                }
+            }
+        } else if (pId === 'x21') {
+            document.getElementById('target-x21')?.setAttribute('display', 'block');
+        } else if (pId === 'x22') {
+            const isX21Snapped = (sandboxPositions['x21'] && sandboxPositions['x21'].x === cx && sandboxPositions['x21'].y === cy);
+            if (isX21Snapped) {
+                document.getElementById('target-x22-right')?.setAttribute('display', 'block');
+                document.getElementById('target-x22-bottom')?.setAttribute('display', 'block');
+            }
+        }
+    }
+
+    function createTargetGroup(id, x, y, w, h, strokeColor, labelText) {
+        const g = document.createElementNS(ns, 'g');
+        g.id = id;
+        g.setAttribute('display', 'none');
+        rect(0, 0, w, h, 'none', strokeColor, 2, '4 3', g);
+        if (labelText) {
+            text(w/2, h/2, labelText, { size: 10, color: strokeColor, weight: 800 }, g);
+        }
+        g.setAttribute('transform', `translate(${x}, ${y})`);
+        svg.appendChild(g);
+    }
+
+    function renderSandboxCanvas() {
+        clearSvg();
+
+        if (sliceAnimation) {
+            const splitX = 440, splitY = 30, splitW = 200, splitH = 120;
+            const cx_anim = splitX + splitW/2;
+            const cy_anim = splitY + splitH/2;
+            
+            rect(splitX, splitY, splitW, splitH, 'rgba(239, 68, 68, 0.05)', 'var(--red)', 2, '5 4');
+            text(cx_anim, splitY + 20, 'SLICING...', { size: 12, weight: 800, color: 'var(--red)' });
+
+            const p = sliceAnimation.progress;
+            const shift = p * 40;
+
+            if (sliceAnimation.type === 'bx') {
+                const h = 120;
+                const wHalf = b_half_px;
+                const oy = cy_anim - h/2;
+
+                const leftX = cx_anim - wHalf - shift;
+                rect(leftX, oy, wHalf, h, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5);
+                katexInSvg(leftX + wHalf/2, oy + h/2, `${latexFrac(b, 2*a)}x`, { fontSize: '11px', width: wHalf - 5 });
+
+                const rightX = cx_anim + shift;
+                rect(rightX, oy, wHalf, h, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5);
+                katexInSvg(rightX + wHalf/2, oy + h/2, `${latexFrac(b, 2*a)}x`, { fontSize: '11px', width: wHalf - 5 });
+            } 
+            else if (sliceAnimation.type === 'x2') {
+                const h = 120;
+                const wHalf = 60;
+                const oy = cy_anim - h/2;
+
+                const leftX = cx_anim - wHalf - shift;
+                rect(leftX, oy, wHalf, h, 'var(--area-x2-fill)', 'var(--area-x2)', 1.5);
+                katexInSvg(leftX + wHalf/2, oy + h/2, `0.5x^2`, { fontSize: '11px', width: 50 });
+
+                const rightX = cx_anim + shift;
+                rect(rightX, oy, wHalf, h, 'var(--area-x2-fill)', 'var(--area-x2)', 1.5);
+                katexInSvg(rightX + wHalf/2, oy + h/2, `0.5x^2`, { fontSize: '11px', width: 50 });
+            }
+
+            const laserGlow = 3 + (1 - p) * 10;
+            line(cx_anim, splitY + 5, cx_anim, splitY + splitH - 5, 'rgba(239, 68, 68, 0.4)', laserGlow);
+            line(cx_anim, splitY + 5, cx_anim, splitY + splitH - 5, '#ef4444', 2);
+
+            const assX = 30, assY = 180, assW = 380, assH = 310;
+            rect(assX, assY, assW, assH, '#fafcfd', '#dbeafe', 1.5, '4 4');
+            text(assX + 20, assY + 22, 'Assembly Workspace', { size: 12, weight: 800, color: '#93c5fd', anchor: 'start' });
+            return;
+        }
+
+        const cx = 120, cy = 250;
+
+        // 1. Target snap groups (invisible initially)
+        createTargetGroup('target-x2', cx, cy, x_px, x_px, 'var(--area-x2)', 'Snap x²');
+        createTargetGroup('target-bx-right', cx + x_px, cy, b_px, x_px, 'var(--area-bx)', 'Snap bx');
+        createTargetGroup('target-bx-right-half', cx + x_px, cy, b_half_px, x_px, 'var(--area-bx)', 'Snap bx/2');
+        createTargetGroup('target-bx-bottom-half', cx, cy + x_px, x_px, b_half_px, 'var(--area-bx)', 'Snap bx/2');
+        createTargetGroup('target-x21', cx, cy, x_px/2, x_px, 'var(--area-x2)', 'Snap 0.5x²');
+        createTargetGroup('target-x22-right', cx + x_px/2, cy, x_px/2, x_px, 'var(--area-x2)', 'Snap 0.5x²');
+        createTargetGroup('target-x22-bottom', cx, cy + x_px, x_px, x_px/2, 'var(--area-x2)', 'Snap 0.5x²');
+
+        // 2. Splitter Zone
+        const splitX = 440, splitY = 30, splitW = 200, splitH = 120;
+        rect(splitX, splitY, splitW, splitH, 'rgba(0, 0, 0, 0.015)', 'var(--muted)', 1.5, '5 4');
+        
+        const splitDetect = document.createElementNS(ns, 'rect');
+        splitDetect.id = 'splitterZone';
+        splitDetect.setAttribute('x', splitX);
+        splitDetect.setAttribute('y', splitY);
+        splitDetect.setAttribute('width', splitW);
+        splitDetect.setAttribute('height', splitH);
+        splitDetect.setAttribute('fill', 'none');
+        splitDetect.setAttribute('stroke', 'none');
+        svg.appendChild(splitDetect);
+
+        text(splitX + splitW/2, splitY + 40, '✂', { size: 28, color: '#f59e0b' });
+        text(splitX + splitW/2, splitY + 75, 'SPLITTER MACHINE', { size: 12, weight: 800, color: 'var(--muted)' });
+        text(splitX + splitW/2, splitY + 95, 'Drag piece here to split', { size: 10, color: 'var(--muted)' });
+
+        // 3. Assembly Area
+        const assX = 30, assY = 180, assW = 380, assH = 310;
+        rect(assX, assY, assW, assH, '#fafcfd', '#dbeafe', 1.5, '4 4');
+        text(assX + 20, assY + 22, 'Assembly Workspace', { size: 12, weight: 800, color: '#93c5fd', anchor: 'start' });
+
+        // 4. Draw dimension mismatch for x2 split (useless strategy)
+        if (sandboxState.x2Split) {
+            const isX21AtCenter = (sandboxPositions['x21'] && sandboxPositions['x21'].x === cx && sandboxPositions['x21'].y === cy);
+            const isX22AtBottom = (sandboxPositions['x22'] && sandboxPositions['x22'].x === cx && sandboxPositions['x22'].y === cy + x_px && sandboxPositions['x22'].rotated);
+            
+            if (isX21AtCenter && isX22AtBottom) {
+                const totalH = x_px + x_px/2; // 180
+                
+                dimLine(cx - 25, cy, cx - 25, cy + totalH, 'var(--red)');
+                katexInSvg(cx - 50, cy + totalH/2, `1.5x`, { fontSize: '12px', width: 40, color: 'var(--red)' });
+
+                dimLine(cx, cy + totalH + 15, cx + x_px, cy + totalH + 15, 'var(--red)');
+                text(cx + x_px/2, cy + totalH + 28, 'x', { size: 12, color: 'var(--red)' });
+                
+                rect(cx + x_px/2, cy, x_px/2, x_px, 'none', 'var(--red)', 1.5, '2 2');
+                text(cx + 3*x_px/4, cy + x_px/2, 'Mismatch!', { size: 10, color: 'var(--red)', weight: 700 });
+            }
+
+            const isX22AtRight = (sandboxPositions['x22'] && sandboxPositions['x22'].x === cx + x_px/2 && sandboxPositions['x22'].y === cy && !sandboxPositions['x22'].rotated);
+            const isBxSnapped = (sandboxPositions['bx'] && sandboxPositions['bx'].x === cx + x_px && sandboxPositions['bx'].y === cy);
+
+            if (isX21AtCenter && isX22AtRight && isBxSnapped) {
+                dimLine(cx, cy - 20, cx + x_px + b_px, cy - 20, 'var(--orange)');
+                katexInSvg(cx + (x_px + b_px)/2, cy - 35, `x + ${latexFrac(b, a)}`, { fontSize: '13px', width: 80, color: 'var(--orange)' });
+
+                dimLine(cx - 20, cy, cx - 20, cy + x_px, 'var(--orange)');
+                text(cx - 30, cy + x_px/2, 'x', { size: 12, color: 'var(--orange)' });
+            }
+        }
+
+        // 5. Draw active pieces
+        sandboxState.pieces.forEach(pId => {
+            const pos = sandboxPositions[pId];
+            if (!pos) return;
+
+            const g = document.createElementNS(ns, 'g');
+            g.id = `sandbox-${pId}`;
+            g.classList.add('drag-piece');
+            g.setAttribute('transform', `translate(${pos.x}, ${pos.y})`);
+            g.style.cursor = 'grab';
+
+            if (pId === 'x2') {
+                rect(0, 0, x_px, x_px, 'var(--area-x2-fill)', 'var(--area-x2)', 2.5, null, g);
+                katexInSvg(x_px/2, x_px/2, `x^2`, { fontSize: '16px' }, g);
+                dimLine(0, -10, x_px, -10, 'var(--area-x2)', g);
+                text(x_px/2, -20, 'x', { size: 12 }, g);
+                dimLine(-10, 0, -10, x_px, 'var(--area-x2)', g);
+                text(-18, x_px/2, 'x', { size: 12 }, g);
+            } 
+            else if (pId === 'bx') {
+                rect(0, 0, b_px, x_px, 'var(--area-bx-fill)', 'var(--area-bx)', 2, null, g);
+                katexInSvg(b_px/2, x_px/2, `${latexFrac(b, a)}x`, { fontSize: '15px' }, g);
+                dimLine(0, -10, b_px, -10, 'var(--area-bx)', g);
+                katexInSvg(b_px/2, -20, `${latexFrac(b, a)}`, { fontSize: '11px', width: 40 }, g);
+            }
+            else if (pId === 'bx1' || pId === 'bx2') {
+                if (pos.rotated) {
+                    rect(0, 0, x_px, b_half_px, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5, null, g);
+                    katexInSvg(x_px/2, b_half_px/2, `${latexFrac(b, 2*a)}x`, { fontSize: '11px', width: x_px }, g);
+                    dimLine(-10, 0, -10, b_half_px, 'var(--area-bx)', g);
+                    katexInSvg(-22, b_half_px/2, `${latexFrac(b, 2*a)}`, { fontSize: '10px', width: 30 }, g);
+                } else {
+                    rect(0, 0, b_half_px, x_px, 'var(--area-bx-fill)', 'var(--area-bx)', 1.5, null, g);
+                    katexInSvg(b_half_px/2, x_px/2, `${latexFrac(b, 2*a)}x`, { fontSize: '11px', width: b_half_px - 5 }, g);
+                    dimLine(0, -10, b_half_px, -10, 'var(--area-bx)', g);
+                    katexInSvg(b_half_px/2, -20, `${latexFrac(b, 2*a)}`, { fontSize: '10px', width: 30 }, g);
+                }
+            }
+            else if (pId === 'x21' || pId === 'x22') {
+                if (pos.rotated) {
+                    rect(0, 0, x_px, x_px/2, 'var(--area-x2-fill)', 'var(--area-x2)', 1.5, null, g);
+                    katexInSvg(x_px/2, x_px/4, `0.5x^2`, { fontSize: '11px', width: x_px }, g);
+                    dimLine(-10, 0, -10, x_px/2, 'var(--area-x2)', g);
+                    text(-18, x_px/4, `0.5x`, { size: 10 }, g);
+                } else {
+                    rect(0, 0, x_px/2, x_px, 'var(--area-x2-fill)', 'var(--area-x2)', 1.5, null, g);
+                    katexInSvg(x_px/4, x_px/2, `0.5x^2`, { fontSize: '11px', width: 50 }, g);
+                    dimLine(0, -10, x_px/2, -10, 'var(--area-x2)', g);
+                    text(x_px/4, -20, `0.5x`, { size: 10 }, g);
+                }
+            }
+
+            svg.appendChild(g);
+        });
+
+        // 6. Draw Completed Corner
+        if (sandboxState.completed && sandboxState.bxSplit) {
+            const corner = document.createElementNS(ns, 'g');
+            corner.setAttribute('transform', `translate(${cx + x_px}, ${cy + x_px})`);
+            rect(0, 0, b_half_px, b_half_px, 'var(--area-corner-fill)', 'var(--area-corner)', 2, null, corner);
+            katexInSvg(b_half_px/2, b_half_px/2, `\\left(${latexFrac(b, 2*a)}\\right)^2`, { fontSize: '11px', width: 45, color: 'var(--area-corner)' }, corner);
+            svg.appendChild(corner);
+        }
+    }
+
+    function handlePointerDown(e) {
+        if (activeTab !== 'sandbox' || sliceAnimation) return;
+        const target = e.target.closest('.drag-piece');
+        if (!target) return;
+
+        dragElement = target;
+        const p = getSVGCoords(e);
+        const pId = dragElement.id.replace('sandbox-', '');
+        
+        if (pId === 'bx2' && sandboxPositions['bx2'].rotated) {
+            sandboxPositions['bx2'].rotated = false;
+        }
+        if (pId === 'x22' && sandboxPositions['x22'].rotated) {
+            sandboxPositions['x22'].rotated = false;
+        }
+
+        const transform = dragElement.getAttribute('transform') || '';
+        const match = transform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+        let tx = 0, ty = 0;
+        if (match) {
+            tx = parseFloat(match[1]);
+            ty = parseFloat(match[2]);
+        }
+        dragOffset.x = p.x - tx;
+        dragOffset.y = p.y - ty;
+        
+        svg.appendChild(dragElement);
+        dragElement.setAttribute('opacity', '0.8');
+        
+        showTargets(pId);
+    }
+
+    function handlePointerMove(e) {
+        if (!dragElement || sliceAnimation) return;
+        const p = getSVGCoords(e);
+        const tx = p.x - dragOffset.x;
+        const ty = p.y - dragOffset.y;
+        dragElement.setAttribute('transform', `translate(${tx}, ${ty})`);
+        
+        const pId = dragElement.id.replace('sandbox-', '');
+        if (sandboxPositions[pId]) {
+            sandboxPositions[pId].x = tx;
+            sandboxPositions[pId].y = ty;
+        }
+
+        const splitter = document.getElementById('splitterZone');
+        if (splitter) {
+            const isHover = checkOverlap(p.x, p.y);
+            splitter.setAttribute('stroke', isHover ? 'var(--orange)' : 'var(--muted)');
+            splitter.setAttribute('fill', isHover ? 'rgba(217, 119, 6, 0.1)' : 'rgba(0,0,0,0.015)');
+        }
+    }
+
+    function handlePointerUp(e) {
+        if (!dragElement || sliceAnimation) return;
+        dragElement.setAttribute('opacity', '1');
+        
+        const p = getSVGCoords(e);
+        const pId = dragElement.id.replace('sandbox-', '');
+        
+        // Hide all targets
+        const targets = ['target-x2', 'target-bx-right', 'target-bx-right-half', 'target-bx-bottom-half', 'target-x21', 'target-x22-right', 'target-x22-bottom'];
+        targets.forEach(tId => {
+            const el = document.getElementById(tId);
+            if (el) el.setAttribute('display', 'none');
+        });
+
+        if (checkOverlap(p.x, p.y)) {
+            splitPiece(pId);
+        } else {
+            checkSnapping(pId);
+        }
+        
+        dragElement = null;
+        render();
+    }
+
+    /* ============================================================
+       ALGEBRA INSPECTOR & EXPLAINER CONTENT
+       ============================================================ */
+    function getStepInfo(s) {
+        const standardTex = getStandardFormTex();
+        const vertexTex = getVertexFormTex();
+
+        if (activeTab === 'sandbox') {
+            let currentEqTex = getStandardFormTex();
+            if (sandboxState.completed) {
+                currentEqTex = `f(x) = \\left(x + ${b/2}\\right)^2 - ${((b/2)*(b/2))}`;
+            } else if (sandboxState.bxSplit) {
+                currentEqTex = `f(x) = x^2 + 2 \\cdot \\left(${b/2}x\\right) ${formatConstant(c)}`;
+            } else if (sandboxState.x2Split) {
+                currentEqTex = `f(x) = 2 \\cdot \\left(0.5x^2\\right) + ${b}x ${formatConstant(c)}`;
+            }
+            return {
+                badge: 'Sandbox Mode',
+                eq: currentEqTex,
+                explain: sandboxState.message,
+                explainClass: sandboxState.messageClass
+            };
+        }
+
+        switch (s) {
+            case 0: return {
+                badge: 'Step 1 of 6',
+                eq: standardTex,
+                explain: `We start with the quadratic in standard form: \\(f(x) = ${a === 1 ? '' : a}x^2 + ${b}x + ${c}\\). Geometrically, we construct <strong>${a}</strong> row(s) consisting of a square of area \\(x^2\\) and a rectangle of area \\(${latexFrac(b, a)}x\\).`,
+                explainClass: ''
+            };
+            case 1: return {
+                badge: 'Step 2 of 6',
+                eq: `a(x^2 + \\tfrac{b}{a}x) + c`,
+                explain: `We factor out <strong>a = ${a}</strong> from the \\(x\\)-terms, and then split the middle rectangle in each copy in half. Each half has width \\(\\frac{b}{2a} = ${latexFrac(b, 2*a)}\\).`,
+                explainClass: 'blue'
+            };
+            case 2: return {
+                badge: 'Step 3 of 6',
+                eq: `a(x^2 + 2 \\cdot \\tfrac{b}{2a} x) + c`,
+                explain: `We rearrange the rectangles by placing one half on the right of the square and rotating the other half to attach to the bottom. This leaves a missing corner of size \\(${latexFrac(b, 2*a)} \\times ${latexFrac(b, 2*a)}\\).`,
+                explainClass: 'blue'
+            };
+            case 3: return {
+                badge: 'Step 4 of 6',
+                eq: `\\text{Missing Corner } = \\left(\\tfrac{b}{2a}\\right)^2`,
+                explain: `Identify the area of the missing corner in each copy. To form a complete square, we need to add a small square of area \\(\\left(\\frac{b}{2a}\\right)^2 = ${latexFrac(b*b, 4*a*a)}\\).`,
+                explainClass: 'orange'
+            };
+            case 4: return {
+                badge: 'Step 5 of 6',
+                eq: `a\\left(x + \\tfrac{b}{2a}\\right)^2`,
+                explain: `We physically fill in the missing corners. This completes each square, creating <strong>${a}</strong> square(s) of side length \\(x + ${latexFrac(b, 2*a)}\\) and total area \\(${a === 1 ? '' : a}\\left(x + ${latexFrac(b, 2*a)}\\right)^2\\).`,
+                explainClass: 'green'
+            };
+            case 5: return {
+                badge: 'Step 6 of 6',
+                eq: vertexTex,
+                explain: `<strong>Balance the equation!</strong> Adding the corner areas means we added a total of \\(a \\cdot \\left(\\frac{b}{2a}\\right)^2 = ${latexFrac(b*b, 4*a)}\\). To keep the expression equal, we subtract that same amount: \\(f(x) = ${a === 1 ? '' : a}\\left(x + ${latexFrac(b, 2*a)}\\right)^2 - ${latexFrac(b*b, 4*a)} ${formatConstant(c)}\\). Simplifying the constant gives the final form.`,
+                explainClass: 'green'
+            };
+        }
+    }
+
+    function updateAlgebraPanel() {
+        const info = getStepInfo(step);
+        stepBadge.textContent = info.badge;
+
+        katex.render(info.eq, eqDisplay, { throwOnError: false, displayMode: true });
+
+        if (step === 5 && activeTab !== 'sandbox') {
+            eqDisplay.parentElement.classList.add('highlight');
+        } else {
+            eqDisplay.parentElement.classList.remove('highlight');
+        }
+
+        stepExplain.innerHTML = info.explain;
+        stepExplain.className = 'step-explain ' + info.explainClass;
+
+        renderMathInElement(stepExplain, {
+            delimiters: [
+                { left: '\\[', right: '\\]', display: true  },
+                { left: '\\(', right: '\\)', display: false }
+            ],
+            throwOnError: false
+        });
+
+        // Numeric Verification
+        const hVal = -b / (2 * a);
+        const testX = Math.round(hVal) === 2 ? 5 : 2; 
+        const stdEval = a * testX * testX + b * testX + c;
+        let vertEval = stdEval; 
+
+        verifyGrid.innerHTML = `
+            <div class="verify-row">
+                <div>
+                    <div class="label">Standard Form (x = ${testX})</div>
+                    <div class="value" id="stdVal">\\(${a}(${testX})^2 + ${b}(${testX}) + ${c}\\)</div>
+                </div>
+                <div></div>
+                <div class="value" style="text-align:right;">${stdEval}</div>
+            </div>
+            <div class="verify-row">
+                <div>
+                    <div class="label">Vertex Form (x = ${testX})</div>
+                    <div class="value" id="vertVal">
+                        \\(${a === 1 ? '' : a}\\left(${testX} - (${latexFrac(-b, 2*a)})\\right)^2 + (${latexFrac(4*a*c - b*b, 4*a)})\\)
+                    </div>
+                </div>
+                <div class="equals">=</div>
+                <div class="value" style="text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:8px;">
+                    <span>${vertEval}</span>
+                    <span class="check-mark">✓</span>
+                </div>
+            </div>
+        `;
+
+        renderMathInElement(verifyGrid, {
+            delimiters: [
+                { left: '\\[', right: '\\]', display: true  },
+                { left: '\\(', right: '\\)', display: false }
+            ],
+            throwOnError: false
+        });
+    }
+
+    /* ============================================================
+       RENDER MASTER
+       ============================================================ */
+    function render() {
+        outA.textContent = a;
+        outB.textContent = b;
+        outC.textContent = c;
+
+        prevBtn.disabled = (step === 0);
+        nextBtn.disabled = (step === TOTAL_STEPS - 1);
+
+        if (activeTab === 'geo') {
+            renderGeoCanvas();
+            stepGroup.style.display = 'grid'; 
+            sandboxGroup.style.display = 'none';
+            document.getElementById('presetsGroup').style.display = 'grid';
+        } else if (activeTab === 'graph') {
+            renderGraphCanvas();
+            stepGroup.style.display = 'none'; 
+            sandboxGroup.style.display = 'none';
+            document.getElementById('presetsGroup').style.display = 'grid';
+        } else {
+            // sandbox tab
+            renderSandboxCanvas();
+            stepGroup.style.display = 'none';
+            sandboxGroup.style.display = 'grid';
+            document.getElementById('presetsGroup').style.display = 'grid';
+        }
+
+        updateAlgebraPanel();
+    }
+
+    /* ============================================================
+       EVENTS
+       ============================================================ */
+    function bindEvents() {
+        // Slider inputs
+        sliderA.addEventListener('input', e => {
+            a = parseInt(e.target.value);
+            if (activeTab === 'sandbox') resetSandbox();
+            render();
+        });
+        sliderB.addEventListener('input', e => {
+            b = parseInt(e.target.value);
+            if (activeTab === 'sandbox') resetSandbox();
+            render();
+        });
+        sliderC.addEventListener('input', e => {
+            c = parseInt(e.target.value);
+            if (activeTab === 'sandbox') resetSandbox();
+            render();
+        });
+
+        // Step Navigation
+        prevBtn.addEventListener('click', () => {
+            if (step > 0) {
+                step--;
+                render();
+            }
+        });
+        nextBtn.addEventListener('click', () => {
+            if (step < TOTAL_STEPS - 1) {
+                step++;
+                render();
+            }
+        });
+        resetBtn.addEventListener('click', () => {
+            step = 0;
+            render();
+        });
+
+        // Tabs
+        tabGeo.addEventListener('click', () => {
+            activeTab = 'geo';
+            tabGeo.classList.add('active');
+            tabGraph.classList.remove('active');
+            tabSandbox.classList.remove('active');
+            stepBadge.style.display = 'inline-flex';
+            render();
+        });
+        tabGraph.addEventListener('click', () => {
+            activeTab = 'graph';
+            tabGraph.classList.add('active');
+            tabGeo.classList.remove('active');
+            tabSandbox.classList.remove('active');
+            stepBadge.style.display = 'none';
+            render();
+        });
+        tabSandbox.addEventListener('click', () => {
+            activeTab = 'sandbox';
+            tabSandbox.classList.add('active');
+            tabGeo.classList.remove('active');
+            tabGraph.classList.remove('active');
+            stepBadge.style.display = 'inline-flex';
+            resetSandbox();
+        });
+
+        // Sandbox Actions
+        document.getElementById('sandboxResetBtn').addEventListener('click', () => {
+            resetSandbox();
+        });
+        document.getElementById('sandboxAutoBtn').addEventListener('click', () => {
+            autoArrangeSandbox();
+        });
+        document.getElementById('sandboxCompleteBtn').addEventListener('click', () => {
+            completeSandboxSquare();
+        });
+
+        // Drag & Drop
+        svg.addEventListener('pointerdown', handlePointerDown);
+        svg.addEventListener('pointermove', handlePointerMove);
+        svg.addEventListener('pointerup', handlePointerUp);
+
+        // Presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                a = parseInt(btn.dataset.a);
+                b = parseInt(btn.dataset.b);
+                c = parseInt(btn.dataset.c);
+
+                sliderA.value = a;
+                sliderB.value = b;
+                sliderC.value = c;
+
+                step = 0;
+                if (activeTab === 'sandbox') resetSandbox();
+                render();
+            });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (activeTab === 'geo') {
+                if (e.key === 'ArrowRight' || e.key === ' ') {
+                    if (step < TOTAL_STEPS - 1) {
+                        e.preventDefault();
+                        step++;
+                        render();
+                    }
+                } else if (e.key === 'ArrowLeft') {
+                    if (step > 0) {
+                        e.preventDefault();
+                        step--;
+                        render();
+                    }
+                }
+            }
+        });
+    }
+
+    /* Initialize */
+    bindEvents();
+    render();
+    
+    // Render static formulas on page load
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+
+    // Expose sandbox internal functions for UI testing and verification
+    window.testSandbox = {
+        splitPiece: splitPiece,
+        checkSnapping: checkSnapping,
+        get sandboxPositions() { return sandboxPositions; },
+        get sandboxState() { return sandboxState; },
+        render: render,
+        resetSandbox: resetSandbox,
+        autoArrangeSandbox: autoArrangeSandbox,
+        completeSandboxSquare: completeSandboxSquare
+    };
+})();
+</script>
+</body>
+</html>

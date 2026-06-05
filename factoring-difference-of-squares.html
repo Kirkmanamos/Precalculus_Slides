@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Difference of Squares — Geometric Proof</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+
+            /* Geometry colors */
+            --area-a: #1e40af;
+            --area-a-fill: rgba(30, 64, 175, 0.12);
+            --area-b: #dc2626;
+            --area-b-fill: rgba(220, 38, 38, 0.15);
+            --piece-1: #0891b2;
+            --piece-1-fill: rgba(8, 145, 178, 0.18);
+            --piece-2: #7c3aed;
+            --piece-2-fill: rgba(124, 58, 237, 0.18);
+            --result-fill: rgba(22, 163, 74, 0.12);
+            --result-stroke: #16a34a;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-columns: 280px minmax(520px, 1fr) 310px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        /* ============================================================
+           CONTROLS PANEL (left)
+           ============================================================ */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: auto;
+        }
+
+        .brand {
+            padding: 18px 18px 14px;
+            background: var(--navy);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .section-label {
+            font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin: 4px 0 0; font-size: 1.55rem; line-height: 1.08;
+        }
+
+        .brand p {
+            margin-top: 6px; color: #93c5fd;
+            font-size: 0.82rem; line-height: 1.3;
+        }
+
+        .control-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+        }
+
+        .control-group { display: grid; gap: 10px; }
+
+        .group-title {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+        }
+
+        .slider-row {
+            display: grid; gap: 7px; padding: 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: var(--soft);
+        }
+
+        .slider-head {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 10px;
+        }
+
+        .slider-head label {
+            font-size: 0.9rem; font-weight: 700; color: #334155;
+        }
+
+        output {
+            min-width: 3.8rem; text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800; color: var(--teal);
+        }
+
+        input[type="range"] { width: 100%; accent-color: var(--teal); }
+
+        .preset-grid { display: grid; gap: 8px; }
+
+        .preset-btn {
+            min-height: 40px; padding: 8px 10px; border-radius: 8px;
+            background: var(--soft-teal); color: #0f766e;
+            border: 1px solid #99f6e4; text-align: left; font-weight: 800;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .preset-btn:hover, .preset-btn:focus-visible {
+            outline: 0; transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+        }
+
+        .step-nav {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+
+        .nav-btn {
+            min-height: 44px; border-radius: 8px;
+            background: var(--navy); color: white;
+            font-weight: 800; font-size: 0.9rem;
+            transition: transform 0.18s ease, background 0.18s ease;
+        }
+        .nav-btn:hover { background: var(--blue); transform: translateY(-1px); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; background: #94a3b8; }
+
+        .nav-btn.reset-btn {
+            grid-column: 1 / -1;
+            background: var(--soft-orange); color: var(--orange);
+            border: 1px solid #fcd34d;
+        }
+        .nav-btn.reset-btn:hover { background: #fef3c7; }
+
+        /* ============================================================
+           STAGE PANEL (center)
+           ============================================================ */
+        .stage {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .stage-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .step-badge {
+            display: inline-flex; align-items: center;
+            min-height: 28px; padding: 3px 12px; border-radius: 999px;
+            font-size: 0.78rem; font-weight: 800;
+            color: white; background: var(--teal);
+        }
+
+        .canvas-wrap {
+            position: relative; min-height: 0;
+            padding: 16px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .geo-svg {
+            width: 100%; height: 100%;
+            min-height: 480px; max-height: 620px;
+            display: block; border-radius: 8px;
+            background: white; border: 1px solid #dbeafe;
+        }
+
+        /* SVG text defaults */
+        .geo-svg text {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 700;
+        }
+
+        .dim-label {
+            font-size: 14px; fill: var(--ink);
+        }
+        .area-label {
+            font-size: 16px; font-weight: 800;
+        }
+
+        /* Animated transitions on shapes */
+        .geo-svg rect, .geo-svg polygon, .geo-svg line {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================================
+           INSPECTOR PANEL (right)
+           ============================================================ */
+        .inspector {
+            display: flex; flex-direction: column;
+            overflow: auto; min-height: 0;
+            padding: 16px; gap: 16px;
+        }
+
+        .readout { display: grid; gap: 10px; }
+
+        .readout-title {
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+        }
+
+        .eq-card {
+            padding: 14px; border-radius: 10px;
+            border: 1px solid #e2e8f0; background: var(--soft);
+            text-align: center; min-height: 56px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .eq-card.highlight {
+            background: var(--soft-green); border-color: var(--green);
+        }
+
+        .step-explain {
+            padding: 12px 14px; border-radius: 10px;
+            border-left: 4px solid var(--teal);
+            background: var(--soft-teal);
+            font-size: 0.88rem; line-height: 1.55;
+            color: var(--ink);
+        }
+
+        .step-explain strong { color: var(--navy); }
+
+        .step-explain.green { border-color: var(--green); background: var(--soft-green); }
+        .step-explain.orange { border-color: var(--orange); background: var(--soft-orange); }
+        .step-explain.blue { border-color: var(--blue); background: var(--soft-blue); }
+
+        .verify-grid {
+            display: grid; gap: 8px;
+        }
+
+        .verify-row {
+            display: grid; grid-template-columns: 1fr auto 1fr;
+            gap: 8px; align-items: center;
+            padding: 10px; border-radius: 8px;
+            background: var(--soft); border: 1px solid #e2e8f0;
+        }
+
+        .verify-row .label {
+            font-size: 0.72rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.06em;
+            color: var(--muted); margin-bottom: 2px;
+        }
+
+        .verify-row .value {
+            font-size: 1rem; font-weight: 800; color: var(--navy);
+        }
+
+        .verify-row .equals {
+            font-size: 1.3rem; font-weight: 900; color: var(--green);
+        }
+
+        .check-mark {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--green); color: white;
+            font-size: 1rem; font-weight: 900;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1180px) {
+            body { padding: 12px; }
+            .app {
+                grid-template-columns: minmax(250px, 320px) minmax(480px, 1fr);
+            }
+            .inspector {
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                align-items: start;
+            }
+        }
+
+        @media (max-width: 860px) {
+            body { padding: 0; }
+            .app {
+                min-height: 100svh;
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .panel { border-radius: 0; box-shadow: none; border-left: 0; border-right: 0; }
+            .stage { min-height: 560px; }
+            .inspector { grid-column: auto; grid-template-columns: 1fr; }
+            .geo-svg { min-height: 380px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition: none !important;
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main class="app" aria-label="Difference of Squares Playground">
+
+    <!-- ============================================================
+         LEFT — CONTROLS
+         ============================================================ -->
+    <section class="panel controls" aria-label="Controls">
+        <div class="brand">
+            <div class="section-label">Factoring Playground</div>
+            <h1>Difference of Squares</h1>
+            <p>See why \(a^2 - b^2 = (a+b)(a-b)\) using a geometric area model.</p>
+        </div>
+        <div class="control-scroll">
+            <div class="control-group">
+                <div class="group-title">Parameters</div>
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="sliderA">Value of <em>a</em></label>
+                        <output id="outA">5</output>
+                    </div>
+                    <input id="sliderA" type="range" min="2" max="8" step="1" value="5">
+                </div>
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="sliderB">Value of <em>b</em></label>
+                        <output id="outB">3</output>
+                    </div>
+                    <input id="sliderB" type="range" min="1" max="7" step="1" value="3">
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="group-title">Step Through Proof</div>
+                <div class="step-nav">
+                    <button class="nav-btn" id="prevBtn" disabled>← Back</button>
+                    <button class="nav-btn" id="nextBtn">Next →</button>
+                    <button class="nav-btn reset-btn" id="resetBtn">Reset</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="group-title">Preset Examples</div>
+                <div class="preset-grid">
+                    <button class="preset-btn" data-a="3" data-b="3">\(x^2 - 9 = (x+3)(x-3)\)</button>
+                    <button class="preset-btn" data-a="5" data-b="5">\(x^2 - 25 = (x+5)(x-5)\)</button>
+                    <button class="preset-btn" data-a="4" data-b="3">\(16 - 9 = (4+3)(4-3)\)</button>
+                    <button class="preset-btn" data-a="7" data-b="2">\(49 - 4 = (7+2)(7-2)\)</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         CENTER — GEOMETRIC CANVAS
+         ============================================================ -->
+    <section class="panel stage" aria-label="Geometric proof canvas">
+        <div class="stage-header">
+            <h2>Geometric Model</h2>
+            <span class="step-badge" id="stepBadge">Step 1 of 5</span>
+        </div>
+        <div class="canvas-wrap">
+            <svg class="geo-svg" id="geoSvg" viewBox="0 0 680 520" role="img"
+                 aria-labelledby="geoTitle geoDesc">
+                <title id="geoTitle">Difference of Squares geometric proof</title>
+                <desc id="geoDesc">An animated area model showing how a² − b² rearranges into (a+b)(a−b).</desc>
+            </svg>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         RIGHT — ALGEBRA INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebra inspector">
+        <div class="readout">
+            <div class="readout-title">Current Expression</div>
+            <div class="eq-card" id="eqDisplay"></div>
+        </div>
+
+        <div class="readout">
+            <div class="readout-title">What's Happening</div>
+            <div class="step-explain" id="stepExplain">
+                We start with a large square of side length <strong>a</strong>. Its area is <strong>a²</strong>.
+            </div>
+        </div>
+
+        <div class="readout">
+            <div class="readout-title">Numeric Verification</div>
+            <div class="verify-grid" id="verifyGrid"></div>
+        </div>
+    </aside>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function () {
+    /* ============================================================
+       STATE
+       ============================================================ */
+    let a = 5, b = 3, step = 0;
+    const TOTAL_STEPS = 5;
+    const SVG_W = 680, SVG_H = 520;
+    const MARGIN = 40;
+    const MAX_SIDE = SVG_W - 2 * MARGIN - 80; // px budget for the largest square
+
+    const svg = document.getElementById('geoSvg');
+    const ns = 'http://www.w3.org/2000/svg';
+
+    /* DOM refs */
+    const sliderA = document.getElementById('sliderA');
+    const sliderB = document.getElementById('sliderB');
+    const outA = document.getElementById('outA');
+    const outB = document.getElementById('outB');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const stepBadge = document.getElementById('stepBadge');
+    const eqDisplay = document.getElementById('eqDisplay');
+    const stepExplain = document.getElementById('stepExplain');
+    const verifyGrid = document.getElementById('verifyGrid');
+
+    /* ============================================================
+       SCALE HELPER — convert math units to SVG px
+       ============================================================ */
+    function scale(mathVal) {
+        return (mathVal / 8) * MAX_SIDE; // 8 is max slider value
+    }
+
+    /* ============================================================
+       SVG HELPERS
+       ============================================================ */
+    function clearSvg() { svg.innerHTML = ''; }
+
+    function rect(x, y, w, h, fill, stroke, strokeW) {
+        const r = document.createElementNS(ns, 'rect');
+        r.setAttribute('x', x); r.setAttribute('y', y);
+        r.setAttribute('width', Math.max(0, w)); r.setAttribute('height', Math.max(0, h));
+        r.setAttribute('fill', fill || 'none');
+        r.setAttribute('stroke', stroke || '#334155');
+        r.setAttribute('stroke-width', strokeW || 2);
+        r.setAttribute('rx', 3);
+        svg.appendChild(r);
+        return r;
+    }
+
+    function dimLine(x1, y1, x2, y2, color) {
+        const g = document.createElementNS(ns, 'g');
+        // line
+        const l = document.createElementNS(ns, 'line');
+        l.setAttribute('x1', x1); l.setAttribute('y1', y1);
+        l.setAttribute('x2', x2); l.setAttribute('y2', y2);
+        l.setAttribute('stroke', color || '#64748b');
+        l.setAttribute('stroke-width', 1.5);
+        l.setAttribute('stroke-dasharray', '4 3');
+        g.appendChild(l);
+        // end ticks
+        const isHoriz = Math.abs(y1 - y2) < 1;
+        if (isHoriz) {
+            [x1, x2].forEach(x => {
+                const t = document.createElementNS(ns, 'line');
+                t.setAttribute('x1', x); t.setAttribute('x2', x);
+                t.setAttribute('y1', y1 - 5); t.setAttribute('y2', y1 + 5);
+                t.setAttribute('stroke', color || '#64748b');
+                t.setAttribute('stroke-width', 1.5);
+                g.appendChild(t);
+            });
+        } else {
+            [y1, y2].forEach(y => {
+                const t = document.createElementNS(ns, 'line');
+                t.setAttribute('x1', x1 - 5); t.setAttribute('x2', x1 + 5);
+                t.setAttribute('y1', y); t.setAttribute('y2', y);
+                t.setAttribute('stroke', color || '#64748b');
+                t.setAttribute('stroke-width', 1.5);
+                g.appendChild(t);
+            });
+        }
+        svg.appendChild(g);
+        return g;
+    }
+
+    function text(x, y, content, opts) {
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('x', x); t.setAttribute('y', y);
+        t.setAttribute('text-anchor', opts?.anchor || 'middle');
+        t.setAttribute('dominant-baseline', 'middle');
+        t.setAttribute('font-family', "'Source Sans 3', sans-serif");
+        t.setAttribute('font-size', opts?.size || 14);
+        t.setAttribute('font-weight', opts?.weight || 700);
+        t.setAttribute('fill', opts?.color || '#1e293b');
+        t.textContent = content;
+        svg.appendChild(t);
+        return t;
+    }
+
+    function katexInSvg(x, y, tex, opts) {
+        const fo = document.createElementNS(ns, 'foreignObject');
+        const w = opts?.width || 120;
+        const h = opts?.height || 40;
+        fo.setAttribute('x', x - w / 2);
+        fo.setAttribute('y', y - h / 2);
+        fo.setAttribute('width', w);
+        fo.setAttribute('height', h);
+        const div = document.createElement('div');
+        div.style.cssText = `display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:${opts?.fontSize || '15px'};`;
+        katex.render(tex, div, { throwOnError: false, displayMode: false });
+        fo.appendChild(div);
+        svg.appendChild(fo);
+        return fo;
+    }
+
+    /* ============================================================
+       STEP DESCRIPTIONS & EQUATIONS
+       ============================================================ */
+    function getStepInfo(s) {
+        const a2 = a * a, b2 = b * b, diff = a2 - b2;
+        const apb = a + b, amb = a - b;
+        switch (s) {
+            case 0: return {
+                badge: 'Step 1 of 5',
+                eq: `a^2 = ${a}^2 = ${a2}`,
+                explain: `We start with a large square with side length <strong>a = ${a}</strong>. Its area is <strong>a² = ${a2}</strong>.`,
+                explainClass: '',
+            };
+            case 1: return {
+                badge: 'Step 2 of 5',
+                eq: `a^2 - b^2 = ${a2} - ${b2} = ${diff}`,
+                explain: `We remove a smaller square of side <strong>b = ${b}</strong> from the corner. The removed area is <strong>b² = ${b2}</strong>. The remaining L-shaped region has area <strong>a² − b² = ${diff}</strong>.`,
+                explainClass: 'orange',
+            };
+            case 2: return {
+                badge: 'Step 3 of 5',
+                eq: `a^2 - b^2 = ${diff}`,
+                explain: `We cut the L-shape into <strong>two rectangles</strong> along the dashed line. The top piece has dimensions <strong>a × (a − b) = ${a} × ${amb}</strong>. The bottom piece has dimensions <strong>b × (a − b) = ${b} × ${amb}</strong>.`,
+                explainClass: 'blue',
+            };
+            case 3: return {
+                badge: 'Step 4 of 5',
+                eq: `(a+b)(a-b) = ${apb} \\times ${amb} = ${diff}`,
+                explain: `We rearrange the two pieces side by side to form a single rectangle. Its width is <strong>a + b = ${apb}</strong> and its height is <strong>a − b = ${amb}</strong>.`,
+                explainClass: 'green',
+            };
+            case 4: return {
+                badge: 'Step 5 of 5',
+                eq: `a^2 - b^2 = (a+b)(a-b)`,
+                explain: `<strong>The areas are equal!</strong> The L-shaped region (a² − b²) rearranged into a rectangle (a+b)(a−b) without adding or removing any area. This proves the identity for <em>all</em> values of a and b.`,
+                explainClass: 'green',
+            };
+        }
+    }
+
+    /* ============================================================
+       DRAW FUNCTIONS — one per step
+       ============================================================ */
+    function drawStep0() {
+        // Large a×a square
+        const sa = scale(a);
+        const ox = MARGIN + 20, oy = MARGIN + 20;
+        rect(ox, oy, sa, sa, 'var(--area-a-fill)', 'var(--area-a)', 2.5);
+
+        // Dimension labels
+        dimLine(ox, oy - 18, ox + sa, oy - 18, 'var(--area-a)');
+        katexInSvg(ox + sa / 2, oy - 32, `a = ${a}`, { fontSize: '14px', width: 80 });
+
+        dimLine(ox + sa + 18, oy, ox + sa + 18, oy + sa, 'var(--area-a)');
+        katexInSvg(ox + sa + 50, oy + sa / 2, `a = ${a}`, { fontSize: '14px', width: 80 });
+
+        // Area label centered
+        katexInSvg(ox + sa / 2, oy + sa / 2, `a^2 = ${a * a}`, { fontSize: '20px', width: 140 });
+    }
+
+    function drawStep1() {
+        const sa = scale(a), sb = scale(b);
+        const ox = MARGIN + 20, oy = MARGIN + 20;
+
+        // L-shaped remainder (draw as the full square minus the b² corner)
+        // Draw the full square faintly
+        rect(ox, oy, sa, sa, 'var(--area-a-fill)', 'var(--area-a)', 2.5);
+
+        // Draw the b² square in the bottom-right corner
+        const bx = ox + sa - sb, by = oy + sa - sb;
+        rect(bx, by, sb, sb, 'var(--area-b-fill)', 'var(--area-b)', 2.5);
+
+        // b dimension labels
+        dimLine(bx, oy + sa + 18, bx + sb, oy + sa + 18, 'var(--area-b)');
+        katexInSvg(bx + sb / 2, oy + sa + 32, `b = ${b}`, { fontSize: '13px', width: 70 });
+
+        dimLine(ox + sa + 18, by, ox + sa + 18, by + sb, 'var(--area-b)');
+        katexInSvg(ox + sa + 50, by + sb / 2, `b = ${b}`, { fontSize: '13px', width: 70 });
+
+        // a dimension labels
+        dimLine(ox, oy - 18, ox + sa, oy - 18, 'var(--area-a)');
+        katexInSvg(ox + sa / 2, oy - 32, `a = ${a}`, { fontSize: '13px', width: 70 });
+
+        dimLine(ox - 18, oy, ox - 18, oy + sa, 'var(--area-a)');
+        katexInSvg(ox - 50, oy + sa / 2, `a = ${a}`, { fontSize: '13px', width: 70 });
+
+        // Area labels
+        katexInSvg(ox + (sa - sb) / 2, oy + sa / 3, `a^2 - b^2`, { fontSize: '18px', width: 120 });
+        katexInSvg(bx + sb / 2, by + sb / 2, `b^2`, { fontSize: '16px', width: 60 });
+
+        // Strikethrough on b² square
+        const crossLine = document.createElementNS(ns, 'line');
+        crossLine.setAttribute('x1', bx + 4); crossLine.setAttribute('y1', by + 4);
+        crossLine.setAttribute('x2', bx + sb - 4); crossLine.setAttribute('y2', by + sb - 4);
+        crossLine.setAttribute('stroke', 'var(--area-b)'); crossLine.setAttribute('stroke-width', 2);
+        svg.appendChild(crossLine);
+        const crossLine2 = document.createElementNS(ns, 'line');
+        crossLine2.setAttribute('x1', bx + sb - 4); crossLine2.setAttribute('y1', by + 4);
+        crossLine2.setAttribute('x2', bx + 4); crossLine2.setAttribute('y2', by + sb - 4);
+        crossLine2.setAttribute('stroke', 'var(--area-b)'); crossLine2.setAttribute('stroke-width', 2);
+        svg.appendChild(crossLine2);
+    }
+
+    function drawStep2() {
+        const sa = scale(a), sb = scale(b), samb = sa - sb;
+        const ox = MARGIN + 20, oy = MARGIN + 20;
+
+        // Top rectangle: a × (a-b)
+        rect(ox, oy, sa, samb, 'var(--piece-1-fill)', 'var(--piece-1)', 2.5);
+
+        // Bottom-left rectangle: b × (a-b) — positioned below, shifted left
+        rect(ox, oy + samb, samb, sb, 'var(--piece-2-fill)', 'var(--piece-2)', 2.5);
+
+        // The removed b² square (ghosted)
+        const bx = ox + samb, by = oy + samb;
+        rect(bx, by, sb, sb, 'rgba(220,38,38,0.05)', '#e2e8f0', 1.5);
+        katexInSvg(bx + sb / 2, by + sb / 2, `b^2`, { fontSize: '12px', width: 50 });
+        text(bx + sb / 2, by + sb / 2 + 14, '(removed)', { size: 10, color: '#94a3b8' });
+
+        // Cut line (dashed)
+        const cutLine = document.createElementNS(ns, 'line');
+        cutLine.setAttribute('x1', ox); cutLine.setAttribute('y1', oy + samb);
+        cutLine.setAttribute('x2', ox + samb); cutLine.setAttribute('y2', oy + samb);
+        cutLine.setAttribute('stroke', '#f59e0b');
+        cutLine.setAttribute('stroke-width', 3);
+        cutLine.setAttribute('stroke-dasharray', '8 5');
+        svg.appendChild(cutLine);
+
+        // Scissors icon at cut
+        text(ox + samb / 2, oy + samb - 10, '✂', { size: 18, color: '#f59e0b' });
+
+        // Dimension labels — top piece
+        dimLine(ox, oy - 18, ox + sa, oy - 18, 'var(--piece-1)');
+        katexInSvg(ox + sa / 2, oy - 32, `a = ${a}`, { fontSize: '13px', width: 70 });
+
+        dimLine(ox - 18, oy, ox - 18, oy + samb, 'var(--piece-1)');
+        katexInSvg(ox - 55, oy + samb / 2, `a\\!-\\!b = ${a - b}`, { fontSize: '12px', width: 90 });
+
+        // Dimension labels — bottom piece
+        dimLine(ox, oy + samb + sb + 18, ox + samb, oy + samb + sb + 18, 'var(--piece-2)');
+        katexInSvg(ox + samb / 2, oy + samb + sb + 32, `a\\!-\\!b = ${a - b}`, { fontSize: '12px', width: 90 });
+
+        dimLine(ox + samb + sb + 18, oy + samb, ox + samb + sb + 18, oy + samb + sb, 'var(--piece-2)');
+        katexInSvg(ox + samb + sb + 55, oy + samb + sb / 2, `b = ${b}`, { fontSize: '12px', width: 60 });
+
+        // Area labels in each piece
+        katexInSvg(ox + sa / 2, oy + samb / 2, `a(a\\!-\\!b) = ${a * (a - b)}`, { fontSize: '15px', width: 150 });
+        katexInSvg(ox + samb / 2, oy + samb + sb / 2, `b(a\\!-\\!b) = ${b * (a - b)}`, { fontSize: '15px', width: 150 });
+    }
+
+    function drawStep3() {
+        const sa = scale(a), sb = scale(b), samb = sa - sb;
+        const apb = a + b, amb = a - b;
+        const totalW = sa + sb; // (a+b) in px... wait, scale both
+        const sApB = scale(apb), sAmB = scale(amb);
+
+        // Center the result rectangle
+        const ox = (SVG_W - sApB) / 2;
+        const oy = (SVG_H - sAmB) / 2;
+
+        // Draw the combined rectangle as two colored halves
+        // Left half: the original a × (a-b) piece
+        rect(ox, oy, sa, sAmB, 'var(--piece-1-fill)', 'var(--piece-1)', 2.5);
+
+        // Right half: the b × (a-b) piece, now rotated to sit beside
+        rect(ox + sa, oy, sb, sAmB, 'var(--piece-2-fill)', 'var(--piece-2)', 2.5);
+
+        // Outer rectangle border
+        rect(ox, oy, sApB, sAmB, 'none', 'var(--result-stroke)', 3);
+
+        // Dimension labels
+        dimLine(ox, oy - 22, ox + sApB, oy - 22, 'var(--result-stroke)');
+        katexInSvg(ox + sApB / 2, oy - 38, `a + b = ${apb}`, { fontSize: '15px', width: 110 });
+
+        dimLine(ox - 22, oy, ox - 22, oy + sAmB, 'var(--result-stroke)');
+        katexInSvg(ox - 65, oy + sAmB / 2, `a - b = ${amb}`, { fontSize: '15px', width: 110 });
+
+        // Piece labels inside
+        katexInSvg(ox + sa / 2, oy + sAmB / 2 - 10, `a(a\\!-\\!b)`, { fontSize: '13px', width: 90 });
+        text(ox + sa / 2, oy + sAmB / 2 + 12, `= ${a * amb}`, { size: 13, color: 'var(--piece-1)' });
+
+        katexInSvg(ox + sa + sb / 2, oy + sAmB / 2 - 10, `b(a\\!-\\!b)`, { fontSize: '13px', width: 90 });
+        text(ox + sa + sb / 2, oy + sAmB / 2 + 12, `= ${b * amb}`, { size: 13, color: 'var(--piece-2)' });
+
+        // Total area
+        katexInSvg(ox + sApB / 2, oy + sAmB + 30, `\\text{Area} = (a+b)(a-b) = ${apb} \\times ${amb} = ${apb * amb}`, { fontSize: '16px', width: 350, height: 30 });
+    }
+
+    function drawStep4() {
+        // Final summary: show both representations side by side
+        const sc = 0.48; // scale factor to fit both diagrams
+        const sa = scale(a) * sc, sb = scale(b) * sc;
+        const samb = sa - sb;
+        const sApB = scale(a + b) * sc, sAmB = scale(a - b) * sc;
+
+        // Big identity at top
+        katexInSvg(SVG_W / 2, 30, `a^2 - b^2 = (a+b)(a-b)`, { fontSize: '22px', width: 300, height: 40 });
+
+        // LEFT: L-shape
+        const lx = 60, ly = 100;
+        // a² square (faint)
+        rect(lx, ly, sa, sa, 'var(--area-a-fill)', 'var(--area-a)', 1.5);
+        // b² removed
+        rect(lx + sa - sb, ly + sa - sb, sb, sb, 'var(--area-b-fill)', 'var(--area-b)', 1.5);
+        // cross
+        const c1 = document.createElementNS(ns, 'line');
+        c1.setAttribute('x1', lx + sa - sb + 2); c1.setAttribute('y1', ly + sa - sb + 2);
+        c1.setAttribute('x2', lx + sa - 2); c1.setAttribute('y2', ly + sa - 2);
+        c1.setAttribute('stroke', 'var(--area-b)'); c1.setAttribute('stroke-width', 1.5);
+        svg.appendChild(c1);
+        katexInSvg(lx + sa / 2, ly - 16, `a^2 - b^2 = ${a * a - b * b}`, { fontSize: '14px', width: 160 });
+
+        // EQUALS sign — centered between the two diagrams
+        const eqX = SVG_W / 2;
+        katexInSvg(eqX, ly + sa / 2, `=`, { fontSize: '36px', width: 40, height: 50 });
+
+        // RIGHT: rectangle — positioned with enough margin for dimension labels
+        const rx = eqX + 40, ry = ly + (sa - sAmB) / 2;
+        rect(rx, ry, sa, sAmB, 'var(--piece-1-fill)', 'var(--piece-1)', 1.5);
+        rect(rx + sa, ry, sb, sAmB, 'var(--piece-2-fill)', 'var(--piece-2)', 1.5);
+        rect(rx, ry, sApB, sAmB, 'none', 'var(--result-stroke)', 2.5);
+
+        // Width dimension (top)
+        dimLine(rx, ry - 18, rx + sApB, ry - 18, 'var(--result-stroke)');
+        katexInSvg(rx + sApB / 2, ry - 32, `a+b = ${a + b}`, { fontSize: '13px', width: 80 });
+
+        // Height dimension (left of rectangle, not right)
+        dimLine(rx - 18, ry, rx - 18, ry + sAmB, 'var(--result-stroke)');
+        katexInSvg(rx - 55, ry + sAmB / 2, `a-b = ${a - b}`, { fontSize: '13px', width: 80 });
+
+        katexInSvg(rx + sApB / 2, ry + sAmB + 22, `(a+b)(a-b) = ${(a + b) * (a - b)}`, { fontSize: '14px', width: 200 });
+
+        // Check mark at bottom center
+        katexInSvg(SVG_W / 2, SVG_H - 30, `\\textcolor{#16a34a}{\\checkmark\\ \\text{Proven!}}`, { fontSize: '18px', width: 140, height: 30 });
+    }
+
+    const drawFns = [drawStep0, drawStep1, drawStep2, drawStep3, drawStep4];
+
+    /* ============================================================
+       RENDER
+       ============================================================ */
+    function render() {
+        clearSvg();
+        drawFns[step]();
+
+        const info = getStepInfo(step);
+        stepBadge.textContent = info.badge;
+
+        // Render equation with KaTeX
+        katex.render(info.eq, eqDisplay, { throwOnError: false, displayMode: true });
+
+        // Update explanation
+        stepExplain.innerHTML = info.explain;
+        stepExplain.className = 'step-explain' + (info.explainClass ? ' ' + info.explainClass : '');
+
+        // Update verification
+        const a2 = a * a, b2 = b * b, diff = a2 - b2, apb = a + b, amb = a - b;
+        verifyGrid.innerHTML = `
+            <div class="verify-row">
+                <div><div class="label">Expression</div><div class="value">${a}² − ${b}² = ${diff}</div></div>
+                <div class="equals">=</div>
+                <div><div class="label">Factored</div><div class="value">(${apb})(${amb}) = ${apb * amb}</div></div>
+            </div>
+        `;
+        if (diff === apb * amb) {
+            verifyGrid.innerHTML += `
+                <div style="text-align:center;padding:6px;">
+                    <span class="check-mark">✓</span>
+                    <span style="margin-left:8px;font-weight:800;color:var(--green);font-size:0.9rem;">Areas match!</span>
+                </div>
+            `;
+        }
+
+        // Update equation card styling
+        eqDisplay.className = step === 4 ? 'eq-card highlight' : 'eq-card';
+
+        // Update buttons
+        prevBtn.disabled = step === 0;
+        nextBtn.disabled = step === TOTAL_STEPS - 1;
+    }
+
+    /* ============================================================
+       EVENT HANDLERS
+       ============================================================ */
+    sliderA.addEventListener('input', () => {
+        a = parseInt(sliderA.value);
+        outA.textContent = a;
+        // Keep b < a
+        if (b >= a) { b = a - 1; sliderB.value = b; outB.textContent = b; }
+        sliderB.max = a - 1;
+        render();
+    });
+
+    sliderB.addEventListener('input', () => {
+        b = parseInt(sliderB.value);
+        outB.textContent = b;
+        render();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (step > 0) { step--; render(); }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (step < TOTAL_STEPS - 1) { step++; render(); }
+    });
+
+    resetBtn.addEventListener('click', () => {
+        step = 0;
+        a = 5; b = 3;
+        sliderA.value = a; sliderB.value = b;
+        outA.textContent = a; outB.textContent = b;
+        sliderB.max = a - 1;
+        render();
+    });
+
+    // Preset buttons
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            a = parseInt(btn.dataset.a);
+            b = parseInt(btn.dataset.b);
+            sliderA.value = a; sliderB.value = b;
+            outA.textContent = a; outB.textContent = b;
+            sliderB.max = a - 1;
+            step = 4; // Jump to final proof
+            render();
+        });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' && step < TOTAL_STEPS - 1) { step++; render(); }
+        else if (e.key === 'ArrowLeft' && step > 0) { step--; render(); }
+    });
+
+    /* ============================================================
+       INIT
+       ============================================================ */
+    sliderB.max = a - 1;
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\(', right: '\\)', display: false },
+            { left: '\\[', right: '\\]', display: true }
+        ],
+        throwOnError: false
+    });
+    render();
+})();
+</script>
+</body>
+</html>
