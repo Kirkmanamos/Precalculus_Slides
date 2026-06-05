@@ -13,7 +13,8 @@ const { title = "Kirk Amos's Precalculus Course", contained = true } = Astro.pro
 const nav = [
   { label: 'Home', href: site() },
   ...courses.map((c) => ({ label: c.nav ?? c.name, href: site(`${c.id}/`) })),
-  { label: 'Upcoming', href: site('upcoming/') },
+  { label: 'Playgrounds', href: site('playgrounds/') },
+  { label: 'Games', href: site('games/') },
   { label: 'Resources', href: site('resources/') },
 ];
 

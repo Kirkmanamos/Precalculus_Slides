@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Review games live in a separate repo (Kirkmanamos/precalculus_games), deployed
+// to its own GitHub Pages site. If that ever moves, change GAMES_BASE only.
+const GAMES_BASE = 'https://kirkmanamos.github.io/precalculus_games';
+
+const games: { title: string; unit: string; path: string }[] = [
+  { title: 'Unit Circle Practice', unit: 'Unit 4', path: 'unit_circle/Unit_Circle_Quiz.html' },
+  { title: 'Trig Jeopardy', unit: 'Unit 4', path: 'unit4_trig_jeopardy/Trig_Jeopardy.html' },
+  { title: 'Trig Jeopardy (Honors)', unit: 'Unit 4 · Honors', path: 'unit4_trig_jeopardy_honors/Trig_Jeopardy_Honors.html' },
+  { title: 'Grudgeball', unit: 'Unit 5', path: 'unit5_grudgeball/Grudgeball.html' },
+  { title: 'Trashketball', unit: 'Unit 5', path: 'unit5_trashketball/Trashketball.html' },
+  { title: 'Trashketball (6.1–6.4)', unit: 'Unit 6', path: 'unit6_trashketball/dist/index.html' },
+  { title: 'Trashketball (6.1–6.3)', unit: 'Unit 6', path: 'unit6_trashketball_6_1_6_3/dist/index.html' },
+  { title: 'Trig Identities', unit: 'Unit 6', path: 'trig-identities.html' },
+  { title: 'Function Transformations', unit: 'Unit 1', path: 'transformations.html' },
+];
+
+const url = (p: string) => `${GAMES_BASE}/${p.replace(/^\//, '')}`;
+---
+
+<BaseLayout title="Review Games">
+  <h1 class="text-3xl font-bold text-slate-900">Review Games</h1>
+  <p class="mt-2 text-slate-600">
+    Whole-class review games — Jeopardy, Trashketball, Grudgeball, and more. Each opens in a new tab.
+    Or visit the <a href={`${GAMES_BASE}/`} target="_blank" rel="noopener" class="font-medium text-indigo-600 hover:underline">games hub</a>.
+  </p>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      games.map((g) => (
+        <a
+          href={url(g.path)}
+          target="_blank"
+          rel="noopener"
+          class="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition hover:border-indigo-300 hover:shadow"
+        >
+          <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">{g.unit}</p>
+          <h3 class="mt-1 font-semibold text-indigo-600">{g.title}</h3>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>

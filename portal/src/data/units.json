@@ -418,49 +418,49 @@
       },
       {
         "number": "6.3",
-        "title": "Solving Trig Equations",
+        "title": "Sum and Difference Identities",
         "resources": [
           {
             "type": "slides",
             "title": "Slides 6.3",
-            "href": "6.3-solving-trig-equations.html"
-          },
-          {
-            "type": "slides",
-            "title": "Amplitude-Phase Form",
-            "href": "6.3-amplitude-phase-form.html"
+            "href": "6.3-sum-and-difference.html"
           },
           {
             "type": "reference",
-            "title": "6.1–6.3 Review",
+            "title": "Identities Review (first half of unit)",
             "href": "6.1-6.3-review.html"
           },
           {
             "type": "activity",
-            "title": "6.1–6.3 Stations Activity (printable)",
+            "title": "Identities Stations Activity (printable)",
             "href": "6.1-6.3-stations-activity.html"
+          },
+          {
+            "type": "slides",
+            "title": "Amplitude-Phase Form (supplement)",
+            "href": "6.3-amplitude-phase-form.html"
           }
         ]
       },
       {
         "number": "6.4",
-        "title": "Sum and Difference Identities",
+        "title": "Double & Half Angle Identities",
         "resources": [
           {
             "type": "slides",
             "title": "Slides 6.4",
-            "href": "6.4-sum-and-difference.html"
+            "href": "6.4-double-half-angle.html"
           }
         ]
       },
       {
         "number": "6.5",
-        "title": "Double & Half Angle Identities",
+        "title": "Solving Trig Equations",
         "resources": [
           {
             "type": "slides",
             "title": "Slides 6.5",
-            "href": "6.5-double-half-angle.html"
+            "href": "6.5-solving-trig-equations.html"
           }
         ]
       }

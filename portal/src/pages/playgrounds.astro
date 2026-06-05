@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/url';
+
+// Interactive concept explorers. These are standalone HTML pages served from the
+// slides root, so they use the bare filename (the base path is added by site()).
+const playgrounds = [
+  {
+    title: 'Transformations Playground',
+    unit: 'Unit 1 · 1.5',
+    file: '1.5-transformations-playground.html',
+    desc: 'Drag sliders for a, h, and k to see how parent functions shift, stretch, and reflect.',
+  },
+  {
+    title: 'Operations Playground',
+    unit: 'Unit 1 · 1.6',
+    file: '1.6-operations-playground.html',
+    desc: 'Explore sums, differences, products, quotients, and compositions of two functions.',
+  },
+  {
+    title: 'Polynomial Builder',
+    unit: 'Unit 2',
+    file: 'polynomial-builder-playground.html',
+    desc: 'Build a polynomial from its roots and multiplicities and watch the graph respond.',
+  },
+];
+---
+
+<BaseLayout title="Playgrounds">
+  <h1 class="text-3xl font-bold text-slate-900">Playgrounds</h1>
+  <p class="mt-2 text-slate-600">Interactive explorers for poking at the ideas directly. Each opens in a new tab.</p>
+
+  <div class="mt-8 grid gap-4 sm:grid-cols-2">
+    {
+      playgrounds.map((p) => (
+        <a
+          href={site(p.file)}
+          target="_blank"
+          rel="noopener"
+          class="rounded-xl border border-slate-200 bg-white px-5 py-4 shadow-sm transition hover:border-indigo-300 hover:shadow"
+        >
+          <p class="text-xs font-semibold tracking-wide text-slate-400 uppercase">{p.unit}</p>
+          <h3 class="mt-1 font-semibold text-indigo-600">{p.title}</h3>
+          <p class="mt-1 text-sm text-slate-600">{p.desc}</p>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>

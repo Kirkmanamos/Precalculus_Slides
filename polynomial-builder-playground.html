@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2.2 Polynomial Builder Playground</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --soft-purple: #f5f3ff;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            min-height: 100%;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            padding: 22px;
+            overflow-x: hidden;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100vh - 44px);
+            display: grid;
+            grid-template-columns: 320px minmax(560px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* LEFT PANEL: Controls */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 20px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin-top: 4px;
+            font-size: 1.45rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .control-section {
+            padding: 18px;
+            border-bottom: 1px solid #e2e8f0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .group-title {
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chip-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .chip-btn {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 4px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .chip-btn:hover {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+            transform: translateY(-1px);
+        }
+
+        .active-factors {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 120px;
+            background: var(--soft);
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .factor-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .factor-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--navy);
+        }
+
+        .factor-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .exponent-badge {
+            background: var(--soft-purple);
+            color: var(--purple);
+            border: 1px solid #ddd6fe;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .factor-action-btn {
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .factor-action-btn:hover {
+            background: #cbd5e1;
+            border-color: #94a3b8;
+        }
+
+        .factor-action-btn.delete {
+            color: var(--red);
+            border-color: #fecaca;
+            background: #fff5f5;
+        }
+
+        .factor-action-btn.delete:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        .slider-container {
+            display: grid;
+            gap: 6px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--navy);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* CENTER PANEL: Canvas area */
+        .stage {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            position: relative;
+        }
+
+        .stage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stage-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .canvas-container {
+            flex: 1;
+            position: relative;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 100%;
+            min-height: 480px;
+            user-select: none;
+        }
+
+        /* RIGHT PANEL: Inspector */
+        .inspector {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 18px;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .readout-card.highlight {
+            border-left: 4px solid var(--purple);
+            background: var(--soft-purple);
+        }
+
+        .readout-card-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .equation-box {
+            font-size: 1.05rem;
+            text-align: center;
+            padding: 8px 0;
+            overflow-x: auto;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inspector-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e2e8f0;
+            font-size: 0.88rem;
+        }
+
+        .inspector-row:last-child {
+            border-bottom: none;
+        }
+
+        .inspector-row .label {
+            font-weight: 600;
+            color: var(--muted);
+        }
+
+        .inspector-row .val {
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        /* CHALLENGE MODE */
+        .challenge-container {
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .challenge-header {
+            background: var(--navy);
+            color: white;
+            padding: 10px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .challenge-body {
+            padding: 14px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .challenge-status {
+            font-size: 0.88rem;
+            font-weight: 600;
+            line-height: 1.4;
+            text-align: center;
+            background: var(--soft);
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .challenge-status.success {
+            background: var(--soft-green);
+            color: var(--green);
+            border-color: #bbf7d0;
+        }
+
+        .challenge-feedback {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-align: center;
+            min-height: 18px;
+        }
+
+        .challenge-footer {
+            padding: 10px 14px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--ink);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* SVG styles */
+        .axis-line {
+            stroke: #94a3b8;
+            stroke-width: 1.5;
+        }
+
+        .grid-line {
+            stroke: #e2e8f0;
+            stroke-width: 0.75;
+        }
+
+        .function-curve {
+            fill: none;
+            stroke: var(--navy);
+            stroke-width: 3.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .target-curve {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2.5;
+            stroke-dasharray: 6 4;
+            opacity: 0.6;
+        }
+
+        .zero-marker-g {
+            cursor: help;
+        }
+
+        .zero-marker {
+            stroke: white;
+            stroke-width: 2;
+            r: 7.5;
+        }
+
+        .zero-marker.mult1 { fill: var(--green); }
+        .zero-marker.mult2 { fill: var(--blue); }
+        .zero-marker.mult3 { fill: var(--purple); }
+
+        .end-behavior-arrow {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            opacity: 0.75;
+        }
+
+        .end-behavior-arrow.active {
+            stroke: var(--orange);
+        }
+
+        .axis-label {
+            font-size: 11px;
+            fill: var(--muted);
+            font-family: monospace;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        @media (max-width: 1200px) {
+            .app {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            body {
+                overflow-y: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <!-- ============================================================
+         LEFT PANEL — CONTROLS
+         ============================================================ -->
+    <aside class="panel controls" aria-label="Builder Controls">
+        <div class="brand">
+            <span class="section-label">Section 2.2</span>
+            <h1>Polynomial Builder</h1>
+        </div>
+
+        <!-- Factor Palette -->
+        <section class="control-section">
+            <h2 class="group-title">Factor Palette <span style="font-size: 0.65rem; color: var(--muted); font-weight: normal;">Click to add factor</span></h2>
+            <div class="chip-grid">
+                <button class="chip-btn" data-val="3">x + 3</button>
+                <button class="chip-btn" data-val="2">x + 2</button>
+                <button class="chip-btn" data-val="1">x + 1</button>
+                <button class="chip-btn" data-val="0">x</button>
+                <button class="chip-btn" data-val="-1">x - 1</button>
+                <button class="chip-btn" data-val="-2">x - 2</button>
+                <button class="chip-btn" data-val="-3">x - 3</button>
+            </div>
+        </section>
+
+        <!-- Active Factors List -->
+        <section class="control-section" style="flex: 1; min-height: 200px; display: flex; flex-direction: column;">
+            <h2 class="group-title">Active Factors</h2>
+            <div class="active-factors" id="activeFactorsBox">
+                <!-- Factors rendered dynamically -->
+            </div>
+        </section>
+
+        <!-- Leading Coefficient Slider -->
+        <section class="control-section">
+            <h2 class="group-title">Leading Coefficient (a)</h2>
+            <div class="slider-container">
+                <div class="slider-label">
+                    <span>Value a</span>
+                    <span id="coeffVal">1.0</span>
+                </div>
+                <input type="range" class="slider" id="coeffSlider" min="-2.0" max="2.0" step="0.1" value="1.0">
+            </div>
+        </section>
+    </aside>
+
+    <!-- ============================================================
+         CENTER PANEL — GRAPH CANVAS
+         ============================================================ -->
+    <main class="panel stage" aria-label="Visual Graph Display">
+        <header class="stage-header">
+            <h2 class="stage-title">Function Graph</h2>
+            <span id="canvasOverlayText" style="font-size: 0.8rem; color: var(--muted); font-weight: 600;">Build a polynomial on the left</span>
+        </header>
+
+        <div class="canvas-container" id="canvasWrap">
+            <svg class="graph-svg" id="graphSvg" viewBox="0 0 680 520">
+                <defs>
+                    <!-- Arrows for End Behavior -->
+                    <marker id="arrow-end" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--orange)"/>
+                    </marker>
+                </defs>
+
+                <!-- Grid and curves -->
+                <g id="gridGroup"></g>
+                <path class="target-curve" id="targetCurve" d="" display="none"></path>
+                <path class="function-curve" id="funcCurve" d=""></path>
+
+                <!-- Zeros behavior indicators -->
+                <g id="zerosGroup"></g>
+
+                <!-- Animated End Behavior Arrows -->
+                <path class="end-behavior-arrow active" id="leftArrow" d="" marker-end="url(#arrow-end)"></path>
+                <path class="end-behavior-arrow active" id="rightArrow" d="" marker-end="url(#arrow-end)"></path>
+            </svg>
+        </div>
+    </main>
+
+    <!-- ============================================================
+         RIGHT PANEL — INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Algebraic readout">
+        <!-- Equation Card -->
+        <div class="readout-card highlight">
+            <div class="readout-card-title">Factored Form</div>
+            <div class="equation-box" id="equationReadout"></div>
+        </div>
+
+        <!-- Polynomial properties analysis -->
+        <div class="readout-card">
+            <div class="readout-card-title">Polynomial Analysis</div>
+            <div class="inspector-row">
+                <span class="label">Degree (n)</span>
+                <span class="val" id="readoutDegree">0 (Even)</span>
+            </div>
+            <div class="inspector-row">
+                <span class="label">Leading Term</span>
+                <span class="val" id="readoutLeading">0</span>
+            </div>
+            <div class="inspector-row">
+                <span class="label">y-Intercept</span>
+                <span class="val" id="readoutYInt">y = 0</span>
+            </div>
+            <div class="inspector-row">
+                <span class="label">Turning Points</span>
+                <span class="val" id="readoutExtrema">0 (Max: 0)</span>
+            </div>
+        </div>
+
+        <!-- End Behavior Limits -->
+        <div class="readout-card">
+            <div class="readout-card-title">End Behavior Limits</div>
+            <div class="inspector-row" style="padding: 10px 0;">
+                <span class="val" id="limitLeft" style="font-family: monospace;">\lim_{x \to -\infty} f(x) = \text{?}</span>
+            </div>
+            <div class="inspector-row" style="padding: 10px 0;">
+                <span class="val" id="limitRight" style="font-family: monospace;">\lim_{x \to \infty} f(x) = \text{?}</span>
+            </div>
+        </div>
+
+        <!-- Challenge Mode Card -->
+        <div class="challenge-container">
+            <div class="challenge-header">
+                <span>Match the Graph Challenge</span>
+                <span id="challengeStreak">Streak: 0</span>
+            </div>
+            <div class="challenge-body">
+                <div class="challenge-status" id="challengeStatus">Click "Start Challenge" to generate a target graph.</div>
+                <div class="challenge-feedback" id="challengeFeedback" style="color:var(--orange);"></div>
+            </div>
+            <div class="challenge-footer">
+                <button class="btn-small btn-secondary" id="challengeResetBtn">Reset</button>
+                <button class="btn-small btn-primary" id="challengeBtn">Start Challenge</button>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function() {
+    /* ============================================================
+       STATE & FACTORS MANAGEMENT
+       ============================================================ */
+    let a = 1.0;
+    let factors = {}; // z -> power (z is zero coordinate)
+    let isChallengeMode = false;
+    let targetPolynomial = null; // { a: val, factors: { z: power } }
+    let challengeStreak = 0;
+
+    // Viewport dimensions
+    const SVG_W = 680;
+    const SVG_H = 520;
+    const cx = 340; // center X
+    const cy = 260; // center Y
+    const scaleX = 65; // pixels per X unit
+    const scaleY = 28; // pixels per Y unit
+
+    // Math coordinate bounds
+    const minX = -4.5;
+    const maxX = 4.5;
+    const minY = -8;
+    const maxY = 8;
+
+    // DOM references
+    const gridGroup = document.getElementById('gridGroup');
+    const zerosGroup = document.getElementById('zerosGroup');
+    const funcCurve = document.getElementById('funcCurve');
+    const targetCurve = document.getElementById('targetCurve');
+    const leftArrow = document.getElementById('leftArrow');
+    const rightArrow = document.getElementById('rightArrow');
+
+    const activeFactorsBox = document.getElementById('activeFactorsBox');
+    const coeffSlider = document.getElementById('coeffSlider');
+    const coeffVal = document.getElementById('coeffVal');
+    const canvasOverlayText = document.getElementById('canvasOverlayText');
+
+    const equationReadout = document.getElementById('equationReadout');
+    const readoutDegree = document.getElementById('readoutDegree');
+    const readoutLeading = document.getElementById('readoutLeading');
+    const readoutYInt = document.getElementById('readoutYInt');
+    const readoutExtrema = document.getElementById('readoutExtrema');
+    const limitLeft = document.getElementById('limitLeft');
+    const limitRight = document.getElementById('limitRight');
+
+    const challengeStatus = document.getElementById('challengeStatus');
+    const challengeFeedback = document.getElementById('challengeFeedback');
+    const challengeStreakEl = document.getElementById('challengeStreak');
+    const challengeBtn = document.getElementById('challengeBtn');
+    const challengeResetBtn = document.getElementById('challengeResetBtn');
+
+    /* ============================================================
+       COORDINATE CONVERSIONS
+       ============================================================ */
+    function toSvgX(x) { return cx + x * scaleX; }
+    function toSvgY(y) { return cy - y * scaleY; }
+
+    /* ============================================================
+       GRID DRAWING
+       ============================================================ */
+    function drawGrid() {
+        gridGroup.innerHTML = '';
+        
+        // Horizontal grid lines & labels
+        for (let y = -8; y <= 8; y += 2) {
+            if (y === 0) continue;
+            const py = toSvgY(y);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', 40);
+            line.setAttribute('y1', py);
+            line.setAttribute('x2', 640);
+            line.setAttribute('y2', py);
+            gridGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', cx - 14);
+            txt.setAttribute('y', py);
+            txt.setAttribute('style', 'text-anchor: end;');
+            txt.textContent = y;
+            gridGroup.appendChild(txt);
+        }
+
+        // Vertical grid lines & labels
+        for (let x = -4; x <= 4; x++) {
+            if (x === 0) continue;
+            const px = toSvgX(x);
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('class', 'grid-line');
+            line.setAttribute('x1', px);
+            line.setAttribute('y1', 35);
+            line.setAttribute('x2', px);
+            line.setAttribute('y2', 485);
+            gridGroup.appendChild(line);
+
+            const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            txt.setAttribute('class', 'axis-label');
+            txt.setAttribute('x', px);
+            txt.setAttribute('y', cy + 14);
+            txt.textContent = x;
+            gridGroup.appendChild(txt);
+        }
+
+        // X Axis
+        const xAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        xAxis.setAttribute('class', 'axis-line');
+        xAxis.setAttribute('x1', 35);
+        xAxis.setAttribute('y1', cy);
+        xAxis.setAttribute('x2', 645);
+        xAxis.setAttribute('y2', cy);
+        gridGroup.appendChild(xAxis);
+
+        // Y Axis
+        const yAxis = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        yAxis.setAttribute('class', 'axis-line');
+        yAxis.setAttribute('x1', cx);
+        yAxis.setAttribute('y1', 30);
+        yAxis.setAttribute('x2', cx);
+        yAxis.setAttribute('y2', 490);
+        gridGroup.appendChild(yAxis);
+
+        // Axis labels
+        const oxLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        oxLabel.setAttribute('class', 'axis-label');
+        oxLabel.setAttribute('x', cx - 10);
+        oxLabel.setAttribute('y', cy + 12);
+        oxLabel.textContent = "0";
+        gridGroup.appendChild(oxLabel);
+    }
+
+    /* ============================================================
+       POLYNOMIAL MATH UTILITIES
+       ============================================================ */
+    function evaluatePoly(x, coeff, polyFactors) {
+        let val = coeff;
+        let hasFactors = false;
+        for (const zStr in polyFactors) {
+            const z = parseFloat(zStr);
+            const power = polyFactors[zStr];
+            val *= Math.pow(x - z, power);
+            hasFactors = true;
+        }
+        return hasFactors ? val : 0;
+    }
+
+    function getPolynomialDegree(polyFactors) {
+        let deg = 0;
+        for (const zStr in polyFactors) {
+            deg += polyFactors[zStr];
+        }
+        return deg;
+    }
+
+    /* ============================================================
+       RENDERING CURVES & FEATURES
+       ============================================================ */
+    function drawCurve(pathElement, coeff, polyFactors) {
+        let d = '';
+        const step = 0.02;
+        let isFirst = true;
+
+        for (let x = minX; x <= maxX; x += step) {
+            const y = evaluatePoly(x, coeff, polyFactors);
+            
+            // Clamp visualization values to fit nicely within bounds
+            const py = toSvgY(Math.max(minY - 4, Math.min(maxY + 4, y)));
+            const px = toSvgX(x);
+
+            if (isFirst) {
+                d += `M ${px} ${py}`;
+                isFirst = false;
+            } else {
+                d += ` L ${px} ${py}`;
+            }
+        }
+        pathElement.setAttribute('d', d);
+    }
+
+    function drawZerosMarkers() {
+        zerosGroup.innerHTML = '';
+        const deg = getPolynomialDegree(factors);
+        if (deg === 0) return;
+
+        for (const zStr in factors) {
+            const z = parseFloat(zStr);
+            const power = factors[zStr];
+            const px = toSvgX(z);
+            const py = cy;
+
+            // Marker group
+            const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            g.setAttribute('class', 'zero-marker-g');
+            
+            // 1. Base dot
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            let mClass = 'zero-marker ';
+            if (power === 1) mClass += 'mult1';
+            else if (power === 2) mClass += 'mult2';
+            else mClass += 'mult3';
+
+            circle.setAttribute('class', mClass);
+            circle.setAttribute('cx', px);
+            circle.setAttribute('cy', py);
+            g.appendChild(circle);
+
+            // 2. Behavior mini icon
+            if (power === 1) {
+                // Diagonal cross slash (crosses straight)
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${px-4} ${py-4} L ${px+4} ${py+4}`);
+                path.setAttribute('stroke', 'white');
+                path.setAttribute('stroke-width', '1.75');
+                g.appendChild(path);
+            } else if (power === 2) {
+                // Bounce arc (U-shape)
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${px-4} ${py-3} Q ${px} ${py+2} ${px+4} ${py-3}`);
+                path.setAttribute('stroke', 'white');
+                path.setAttribute('stroke-width', '1.75');
+                path.setAttribute('fill', 'none');
+                g.appendChild(path);
+            } else {
+                // S-curve inflection
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', `M ${px-4} ${py-3} Q ${px-2} ${py-3} ${px} ${py} T ${px+4} ${py+3}`);
+                path.setAttribute('stroke', 'white');
+                path.setAttribute('stroke-width', '1.75');
+                path.setAttribute('fill', 'none');
+                g.appendChild(path);
+            }
+
+            // Tooltip label
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `Zero at x = ${z}, Multiplicity: ${power} (${power === 1 ? 'linear cross' : (power === 2 ? 'bounce tangent' : 'flat inflection cross')})`;
+            g.appendChild(title);
+
+            zerosGroup.appendChild(g);
+        }
+    }
+
+    function updateEndBehavior() {
+        const deg = getPolynomialDegree(factors);
+        
+        if (deg === 0 || a === 0) {
+            leftArrow.setAttribute('display', 'none');
+            rightArrow.setAttribute('display', 'none');
+            return;
+        }
+
+        leftArrow.setAttribute('display', 'inline');
+        rightArrow.setAttribute('display', 'inline');
+
+        // End behavior signs
+        const odd = deg % 2 !== 0;
+        const positiveA = a > 0;
+
+        const rightUp = positiveA;
+        const leftUp = odd ? !positiveA : positiveA;
+
+        // Position coordinates for left/right edge arrows
+        const lx = toSvgX(minX + 0.2);
+        const rx = toSvgX(maxX - 0.2);
+
+        // Arrows drawn vertically
+        if (leftUp) {
+            leftArrow.setAttribute('d', `M ${lx} ${toSvgY(5)} L ${lx} ${toSvgY(6.5)}`);
+        } else {
+            leftArrow.setAttribute('d', `M ${lx} ${toSvgY(-5)} L ${lx} ${toSvgY(-6.5)}`);
+        }
+
+        if (rightUp) {
+            rightArrow.setAttribute('d', `M ${rx} ${toSvgY(5)} L ${rx} ${toSvgY(6.5)}`);
+        } else {
+            rightArrow.setAttribute('d', `M ${rx} ${toSvgY(-5)} L ${rx} ${toSvgY(-6.5)}`);
+        }
+    }
+
+    /* ============================================================
+       ALGEBRA READING & TEX GENERATION
+       ============================================================ */
+    function getPolynomialTex(coeff, polyFactors) {
+        const deg = getPolynomialDegree(polyFactors);
+        if (deg === 0 || coeff === 0) return 'f(x) = 0';
+
+        let str = 'f(x) = ';
+        if (coeff === -1) str += '-';
+        else if (coeff !== 1) str += coeff.toFixed(1);
+
+        for (const zStr in polyFactors) {
+            const z = parseFloat(zStr);
+            const power = polyFactors[zStr];
+            
+            let factorTex = '';
+            if (z === 0) {
+                factorTex = 'x';
+            } else {
+                const sign = z < 0 ? '+' : '-';
+                factorTex = `(x ${sign} ${Math.abs(z)})`;
+            }
+
+            if (power > 1) {
+                factorTex += `^${power}`;
+            }
+            str += factorTex;
+        }
+        return str;
+    }
+
+    function countExtremaPoints(coeff, polyFactors) {
+        const deg = getPolynomialDegree(polyFactors);
+        if (deg <= 1) return 0;
+        
+        let count = 0;
+        const step = 0.01;
+        let prevSign = 0;
+
+        for (let x = minX; x <= maxX; x += step) {
+            // Numeric derivative checking
+            const dx = 0.0001;
+            const y1 = evaluatePoly(x - dx, coeff, polyFactors);
+            const y2 = evaluatePoly(x, coeff, polyFactors);
+            const y3 = evaluatePoly(x + dx, coeff, polyFactors);
+
+            const slopeLeft = (y2 - y1) / dx;
+            const slopeRight = (y3 - y2) / dx;
+
+            // Sign change in slope indicates a turning point
+            if (slopeLeft * slopeRight < 0) {
+                count++;
+                // Skip next few points to avoid double-counting due to numeric precision
+                x += 0.15;
+            }
+        }
+        return count;
+    }
+
+    function updateInspector() {
+        const deg = getPolynomialDegree(factors);
+        
+        // 1. Tex equation
+        const tex = getPolynomialTex(a, factors);
+        katex.render(tex, equationReadout, { throwOnError: false, displayMode: true });
+
+        // 2. Degree
+        readoutDegree.textContent = `${deg} (${deg % 2 === 0 ? 'Even' : 'Odd'})`;
+
+        // 3. Leading Term
+        let termStr = '0';
+        if (deg > 0 && a !== 0) {
+            const aStr = a === 1 ? '' : (a === -1 ? '-' : a.toFixed(1));
+            termStr = `\\(${aStr}x^${deg}\\)`;
+        }
+        katex.render(termStr, readoutLeading, { throwOnError: false });
+
+        // 4. Y intercept
+        const yInt = evaluatePoly(0, a, factors);
+        readoutYInt.textContent = `(0, ${yInt.toFixed(2)})`;
+
+        // 5. Turning points
+        const turningPoints = countExtremaPoints(a, factors);
+        readoutExtrema.textContent = `${turningPoints} (Max: ${deg > 0 ? deg - 1 : 0})`;
+
+        // 6. Limit notations
+        let lSign = '0';
+        let rSign = '0';
+        if (deg > 0 && a !== 0) {
+            const odd = deg % 2 !== 0;
+            const posA = a > 0;
+
+            rSign = posA ? '\\infty' : '-\\infty';
+            lSign = odd ? (posA ? '-\\infty' : '\\infty') : (posA ? '\\infty' : '-\\infty');
+        }
+
+        katex.render(`\\lim_{x \\to -\\infty} f(x) = ${lSign}`, limitLeft, { throwOnError: false });
+        katex.render(`\\lim_{x \\to \\infty} f(x) = ${rSign}`, limitRight, { throwOnError: false });
+    }
+
+    /* ============================================================
+       ACTIVE FACTOR CHIPS RENDERING
+       ============================================================ */
+    function renderFactorChips() {
+        activeFactorsBox.innerHTML = '';
+        let hasFactors = false;
+
+        // Sort factors so chips appear ordered from left to right (negative zeros to positive zeros)
+        const sortedZeros = Object.keys(factors).map(parseFloat).sort((o1, o2) => o1 - o2);
+
+        sortedZeros.forEach(z => {
+            hasFactors = true;
+            const power = factors[z];
+            
+            const card = document.createElement('div');
+            card.className = 'factor-card';
+            
+            const label = z === 0 ? 'x' : `(x ${z < 0 ? '+' : '-'} ${Math.abs(z)})`;
+            
+            card.innerHTML = `
+                <span class="factor-name">${label}</span>
+                <div class="factor-controls">
+                    <span class="exponent-badge">power: ${power}</span>
+                    <button class="factor-action-btn" data-action="dec" data-z="${z}">-</button>
+                    <button class="factor-action-btn" data-action="inc" data-z="${z}">+</button>
+                    <button class="factor-action-btn delete" data-action="del" data-z="${z}">×</button>
+                </div>
+            `;
+            activeFactorsBox.appendChild(card);
+        });
+
+        if (!hasFactors) {
+            activeFactorsBox.innerHTML = `
+                <div style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--muted); font-size:0.85rem; text-align:center;">
+                    <span>No active factors.</span>
+                    <span style="font-size:0.75rem; margin-top:4px;">Click the buttons above to add linear roots to your graph!</span>
+                </div>
+            `;
+            canvasOverlayText.textContent = "Click factors on the left to build a curve";
+        } else {
+            canvasOverlayText.textContent = isChallengeMode ? "Adjust your factors to match the dashed line" : "Active Curve";
+        }
+    }
+
+    /* ============================================================
+       APP RENDERING ORCHESTRATOR
+       ============================================================ */
+    function render() {
+        drawGrid();
+        drawCurve(funcCurve, a, factors);
+        drawZerosMarkers();
+        updateEndBehavior();
+        renderFactorChips();
+        updateInspector();
+
+        if (isChallengeMode) {
+            checkChallengeMatch();
+        }
+    }
+
+    /* ============================================================
+       CHALLENGE MODE LOGIC
+       ============================================================ */
+    function generateChallenge() {
+        isChallengeMode = true;
+        targetCurve.setAttribute('display', 'inline');
+        challengeResetBtn.style.display = 'block';
+        challengeBtn.textContent = 'Next Challenge';
+
+        // Clear user factors
+        factors = {};
+
+        // Generate a random target polynomial
+        // Degree between 2 and 4
+        const degree = Math.floor(Math.random() * 3) + 2; // 2, 3, or 4
+        const targetFactors = {};
+        
+        // Pick random zero values in [-3, 3]
+        const possibleZeros = [-3, -2, -1, 0, 1, 2, 3];
+        possibleZeros.sort(() => 0.5 - Math.random());
+
+        let remainingDegree = degree;
+        let factorIdx = 0;
+        while (remainingDegree > 0 && factorIdx < possibleZeros.length) {
+            const z = possibleZeros[factorIdx];
+            // Multiplicity 1, 2, or 3 (capping based on remaining degree)
+            const power = Math.min(Math.floor(Math.random() * 3) + 1, remainingDegree);
+            targetFactors[z] = power;
+            remainingDegree -= power;
+            factorIdx++;
+        }
+
+        // Random coefficient a in {-1.5, -1, -0.5, 0.5, 1, 1.5}
+        const coeffs = [-1.5, -1, -0.5, 0.5, 1, 1.5];
+        const targetA = coeffs[Math.floor(Math.random() * coeffs.length)];
+
+        targetPolynomial = {
+            a: targetA,
+            factors: targetFactors
+        };
+
+        // Draw target curve
+        drawCurve(targetCurve, targetPolynomial.a, targetPolynomial.factors);
+
+        // Update challenge panel info
+        const targetDegree = getPolynomialDegree(targetPolynomial.factors);
+        const parity = targetDegree % 2 === 0 ? 'Even' : 'Odd';
+        const leadSign = targetPolynomial.a > 0 ? 'Positive' : 'Negative';
+
+        challengeStatus.innerHTML = `
+            <strong>Target Clues:</strong><br>
+            • Degree: ${targetDegree} (${parity})<br>
+            • Leading Coefficient: ${leadSign}<br>
+            • Zeros: ${Object.keys(targetPolynomial.factors).join(', ')}
+        `;
+        challengeStatus.className = 'challenge-status';
+        challengeFeedback.textContent = "Match the target dashed line!";
+        challengeFeedback.style.color = "var(--orange)";
+
+        render();
+    }
+
+    function checkChallengeMatch() {
+        if (!targetPolynomial) return;
+
+        // Compare user formula to target
+        let match = true;
+
+        // 1. Compare coefficient sign & value (with tolerance)
+        if (Math.abs(a - targetPolynomial.a) > 0.05) {
+            match = false;
+        }
+
+        // 2. Compare factor keys and powers
+        const userKeys = Object.keys(factors);
+        const targetKeys = Object.keys(targetPolynomial.factors);
+
+        if (userKeys.length !== targetKeys.length) {
+            match = false;
+        } else {
+            for (const key of targetKeys) {
+                if (factors[key] !== targetPolynomial.factors[key]) {
+                    match = false;
+                    break;
+                }
+            }
+        }
+
+        if (match) {
+            // Winning state!
+            challengeStatus.textContent = "✓ Challenge Matched! You successfully matched the polynomial.";
+            challengeStatus.className = 'challenge-status success';
+            challengeFeedback.textContent = "Excellent job! Click 'Next Challenge' to continue.";
+            challengeFeedback.style.color = "var(--green)";
+            
+            // Increment streak
+            challengeStreak++;
+            challengeStreakEl.textContent = `Streak: ${challengeStreak}`;
+            targetPolynomial = null; // Reset so they can advance
+        } else {
+            // Help feedback
+            const userDeg = getPolynomialDegree(factors);
+            const targetDeg = getPolynomialDegree(targetPolynomial.factors);
+            if (userDeg !== targetDeg) {
+                challengeFeedback.textContent = `Degree mismatch: current degree is ${userDeg}, target is ${targetDeg}.`;
+                challengeFeedback.style.color = "var(--orange)";
+            } else if (Math.sign(a) !== Math.sign(targetPolynomial.a)) {
+                challengeFeedback.textContent = "Check end behavior: leading coefficient sign is wrong!";
+                challengeFeedback.style.color = "var(--red)";
+            } else {
+                challengeFeedback.textContent = "Roots/multiplicities are correct, but adjust the coefficient 'a' scale!";
+                challengeFeedback.style.color = "var(--blue)";
+            }
+        }
+    }
+
+    function resetChallenge() {
+        isChallengeMode = false;
+        targetPolynomial = null;
+        challengeStreak = 0;
+        challengeStreakEl.textContent = 'Streak: 0';
+        challengeStatus.textContent = 'Click "Start Challenge" to generate a target graph.';
+        challengeFeedback.textContent = '';
+        challengeBtn.textContent = 'Start Challenge';
+        targetCurve.setAttribute('display', 'none');
+        challengeResetBtn.style.display = 'none';
+        factors = {};
+        render();
+    }
+
+    /* ============================================================
+       EVENT BINDINGS
+       ============================================================ */
+    function bindEvents() {
+        // Factor chips
+        document.querySelectorAll('.chip-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const z = btn.dataset.val;
+                if (factors[z]) {
+                    // Increment multiplicity up to max of 3
+                    if (factors[z] < 3) factors[z]++;
+                } else {
+                    // Make sure sum of multiplicities is capped at 6 to prevent wild curves
+                    const currentDegree = getPolynomialDegree(factors);
+                    if (currentDegree < 6) {
+                        factors[z] = 1;
+                    }
+                }
+                render();
+            });
+        });
+
+        // Exponent modification within active cards
+        activeFactorsBox.addEventListener('click', e => {
+            const btn = e.target.closest('.factor-action-btn');
+            if (!btn) return;
+
+            const z = btn.dataset.z;
+            const action = btn.dataset.action;
+
+            if (action === 'inc') {
+                const currentDegree = getPolynomialDegree(factors);
+                if (factors[z] < 3 && currentDegree < 6) factors[z]++;
+            } else if (action === 'dec') {
+                if (factors[z] > 1) factors[z]--;
+                else delete factors[z];
+            } else if (action === 'del') {
+                delete factors[z];
+            }
+            render();
+        });
+
+        // Coefficient slider
+        coeffSlider.addEventListener('input', e => {
+            a = parseFloat(e.target.value);
+            coeffVal.textContent = a.toFixed(1);
+            render();
+        });
+
+        // Challenge buttons
+        challengeBtn.addEventListener('click', () => {
+            generateChallenge();
+        });
+        challengeResetBtn.addEventListener('click', () => {
+            resetChallenge();
+        });
+    }
+
+    bindEvents();
+    render();
+
+    // Trigger KaTeX parsing on load
+    renderMathInElement(document.body, {
+        delimiters: [
+            { left: '\\[', right: '\\]', display: true  },
+            { left: '\\(', right: '\\)', display: false }
+        ],
+        throwOnError: false
+    });
+})();
+</script>
+
+</body>
+</html>
