@@ -1232,24 +1232,62 @@
 
         // Simplified function evaluator (divides out matching roots)
         function evalSimpl(x) {
-            let num = A === 0 ? (B === 0 ? C : B*x + C) : A*x*x + B*x + C;
-            let den = P === 0 ? (Q === 0 ? R : Q*x + R) : P*x*x + Q*x + R;
-            
-            // Divide out the common factors
-            uniqueDen.forEach(rKey => {
-                let keyStr = rKey.toFixed(5);
-                let dCount = denCounts[keyStr];
+            let numVal = 1;
+            let denVal = 1;
+
+            // Numerator constant and irreducible quadratic part
+            if (A !== 0) {
+                let disc = B*B - 4*A*C;
+                if (disc < 0) {
+                    numVal *= (A*x*x + B*x + C);
+                } else {
+                    numVal *= A;
+                }
+            } else if (B !== 0) {
+                numVal *= B;
+            } else {
+                numVal *= C;
+            }
+
+            // Denominator constant and irreducible quadratic part
+            if (P !== 0) {
+                let disc = Q*Q - 4*P*R;
+                if (disc < 0) {
+                    denVal *= (P*x*x + Q*x + R);
+                } else {
+                    denVal *= P;
+                }
+            } else if (Q !== 0) {
+                denVal *= Q;
+            } else {
+                denVal *= R;
+            }
+
+            // Evaluate the product of (x - r) for remaining non-cancelled real roots
+            let allUniqueRoots = Array.from(new Set([
+                ...numRoots.map(r => r.toFixed(5)),
+                ...denRoots.map(r => r.toFixed(5))
+            ])).map(Number);
+
+            allUniqueRoots.forEach(rVal => {
+                let keyStr = rVal.toFixed(5);
                 let nCount = numCounts[keyStr] || 0;
-                let commonMult = Math.min(nCount, dCount);
-                if (commonMult > 0) {
-                    let div = Math.pow(x - rKey, commonMult);
-                    num /= div;
-                    den /= div;
+                let dCount = denCounts[keyStr] || 0;
+                let common = Math.min(nCount, dCount);
+                
+                let numMult = nCount - common;
+                let denMult = dCount - common;
+
+                if (numMult > 0) {
+                    numVal *= Math.pow(x - rVal, numMult);
+                }
+                if (denMult > 0) {
+                    denVal *= Math.pow(x - rVal, denMult);
                 }
             });
 
-            if (Math.abs(den) < 1e-9) return NaN;
-            return num / den;
+            if (Math.abs(denVal) < 1e-9) return NaN;
+            return numVal / denVal;
         }
 
         // Degree variables
