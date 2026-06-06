@@ -674,7 +674,7 @@
     let lastFrameTime = 0;
 
     // Viewport Panning & Zooming
-    let zoomLevel = 45; // pixels per unit
+    let zoomLevel = 35; // pixels per unit
     let panOffset = { x: 0, y: 0 };
     let isDragging = false;
     let dragStart = { x: 0, y: 0 };
@@ -1321,18 +1321,28 @@
         ctx.strokeStyle = "rgba(203, 213, 225, 0.55)";
         ctx.lineWidth = 1;
 
-        // 1. Concentric circular rings
-        const ringsCount = 8;
-        for (let i = 1; i <= ringsCount; i++) {
+        // 1. Concentric circular rings (only draw those inside the grid boundary)
+        let labelInterval = 1;
+        if (zoomLevel < 15) {
+            labelInterval = 5;
+        } else if (zoomLevel < 30) {
+            labelInterval = 2;
+        }
+
+        for (let i = 1; ; i++) {
             const ringRadius = i * zoomLevel;
+            if (ringRadius > maxGridRadius) break;
+
             ctx.beginPath();
             ctx.arc(cx, cy, ringRadius, 0, 2 * Math.PI);
             ctx.stroke();
 
             // Label radius ticks along polar axis (positive x)
-            ctx.fillStyle = "rgba(100, 116, 139, 0.85)";
-            ctx.font = "bold 12px 'Source Sans 3'";
-            ctx.fillText(i, cx + ringRadius + 3, cy - 4);
+            if (i % labelInterval === 0) {
+                ctx.fillStyle = "rgba(100, 116, 139, 0.85)";
+                ctx.font = "bold 12px 'Source Sans 3'";
+                ctx.fillText(i, cx + ringRadius + 3, cy - 4);
+            }
         }
 
         // 2. Radial spokes (every 15 and 30 degrees)
@@ -1417,6 +1427,11 @@
         ctx.lineTo(cx, cy + maxGridRadius);
         ctx.stroke();
 
+        // 4. Outer border circle defining the grid boundary
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxGridRadius, 0, 2 * Math.PI);
+        ctx.stroke();
+
         ctx.restore();
     }
 
@@ -1432,6 +1447,12 @@
         if (chkShowGrid.checked) {
             drawGrid(cx, cy, maxGridRadius);
         }
+
+        // Clip all curve elements to the polar grid boundary
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, maxGridRadius, 0, 2 * Math.PI);
+        ctx.clip();
 
         // Draw swept area background (shaded region from θ=0 to active θ)
         if (chkShowSwept.checked && traceTheta > 0) {
@@ -1556,14 +1577,6 @@
         const yCurrent = rCurrent === null ? 0 : rCurrent * Math.sin(traceTheta);
         const ptCurrent = getCanvasCoords(xCurrent, yCurrent);
 
-        // Update stage coordinates HUD display
-        coordsOverlay.querySelector('div:nth-child(1)').textContent = `θ = ${traceTheta.toFixed(3)} rad (${Math.round(traceTheta * 180 / Math.PI)}°)`;
-        coordsOverlay.querySelector('div:nth-child(2)').textContent = `r = ${rCurrent === null ? "Imaginary" : rCurrent.toFixed(3)}`;
-        coordsOverlay.querySelector('div:nth-child(3)').textContent = `(x, y) = ${rCurrent === null ? "(—, —)" : `(${xCurrent.toFixed(3)}, ${yCurrent.toFixed(3)})`}`;
-
-        // Highlight key points table row
-        highlightActivePointRow();
-
         // Draw Radial Vector line to current point
         if (chkShowVector.checked && rCurrent !== null) {
             ctx.save();
@@ -1598,6 +1611,16 @@
             ctx.stroke();
             ctx.restore();
         }
+
+        ctx.restore(); // End of clipped section
+
+        // Update stage coordinates HUD display
+        coordsOverlay.querySelector('div:nth-child(1)').textContent = `θ = ${traceTheta.toFixed(3)} rad (${Math.round(traceTheta * 180 / Math.PI)}°)`;
+        coordsOverlay.querySelector('div:nth-child(2)').textContent = `r = ${rCurrent === null ? "Imaginary" : rCurrent.toFixed(3)}`;
+        coordsOverlay.querySelector('div:nth-child(3)').textContent = `(x, y) = ${rCurrent === null ? "(—, —)" : `(${xCurrent.toFixed(3)}, ${yCurrent.toFixed(3)})`}`;
+
+        // Highlight key points table row
+        highlightActivePointRow();
     }
 
     // ── Animation Tracing Logic Loop ────────────────────────────────
@@ -1699,7 +1722,7 @@
         // Global Resets
         btnGlobalReset.addEventListener('click', () => {
             panOffset = { x: 0, y: 0 };
-            zoomLevel = 45;
+            zoomLevel = 35;
             curveFamilySelect.value = "limacon";
             onFamilyChanged();
         });
@@ -1762,7 +1785,7 @@
         // Double click canvas to reset zoom and pan
         canvas.addEventListener('dblclick', () => {
             panOffset = { x: 0, y: 0 };
-            zoomLevel = 45;
+            zoomLevel = 35;
             draw();
         });
     }
