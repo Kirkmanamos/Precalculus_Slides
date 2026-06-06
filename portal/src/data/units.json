@@ -34,6 +34,11 @@
             "type": "slides",
             "title": "Slides 1.3",
             "href": "1.3-rates-of-change-and-behavior-of-graphs.html"
+          },
+          {
+            "type": "playground",
+            "title": "Graph Behavior Explorer",
+            "href": "graph-behavior-explorer.html"
           }
         ]
       },
@@ -105,6 +110,11 @@
             "type": "slides",
             "title": "Slides 2.1",
             "href": "2.1-quadratic-functions.html"
+          },
+          {
+            "type": "playground",
+            "title": "Completing the Square Playground",
+            "href": "factoring-completing-the-square.html"
           }
         ]
       },
@@ -171,6 +181,11 @@
             "type": "slides",
             "title": "Slides 2.7",
             "href": "2.7-rational-functions-and-asymptotes.html"
+          },
+          {
+            "type": "playground",
+            "title": "Rational Asymptote Explorer",
+            "href": "asymptote-explorer.html"
           },
           {
             "type": "reference",
@@ -292,6 +307,11 @@
             "type": "slides",
             "title": "Slides 4.3",
             "href": "4.3-trig-functions-unit-circle.html"
+          },
+          {
+            "type": "playground",
+            "title": "Unit Circle Explorer",
+            "href": "unit-circle-explorer.html"
           }
         ]
       },
@@ -374,6 +394,11 @@
             "type": "slides",
             "title": "Slides 5.4",
             "href": "5.4-graphs-other-trig-functions.html"
+          },
+          {
+            "type": "playground",
+            "title": "Periodic Wave Explorer",
+            "href": "periodic-wave-explorer.html"
           }
         ]
       },
@@ -413,6 +438,11 @@
             "type": "slides",
             "title": "Slides 6.2",
             "href": "6.2-verifying-trig-identities.html"
+          },
+          {
+            "type": "playground",
+            "title": "Trig Identity Proof Builder",
+            "href": "trig-identity-builder.html"
           }
         ]
       },
@@ -572,6 +602,11 @@
             "type": "slides",
             "title": "Slides 8.2",
             "href": "8.2-polar-graphs.html"
+          },
+          {
+            "type": "playground",
+            "title": "Polar Curves Explorer",
+            "href": "polar-curves-explorer.html"
           }
         ]
       },
@@ -666,6 +701,16 @@
             "type": "slides",
             "title": "Slides 9.4",
             "href": "9.4-derivatives.html"
+          },
+          {
+            "type": "playground",
+            "title": "Concavity & Inflection Explorer",
+            "href": "concavity-visualizer.html"
+          },
+          {
+            "type": "activity",
+            "title": "Function Feature Identifier Challenge",
+            "href": "function-feature-identifier.html"
           }
         ]
       }

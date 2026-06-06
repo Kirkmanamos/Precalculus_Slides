@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trig Identity Proof Builder</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --pink: #db2777;
+            --purple: #7c3aed;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-green: #f0fdf4;
+            --soft-teal: #f0fdfa;
+            --soft-orange: #fffbeb;
+            --soft-red: #fef2f2;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 18px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .header {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 14px;
+            padding: 18px 24px;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 14px; }
+
+        .header-brand {
+            background: var(--navy);
+            color: white; padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .header-brand .section-label {
+            font-size: 0.68rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        .header-brand h1 {
+            margin: 2px 0 0; font-size: 1.25rem; line-height: 1.1;
+        }
+
+        .identity-display {
+            padding: 12px 20px;
+            background: var(--soft-blue);
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            font-size: 1rem;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .header-right {
+            display: flex; align-items: center; gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pill-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem; font-weight: 700;
+            letter-spacing: 0.04em;
+            transition: var(--transition);
+        }
+
+        .pill-btn.hint {
+            background: var(--soft-orange); color: var(--orange);
+            border: 1px solid #fcd34d;
+        }
+        .pill-btn.hint:hover { background: #fef3c7; }
+        .pill-btn.hint:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .pill-btn.solution {
+            background: var(--soft-teal); color: var(--teal);
+            border: 1px solid #99f6e4;
+        }
+        .pill-btn.solution:hover { background: #ccfbf1; }
+
+        .pill-btn.undo {
+            background: var(--soft-red); color: var(--red);
+            border: 1px solid #fecaca;
+        }
+        .pill-btn.undo:hover { background: #fee2e2; }
+        .pill-btn.undo:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* ============================================================
+           MAIN CONTENT: two columns
+           ============================================================ */
+        .main {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 18px;
+            min-height: 0;
+        }
+
+        /* ============================================================
+           TOOL BANK (left)
+           ============================================================ */
+        .tool-bank {
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tool-bank-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .tool-bank-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .tool-bank-scroll {
+            padding: 12px; overflow-y: auto; flex: 1;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+
+        .step-card {
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: grab;
+            transition: var(--transition);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .step-card:hover {
+            border-color: var(--blue);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .step-card.dragging {
+            opacity: 0.5;
+            border-color: var(--blue);
+            cursor: grabbing;
+        }
+
+        .step-card.used {
+            opacity: 0.3;
+            pointer-events: none;
+            border-style: dashed;
+        }
+
+        .step-card.hint-glow {
+            border-color: var(--orange);
+            box-shadow: 0 0 12px rgba(217, 119, 6, 0.25);
+            animation: hintPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { box-shadow: 0 0 12px rgba(217, 119, 6, 0.25); }
+            50% { box-shadow: 0 0 20px rgba(217, 119, 6, 0.5); }
+        }
+
+        .step-card-name {
+            font-size: 0.78rem; font-weight: 700;
+            color: var(--blue); text-transform: uppercase;
+            letter-spacing: 0.06em; margin-bottom: 4px;
+        }
+
+        .step-card-math {
+            font-size: 0.9rem; color: var(--ink);
+            min-height: 1.5em;
+        }
+
+        .step-card-tag {
+            display: inline-block; margin-top: 6px;
+            padding: 2px 8px; border-radius: 4px;
+            font-size: 0.68rem; font-weight: 700;
+            background: #f1f5f9; color: var(--muted);
+        }
+
+        .step-card-tag.distractor {
+            background: var(--soft-red); color: var(--red);
+        }
+
+        /* ============================================================
+           PROOF WORKSPACE (right)
+           ============================================================ */
+        .workspace {
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        .workspace-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .workspace-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .workspace-scroll {
+            padding: 16px; overflow-y: auto; flex: 1;
+            display: flex; flex-direction: column; gap: 0;
+        }
+
+        /* Proof chain step */
+        .proof-step {
+            display: flex; align-items: stretch; gap: 0;
+            animation: stepAppear 0.4s ease both;
+        }
+
+        @keyframes stepAppear {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .proof-line {
+            width: 3px; background: var(--blue);
+            margin-left: 18px; flex-shrink: 0;
+        }
+
+        .proof-step-content {
+            flex: 1; padding: 12px 16px 12px 20px;
+        }
+
+        .proof-step-label {
+            font-size: 0.72rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            color: var(--muted); margin-bottom: 4px;
+        }
+
+        .proof-step-label .step-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 20px; height: 20px; border-radius: 50%;
+            background: var(--blue); color: white;
+            font-size: 0.66rem; margin-right: 6px;
+        }
+
+        .proof-step-eq {
+            padding: 10px 16px;
+            background: var(--soft-blue);
+            border-left: 4px solid var(--blue);
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .proof-step-eq.answer {
+            background: var(--soft-green);
+            border-color: var(--green);
+        }
+
+        .proof-step-op {
+            margin-top: 6px;
+            font-size: 0.78rem; font-weight: 600;
+            color: var(--teal); font-style: italic;
+        }
+
+        /* Equal sign connector */
+        .equals-connector {
+            display: flex; align-items: center; gap: 0;
+            padding: 2px 0;
+        }
+
+        .equals-sign {
+            margin-left: 10px;
+            width: 28px; height: 28px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--navy); color: white;
+            border-radius: 50%; font-weight: 900;
+            font-size: 0.88rem;
+        }
+
+        .equals-line {
+            flex: 1; height: 1px;
+            border-top: 2px dashed #cbd5e1;
+            margin-left: 8px;
+        }
+
+        /* Drop zone */
+        .drop-zone {
+            min-height: 70px; padding: 16px;
+            border: 3px dashed #cbd5e1;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--muted); font-weight: 600;
+            font-size: 0.88rem;
+            transition: var(--transition);
+            margin-left: 41px;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--blue);
+            background: var(--soft-blue);
+            color: var(--blue);
+        }
+
+        .drop-zone.correct {
+            border-color: var(--green);
+            background: var(--soft-green);
+            animation: correctFlash 0.5s ease;
+        }
+
+        @keyframes correctFlash {
+            0% { box-shadow: 0 0 0 rgba(22, 163, 74, 0); }
+            50% { box-shadow: 0 0 20px rgba(22, 163, 74, 0.3); }
+            100% { box-shadow: 0 0 0 rgba(22, 163, 74, 0); }
+        }
+
+        .drop-zone.wrong {
+            border-color: var(--red);
+            background: var(--soft-red);
+            animation: shakeWrong 0.5s ease;
+        }
+
+        @keyframes shakeWrong {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+
+        /* Completion banner */
+        .completion-banner {
+            display: none;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 2px solid var(--green);
+            border-radius: 12px;
+            text-align: center;
+            margin-left: 41px;
+            animation: stepAppear 0.5s ease both;
+        }
+
+        .completion-banner.visible { display: block; }
+
+        .completion-banner h3 {
+            margin: 0 0 4px; color: var(--green);
+            font-size: 1.15rem;
+        }
+
+        .completion-banner p {
+            margin: 0; color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .next-identity-btn {
+            margin-top: 12px;
+            padding: 10px 24px;
+            background: var(--green); color: white;
+            border-radius: 8px;
+            font-weight: 700; font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .next-identity-btn:hover { background: #15803d; }
+
+        /* ============================================================
+           FOOTER: identity selector + progress
+           ============================================================ */
+        .footer {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px;
+            flex-wrap: wrap; gap: 12px;
+        }
+
+        .footer-left {
+            display: flex; align-items: center; gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .identity-select {
+            padding: 8px 14px; border-radius: 8px;
+            border: 1px solid #cbd5e1; background: white;
+            font-size: 0.88rem; font-weight: 600;
+            color: var(--ink); outline: 0;
+            min-width: 280px;
+        }
+        .identity-select:focus { border-color: var(--blue); }
+        .identity-select option:disabled { color: #94a3b8; }
+        .identity-select option.locked { color: #94a3b8; }
+
+        .unit-filter {
+            display: flex; gap: 0; border-radius: 8px;
+            overflow: hidden; border: 1px solid #cbd5e1;
+        }
+        .filter-btn {
+            padding: 6px 14px; background: white;
+            color: var(--muted); font-size: 0.78rem;
+            font-weight: 700; border: none; cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-btn + .filter-btn { border-left: 1px solid #cbd5e1; }
+        .filter-btn.active { background: var(--navy); color: white; }
+
+        .progress-bar-wrap {
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .progress-text {
+            font-size: 0.82rem; font-weight: 700;
+            color: var(--navy);
+        }
+
+        .progress-track {
+            width: 180px; height: 8px;
+            background: #e2e8f0; border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--blue), var(--green));
+            border-radius: 4px;
+            transition: width 0.4s ease;
+        }
+
+        .difficulty-stars {
+            font-size: 0.82rem; color: var(--orange);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           REFERENCE PANEL (collapsible)
+           ============================================================ */
+        .ref-toggle-btn {
+            padding: 6px 12px; border-radius: 8px;
+            background: var(--soft-blue); color: var(--blue);
+            border: 1px solid #bfdbfe;
+            font-size: 0.78rem; font-weight: 700;
+            transition: var(--transition);
+        }
+        .ref-toggle-btn:hover { background: #dbeafe; }
+
+        .ref-panel {
+            display: none;
+            position: fixed; top: 0; right: 0;
+            width: 380px; height: 100vh;
+            background: white; border-left: 1px solid #dbeafe;
+            box-shadow: -10px 0 40px rgba(15, 23, 42, 0.12);
+            z-index: 200; overflow-y: auto;
+            padding: 20px;
+            animation: slideIn 0.3s ease;
+        }
+
+        .ref-panel.open { display: block; }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .ref-panel-close {
+            position: absolute; top: 12px; right: 12px;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #f1f5f9; color: var(--muted);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; font-weight: 900;
+        }
+        .ref-panel-close:hover { background: #e2e8f0; }
+
+        .ref-panel h3 {
+            margin: 0 0 16px; font-size: 1.1rem; color: var(--navy);
+        }
+
+        .ref-category {
+            margin-bottom: 16px;
+        }
+
+        .ref-category h4 {
+            margin: 0 0 8px; font-size: 0.82rem;
+            text-transform: uppercase; letter-spacing: 0.08em;
+            font-weight: 800; color: var(--teal);
+        }
+
+        .ref-identity {
+            padding: 6px 10px;
+            background: var(--soft);
+            border-radius: 6px;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 900px) {
+            .main {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+            }
+            .tool-bank { max-height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ======== HEADER ======== -->
+    <div class="panel header" id="headerPanel">
+        <div class="header-left">
+            <div class="header-brand">
+                <div class="section-label">Unit 6 · Trig Identities</div>
+                <h1>Proof Builder</h1>
+            </div>
+            <div class="identity-display" id="identityDisplay"></div>
+        </div>
+        <div class="header-right">
+            <button class="pill-btn undo" id="btnUndo" disabled>↩ Undo</button>
+            <button class="pill-btn hint" id="btnHint">💡 Hint</button>
+            <button class="pill-btn solution" id="btnSolution">📋 Show Solution</button>
+            <button class="ref-toggle-btn" id="btnRef">📖 Reference</button>
+        </div>
+    </div>
+
+    <!-- ======== MAIN ======== -->
+    <div class="main">
+        <!-- Tool Bank -->
+        <div class="panel tool-bank">
+            <div class="tool-bank-header">
+                <h2>Available Steps</h2>
+                <span id="stepCount" style="font-size:0.78rem;font-weight:700;color:var(--muted);"></span>
+            </div>
+            <div class="tool-bank-scroll" id="toolBank"></div>
+        </div>
+
+        <!-- Proof Workspace -->
+        <div class="panel workspace">
+            <div class="workspace-header">
+                <h2>Proof Chain</h2>
+                <span id="proofProgress" style="font-size:0.78rem;font-weight:700;color:var(--muted);"></span>
+            </div>
+            <div class="workspace-scroll" id="proofWorkspace"></div>
+        </div>
+    </div>
+
+    <!-- ======== FOOTER ======== -->
+    <div class="panel footer">
+        <div class="footer-left">
+            <select class="identity-select" id="identitySelect"></select>
+            <div class="unit-filter" id="unitFilter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="fundamental">6.1–6.2</button>
+                <button class="filter-btn" data-filter="advanced">6.3–6.4</button>
+            </div>
+        </div>
+        <div class="progress-bar-wrap">
+            <span class="progress-text" id="progressText">0 / 0</span>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reference Panel -->
+<div class="ref-panel" id="refPanel">
+    <button class="ref-panel-close" id="btnRefClose">×</button>
+    <h3>Identity Reference</h3>
+
+    <div class="ref-category">
+        <h4>Reciprocal Identities</h4>
+        <div class="ref-identity" id="refRecip"></div>
+    </div>
+    <div class="ref-category">
+        <h4>Quotient Identities</h4>
+        <div class="ref-identity" id="refQuot"></div>
+    </div>
+    <div class="ref-category">
+        <h4>Pythagorean Identities</h4>
+        <div class="ref-identity" id="refPyth"></div>
+    </div>
+    <div class="ref-category">
+        <h4>Double-Angle Identities</h4>
+        <div class="ref-identity" id="refDouble"></div>
+    </div>
+    <div class="ref-category">
+        <h4>Half-Angle Identities</h4>
+        <div class="ref-identity" id="refHalf"></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+<script>
+/* ================================================================
+   TRIG IDENTITY PROOF BUILDER — Controller
+   ================================================================ */
+(() => {
+    'use strict';
+
+    // ── Identity Bank ─────────────────────────────────────────────
+    // Each identity has:
+    //   id, lhs, rhs (LaTeX), difficulty (1-3), unit ('fundamental'|'advanced'),
+    //   steps: array of { id, name, expression (LaTeX), operation (text) }
+    //   distractors: array of { id, name, expression (LaTeX) }
+    const IDENTITIES = [
+        {
+            id: 1,
+            lhs: '\\sin\\theta \\cdot \\cot\\theta',
+            rhs: '\\cos\\theta',
+            difficulty: 1,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Quotient Identity', expression: '\\sin\\theta \\cdot \\dfrac{\\cos\\theta}{\\sin\\theta}', operation: 'Replace cot θ with cos θ / sin θ' },
+                { id: 's2', name: 'Cancel Common Factor', expression: '\\cos\\theta', operation: 'Cancel sin θ in numerator and denominator' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Pythagorean Identity', expression: '1 - \\cos^2\\theta' },
+                { id: 'd2', name: 'Reciprocal Identity', expression: '\\sin\\theta \\cdot \\dfrac{1}{\\tan\\theta}' },
+            ]
+        },
+        {
+            id: 2,
+            lhs: '\\tan^2\\theta + 1',
+            rhs: '\\sec^2\\theta',
+            difficulty: 1,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Quotient Identity', expression: '\\dfrac{\\sin^2\\theta}{\\cos^2\\theta} + 1', operation: 'Replace tan²θ with sin²θ / cos²θ' },
+                { id: 's2', name: 'Common Denominator', expression: '\\dfrac{\\sin^2\\theta + \\cos^2\\theta}{\\cos^2\\theta}', operation: 'Combine over common denominator cos²θ' },
+                { id: 's3', name: 'Pythagorean Identity', expression: '\\dfrac{1}{\\cos^2\\theta}', operation: 'Apply sin²θ + cos²θ = 1' },
+                { id: 's4', name: 'Reciprocal Identity', expression: '\\sec^2\\theta', operation: 'Replace 1/cos²θ with sec²θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Factor Difference', expression: '(\\tan\\theta + 1)(\\tan\\theta - 1)' },
+            ]
+        },
+        {
+            id: 3,
+            lhs: '\\dfrac{\\sin^2\\theta}{\\cos\\theta} + \\cos\\theta',
+            rhs: '\\sec\\theta',
+            difficulty: 1,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Common Denominator', expression: '\\dfrac{\\sin^2\\theta + \\cos^2\\theta}{\\cos\\theta}', operation: 'Combine over common denominator cos θ' },
+                { id: 's2', name: 'Pythagorean Identity', expression: '\\dfrac{1}{\\cos\\theta}', operation: 'Apply sin²θ + cos²θ = 1' },
+                { id: 's3', name: 'Reciprocal Identity', expression: '\\sec\\theta', operation: 'Replace 1/cos θ with sec θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Factor Numerator', expression: '\\dfrac{\\sin\\theta(\\sin\\theta + \\cos\\theta)}{\\cos\\theta}' },
+                { id: 'd2', name: 'Distribute', expression: '\\sin\\theta\\tan\\theta + \\cos\\theta' },
+            ]
+        },
+        {
+            id: 4,
+            lhs: '\\csc\\theta - \\sin\\theta',
+            rhs: '\\cos\\theta\\cot\\theta',
+            difficulty: 2,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Reciprocal Identity', expression: '\\dfrac{1}{\\sin\\theta} - \\sin\\theta', operation: 'Replace csc θ with 1/sin θ' },
+                { id: 's2', name: 'Common Denominator', expression: '\\dfrac{1 - \\sin^2\\theta}{\\sin\\theta}', operation: 'Combine over common denominator sin θ' },
+                { id: 's3', name: 'Pythagorean Identity', expression: '\\dfrac{\\cos^2\\theta}{\\sin\\theta}', operation: 'Apply 1 - sin²θ = cos²θ' },
+                { id: 's4', name: 'Separate Factors', expression: '\\cos\\theta \\cdot \\dfrac{\\cos\\theta}{\\sin\\theta}', operation: 'Factor out cos θ' },
+                { id: 's5', name: 'Quotient Identity', expression: '\\cos\\theta\\cot\\theta', operation: 'Replace cos θ / sin θ with cot θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Reciprocal + Quotient', expression: '\\dfrac{1}{\\sin\\theta} - \\dfrac{\\sin^2\\theta}{\\sin\\theta}' },
+            ]
+        },
+        {
+            id: 5,
+            lhs: '\\dfrac{1}{\\tan\\theta + \\cot\\theta}',
+            rhs: '\\sin\\theta\\cos\\theta',
+            difficulty: 2,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Quotient Identities', expression: '\\dfrac{1}{\\dfrac{\\sin\\theta}{\\cos\\theta} + \\dfrac{\\cos\\theta}{\\sin\\theta}}', operation: 'Replace tan and cot with sin/cos and cos/sin' },
+                { id: 's2', name: 'Common Denominator', expression: '\\dfrac{1}{\\dfrac{\\sin^2\\theta + \\cos^2\\theta}{\\sin\\theta\\cos\\theta}}', operation: 'Combine the denominator fractions' },
+                { id: 's3', name: 'Pythagorean Identity', expression: '\\dfrac{1}{\\dfrac{1}{\\sin\\theta\\cos\\theta}}', operation: 'Apply sin²θ + cos²θ = 1' },
+                { id: 's4', name: 'Invert Fraction', expression: '\\sin\\theta\\cos\\theta', operation: 'Invert the complex fraction' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Product to Sum', expression: '\\dfrac{1}{2}\\sin 2\\theta' },
+                { id: 'd2', name: 'Reciprocal', expression: '\\dfrac{\\sin\\theta\\cos\\theta}{1}' },
+            ]
+        },
+        {
+            id: 6,
+            lhs: '\\dfrac{\\sin\\theta}{1+\\cos\\theta}',
+            rhs: '\\dfrac{1-\\cos\\theta}{\\sin\\theta}',
+            difficulty: 2,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Multiply by Conjugate', expression: '\\dfrac{\\sin\\theta}{1+\\cos\\theta} \\cdot \\dfrac{1-\\cos\\theta}{1-\\cos\\theta}', operation: 'Multiply by conjugate (1-cosθ)/(1-cosθ)' },
+                { id: 's2', name: 'Distribute', expression: '\\dfrac{\\sin\\theta(1-\\cos\\theta)}{1-\\cos^2\\theta}', operation: 'Expand the denominator using difference of squares' },
+                { id: 's3', name: 'Pythagorean Identity', expression: '\\dfrac{\\sin\\theta(1-\\cos\\theta)}{\\sin^2\\theta}', operation: 'Apply 1 - cos²θ = sin²θ' },
+                { id: 's4', name: 'Cancel Common Factor', expression: '\\dfrac{1-\\cos\\theta}{\\sin\\theta}', operation: 'Cancel sin θ from numerator and denominator' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Cross Multiply', expression: '\\sin^2\\theta = (1+\\cos\\theta)(1-\\cos\\theta)' },
+            ]
+        },
+        {
+            id: 7,
+            lhs: '\\dfrac{\\sec\\theta - \\cos\\theta}{\\sec\\theta}',
+            rhs: '\\sin^2\\theta',
+            difficulty: 2,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Split Fraction', expression: '1 - \\dfrac{\\cos\\theta}{\\sec\\theta}', operation: 'Separate into two fractions' },
+                { id: 's2', name: 'Reciprocal Identity', expression: '1 - \\cos\\theta \\cdot \\cos\\theta', operation: 'Replace 1/sec θ with cos θ' },
+                { id: 's3', name: 'Simplify', expression: '1 - \\cos^2\\theta', operation: 'Multiply cos θ · cos θ = cos²θ' },
+                { id: 's4', name: 'Pythagorean Identity', expression: '\\sin^2\\theta', operation: 'Apply 1 - cos²θ = sin²θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Reciprocal Identity', expression: '\\dfrac{\\frac{1}{\\cos\\theta} - \\cos\\theta}{\\frac{1}{\\cos\\theta}}' },
+            ]
+        },
+        {
+            id: 8,
+            lhs: '\\dfrac{1+\\tan^2\\theta}{\\csc^2\\theta}',
+            rhs: '\\tan^2\\theta',
+            difficulty: 3,
+            unit: 'fundamental',
+            steps: [
+                { id: 's1', name: 'Pythagorean Identity', expression: '\\dfrac{\\sec^2\\theta}{\\csc^2\\theta}', operation: 'Replace 1 + tan²θ with sec²θ' },
+                { id: 's2', name: 'Reciprocal Identities', expression: '\\dfrac{\\frac{1}{\\cos^2\\theta}}{\\frac{1}{\\sin^2\\theta}}', operation: 'Replace sec²θ and csc²θ with reciprocals' },
+                { id: 's3', name: 'Invert & Multiply', expression: '\\dfrac{\\sin^2\\theta}{\\cos^2\\theta}', operation: 'Invert the denominator and multiply' },
+                { id: 's4', name: 'Quotient Identity', expression: '\\tan^2\\theta', operation: 'Replace sin²θ/cos²θ with tan²θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Factor', expression: '\\dfrac{(1+\\tan\\theta)(1-\\tan\\theta)}{\\csc^2\\theta}' },
+                { id: 'd2', name: 'Pythagorean Alt', expression: '\\dfrac{\\sec^2\\theta}{1 + \\cot^2\\theta}' },
+            ]
+        },
+        {
+            id: 9,
+            lhs: '\\cos^4\\theta - \\sin^4\\theta',
+            rhs: '\\cos 2\\theta',
+            difficulty: 3,
+            unit: 'advanced',
+            steps: [
+                { id: 's1', name: 'Factor (Difference of Squares)', expression: '(\\cos^2\\theta + \\sin^2\\theta)(\\cos^2\\theta - \\sin^2\\theta)', operation: 'Factor as a² - b² = (a+b)(a-b)' },
+                { id: 's2', name: 'Pythagorean Identity', expression: '1 \\cdot (\\cos^2\\theta - \\sin^2\\theta)', operation: 'Apply cos²θ + sin²θ = 1' },
+                { id: 's3', name: 'Double-Angle Identity', expression: '\\cos 2\\theta', operation: 'Apply cos²θ - sin²θ = cos 2θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Factor Incorrectly', expression: '(\\cos^2\\theta - \\sin^2\\theta)^2' },
+                { id: 'd2', name: 'Apply Wrong Identity', expression: '1 - 2\\sin^2\\theta' },
+            ]
+        },
+        {
+            id: 10,
+            lhs: '\\dfrac{\\sin 2\\theta}{1 + \\cos 2\\theta}',
+            rhs: '\\tan\\theta',
+            difficulty: 3,
+            unit: 'advanced',
+            steps: [
+                { id: 's1', name: 'Double-Angle Identities', expression: '\\dfrac{2\\sin\\theta\\cos\\theta}{1 + 2\\cos^2\\theta - 1}', operation: 'Apply sin 2θ = 2sinθcosθ and cos 2θ = 2cos²θ - 1' },
+                { id: 's2', name: 'Simplify Denominator', expression: '\\dfrac{2\\sin\\theta\\cos\\theta}{2\\cos^2\\theta}', operation: 'Simplify 1 + 2cos²θ - 1 = 2cos²θ' },
+                { id: 's3', name: 'Cancel Common Factors', expression: '\\dfrac{\\sin\\theta}{\\cos\\theta}', operation: 'Cancel 2 and one cos θ' },
+                { id: 's4', name: 'Quotient Identity', expression: '\\tan\\theta', operation: 'Replace sin θ / cos θ with tan θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Wrong Double-Angle', expression: '\\dfrac{2\\sin\\theta\\cos\\theta}{1 + 1 - 2\\sin^2\\theta}' },
+            ]
+        },
+        {
+            id: 11,
+            lhs: '\\sin 2\\theta',
+            rhs: '\\dfrac{2\\tan\\theta}{1+\\tan^2\\theta}',
+            difficulty: 3,
+            unit: 'advanced',
+            steps: [
+                { id: 's1', name: 'Double-Angle Identity', expression: '2\\sin\\theta\\cos\\theta', operation: 'Apply sin 2θ = 2 sin θ cos θ' },
+                { id: 's2', name: 'Multiply by 1', expression: '\\dfrac{2\\sin\\theta\\cos\\theta}{1}', operation: 'Write as a fraction over 1' },
+                { id: 's3', name: 'Pythagorean Identity', expression: '\\dfrac{2\\sin\\theta\\cos\\theta}{\\sin^2\\theta + \\cos^2\\theta}', operation: 'Replace 1 with sin²θ + cos²θ' },
+                { id: 's4', name: 'Divide by cos²θ', expression: '\\dfrac{\\frac{2\\sin\\theta}{\\cos\\theta}}{\\frac{\\sin^2\\theta}{\\cos^2\\theta} + 1}', operation: 'Divide numerator and denominator by cos²θ' },
+                { id: 's5', name: 'Quotient Identities', expression: '\\dfrac{2\\tan\\theta}{\\tan^2\\theta + 1}', operation: 'Replace sinθ/cosθ with tanθ and sin²θ/cos²θ with tan²θ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Wrong Approach', expression: '2\\sin\\theta\\cos\\theta \\cdot \\dfrac{1}{\\cos^2\\theta}' },
+            ]
+        },
+        {
+            id: 12,
+            lhs: '\\tan\\dfrac{\\theta}{2}',
+            rhs: '\\dfrac{1-\\cos\\theta}{\\sin\\theta}',
+            difficulty: 3,
+            unit: 'advanced',
+            steps: [
+                { id: 's1', name: 'Half-Angle Identities', expression: '\\dfrac{\\sin\\frac{\\theta}{2}}{\\cos\\frac{\\theta}{2}}', operation: 'Write tan(θ/2) as sin(θ/2)/cos(θ/2)' },
+                { id: 's2', name: 'Multiply by 2cos(θ/2)', expression: '\\dfrac{2\\sin\\frac{\\theta}{2}\\cos\\frac{\\theta}{2}}{2\\cos^2\\frac{\\theta}{2}}', operation: 'Multiply num and denom by 2cos(θ/2)' },
+                { id: 's3', name: 'Double-Angle (Numerator)', expression: '\\dfrac{\\sin\\theta}{2\\cos^2\\frac{\\theta}{2}}', operation: 'Apply 2sin(θ/2)cos(θ/2) = sinθ' },
+                { id: 's4', name: 'Half-Angle (Denominator)', expression: '\\dfrac{\\sin\\theta}{1 + \\cos\\theta}', operation: 'Apply 2cos²(θ/2) = 1 + cosθ' },
+                { id: 's5', name: 'Multiply by Conjugate', expression: '\\dfrac{\\sin\\theta(1-\\cos\\theta)}{(1+\\cos\\theta)(1-\\cos\\theta)}', operation: 'Multiply by (1-cosθ)/(1-cosθ)' },
+                { id: 's6', name: 'Simplify', expression: '\\dfrac{\\sin\\theta(1-\\cos\\theta)}{\\sin^2\\theta}', operation: 'Apply (1+cosθ)(1-cosθ) = sin²θ' },
+                { id: 's7', name: 'Cancel sinθ', expression: '\\dfrac{1-\\cos\\theta}{\\sin\\theta}', operation: 'Cancel sinθ' },
+            ],
+            distractors: [
+                { id: 'd1', name: 'Direct Half-Angle', expression: '\\pm\\sqrt{\\dfrac{1-\\cos\\theta}{1+\\cos\\theta}}' },
+            ]
+        },
+    ];
+
+    // ── State ─────────────────────────────────────────────────────
+    let currentIdentity = null;
+    let currentStepIndex = 0;     // Next expected step
+    let placedSteps = [];         // Steps successfully placed
+    let hintsUsed = 0;
+    let completed = new Set();    // IDs of completed identities
+    let activeFilter = 'all';     // 'all', 'fundamental', 'advanced'
+    let solutionShown = false;
+
+    // Load progress from localStorage
+    try {
+        const saved = localStorage.getItem('proofBuilder_completed');
+        if (saved) completed = new Set(JSON.parse(saved));
+    } catch(e) {}
+
+    // ── DOM refs ──────────────────────────────────────────────────
+    const identityDisplay = document.getElementById('identityDisplay');
+    const toolBank        = document.getElementById('toolBank');
+    const proofWorkspace  = document.getElementById('proofWorkspace');
+    const identitySelect  = document.getElementById('identitySelect');
+    const progressText    = document.getElementById('progressText');
+    const progressFill    = document.getElementById('progressFill');
+    const stepCount       = document.getElementById('stepCount');
+    const proofProgress   = document.getElementById('proofProgress');
+    const btnHint         = document.getElementById('btnHint');
+    const btnSolution     = document.getElementById('btnSolution');
+    const btnUndo         = document.getElementById('btnUndo');
+    const btnRef          = document.getElementById('btnRef');
+    const btnRefClose     = document.getElementById('btnRefClose');
+    const refPanel        = document.getElementById('refPanel');
+    const unitFilter      = document.getElementById('unitFilter');
+
+    // ── Reference panel ───────────────────────────────────────────
+    function populateReference() {
+        const refs = {
+            refRecip: '\\csc\\theta = \\frac{1}{\\sin\\theta}, \\quad \\sec\\theta = \\frac{1}{\\cos\\theta}, \\quad \\cot\\theta = \\frac{1}{\\tan\\theta}',
+            refQuot: '\\tan\\theta = \\frac{\\sin\\theta}{\\cos\\theta}, \\quad \\cot\\theta = \\frac{\\cos\\theta}{\\sin\\theta}',
+            refPyth: '\\sin^2\\theta + \\cos^2\\theta = 1, \\quad 1 + \\tan^2\\theta = \\sec^2\\theta, \\quad 1 + \\cot^2\\theta = \\csc^2\\theta',
+            refDouble: '\\sin 2\\theta = 2\\sin\\theta\\cos\\theta, \\quad \\cos 2\\theta = \\cos^2\\theta - \\sin^2\\theta = 1 - 2\\sin^2\\theta = 2\\cos^2\\theta - 1',
+            refHalf: '\\sin\\frac{\\theta}{2} = \\pm\\sqrt{\\frac{1-\\cos\\theta}{2}}, \\quad \\cos\\frac{\\theta}{2} = \\pm\\sqrt{\\frac{1+\\cos\\theta}{2}}'
+        };
+        for (const [id, latex] of Object.entries(refs)) {
+            const el = document.getElementById(id);
+            if (el) katex.render(latex, el, { displayMode: true, throwOnError: false });
+        }
+    }
+
+    // ── Helpers ────────────────────────────────────────────────────
+    function renderKatex(el, latex, display = false) {
+        try {
+            katex.render(latex, el, { displayMode: display, throwOnError: false });
+        } catch(e) {
+            el.textContent = latex;
+        }
+    }
+
+    function getFilteredIdentities() {
+        if (activeFilter === 'all') return IDENTITIES;
+        return IDENTITIES.filter(id => id.unit === activeFilter);
+    }
+
+    function isUnlocked(identity) {
+        // First identity of each difficulty tier is always unlocked
+        const sorted = getFilteredIdentities();
+        const idx = sorted.indexOf(identity);
+        if (idx === 0) return true;
+        // Check if the previous identity is completed
+        const prev = sorted[idx - 1];
+        return prev ? completed.has(prev.id) : true;
+    }
+
+    function getNextUnlocked() {
+        const sorted = getFilteredIdentities();
+        for (const id of sorted) {
+            if (!completed.has(id.id) && isUnlocked(id)) return id;
+        }
+        return sorted[0]; // fallback
+    }
+
+    function saveProgress() {
+        try {
+            localStorage.setItem('proofBuilder_completed', JSON.stringify([...completed]));
+        } catch(e) {}
+    }
+
+    // ── Identity selector ─────────────────────────────────────────
+    function populateSelect() {
+        identitySelect.innerHTML = '';
+        const filtered = getFilteredIdentities();
+        filtered.forEach((id, i) => {
+            const opt = document.createElement('option');
+            opt.value = id.id;
+            const stars = '⭐'.repeat(id.difficulty);
+            const lock = isUnlocked(id) ? '' : '🔒 ';
+            const check = completed.has(id.id) ? '✅ ' : '';
+            opt.textContent = `${check}${lock}#${id.id}: ${stars}`;
+            opt.disabled = !isUnlocked(id);
+            if (!isUnlocked(id)) opt.classList.add('locked');
+            identitySelect.appendChild(opt);
+        });
+        if (currentIdentity) {
+            identitySelect.value = currentIdentity.id;
+        }
+    }
+
+    function updateProgress() {
+        const total = getFilteredIdentities().length;
+        const done = getFilteredIdentities().filter(id => completed.has(id.id)).length;
+        progressText.textContent = `${done} / ${total}`;
+        progressFill.style.width = total > 0 ? `${(done / total) * 100}%` : '0%';
+    }
+
+    // ── Load Identity ─────────────────────────────────────────────
+    function loadIdentity(identity) {
+        currentIdentity = identity;
+        currentStepIndex = 0;
+        placedSteps = [];
+        hintsUsed = 0;
+        solutionShown = false;
+
+        // Header display
+        renderKatex(identityDisplay, `${identity.lhs} = ${identity.rhs}`, false);
+
+        // Build tool bank
+        buildToolBank();
+
+        // Build workspace (LHS as step 0)
+        buildWorkspace();
+
+        // Update controls
+        btnHint.disabled = false;
+        btnUndo.disabled = true;
+
+        identitySelect.value = identity.id;
+        updateProgress();
+
+        proofProgress.textContent = `Step 0 / ${identity.steps.length}`;
+    }
+
+    // ── Tool Bank ─────────────────────────────────────────────────
+    function buildToolBank() {
+        toolBank.innerHTML = '';
+        const allCards = [...currentIdentity.steps, ...currentIdentity.distractors];
+        // Shuffle
+        for (let i = allCards.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [allCards[i], allCards[j]] = [allCards[j], allCards[i]];
+        }
+
+        allCards.forEach(card => {
+            const el = document.createElement('div');
+            el.className = 'step-card';
+            el.draggable = true;
+            el.dataset.id = card.id;
+
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'step-card-name';
+            nameDiv.textContent = card.name;
+
+            const mathDiv = document.createElement('div');
+            mathDiv.className = 'step-card-math';
+            renderKatex(mathDiv, card.expression, false);
+
+            el.appendChild(nameDiv);
+            el.appendChild(mathDiv);
+
+            // Drag events
+            el.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', card.id);
+                el.classList.add('dragging');
+            });
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging');
+            });
+
+            // Touch fallback
+            el.addEventListener('click', () => {
+                if (el.classList.contains('used')) return;
+                handleDrop(card.id);
+            });
+
+            toolBank.appendChild(el);
+        });
+
+        stepCount.textContent = `${allCards.length} cards`;
+    }
+
+    // ── Workspace ─────────────────────────────────────────────────
+    function buildWorkspace() {
+        proofWorkspace.innerHTML = '';
+
+        // Step 0: LHS
+        addProofStep(0, 'Given (LHS)', currentIdentity.lhs, '');
+
+        // Add placed steps
+        placedSteps.forEach((step, i) => {
+            addEqualsConnector();
+            addProofStep(i + 1, step.name, step.expression, step.operation);
+        });
+
+        // If not complete, add drop zone
+        if (currentStepIndex < currentIdentity.steps.length) {
+            addEqualsConnector();
+            addDropZone();
+        } else if (!solutionShown) {
+            // Show completion
+            addEqualsConnector();
+            addCompletionBanner();
+        }
+    }
+
+    function addProofStep(num, label, latex, operation) {
+        const step = document.createElement('div');
+        step.className = 'proof-step';
+
+        const isAnswer = (num === currentIdentity.steps.length && currentStepIndex >= currentIdentity.steps.length);
+
+        step.innerHTML = `
+            <div class="proof-line"></div>
+            <div class="proof-step-content">
+                <div class="proof-step-label">
+                    <span class="step-num">${num}</span>${label}
+                </div>
+                <div class="proof-step-eq${isAnswer ? ' answer' : ''}" id="proof-eq-${num}"></div>
+                ${operation ? `<div class="proof-step-op">↳ ${operation}</div>` : ''}
+            </div>
+        `;
+
+        proofWorkspace.appendChild(step);
+        renderKatex(document.getElementById(`proof-eq-${num}`), latex, true);
+    }
+
+    function addEqualsConnector() {
+        const conn = document.createElement('div');
+        conn.className = 'equals-connector';
+        conn.innerHTML = `
+            <div class="equals-sign">=</div>
+            <div class="equals-line"></div>
+        `;
+        proofWorkspace.appendChild(conn);
+    }
+
+    function addDropZone() {
+        const zone = document.createElement('div');
+        zone.className = 'drop-zone';
+        zone.id = 'dropZone';
+        zone.textContent = 'Drag a step card here (or click a card)';
+
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            zone.classList.add('drag-over');
+        });
+
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('drag-over');
+        });
+
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            const cardId = e.dataTransfer.getData('text/plain');
+            handleDrop(cardId);
+        });
+
+        proofWorkspace.appendChild(zone);
+    }
+
+    function addCompletionBanner() {
+        const banner = document.createElement('div');
+        banner.className = 'completion-banner visible';
+
+        const next = getNextUnlocked();
+        const hasNext = next && next.id !== currentIdentity.id && !completed.has(next.id);
+
+        banner.innerHTML = `
+            <h3>✅ Proof Complete!</h3>
+            <p>You verified this identity${hintsUsed > 0 ? ` using ${hintsUsed} hint${hintsUsed > 1 ? 's' : ''}` : ' with no hints'}.</p>
+            ${hasNext ? '<button class="next-identity-btn" id="btnNextIdentity">Next Identity →</button>' : '<p style="margin-top:8px;font-weight:700;color:var(--green);">All identities completed! 🎉</p>'}
+        `;
+
+        proofWorkspace.appendChild(banner);
+
+        if (hasNext) {
+            document.getElementById('btnNextIdentity').addEventListener('click', () => {
+                loadIdentity(next);
+                populateSelect();
+            });
+        }
+    }
+
+    // ── Drop handler ──────────────────────────────────────────────
+    function handleDrop(cardId) {
+        if (currentStepIndex >= currentIdentity.steps.length) return;
+        if (solutionShown) return;
+
+        const expectedStep = currentIdentity.steps[currentStepIndex];
+        const dropZone = document.getElementById('dropZone');
+
+        if (cardId === expectedStep.id) {
+            // CORRECT
+            dropZone.classList.add('correct');
+
+            // Mark card as used
+            const cardEl = toolBank.querySelector(`[data-id="${cardId}"]`);
+            if (cardEl) cardEl.classList.add('used');
+
+            // Remove hint glow from all cards
+            toolBank.querySelectorAll('.hint-glow').forEach(c => c.classList.remove('hint-glow'));
+
+            placedSteps.push(expectedStep);
+            currentStepIndex++;
+            btnUndo.disabled = false;
+
+            // Check completion
+            if (currentStepIndex >= currentIdentity.steps.length) {
+                completed.add(currentIdentity.id);
+                saveProgress();
+                populateSelect();
+            }
+
+            // Rebuild workspace after a brief delay for the animation
+            setTimeout(() => {
+                buildWorkspace();
+                proofProgress.textContent = `Step ${currentStepIndex} / ${currentIdentity.steps.length}`;
+                // Scroll to bottom
+                proofWorkspace.scrollTop = proofWorkspace.scrollHeight;
+            }, 300);
+
+        } else {
+            // Check if it's a distractor
+            const isDistractor = currentIdentity.distractors.some(d => d.id === cardId);
+
+            // WRONG
+            if (dropZone) {
+                dropZone.classList.add('wrong');
+                setTimeout(() => dropZone.classList.remove('wrong'), 600);
+            }
+        }
+    }
+
+    // ── Hint ──────────────────────────────────────────────────────
+    btnHint.addEventListener('click', () => {
+        if (currentStepIndex >= currentIdentity.steps.length) return;
+        if (solutionShown) return;
+
+        hintsUsed++;
+        const expected = currentIdentity.steps[currentStepIndex];
+
+        if (hintsUsed % 2 === 1) {
+            // First hint: highlight the correct card
+            const cardEl = toolBank.querySelector(`[data-id="${expected.id}"]`);
+            if (cardEl) {
+                cardEl.classList.add('hint-glow');
+                cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        } else {
+            // Second hint: auto-place the step
+            handleDrop(expected.id);
+        }
+    });
+
+    // ── Undo ──────────────────────────────────────────────────────
+    btnUndo.addEventListener('click', () => {
+        if (placedSteps.length === 0) return;
+        if (solutionShown) return;
+
+        const lastStep = placedSteps.pop();
+        currentStepIndex--;
+
+        // Un-mark the card
+        const cardEl = toolBank.querySelector(`[data-id="${lastStep.id}"]`);
+        if (cardEl) cardEl.classList.remove('used');
+
+        // If we were complete, un-complete
+        if (completed.has(currentIdentity.id) && currentStepIndex < currentIdentity.steps.length) {
+            completed.delete(currentIdentity.id);
+            saveProgress();
+            populateSelect();
+        }
+
+        btnUndo.disabled = placedSteps.length === 0;
+        buildWorkspace();
+        proofProgress.textContent = `Step ${currentStepIndex} / ${currentIdentity.steps.length}`;
+    });
+
+    // ── Show Solution ─────────────────────────────────────────────
+    btnSolution.addEventListener('click', () => {
+        if (solutionShown) return;
+        solutionShown = true;
+
+        // Place all remaining steps
+        proofWorkspace.innerHTML = '';
+        addProofStep(0, 'Given (LHS)', currentIdentity.lhs, '');
+
+        currentIdentity.steps.forEach((step, i) => {
+            addEqualsConnector();
+            addProofStep(i + 1, step.name, step.expression, step.operation);
+        });
+
+        // Mark all cards used
+        toolBank.querySelectorAll('.step-card').forEach(c => c.classList.add('used'));
+
+        proofProgress.textContent = `Solution shown`;
+    });
+
+    // ── Reference panel ───────────────────────────────────────────
+    btnRef.addEventListener('click', () => refPanel.classList.toggle('open'));
+    btnRefClose.addEventListener('click', () => refPanel.classList.remove('open'));
+
+    // ── Unit filter ───────────────────────────────────────────────
+    unitFilter.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        activeFilter = btn.dataset.filter;
+        unitFilter.querySelectorAll('.filter-btn').forEach(b =>
+            b.classList.toggle('active', b === btn)
+        );
+        populateSelect();
+        updateProgress();
+
+        // If current identity is filtered out, switch
+        const filtered = getFilteredIdentities();
+        if (!filtered.includes(currentIdentity)) {
+            const next = getNextUnlocked();
+            if (next) loadIdentity(next);
+        }
+    });
+
+    // ── Identity selector ─────────────────────────────────────────
+    identitySelect.addEventListener('change', () => {
+        const id = parseInt(identitySelect.value);
+        const identity = IDENTITIES.find(i => i.id === id);
+        if (identity && isUnlocked(identity)) {
+            loadIdentity(identity);
+        }
+    });
+
+    // ── Init ──────────────────────────────────────────────────────
+    populateReference();
+    populateSelect();
+    updateProgress();
+
+    const startIdentity = getNextUnlocked() || IDENTITIES[0];
+    loadIdentity(startIdentity);
+})();
+</script>
+</body>
+</html>

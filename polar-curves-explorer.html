@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polar Curves Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --pink: #db2777;
+            --purple: #7c3aed;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Curve colors */
+            --curve-color: #2563eb;
+            --ghost-color: rgba(148, 163, 184, 0.3);
+            --grid-color: #cbd5e1;
+            --axes-color: #64748b;
+            --vector-color: #dc2626;
+            --sweep-color: rgba(37, 99, 235, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-columns: 310px minmax(500px, 1fr) 350px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           CONTROLS PANEL (left)
+           ============================================================ */
+        .controls { overflow-y: auto; }
+
+        .brand {
+            padding: 18px 18px 14px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 { margin: 4px 0 0; font-size: 1.55rem; line-height: 1.1; }
+
+        .brand p {
+            margin-top: 6px; color: #93c5fd;
+            font-size: 0.82rem; line-height: 1.35;
+        }
+
+        .control-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+        }
+
+        .control-group { display: grid; gap: 10px; }
+
+        .group-title {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 4px;
+        }
+
+        .slider-row {
+            display: grid; gap: 6px; padding: 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: var(--soft);
+        }
+
+        .slider-head {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 10px;
+        }
+
+        .slider-head label {
+            font-size: 0.88rem; font-weight: 700; color: #334155;
+        }
+
+        output {
+            min-width: 3.5rem; text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800; color: var(--blue);
+        }
+
+        input[type="range"] { width: 100%; accent-color: var(--blue); }
+
+        .preset-select, .family-select {
+            width: 100%; padding: 8px 12px; border-radius: 8px;
+            border: 1px solid #cbd5e1; background: white;
+            font-size: 0.9rem; font-weight: 600; color: var(--ink);
+            outline: 0; transition: border-color 0.2s;
+        }
+        .preset-select:focus, .family-select:focus { border-color: var(--blue); }
+
+        .checkbox-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.88rem; font-weight: 600; color: #334155;
+            cursor: pointer;
+        }
+        .checkbox-label input {
+            width: 16px; height: 16px; accent-color: var(--blue);
+        }
+
+        .toggle-group {
+            display: flex; gap: 0; border-radius: 8px;
+            overflow: hidden; border: 1px solid #cbd5e1;
+        }
+        .toggle-btn {
+            flex: 1; padding: 6px 8px;
+            background: white; color: var(--muted);
+            font-size: 0.78rem; font-weight: 700;
+            border: none; cursor: pointer;
+            transition: var(--transition);
+        }
+        .toggle-btn + .toggle-btn { border-left: 1px solid #cbd5e1; }
+        .toggle-btn.active {
+            background: var(--navy); color: white;
+        }
+
+        /* Playback styles */
+        .playback-controls {
+            display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center;
+        }
+
+        .play-btn {
+            width: 44px; height: 44px; border-radius: 8px;
+            background: var(--blue); color: white;
+            font-size: 1.15rem; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            transition: var(--transition);
+        }
+        .play-btn:hover { background: #1d4ed8; }
+
+        .reset-btn {
+            height: 44px; padding: 0 14px; border-radius: 8px;
+            background: var(--soft-blue); color: var(--blue);
+            font-weight: 700; font-size: 0.88rem;
+            transition: var(--transition);
+        }
+        .reset-btn:hover { background: #dbeafe; }
+
+        /* ============================================================
+           STAGE PANEL (center)
+           ============================================================ */
+        .stage {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .stage-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .coords-overlay {
+            font-variant-numeric: tabular-nums;
+            font-size: 0.82rem; font-weight: 700; color: var(--muted);
+            display: flex; gap: 12px;
+        }
+
+        .canvas-wrap {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            background: #ffffff;
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+        }
+
+        #polarCanvas {
+            width: 100%; height: 100%;
+            display: block;
+        }
+
+        .canvas-footer {
+            padding: 10px 16px;
+            background: white; border-top: 1px solid #dbeafe;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.82rem; color: var(--muted);
+        }
+
+        .legend {
+            display: flex; gap: 14px; align-items: center;
+        }
+
+        .legend-item {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 0.78rem; font-weight: 600;
+        }
+
+        .legend-swatch {
+            width: 18px; height: 4px; border-radius: 2px;
+        }
+
+        /* ============================================================
+           RIGHT PANEL: INSPECTOR
+           ============================================================ */
+        .inspector {
+            overflow-y: auto;
+            padding: 0;
+            display: flex; flex-direction: column;
+        }
+
+        .inspector-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .inspector-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .inspector-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .inspector-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .inspector-card-header {
+            padding: 8px 14px;
+            background: var(--navy);
+            color: white;
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+        }
+
+        .inspector-card-body {
+            padding: 14px;
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 16px 12px;
+            background: var(--soft-blue);
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+            min-height: 72px;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .props-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .props-table td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .props-table tr:last-child td { border-bottom: none; }
+
+        .props-table td:first-child {
+            font-weight: 700; color: var(--navy);
+            width: 45%;
+        }
+
+        .props-table td:last-child {
+            color: var(--ink);
+        }
+
+        .symmetry-badges {
+            display: flex; flex-direction: column; gap: 6px;
+        }
+
+        .sym-badge {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 6px 10px; border-radius: 6px;
+            font-size: 0.78rem; font-weight: 700;
+            border: 1px solid #e2e8f0; background: var(--soft);
+            color: var(--muted);
+        }
+
+        .sym-badge.active {
+            background: var(--soft-green); border-color: #bbf7d0;
+            color: var(--green);
+        }
+
+        .sym-badge-desc {
+            font-size: 0.68rem; font-weight: 600; color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .key-points-table-wrap {
+            max-height: 180px; overflow-y: auto;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+        }
+
+        .key-points-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.78rem; text-align: center;
+        }
+
+        .key-points-table th, .key-points-table td {
+            padding: 6px; border-bottom: 1px solid #e2e8f0;
+        }
+
+        .key-points-table th {
+            background: var(--soft); font-weight: 700; color: var(--navy);
+            position: sticky; top: 0; z-index: 1; box-shadow: 0 1px 0 #e2e8f0;
+        }
+
+        .key-points-table tr:last-child td { border-bottom: none; }
+
+        .key-points-table tr.active-row {
+            background: var(--soft-orange);
+            font-weight: 700; color: var(--orange);
+        }
+
+        /* Responsive styling */
+        @media (max-width: 1150px) {
+            .app {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+            }
+            .controls { max-height: 380px; }
+            .canvas-wrap { min-height: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ======== LEFT PANEL: CONTROLS ======== -->
+    <div class="panel controls">
+        <div class="brand">
+            <div class="section-label">Unit 8 · Polar Equations</div>
+            <h1>Polar Curves</h1>
+            <p>Explore curves, parameters, symmetries, and tracing behaviors in the polar grid.</p>
+        </div>
+
+        <div class="control-scroll">
+            <!-- Curve Family Selection -->
+            <div class="control-group">
+                <div class="group-title">Curve Family</div>
+                <select class="family-select" id="curveFamilySelect">
+                    <option value="circle">Circle</option>
+                    <option value="limacon">Limaçon / Cardioid</option>
+                    <option value="rose">Rose Curve</option>
+                    <option value="lemniscate">Lemniscate</option>
+                    <option value="spiral">Spiral of Archimedes</option>
+                    <option value="line">Polar Line</option>
+                    <option value="conic">Conic Section</option>
+                </select>
+            </div>
+
+            <!-- Presets Select -->
+            <div class="control-group">
+                <div class="group-title">Presets</div>
+                <select class="preset-select" id="presetSelect">
+                    <!-- Loaded dynamically -->
+                </select>
+            </div>
+
+            <!-- Sliders Box (Dynamic parameters) -->
+            <div class="control-group">
+                <div class="group-title">Equation Constants</div>
+                <div id="slidersContainer" style="display:grid; gap: 10px;">
+                    <!-- Inserted by JS based on selection -->
+                </div>
+            </div>
+
+            <!-- Trig, Sign, & Configuration Settings -->
+            <div class="control-group" id="configGroup">
+                <div class="group-title">Configuration</div>
+                <div style="display:grid; gap: 8px;" id="configContainer">
+                    <!-- Inserted dynamically -->
+                </div>
+            </div>
+
+            <!-- Tracing and Animation Controls -->
+            <div class="control-group">
+                <div class="group-title">Tracing Animation</div>
+                <div class="playback-controls">
+                    <button class="play-btn" id="btnPlay" aria-label="Play">▶</button>
+                    <button class="reset-btn" id="btnReset">Reset</button>
+                </div>
+                <div class="slider-row" style="margin-top: 6px;">
+                    <div class="slider-head">
+                        <label for="speedSlider">Trace Speed</label>
+                        <output id="speedOutput">Medium</output>
+                    </div>
+                    <input type="range" id="speedSlider" min="1" max="5" value="3">
+                </div>
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="thetaMaxSlider">Max Trace θ</label>
+                        <output id="thetaMaxOutput">2π</output>
+                    </div>
+                    <input type="range" id="thetaMaxSlider" min="1" max="12" value="2" step="1">
+                </div>
+            </div>
+
+            <!-- Visualization Options -->
+            <div class="control-group">
+                <div class="group-title">Visualization Options</div>
+                <div style="display:grid; gap: 8px;">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkShowGrid" checked> Show Polar Grid
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkShowVector" checked> Show Radial Vector
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkShowSwept" checked> Show Swept Area
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="chkShowGhost" checked> Show Ghost Curve
+                    </label>
+                </div>
+            </div>
+
+            <button class="reset-btn" id="btnGlobalReset" style="margin-top:10px;">Reset to Standard Default</button>
+        </div>
+    </div>
+
+    <!-- ======== CENTER PANEL: STAGE ======== -->
+    <div class="panel stage">
+        <div class="stage-header">
+            <h2 id="curveNameDisplay">Polar Graph</h2>
+            <div class="coords-overlay" id="coordsOverlay">
+                <div>θ = 0.00 rad</div>
+                <div>r = 0.00</div>
+                <div>(x, y) = (0.00, 0.00)</div>
+            </div>
+        </div>
+
+        <div class="canvas-wrap">
+            <canvas id="polarCanvas"></canvas>
+        </div>
+
+        <div class="canvas-footer">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-swatch" style="background: var(--blue);"></div>
+                    <span>Curve Trace</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-swatch" style="background: var(--ghost-color); border: 1px dashed var(--muted);"></div>
+                    <span>Full Curve</span>
+                </div>
+            </div>
+            <span id="canvasInstructions">Drag to pan · Scroll to zoom</span>
+        </div>
+    </div>
+
+    <!-- ======== RIGHT PANEL: INSPECTOR ======== -->
+    <div class="panel inspector">
+        <div class="inspector-header">
+            <h2>Curve Inspector</h2>
+        </div>
+
+        <div class="inspector-scroll">
+            <!-- Equation Card -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Equation</div>
+                <div class="inspector-card-body">
+                    <div class="equation-box" id="equationBox">
+                        <!-- KaTeX math rendering -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classification Card -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Classification</div>
+                <div class="inspector-card-body">
+                    <div class="props-table">
+                        <table class="props-table">
+                            <tr>
+                                <td>Family</td>
+                                <td id="infoFamily" style="font-weight:700;">Limaçon</td>
+                            </tr>
+                            <tr>
+                                <td>Sub-type</td>
+                                <td id="infoSubtype" style="color:var(--blue);font-weight:700;">Inner Loop</td>
+                            </tr>
+                            <tr>
+                                <td>Max Distance</td>
+                                <td id="infoMaxDist" style="font-variant-numeric:tabular-nums;">r = 5.00</td>
+                            </tr>
+                            <tr>
+                                <td>Min Distance</td>
+                                <td id="infoMinDist" style="font-variant-numeric:tabular-nums;">r = 1.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Symmetries Card -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Symmetry Analysis</div>
+                <div class="inspector-card-body">
+                    <div class="symmetry-badges">
+                        <div class="sym-badge" id="symPolar">
+                            <div>Polar Axis (x-axis)</div>
+                            <span class="badge-status">Testing</span>
+                        </div>
+                        <div class="sym-badge" id="symYAxis">
+                            <div>Line θ = π/2 (y-axis)</div>
+                            <span class="badge-status">Testing</span>
+                        </div>
+                        <div class="sym-badge" id="symPole">
+                            <div>The Pole (Origin)</div>
+                            <span class="badge-status">Testing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Points Table Card -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Table of Key Points</div>
+                <div class="inspector-card-body" style="padding: 10px;">
+                    <div class="key-points-table-wrap">
+                        <table class="key-points-table" id="keyPointsTable">
+                            <thead>
+                                <tr>
+                                    <th>θ (rad)</th>
+                                    <th>θ (deg)</th>
+                                    <th>r</th>
+                                    <th>(x, y)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="keyPointsBody">
+                                <!-- Loaded dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+    'use strict';
+
+    // ── Predefined Presets ──────────────────────────────────────────
+    const PRESETS = {
+        circle: [
+            { name: "Origin Circle (r = 4)", params: { a: 4 }, type: "origin", trig: "cos", sign: "+" },
+            { name: "Horizontal Offset (r = 6 cos θ)", params: { a: 6 }, type: "xaxis", trig: "cos", sign: "+" },
+            { name: "Vertical Offset (r = 5 sin θ)", params: { a: 5 }, type: "yaxis", trig: "sin", sign: "+" }
+        ],
+        limacon: [
+            { name: "Cardioid (r = 2 + 2 cos θ)", params: { a: 2, b: 2 }, trig: "cos", sign: "+" },
+            { name: "Limaçon: Inner Loop (r = 2 - 4 cos θ)", params: { a: 2, b: 4 }, trig: "cos", sign: "-" },
+            { name: "Limaçon: Dimpled (r = 3 + 2 cos θ)", params: { a: 3, b: 2 }, trig: "cos", sign: "+" },
+            { name: "Limaçon: Convex (r = 4 + 1.5 sin θ)", params: { a: 4, b: 1.5 }, trig: "sin", sign: "+" }
+        ],
+        rose: [
+            { name: "3-Petal Rose (r = 5 cos 3θ)", params: { a: 5, n: 3 }, trig: "cos" },
+            { name: "4-Petal Rose (r = 5 sin 2θ)", params: { a: 5, n: 2 }, trig: "sin" },
+            { name: "8-Petal Rose (r = 5 cos 4θ)", params: { a: 5, n: 4 }, trig: "cos" },
+            { name: "5-Petal Rose (r = 6 sin 5θ)", params: { a: 6, n: 5 }, trig: "sin" }
+        ],
+        lemniscate: [
+            { name: "Lemniscate (r² = 16 cos 2θ)", params: { a: 4 }, trig: "cos" },
+            { name: "Lemniscate: Vertical (r² = 16 sin 2θ)", params: { a: 4 }, trig: "sin" }
+        ],
+        spiral: [
+            { name: "Archimedean (r = 0.3θ)", params: { a: 0.3 } },
+            { name: "Rapid Spiral (r = 0.6θ)", params: { a: 0.6 } }
+        ],
+        line: [
+            { name: "Vertical Line (r = 3 sec θ)", params: { d: 3, alpha: 0 } },
+            { name: "Horizontal Line (r = 3 csc θ)", params: { d: 3, alpha: 1.5708 } }, // pi/2
+            { name: "Rotated Line (r = 2 sec(θ - π/4))", params: { d: 2, alpha: 0.7854 } }
+        ],
+        conic: [
+            { name: "Ellipse (e = 0.5, p = 3)", params: { e: 0.5, p: 3 }, trig: "cos", sign: "-" },
+            { name: "Parabola (e = 1.0, p = 2)", params: { e: 1.0, p: 2 }, trig: "cos", sign: "-" },
+            { name: "Hyperbola (e = 1.5, p = 2)", params: { e: 1.5, p: 2 }, trig: "cos", sign: "-" }
+        ]
+    };
+
+    // Default configuration for each family
+    const DEFAULT_CONFIGS = {
+        circle: { params: { a: 4 }, type: "xaxis", trig: "cos", sign: "+" },
+        limacon: { params: { a: 3, b: 2 }, trig: "cos", sign: "+" },
+        rose: { params: { a: 5, n: 3 }, trig: "cos" },
+        lemniscate: { params: { a: 4 }, trig: "cos" },
+        spiral: { params: { a: 0.3 } },
+        line: { params: { d: 3, alpha: 0 } },
+        conic: { params: { e: 0.5, p: 3 }, trig: "cos", sign: "-" }
+    };
+
+    // ── State variables ─────────────────────────────────────────────
+    let currentFamily = "limacon";
+    let activeParams = { a: 3, b: 2 };
+    let currentTrig = "cos";
+    let currentSign = "+";
+    let currentCircleType = "xaxis"; // 'origin', 'xaxis', 'yaxis'
+
+    // Tracing Animation State
+    let isPlaying = false;
+    let traceTheta = 0.0;
+    let traceMaxTheta = 2 * Math.PI; // in radians
+    let lastFrameTime = 0;
+
+    // Viewport Panning & Zooming
+    let zoomLevel = 45; // pixels per unit
+    let panOffset = { x: 0, y: 0 };
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+
+    // DOM references
+    const curveFamilySelect = document.getElementById('curveFamilySelect');
+    const presetSelect      = document.getElementById('presetSelect');
+    const slidersContainer  = document.getElementById('slidersContainer');
+    const configContainer   = document.getElementById('configContainer');
+    const btnPlay           = document.getElementById('btnPlay');
+    const btnReset          = document.getElementById('btnReset');
+    const speedSlider       = document.getElementById('speedSlider');
+    const speedOutput      = document.getElementById('speedOutput');
+    const thetaMaxSlider    = document.getElementById('thetaMaxSlider');
+    const thetaMaxOutput   = document.getElementById('thetaMaxOutput');
+    const chkShowGrid       = document.getElementById('chkShowGrid');
+    const chkShowVector     = document.getElementById('chkShowVector');
+    const chkShowSwept      = document.getElementById('chkShowSwept');
+    const chkShowGhost      = document.getElementById('chkShowGhost');
+    const btnGlobalReset    = document.getElementById('btnGlobalReset');
+
+    const curveNameDisplay  = document.getElementById('curveNameDisplay');
+    const coordsOverlay     = document.getElementById('coordsOverlay');
+    const equationBox       = document.getElementById('equationBox');
+
+    const infoFamily        = document.getElementById('infoFamily');
+    const infoSubtype       = document.getElementById('infoSubtype');
+    const infoMaxDist       = document.getElementById('infoMaxDist');
+    const infoMinDist       = document.getElementById('infoMinDist');
+
+    const symPolar          = document.getElementById('symPolar');
+    const symYAxis          = document.getElementById('symYAxis');
+    const symPole           = document.getElementById('symPole');
+
+    const keyPointsBody     = document.getElementById('keyPointsBody');
+
+    const canvas            = document.getElementById('polarCanvas');
+    const ctx               = canvas.getContext('2d');
+
+    // ── Math Helpers ────────────────────────────────────────────────
+    function getRadius(theta, family = currentFamily, params = activeParams, trig = currentTrig, sign = currentSign, circleType = currentCircleType) {
+        const trigFunc = trig === "cos" ? Math.cos : Math.sin;
+        const s = sign === "+" ? 1 : -1;
+
+        switch (family) {
+            case "circle":
+                if (circleType === "origin") return params.a;
+                return params.a * trigFunc(theta);
+
+            case "limacon":
+                // r = a + b * trig(theta)
+                return params.a + s * params.b * trigFunc(theta);
+
+            case "rose":
+                // r = a * trig(n * theta)
+                return params.a * trigFunc(params.n * theta);
+
+            case "lemniscate":
+                // r^2 = a^2 * cos(2theta) or sin(2theta)
+                // Evaluate positive branch: r = a * sqrt(trig(2theta))
+                const val = trigFunc(2 * theta);
+                if (val < 0) return null; // imaginary
+                return params.a * Math.sqrt(val);
+
+            case "spiral":
+                // r = a * theta
+                return params.a * theta;
+
+            case "line":
+                // r = d / cos(theta - alpha)
+                const denom = Math.cos(theta - params.alpha);
+                if (Math.abs(denom) < 1e-4) return null; // vertical asymptote
+                const radial = params.d / denom;
+                if (radial < -100 || radial > 100) return null;
+                return radial;
+
+            case "conic":
+                // r = e*p / (1 + s * e * trig(theta))
+                const denominator = 1 + s * params.e * trigFunc(theta);
+                if (Math.abs(denominator) < 1e-4) return null;
+                const rVal = (params.e * params.p) / denominator;
+                if (rVal < -100 || rVal > 100) return null;
+                return rVal;
+
+            default:
+                return 0;
+        }
+    }
+
+    // ── Viewport to Canvas transforms ─────────────────────────────────
+    function getCanvasCoords(x, y) {
+        const cx = canvas.width / 2 + panOffset.x;
+        const cy = canvas.height / 2 + panOffset.y;
+        return {
+            x: cx + x * zoomLevel,
+            y: cy - y * zoomLevel // Flip Y for standard Cartesian graph coords
+        };
+    }
+
+    function getPolarCoordsFromClient(clientX, clientY) {
+        const rect = canvas.getBoundingClientRect();
+        // Client relative to canvas center
+        const cx = canvas.width / 2 + panOffset.x;
+        const cy = canvas.height / 2 + panOffset.y;
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+
+        const x = ((clientX - rect.left) * scaleX - cx) / zoomLevel;
+        const y = -( ((clientY - rect.top) * scaleY - cy) / zoomLevel );
+
+        const r = Math.sqrt(x * x + y * y);
+        let theta = Math.atan2(y, x);
+        if (theta < 0) theta += 2 * Math.PI;
+
+        return { r, theta, x, y };
+    }
+
+    // ── Setup Dynamic Sliders and Config inputs ───────────────────────
+    function setupSliders() {
+        slidersContainer.innerHTML = '';
+        const config = DEFAULT_CONFIGS[currentFamily];
+
+        // Sliders depends on the family
+        const addSlider = (id, label, min, max, val, step = 0.1, labelFormatter = (v)=>v) => {
+            const row = document.createElement('div');
+            row.className = 'slider-row';
+
+            const head = document.createElement('div');
+            head.className = 'slider-head';
+            head.innerHTML = `<label for="${id}">${label}</label><output id="${id}Out">${labelFormatter(val)}</output>`;
+
+            const input = document.createElement('input');
+            input.type = 'range';
+            input.id = id;
+            input.min = min;
+            input.max = max;
+            input.value = val;
+            input.step = step;
+
+            input.addEventListener('input', (e) => {
+                const num = parseFloat(e.target.value);
+                activeParams[id.replace('slider_','')] = num;
+                document.getElementById(`${id}Out`).value = labelFormatter(num);
+                onParamsChanged();
+            });
+
+            row.appendChild(head);
+            row.appendChild(input);
+            slidersContainer.appendChild(row);
+        };
+
+        if (currentFamily === "circle") {
+            addSlider("slider_a", "Radius/Diameter (a)", 1, 8, activeParams.a || config.params.a, 0.5);
+        } else if (currentFamily === "limacon") {
+            addSlider("slider_a", "Inner Constant (a)", 0.5, 6, activeParams.a || config.params.a, 0.5);
+            addSlider("slider_b", "Trig Coefficient (b)", 0.5, 6, activeParams.b || config.params.b, 0.5);
+        } else if (currentFamily === "rose") {
+            addSlider("slider_a", "Amplitude (a)", 1, 8, activeParams.a || config.params.a, 0.5);
+            addSlider("slider_n", "Petal Frequency (n)", 1, 10, activeParams.n || config.params.n, 1, (v)=>v);
+        } else if (currentFamily === "lemniscate") {
+            addSlider("slider_a", "Scale (a)", 1, 8, activeParams.a || config.params.a, 0.5);
+        } else if (currentFamily === "spiral") {
+            addSlider("slider_a", "Growth factor (a)", 0.1, 1.2, activeParams.a || config.params.a, 0.05);
+        } else if (currentFamily === "line") {
+            addSlider("slider_d", "Pole Distance (d)", 1, 6, activeParams.d || config.params.d, 0.5);
+            addSlider("slider_alpha", "Offset Angle (α)", -Math.PI, Math.PI, activeParams.alpha || config.params.alpha, 0.02, (v)=> {
+                const fraction = v / Math.PI;
+                if (Math.abs(fraction) < 0.05) return "0";
+                return `${fraction.toFixed(2)}π`;
+            });
+        } else if (currentFamily === "conic") {
+            addSlider("slider_e", "Eccentricity (e)", 0.1, 2.0, activeParams.e || config.params.e, 0.05);
+            addSlider("slider_p", "Directrix (p)", 0.5, 6, activeParams.p || config.params.p, 0.5);
+        }
+    }
+
+    function setupConfigGroup() {
+        configContainer.innerHTML = '';
+
+        const addTrigSelect = () => {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = `
+                <div style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:4px;">Trig function</div>
+                <div class="toggle-group" id="trigToggle">
+                    <button class="toggle-btn ${currentTrig === 'cos' ? 'active' : ''}" data-trig="cos">cosine</button>
+                    <button class="toggle-btn ${currentTrig === 'sin' ? 'active' : ''}" data-trig="sin">sine</button>
+                </div>
+            `;
+            wrap.querySelector('#trigToggle').addEventListener('click', (e) => {
+                const btn = e.target.closest('.toggle-btn');
+                if (!btn) return;
+                currentTrig = btn.dataset.trig;
+                wrap.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+                onParamsChanged();
+            });
+            configContainer.appendChild(wrap);
+        };
+
+        const addSignSelect = () => {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = `
+                <div style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:4px;">Operator Sign</div>
+                <div class="toggle-group" id="signToggle">
+                    <button class="toggle-btn ${currentSign === '+' ? 'active' : ''}" data-sign="+">+</button>
+                    <button class="toggle-btn ${currentSign === '-' ? 'active' : ''}" data-sign="-">-</button>
+                </div>
+            `;
+            wrap.querySelector('#signToggle').addEventListener('click', (e) => {
+                const btn = e.target.closest('.toggle-btn');
+                if (!btn) return;
+                currentSign = btn.dataset.sign;
+                wrap.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+                onParamsChanged();
+            });
+            configContainer.appendChild(wrap);
+        };
+
+        if (currentFamily === "circle") {
+            const wrap = document.createElement('div');
+            wrap.innerHTML = `
+                <div style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:4px;">Circle Alignment</div>
+                <select class="preset-select" id="circleTypeSelect">
+                    <option value="origin" ${currentCircleType === 'origin' ? 'selected' : ''}>Centered at Pole (r = a)</option>
+                    <option value="xaxis" ${currentCircleType === 'xaxis' ? 'selected' : ''}>Offset on Polar Axis (r = a cos θ)</option>
+                    <option value="yaxis" ${currentCircleType === 'yaxis' ? 'selected' : ''}>Offset on θ = π/2 Line (r = a sin θ)</option>
+                </select>
+            `;
+            const sel = wrap.querySelector('#circleTypeSelect');
+            sel.addEventListener('change', () => {
+                currentCircleType = sel.value;
+                // update visibility of trig select
+                const trigWrap = document.getElementById('trigWrapDiv');
+                if (trigWrap) {
+                    trigWrap.style.display = currentCircleType === 'origin' ? 'none' : 'block';
+                }
+                onParamsChanged();
+            });
+            configContainer.appendChild(wrap);
+
+            const trigDiv = document.createElement('div');
+            trigDiv.id = 'trigWrapDiv';
+            trigDiv.style.display = currentCircleType === 'origin' ? 'none' : 'block';
+            trigDiv.innerHTML = `
+                <div style="font-size:0.82rem;font-weight:700;color:var(--muted);margin-bottom:4px;">Function</div>
+                <div class="toggle-group" id="circleTrigToggle">
+                    <button class="toggle-btn ${currentTrig === 'cos' ? 'active' : ''}" data-trig="cos">cos θ</button>
+                    <button class="toggle-btn ${currentTrig === 'sin' ? 'active' : ''}" data-trig="sin">sin θ</button>
+                </div>
+            `;
+            trigDiv.querySelector('#circleTrigToggle').addEventListener('click', (e) => {
+                const btn = e.target.closest('.toggle-btn');
+                if (!btn) return;
+                currentTrig = btn.dataset.trig;
+                trigDiv.querySelectorAll('.toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+                onParamsChanged();
+            });
+            configContainer.appendChild(trigDiv);
+
+        } else if (currentFamily === "limacon") {
+            addTrigSelect();
+            addSignSelect();
+        } else if (currentFamily === "rose") {
+            addTrigSelect();
+        } else if (currentFamily === "lemniscate") {
+            addTrigSelect();
+        } else if (currentFamily === "conic") {
+            addTrigSelect();
+            addSignSelect();
+        }
+    }
+
+    // ── Preset list population ────────────────────────────────────
+    function populatePresets() {
+        presetSelect.innerHTML = '';
+        const list = PRESETS[currentFamily] || [];
+        list.forEach((preset, i) => {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = preset.name;
+            presetSelect.appendChild(opt);
+        });
+
+        // Add an option for "Custom" if they modify sliders
+        const customOpt = document.createElement('option');
+        customOpt.value = "custom";
+        customOpt.textContent = "Custom Config";
+        presetSelect.appendChild(customOpt);
+
+        presetSelect.selectedIndex = 0;
+    }
+
+    function applyPreset(index) {
+        const preset = PRESETS[currentFamily][index];
+        if (!preset) return;
+
+        // Apply
+        activeParams = { ...preset.params };
+        if (preset.trig) currentTrig = preset.trig;
+        if (preset.sign) currentSign = preset.sign;
+        if (preset.type) currentCircleType = preset.type;
+
+        // Rebuild controls without wiping active values
+        setupSliders();
+        setupConfigGroup();
+
+        // Adjust theta limit based on family (Archimedean spiral wants e.g. 6π)
+        if (currentFamily === "spiral") {
+            thetaMaxSlider.value = 6; // 6π
+            traceMaxTheta = 6 * Math.PI;
+            thetaMaxOutput.value = "6π";
+        } else {
+            thetaMaxSlider.value = 2; // 2π
+            traceMaxTheta = 2 * Math.PI;
+            thetaMaxOutput.value = "2π";
+        }
+
+        resetTrace();
+        updateInspector();
+        draw();
+    }
+
+    // ── Dynamic text/KaTeX generators ──────────────────────────────
+    function getRNameHtml() {
+        switch (currentFamily) {
+            case "circle": return "Circle";
+            case "limacon": return "Limaçon";
+            case "rose": return "Rose Curve";
+            case "lemniscate": return "Lemniscate";
+            case "spiral": return "Spiral of Archimedes";
+            case "line": return "Polar Line";
+            case "conic": return "Conic Section";
+        }
+    }
+
+    function updateInspector() {
+        // Dynamic name display
+        curveNameDisplay.textContent = getRNameHtml();
+
+        // 1. Math equation
+        let equationLatex = "";
+        let subtypeName = "Standard";
+        let maxRadiusVal = 0;
+        let minRadiusVal = 0;
+
+        const aVal = activeParams.a;
+        const bVal = activeParams.b;
+        const nVal = activeParams.n;
+        const dVal = activeParams.d;
+        const alphaVal = activeParams.alpha;
+        const eVal = activeParams.e;
+        const pVal = activeParams.p;
+        const trigStr = currentTrig === "cos" ? "\\cos" : "\\sin";
+        const signStr = currentSign;
+
+        switch (currentFamily) {
+            case "circle":
+                infoFamily.textContent = "Circle";
+                if (currentCircleType === "origin") {
+                    equationLatex = `r = ${aVal}`;
+                    subtypeName = "Centered at Pole";
+                    maxRadiusVal = aVal;
+                    minRadiusVal = aVal;
+                } else {
+                    equationLatex = `r = ${aVal}${trigStr}\\theta`;
+                    subtypeName = currentTrig === "cos" ? "Offset on Polar Axis" : "Offset on θ = π/2 Line";
+                    maxRadiusVal = aVal;
+                    minRadiusVal = 0;
+                }
+                break;
+
+            case "limacon":
+                infoFamily.textContent = "Limaçon";
+                equationLatex = `r = ${aVal} ${signStr} ${bVal}${trigStr}\\theta`;
+                // Classification logic:
+                const ratio = aVal / bVal;
+                if (Math.abs(aVal - bVal) < 1e-4) {
+                    subtypeName = "Cardioid (a = b)";
+                } else if (ratio < 1) {
+                    subtypeName = "Limaçon with Inner Loop (a < b)";
+                } else if (ratio < 2) {
+                    subtypeName = "Dimpled Limaçon (b < a < 2b)";
+                } else {
+                    subtypeName = "Convex Limaçon (a ≥ 2b)";
+                }
+                maxRadiusVal = aVal + bVal;
+                minRadiusVal = Math.max(0, aVal - bVal);
+                break;
+
+            case "rose":
+                infoFamily.textContent = "Rose Curve";
+                equationLatex = `r = ${aVal}${trigStr}(${nVal}\\theta)`;
+                const numPetals = nVal % 2 === 0 ? 2 * nVal : nVal;
+                subtypeName = `${numPetals}-Petal Rose`;
+                maxRadiusVal = aVal;
+                minRadiusVal = 0;
+                break;
+
+            case "lemniscate":
+                infoFamily.textContent = "Lemniscate";
+                equationLatex = `r^2 = ${aVal * aVal}${trigStr}(2\\theta)`;
+                subtypeName = "Infinity Loop";
+                maxRadiusVal = aVal;
+                minRadiusVal = 0;
+                break;
+
+            case "spiral":
+                infoFamily.textContent = "Spiral";
+                equationLatex = `r = ${aVal}\\theta`;
+                subtypeName = "Archimedean Spiral";
+                maxRadiusVal = aVal * traceMaxTheta;
+                minRadiusVal = 0;
+                break;
+
+            case "line":
+                infoFamily.textContent = "Straight Line";
+                const alphaDeg = (alphaVal * 180 / Math.PI).toFixed(0);
+                if (Math.abs(alphaVal) < 0.05) {
+                    equationLatex = `r = ${dVal}\\sec\\theta`;
+                    subtypeName = "Vertical Line (x = d)";
+                } else if (Math.abs(alphaVal - Math.PI/2) < 0.05) {
+                    equationLatex = `r = ${dVal}\\csc\\theta`;
+                    subtypeName = "Horizontal Line (y = d)";
+                } else {
+                    const alphaSign = alphaVal < 0 ? "+" : "-";
+                    const alphaAbs = Math.abs(alphaVal / Math.PI).toFixed(2);
+                    equationLatex = `r = \\dfrac{${dVal}}{\\cos(\\theta ${alphaSign} ${alphaAbs}\\pi)}`;
+                    subtypeName = `Rotated Line (offset ${alphaDeg}°)`;
+                }
+                maxRadiusVal = Infinity;
+                minRadiusVal = dVal;
+                break;
+
+            case "conic":
+                infoFamily.textContent = "Conic Section";
+                equationLatex = `r = \\dfrac{${(eVal * pVal).toFixed(2)}}{1 ${signStr} ${eVal}${trigStr}\\theta}`;
+                if (eVal < 1) {
+                    subtypeName = `Ellipse (e = ${eVal} < 1)`;
+                    maxRadiusVal = (eVal * pVal) / (1 - eVal);
+                    minRadiusVal = (eVal * pVal) / (1 + eVal);
+                } else if (Math.abs(eVal - 1.0) < 1e-4) {
+                    subtypeName = `Parabola (e = 1.0)`;
+                    maxRadiusVal = Infinity;
+                    minRadiusVal = (eVal * pVal) / (1 + eVal);
+                } else {
+                    subtypeName = `Hyperbola (e = ${eVal} > 1)`;
+                    maxRadiusVal = Infinity;
+                    minRadiusVal = Math.abs((eVal * pVal) / (1 + eVal));
+                }
+                break;
+        }
+
+        // Render equation using KaTeX
+        katex.render(equationLatex, equationBox, { displayMode: true, throwOnError: false });
+
+        // Update properties info
+        infoSubtype.textContent = subtypeName;
+        infoMaxDist.textContent = maxRadiusVal === Infinity ? "Infinity" : `r = ${maxRadiusVal.toFixed(2)}`;
+        infoMinDist.textContent = `r = ${minRadiusVal.toFixed(2)}`;
+
+        // Symmetries checks:
+        let symmetryPolarAxis = false;
+        let symmetryYAxis = false;
+        let symmetryPole = false;
+
+        // Algebraic check rules
+        if (currentFamily === "circle") {
+            if (currentCircleType === "origin") {
+                symmetryPolarAxis = true;
+                symmetryYAxis = true;
+                symmetryPole = true;
+            } else if (currentCircleType === "xaxis" && currentTrig === "cos") {
+                symmetryPolarAxis = true;
+            } else if (currentCircleType === "yaxis" && currentTrig === "sin") {
+                symmetryYAxis = true;
+            }
+        } else if (currentFamily === "limacon") {
+            if (currentTrig === "cos") {
+                symmetryPolarAxis = true;
+            } else {
+                symmetryYAxis = true;
+            }
+        } else if (currentFamily === "rose") {
+            const petals = nVal % 2 === 0 ? 2 * nVal : nVal;
+            if (petals % 2 === 0) {
+                // Even number of petals has all symmetries
+                symmetryPolarAxis = true;
+                symmetryYAxis = true;
+                symmetryPole = true;
+            } else {
+                // Odd number of petals
+                if (currentTrig === "cos") {
+                    symmetryPolarAxis = true;
+                } else {
+                    symmetryYAxis = true;
+                }
+            }
+        } else if (currentFamily === "lemniscate") {
+            symmetryPolarAxis = true;
+            symmetryYAxis = true;
+            symmetryPole = true;
+        } else if (currentFamily === "line") {
+            // Check symmetries based on offset
+            if (Math.abs(alphaVal) < 0.05) {
+                symmetryPolarAxis = true;
+            } else if (Math.abs(alphaVal - Math.PI/2) < 0.05) {
+                symmetryYAxis = true;
+            }
+        } else if (currentFamily === "conic") {
+            if (currentTrig === "cos") {
+                symmetryPolarAxis = true;
+            } else {
+                symmetryYAxis = true;
+            }
+        }
+
+        // Apply badges
+        const applyBadge = (el, active, ruleText) => {
+            el.classList.toggle('active', active);
+            el.querySelector('.badge-status').innerHTML = active
+                ? `<span style="color:var(--green)">Symmetric</span>`
+                : `<span style="color:var(--muted)">None</span>`;
+        };
+        applyBadge(symPolar, symmetryPolarAxis);
+        applyBadge(symYAxis, symmetryYAxis);
+        applyBadge(symPole, symmetryPole);
+
+        // Update Key Points Table
+        populatePointsTable();
+    }
+
+    function populatePointsTable() {
+        keyPointsBody.innerHTML = '';
+        const targetAngles = [
+            { label: "0", rad: 0 },
+            { label: "\\pi/6", rad: Math.PI / 6 },
+            { label: "\\pi/4", rad: Math.PI / 4 },
+            { label: "\\pi/3", rad: Math.PI / 3 },
+            { label: "\\pi/2", rad: Math.PI / 2 },
+            { label: "2\\pi/3", rad: 2 * Math.PI / 3 },
+            { label: "3\\pi/4", rad: 3 * Math.PI / 4 },
+            { label: "5\\pi/6", rad: 5 * Math.PI / 6 },
+            { label: "\\pi", rad: Math.PI },
+            { label: "7\\pi/6", rad: 7 * Math.PI / 6 },
+            { label: "5\\pi/4", rad: 5 * Math.PI / 4 },
+            { label: "4\\pi/3", rad: 4 * Math.PI / 3 },
+            { label: "3\\pi/2", rad: 3 * Math.PI / 2 },
+            { label: "5\\pi/3", rad: 5 * Math.PI / 3 },
+            { label: "7\\pi/4", rad: 7 * Math.PI / 4 },
+            { label: "11\\pi/6", rad: 11 * Math.PI / 6 },
+            { label: "2\\pi", rad: 2 * Math.PI }
+        ];
+
+        targetAngles.forEach((angle) => {
+            const r = getRadius(angle.rad);
+            const rStr = r === null ? "Imaginary" : r.toFixed(2);
+            const xStr = r === null ? "—" : (r * Math.cos(angle.rad)).toFixed(2);
+            const yStr = r === null ? "—" : (r * Math.sin(angle.rad)).toFixed(2);
+
+            const row = document.createElement('tr');
+            row.dataset.rad = angle.rad;
+
+            const tdLabel = document.createElement('td');
+            katex.render(angle.label, tdLabel, { throwOnError: false });
+
+            const tdDeg = document.createElement('td');
+            tdDeg.textContent = `${Math.round(angle.rad * 180 / Math.PI)}°`;
+
+            const tdR = document.createElement('td');
+            tdR.textContent = rStr;
+            if (r === null) tdR.style.color = "var(--red)";
+
+            const tdCoords = document.createElement('td');
+            tdCoords.textContent = r === null ? "—" : `(${xStr}, ${yStr})`;
+
+            row.appendChild(tdLabel);
+            row.appendChild(tdDeg);
+            row.appendChild(tdR);
+            row.appendChild(tdCoords);
+            keyPointsBody.appendChild(row);
+        });
+    }
+
+    function highlightActivePointRow() {
+        const rows = keyPointsBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const rad = parseFloat(row.dataset.rad);
+            // Calculate distance wrap to 2pi
+            const traceMod = traceTheta % (2 * Math.PI);
+            const diff = Math.min(
+                Math.abs(rad - traceMod),
+                Math.abs(rad - traceMod + 2 * Math.PI),
+                Math.abs(rad - traceMod - 2 * Math.PI)
+            );
+            if (diff < 0.05) {
+                row.classList.add('active-row');
+                // Scroll row into view inside the table container
+                row.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            } else {
+                row.classList.remove('active-row');
+            }
+        });
+    }
+
+    // ── Dynamic Parameter modification callbacks ──────────────────
+    function onParamsChanged() {
+        presetSelect.value = "custom";
+        resetTrace();
+        updateInspector();
+        draw();
+    }
+
+    function onFamilyChanged() {
+        currentFamily = curveFamilySelect.value;
+        const config = DEFAULT_CONFIGS[currentFamily];
+        activeParams = { ...config.params };
+        currentTrig = config.trig || "cos";
+        currentSign = config.sign || "+";
+        currentCircleType = config.type || "xaxis";
+
+        // reset controls
+        setupSliders();
+        setupConfigGroup();
+        populatePresets();
+
+        // speed/max defaults
+        if (currentFamily === "spiral") {
+            thetaMaxSlider.value = 6;
+            traceMaxTheta = 6 * Math.PI;
+            thetaMaxOutput.value = "6π";
+        } else {
+            thetaMaxSlider.value = 2;
+            traceMaxTheta = 2 * Math.PI;
+            thetaMaxOutput.value = "2π";
+        }
+
+        resetTrace();
+        updateInspector();
+        draw();
+    }
+
+    // ── Interactive Grid drawing functions ─────────────────────────
+    function drawGrid(cx, cy, maxGridRadius) {
+        ctx.save();
+        ctx.strokeStyle = "rgba(203, 213, 225, 0.55)";
+        ctx.lineWidth = 1;
+
+        // 1. Concentric circular rings
+        const ringsCount = 8;
+        for (let i = 1; i <= ringsCount; i++) {
+            const ringRadius = i * zoomLevel;
+            ctx.beginPath();
+            ctx.arc(cx, cy, ringRadius, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Label radius ticks along polar axis (positive x)
+            ctx.fillStyle = "rgba(100, 116, 139, 0.85)";
+            ctx.font = "bold 12px 'Source Sans 3'";
+            ctx.fillText(i, cx + ringRadius + 3, cy - 4);
+        }
+
+        // 2. Radial spokes (every 15 and 30 degrees)
+        const angles = [
+            { val: 0, label: "0" },
+            { val: Math.PI / 12, label: "" },
+            { val: Math.PI / 6, label: "π/6 (30°)" },
+            { val: Math.PI / 4, label: "π/4 (45°)" },
+            { val: Math.PI / 3, label: "π/3 (60°)" },
+            { val: 5 * Math.PI / 12, label: "" },
+            { val: Math.PI / 2, label: "π/2 (90°)" },
+            { val: 7 * Math.PI / 12, label: "" },
+            { val: 2 * Math.PI / 3, label: "2π/3 (120°)" },
+            { val: 3 * Math.PI / 4, label: "3π/4 (135°)" },
+            { val: 5 * Math.PI / 6, label: "5π/6 (150°)" },
+            { val: 11 * Math.PI / 12, label: "" },
+            { val: Math.PI, label: "π (180°)" },
+            { val: 13 * Math.PI / 12, label: "" },
+            { val: 7 * Math.PI / 6, label: "7π/6 (210°)" },
+            { val: 5 * Math.PI / 4, label: "5π/4 (225°)" },
+            { val: 4 * Math.PI / 3, label: "4π/3 (240°)" },
+            { val: 17 * Math.PI / 12, label: "" },
+            { val: 3 * Math.PI / 2, label: "3π/2 (270°)" },
+            { val: 19 * Math.PI / 12, label: "" },
+            { val: 5 * Math.PI / 3, label: "5π/3 (300°)" },
+            { val: 7 * Math.PI / 4, label: "7π/4 (315°)" },
+            { val: 11 * Math.PI / 6, label: "11π/6 (330°)" },
+            { val: 23 * Math.PI / 12, label: "" }
+        ];
+
+        angles.forEach((spoke) => {
+            const isMajor = spoke.label !== "";
+            ctx.strokeStyle = isMajor ? "rgba(203, 213, 225, 0.85)" : "rgba(203, 213, 225, 0.35)";
+            ctx.lineWidth = isMajor ? 1.2 : 0.8;
+            ctx.setLineDash(isMajor ? [] : [4, 4]);
+
+            const targetX = cx + Math.cos(spoke.val) * maxGridRadius;
+            const targetY = cy - Math.sin(spoke.val) * maxGridRadius;
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(targetX, targetY);
+            ctx.stroke();
+
+            // Spoke labels at grid boundaries
+            if (isMajor) {
+                ctx.setLineDash([]);
+                ctx.fillStyle = "rgba(71, 85, 105, 0.9)";
+                ctx.font = "600 13px 'Source Sans 3'";
+
+                const textOffset = maxGridRadius + 14;
+                const labelX = cx + Math.cos(spoke.val) * textOffset;
+                const labelY = cy - Math.sin(spoke.val) * textOffset;
+
+                // Adjust text alignment for readability
+                const angleDeg = spoke.val * 180 / Math.PI;
+                if (angleDeg === 0) {
+                    ctx.textAlign = "left"; ctx.textBaseline = "middle";
+                } else if (angleDeg === 90) {
+                    ctx.textAlign = "center"; ctx.textBaseline = "bottom";
+                } else if (angleDeg === 180) {
+                    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+                } else if (angleDeg === 270) {
+                    ctx.textAlign = "center"; ctx.textBaseline = "top";
+                } else {
+                    ctx.textAlign = Math.cos(spoke.val) > 0 ? "left" : "right";
+                    ctx.textBaseline = Math.sin(spoke.val) > 0 ? "bottom" : "top";
+                }
+
+                ctx.fillText(spoke.label, labelX, labelY);
+            }
+        });
+
+        // 3. Coordinate axes lines
+        ctx.setLineDash([]);
+        ctx.strokeStyle = "rgba(100, 116, 139, 0.8)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(cx - maxGridRadius, cy);
+        ctx.lineTo(cx + maxGridRadius, cy);
+        ctx.moveTo(cx, cy - maxGridRadius);
+        ctx.lineTo(cx, cy + maxGridRadius);
+        ctx.stroke();
+
+        ctx.restore();
+    }
+
+    // ── Primary Drawing Core loop ──────────────────────────────────
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const cx = canvas.width / 2 + panOffset.x;
+        const cy = canvas.height / 2 + panOffset.y;
+        const maxGridRadius = Math.min(canvas.width, canvas.height) * 0.44;
+
+        // Draw Polar Grid background
+        if (chkShowGrid.checked) {
+            drawGrid(cx, cy, maxGridRadius);
+        }
+
+        // Draw swept area background (shaded region from θ=0 to active θ)
+        if (chkShowSwept.checked && traceTheta > 0) {
+            ctx.save();
+            ctx.fillStyle = "rgba(37, 99, 235, 0.07)";
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+
+            const steps = Math.min(300, Math.ceil(traceTheta * 60));
+            const stepSize = traceTheta / steps;
+            let hasPoint = false;
+
+            for (let i = 0; i <= steps; i++) {
+                const theta = i * stepSize;
+                const r = getRadius(theta);
+                if (r !== null) {
+                    const pt = getCanvasCoords(r * Math.cos(theta), r * Math.sin(theta));
+                    if (!hasPoint) {
+                        ctx.lineTo(pt.x, pt.y);
+                        hasPoint = true;
+                    } else {
+                        ctx.lineTo(pt.x, pt.y);
+                    }
+                }
+            }
+            ctx.lineTo(cx, cy);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Draw complete "Ghost" curve shape
+        if (chkShowGhost.checked) {
+            ctx.save();
+            ctx.strokeStyle = "rgba(148, 163, 184, 0.38)";
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([4, 4]);
+
+            // Rose / Lemniscates plot curves smoothly
+            const ghostSteps = 600;
+            const deltaTheta = traceMaxTheta / ghostSteps;
+
+            ctx.beginPath();
+            let started = false;
+
+            for (let i = 0; i <= ghostSteps; i++) {
+                const th = i * deltaTheta;
+                const r = getRadius(th);
+                if (r !== null) {
+                    const pt = getCanvasCoords(r * Math.cos(th), r * Math.sin(th));
+                    if (!started) {
+                        ctx.moveTo(pt.x, pt.y);
+                        started = true;
+                    } else {
+                        ctx.lineTo(pt.x, pt.y);
+                    }
+                } else {
+                    started = false; // Break line path for asymptote / imaginary
+                }
+            }
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Draw Active Curve Traced Path (solid colored curve line)
+        ctx.save();
+        ctx.strokeStyle = "var(--blue)";
+        ctx.lineWidth = 3.5;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        const traceSteps = Math.min(600, Math.ceil(traceTheta * 100));
+        const traceStepSize = traceTheta / traceSteps;
+        ctx.beginPath();
+        let activeStarted = false;
+
+        for (let i = 0; i <= traceSteps; i++) {
+            const th = i * traceStepSize;
+            const r = getRadius(th);
+            if (r !== null) {
+                const pt = getCanvasCoords(r * Math.cos(th), r * Math.sin(th));
+                if (!activeStarted) {
+                    ctx.moveTo(pt.x, pt.y);
+                    activeStarted = true;
+                } else {
+                    ctx.lineTo(pt.x, pt.y);
+                }
+            } else {
+                activeStarted = false; // Break path on asymptotes
+            }
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        // Get Current tracing point parameters
+        const rCurrent = getRadius(traceTheta);
+        const xCurrent = rCurrent === null ? 0 : rCurrent * Math.cos(traceTheta);
+        const yCurrent = rCurrent === null ? 0 : rCurrent * Math.sin(traceTheta);
+        const ptCurrent = getCanvasCoords(xCurrent, yCurrent);
+
+        // Update stage coordinates HUD display
+        coordsOverlay.querySelector('div:nth-child(1)').textContent = `θ = ${traceTheta.toFixed(3)} rad (${Math.round(traceTheta * 180 / Math.PI)}°)`;
+        coordsOverlay.querySelector('div:nth-child(2)').textContent = `r = ${rCurrent === null ? "Imaginary" : rCurrent.toFixed(3)}`;
+        coordsOverlay.querySelector('div:nth-child(3)').textContent = `(x, y) = ${rCurrent === null ? "(—, —)" : `(${xCurrent.toFixed(3)}, ${yCurrent.toFixed(3)})`}`;
+
+        // Highlight key points table row
+        highlightActivePointRow();
+
+        // Draw Radial Vector line to current point
+        if (chkShowVector.checked && rCurrent !== null) {
+            ctx.save();
+            ctx.strokeStyle = "var(--vector-color)";
+            ctx.lineWidth = 1.8;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(ptCurrent.x, ptCurrent.y);
+            ctx.stroke();
+
+            // Arrow head
+            ctx.fillStyle = "var(--vector-color)";
+            ctx.setLineDash([]);
+            ctx.beginPath();
+            ctx.arc(ptCurrent.x, ptCurrent.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // Draw Tracing glowing Cursor dot particle
+        if (rCurrent !== null) {
+            ctx.save();
+            ctx.fillStyle = "#ffffff";
+            ctx.strokeStyle = "var(--blue)";
+            ctx.lineWidth = 3.5;
+            ctx.shadowColor = "rgba(37, 99, 235, 0.4)";
+            ctx.shadowBlur = 10;
+            ctx.beginPath();
+            ctx.arc(ptCurrent.x, ptCurrent.y, 7, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+    }
+
+    // ── Animation Tracing Logic Loop ────────────────────────────────
+    function updateAnimation(timestamp) {
+        if (!isPlaying) {
+            lastFrameTime = 0;
+            return;
+        }
+
+        if (!lastFrameTime) lastFrameTime = timestamp;
+        const elapsed = timestamp - lastFrameTime;
+        lastFrameTime = timestamp;
+
+        // Speed mapping
+        const speeds = [0.1, 0.25, 0.5, 0.8, 1.4];
+        const step = speeds[parseInt(speedSlider.value) - 1] * (elapsed / 1000);
+
+        traceTheta += step;
+
+        if (traceTheta >= traceMaxTheta) {
+            traceTheta = traceMaxTheta;
+            isPlaying = false;
+            btnPlay.textContent = "▶";
+        }
+
+        draw();
+        requestAnimationFrame(updateAnimation);
+    }
+
+    function togglePlay() {
+        if (isPlaying) {
+            isPlaying = false;
+            btnPlay.textContent = "▶";
+        } else {
+            // If we are at the end, reset to 0 before playing
+            if (traceTheta >= traceMaxTheta) {
+                traceTheta = 0.0;
+            }
+            isPlaying = true;
+            btnPlay.textContent = "⏸";
+            requestAnimationFrame(updateAnimation);
+        }
+    }
+
+    function resetTrace() {
+        isPlaying = false;
+        btnPlay.textContent = "▶";
+        traceTheta = 0.0;
+        draw();
+    }
+
+    // ── Canvas resizing and layout fits ──────────────────────────────
+    function handleResize() {
+        // High DPI canvas support
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+
+        ctx.scale(dpr, dpr);
+        draw();
+    }
+
+    // ── Event Binds & Setup ─────────────────────────────────────────
+    function bindEvents() {
+        // Dropdowns
+        curveFamilySelect.addEventListener('change', onFamilyChanged);
+        presetSelect.addEventListener('change', () => {
+            if (presetSelect.value !== "custom") {
+                applyPreset(parseInt(presetSelect.value));
+            }
+        });
+
+        // Animation buttons
+        btnPlay.addEventListener('click', togglePlay);
+        btnReset.addEventListener('click', resetTrace);
+
+        // Max theta changes
+        thetaMaxSlider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            traceMaxTheta = val * Math.PI;
+            thetaMaxOutput.value = `${val}π`;
+            resetTrace();
+        });
+
+        speedSlider.addEventListener('input', () => {
+            const labels = ["Very Slow", "Slow", "Medium", "Fast", "Hyper"];
+            speedOutput.value = labels[speedSlider.value - 1];
+        });
+
+        // Checkboxes
+        chkShowGrid.addEventListener('change', draw);
+        chkShowVector.addEventListener('change', draw);
+        chkShowSwept.addEventListener('change', draw);
+        chkShowGhost.addEventListener('change', draw);
+
+        // Global Resets
+        btnGlobalReset.addEventListener('click', () => {
+            panOffset = { x: 0, y: 0 };
+            zoomLevel = 45;
+            curveFamilySelect.value = "limacon";
+            onFamilyChanged();
+        });
+
+        // Mouse Drag Panning on Canvas stage
+        canvas.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragStart.x = e.clientX - panOffset.x;
+            dragStart.y = e.clientY - panOffset.y;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            panOffset.x = e.clientX - dragStart.x;
+            panOffset.y = e.clientY - dragStart.y;
+            draw();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // Scroll Zooming on Canvas
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomSpeed = 1.1;
+            if (e.deltaY < 0) {
+                zoomLevel = Math.min(250, zoomLevel * zoomSpeed);
+            } else {
+                zoomLevel = Math.max(12, zoomLevel / zoomSpeed);
+            }
+            draw();
+        }, { passive: false });
+
+        // Touch Panning
+        let lastTouch = { x: 0, y: 0 };
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                lastTouch.x = e.touches[0].clientX;
+                lastTouch.y = e.touches[0].clientY;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const dx = e.touches[0].clientX - lastTouch.x;
+            const dy = e.touches[0].clientY - lastTouch.y;
+            panOffset.x += dx;
+            panOffset.y += dy;
+            lastTouch.x = e.touches[0].clientX;
+            lastTouch.y = e.touches[0].clientY;
+            draw();
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        // Double click canvas to reset zoom and pan
+        canvas.addEventListener('dblclick', () => {
+            panOffset = { x: 0, y: 0 };
+            zoomLevel = 45;
+            draw();
+        });
+    }
+
+    // ── Initialize App ──────────────────────────────────────────────
+    function init() {
+        bindEvents();
+        window.addEventListener('resize', handleResize);
+
+        // Load default Curve family
+        curveFamilySelect.value = "limacon";
+        onFamilyChanged();
+
+        // Fit canvas to screen
+        setTimeout(handleResize, 100);
+    }
+
+    init();
+
+</script>
+</body>
+</html>

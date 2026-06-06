@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Circle Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --pink: #db2777;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-pink: #fdf2f8;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Reference triangle colors */
+            --adj-color: var(--teal);
+            --opp-color: var(--pink);
+            --hyp-color: var(--green);
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-columns: 300px minmax(500px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           CONTROLS PANEL (left)
+           ============================================================ */
+        .controls {
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 18px 18px 14px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 {
+            margin: 4px 0 0; font-size: 1.55rem; line-height: 1.1;
+        }
+
+        .brand p {
+            margin-top: 6px; color: #93c5fd;
+            font-size: 0.82rem; line-height: 1.35;
+        }
+
+        .control-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+        }
+
+        .control-group { display: grid; gap: 10px; }
+
+        .group-title {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 4px;
+        }
+
+        .slider-row {
+            display: grid; gap: 7px; padding: 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: var(--soft);
+        }
+
+        .slider-head {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 10px;
+        }
+
+        .slider-head label {
+            font-size: 0.88rem; font-weight: 700; color: #334155;
+        }
+
+        output {
+            min-width: 3.8rem; text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800; color: var(--blue);
+        }
+
+        input[type="range"] { width: 100%; accent-color: var(--blue); }
+
+        .preset-select {
+            width: 100%; padding: 8px 12px; border-radius: 8px;
+            border: 1px solid #cbd5e1; background: white;
+            font-size: 0.9rem; font-weight: 600; color: var(--ink);
+            outline: 0; transition: border-color 0.2s;
+        }
+        .preset-select:focus { border-color: var(--blue); }
+
+        .checkbox-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.88rem; font-weight: 600; color: #334155;
+            cursor: pointer;
+        }
+        .checkbox-label input {
+            width: 16px; height: 16px; accent-color: var(--blue);
+        }
+
+        /* ============================================================
+           STAGE PANEL (center)
+           ============================================================ */
+        .stage {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .stage-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .canvas-wrap {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            background: var(--soft);
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .unit-circle-svg {
+            width: min(100%, 560px);
+            height: min(100%, 560px);
+            aspect-ratio: 1 / 1;
+            display: block;
+            touch-action: none;
+            overflow: visible;
+        }
+
+        /* SVG styles */
+        .grid-line { stroke: #e2e8f0; stroke-width: 1; }
+        .axis-line { stroke: #cbd5e1; stroke-width: 2; }
+        .circle-boundary { stroke: #94a3b8; stroke-width: 2.5; fill: none; }
+        .special-ray { stroke: #cbd5e1; stroke-width: 1; stroke-dasharray: 4 4; }
+        
+        /* Reference triangle legs */
+        .hyp-line { stroke: var(--hyp-color); stroke-width: 4.5; stroke-linecap: round; }
+        .adj-line { stroke: var(--adj-color); stroke-width: 4.5; stroke-linecap: round; }
+        .opp-line { stroke: var(--opp-color); stroke-width: 4.5; stroke-linecap: round; }
+        
+        .terminal-ray { stroke: var(--blue); stroke-width: 3; stroke-linecap: round; }
+        
+        .draggable-handle {
+            fill: var(--blue); stroke: white; stroke-width: 3;
+            cursor: grab; filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.35));
+            transition: r 0.1s;
+        }
+        .draggable-handle:active { cursor: grabbing; r: 10px; }
+
+        .winding-spiral {
+            stroke: var(--orange); stroke-width: 2.5;
+            fill: none; stroke-linecap: round;
+        }
+
+        .angle-arc { fill: rgba(37, 99, 235, 0.08); stroke: var(--blue); stroke-width: 1.5; }
+        .ref-arc { fill: rgba(22, 163, 74, 0.12); stroke: var(--green); stroke-width: 1.5; }
+        
+        .axis-text { font: 600 13px 'Source Sans 3', sans-serif; fill: #64748b; }
+        .special-angle-text { font: 600 11px 'Source Sans 3', sans-serif; fill: #94a3b8; }
+        
+        .tooltip {
+            position: absolute; display: none; z-index: 10;
+            background: rgba(15, 23, 42, 0.9); color: white;
+            padding: 8px 12px; border-radius: 8px; font-size: 0.82rem;
+            pointer-events: none; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            line-height: 1.4; border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .canvas-footer {
+            padding: 10px 16px;
+            background: white; border-top: 1px solid #dbeafe;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        /* ============================================================
+           RIGHT PANEL: INSPECTOR
+           ============================================================ */
+        .inspector {
+            overflow-y: auto;
+            padding: 16px;
+            display: grid; gap: 16px;
+            content-visibility: auto;
+        }
+
+        .readout-card {
+            background: var(--soft);
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .readout-title {
+            font-size: 0.75rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy); margin-bottom: 8px;
+        }
+
+        .angle-box {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 8px;
+        }
+        .angle-box:last-child { margin-bottom: 0; }
+        
+        .angle-label { font-size: 0.88rem; font-weight: 600; color: #475569; }
+        .angle-val { font-size: 1.05rem; font-weight: 700; color: var(--navy); }
+
+        /* Coordinate Card */
+        .coord-display {
+            text-align: center; padding: 10px 0;
+            border-radius: 6px; background: white;
+            border: 1px solid #e2e8f0; margin-top: 6px;
+        }
+        
+        /* ASTC Shading Card */
+        .astc-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+            margin-top: 8px; text-align: center;
+        }
+        .astc-cell {
+            padding: 6px 4px; border-radius: 6px; border: 1px solid #e2e8f0;
+            font-size: 0.78rem; font-weight: 700; background: white;
+            color: var(--muted); transition: var(--transition);
+        }
+        .astc-cell.active {
+            background: var(--navy); color: white; border-color: var(--navy);
+        }
+
+        /* Ratios Table */
+        .ratios-table {
+            width: 100%; border-collapse: collapse; margin-top: 6px;
+        }
+        .ratios-table th, .ratios-table td {
+            padding: 8px 6px; text-align: left; font-size: 0.85rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .ratios-table th {
+            color: var(--muted); text-transform: uppercase;
+            font-size: 0.72rem; letter-spacing: 0.05em; font-weight: 800;
+        }
+        .ratio-val-display {
+            font-weight: 700; color: var(--navy);
+            text-align: center;
+        }
+        .ratio-dec-display {
+            font-variant-numeric: tabular-nums;
+            color: var(--muted); text-align: right;
+            font-size: 0.8rem;
+        }
+
+        .ratio-row.adj-row { border-left: 3px solid var(--adj-color); }
+        .ratio-row.opp-row { border-left: 3px solid var(--opp-color); }
+        .ratio-row.hyp-row { border-left: 3px solid var(--hyp-color); }
+
+        /* ============================================================
+           QUIZ CONTAINER
+           ============================================================ */
+        .quiz-card {
+            background: var(--soft-blue); border: 1px solid #bfdbfe;
+            border-radius: 8px; padding: 12px; display: grid; gap: 8px;
+        }
+        .quiz-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px dashed #bfdbfe; padding-bottom: 4px;
+        }
+        .quiz-title {
+            font-size: 0.75rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue);
+        }
+        .quiz-score { font-size: 0.85rem; font-weight: 700; color: var(--blue); }
+        .quiz-q { font-size: 0.9rem; font-weight: 600; color: var(--navy); line-height: 1.4; margin: 4px 0; }
+        .quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+        .quiz-opt {
+            padding: 8px 6px; border-radius: 6px; border: 1px solid #bfdbfe;
+            background: white; color: var(--navy); font-size: 0.82rem; font-weight: 700;
+            transition: var(--transition); text-align: center;
+        }
+        .quiz-opt:hover { background: #dbeafe; transform: translateY(-1px); }
+        .quiz-opt.correct { background: var(--soft-green); border-color: var(--green); color: var(--green); }
+        .quiz-opt.incorrect { background: var(--soft-red); border-color: var(--red); color: var(--red); }
+        
+        .quiz-feedback { font-size: 0.8rem; font-weight: 600; line-height: 1.4; padding: 4px; }
+        .quiz-feedback.correct { color: var(--green); }
+        .quiz-feedback.incorrect { color: var(--red); }
+        
+        .quiz-actions { display: flex; justify-content: flex-end; gap: 8px; }
+        .quiz-btn {
+            padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700;
+        }
+        .quiz-btn.primary { background: var(--blue); color: white; }
+        .quiz-btn.secondary { background: #e2e8f0; color: #475569; }
+
+        @media (max-width: 1100px) {
+            body { padding: 12px; }
+            .app {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .canvas-wrap {
+                min-height: 500px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .canvas-wrap {
+                min-height: 380px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<main class="app">
+    <!-- ============================================================
+         LEFT — CONTROLS PANEL
+         ============================================================ -->
+    <section class="panel controls" aria-label="Controls">
+        <div class="brand">
+            <span class="section-label">Unit 4.3 Interactive</span>
+            <h1>Unit Circle Explorer</h1>
+            <p>Drag the point or adjust sliders to analyze coordinates, reference triangles, and coterminal wraps.</p>
+        </div>
+
+        <div class="control-scroll">
+            <!-- Angle Presets -->
+            <div class="control-group">
+                <div class="group-title">Special Angles</div>
+                <select class="preset-select" id="presetSelect">
+                    <option value="">-- Choose Angle --</option>
+                    <option value="0">0° (0)</option>
+                    <option value="30">30° (π/6)</option>
+                    <option value="45">45° (π/4)</option>
+                    <option value="60">60° (π/3)</option>
+                    <option value="90">90° (π/2)</option>
+                    <option value="120">120° (2π/3)</option>
+                    <option value="135">135° (3π/4)</option>
+                    <option value="150">150° (5π/6)</option>
+                    <option value="180">180° (π)</option>
+                    <option value="210">210° (7π/6)</option>
+                    <option value="225">225° (5π/4)</option>
+                    <option value="240">240° (4π/3)</option>
+                    <option value="270">270° (3π/2)</option>
+                    <option value="300">300° (5π/3)</option>
+                    <option value="315">315° (7π/4)</option>
+                    <option value="330">330° (11π/6)</option>
+                    <option value="420">420° (7π/3) - Coterminal</option>
+                    <option value="-60">-60° (-π/3) - Negative</option>
+                    <option value="-135">-135° (-3π/4) - Negative</option>
+                </select>
+            </div>
+
+            <!-- Degree Slider -->
+            <div class="control-group">
+                <div class="group-title">Angle in Degrees</div>
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="degreeSlider">θ (Degrees)</label>
+                        <output id="degreeOutput">45°</output>
+                    </div>
+                    <input type="range" id="degreeSlider" min="-360" max="720" step="1" value="45">
+                </div>
+            </div>
+
+            <!-- Radian Slider -->
+            <div class="control-group">
+                <div class="group-title">Angle in Radians</div>
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label for="radianSlider">θ (Radians)</label>
+                        <output id="radianOutput">0.79</output>
+                    </div>
+                    <input type="range" id="radianSlider" min="-6.283" max="12.566" step="0.005" value="0.785">
+                </div>
+            </div>
+
+            <!-- Overlay Toggles -->
+            <div class="control-group">
+                <div class="group-title">Visual Overlays</div>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="toggleSnap" checked> Snap to Special Angles
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="toggleTriangle" checked> Show Reference Triangle
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="toggleSpiral" checked> Show Winding Spiral
+                </label>
+            </div>
+
+            <!-- Quiz Card -->
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <span class="quiz-title">Trig Challenge</span>
+                    <span class="quiz-score" id="quizScore">Score: 0/0</span>
+                </div>
+                <div class="quiz-q" id="quizQuestion">Generating question...</div>
+                <div class="quiz-opts" id="quizOptions"></div>
+                <div class="quiz-feedback" id="quizFeedback"></div>
+                <div class="quiz-actions">
+                    <button class="quiz-btn secondary" id="quizSkipBtn">Skip</button>
+                    <button class="quiz-btn primary" id="quizNextBtn" style="display:none;">Next</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         CENTER — SVG STAGE
+         ============================================================ -->
+    <section class="panel stage" aria-label="Unit circle interactive stage">
+        <div class="stage-header">
+            <h2>Visual Unit Circle</h2>
+            <span id="coordinatesIndicator" style="font-size:0.85rem; font-weight:600; color:var(--muted);"></span>
+        </div>
+
+        <div class="canvas-wrap" id="canvasWrap">
+            <div class="tooltip" id="circleTooltip"></div>
+            <svg class="unit-circle-svg" id="unitCircleSvg" viewBox="0 0 600 600">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--orange)" />
+                    </marker>
+                </defs>
+                
+                <!-- Grid Lines -->
+                <g id="gridGroup"></g>
+                
+                <!-- Axes -->
+                <line class="axis-line" x1="50" y1="300" x2="550" y2="300" />
+                <line class="axis-line" x1="300" y1="50" x2="300" y2="550" />
+                
+                <!-- Axis labels -->
+                <text class="axis-text" x="560" y="305" text-anchor="start">x</text>
+                <text class="axis-text" x="300" y="35" text-anchor="middle">y</text>
+                
+                <!-- Quadrant backdrop overlays -->
+                <g id="quadrantBackdrops"></g>
+                
+                <!-- Special angle dashed lines -->
+                <g id="specialRaysGroup"></g>
+                
+                <!-- Unit Circle -->
+                <circle class="circle-boundary" cx="300" cy="300" r="200" />
+                
+                <!-- Shaded Sectors -->
+                <path class="angle-arc" id="angleArc" d="" />
+                <path class="ref-arc" id="refArc" d="" />
+                
+                <!-- Reference Triangle -->
+                <g id="referenceTriangleGroup">
+                    <line class="adj-line" id="adjLine" x1="300" y1="300" x2="300" y2="300" />
+                    <line class="opp-line" id="oppLine" x1="300" y1="300" x2="300" y2="300" />
+                    <line class="hyp-line" id="hypLine" x1="300" y1="300" x2="300" y2="300" />
+                </g>
+                
+                <!-- Coterminal Winding Spiral -->
+                <path class="winding-spiral" id="windingSpiral" d="" display="none" marker-end="url(#arrow)" />
+                
+                <!-- Bold Terminal Ray -->
+                <line class="terminal-ray" id="terminalRay" x1="300" y1="300" x2="300" y2="300" />
+                
+                <!-- Draggable handle -->
+                <circle class="draggable-handle" id="draggableHandle" cx="300" cy="300" r="8.5" />
+            </svg>
+        </div>
+
+        <div class="canvas-footer">
+            <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">Quadrant: <strong id="quadrantLabel" style="color:var(--navy);">I</strong></span>
+            <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">Reference Angle: <strong id="refAngleLabel" style="color:var(--green);">0°</strong></span>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         RIGHT — ALGEBRA INSPECTOR
+         ============================================================ -->
+    <aside class="panel inspector" aria-label="Trig Inspector">
+        <!-- Angle & Coordinate readout -->
+        <div class="readout-card">
+            <div class="readout-title">Current Angle & Point</div>
+            <div class="angle-box">
+                <span class="angle-label">Angle (Degrees):</span>
+                <span class="angle-val" id="readoutDeg">0°</span>
+            </div>
+            <div class="angle-box">
+                <span class="angle-label">Angle (Radians):</span>
+                <span class="angle-val" id="readoutRad">0</span>
+            </div>
+            <div class="angle-box" id="coterminalRow" style="display:none;">
+                <span class="angle-label">Coterminal [0, 2π):</span>
+                <span class="angle-val" style="color:var(--orange);" id="readoutCoterm">0°</span>
+            </div>
+            <div class="readout-title" style="margin-top:12px; margin-bottom:4px;">Terminal Coordinates</div>
+            <div class="coord-display" id="coordDisplay">P(x, y) = (1, 0)</div>
+        </div>
+
+        <!-- ASTC Quadrant Rules -->
+        <div class="readout-card">
+            <div class="readout-title">Quadrant Signs (ASTC)</div>
+            <div id="quadrantSignText" style="font-size:0.85rem; font-weight:600; line-height:1.45; color:var(--navy);">
+                Quadrant I: All trigonometric ratios are positive.
+            </div>
+            <div class="astc-grid">
+                <div class="astc-cell" id="astcQ1">I (All)</div>
+                <div class="astc-cell" id="astcQ2">II (Sine)</div>
+                <div class="astc-cell" id="astcQ3">III (Tan)</div>
+                <div class="astc-cell" id="astcQ4">IV (Cos)</div>
+            </div>
+        </div>
+
+        <!-- Trig Ratios Table -->
+        <div class="readout-card">
+            <div class="readout-title">Trigonometric Ratios</div>
+            <table class="ratios-table">
+                <thead>
+                    <tr>
+                        <th>Ratio</th>
+                        <th style="text-align:center;">Exact</th>
+                        <th style="text-align:right;">Decimal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="ratio-row adj-row">
+                        <td>\(\cos\theta = x\)</td>
+                        <td class="ratio-val-display" id="ratioExactCos">1</td>
+                        <td class="ratio-dec-display" id="ratioDecCos">1.000</td>
+                    </tr>
+                    <tr class="ratio-row opp-row">
+                        <td>\(\sin\theta = y\)</td>
+                        <td class="ratio-val-display" id="ratioExactSin">0</td>
+                        <td class="ratio-dec-display" id="ratioDecSin">0.000</td>
+                    </tr>
+                    <tr class="ratio-row">
+                        <td>\(\tan\theta = \frac{y}{x}\)</td>
+                        <td class="ratio-val-display" id="ratioExactTan">0</td>
+                        <td class="ratio-dec-display" id="ratioDecTan">0.000</td>
+                    </tr>
+                    <tr class="ratio-row">
+                        <td>\(\sec\theta = \frac{1}{x}\)</td>
+                        <td class="ratio-val-display" id="ratioExactSec">1</td>
+                        <td class="ratio-dec-display" id="ratioDecSec">1.000</td>
+                    </tr>
+                    <tr class="ratio-row">
+                        <td>\(\csc\theta = \frac{1}{y}\)</td>
+                        <td class="ratio-val-display" id="ratioExactCsc">\(\varnothing\)</td>
+                        <td class="ratio-dec-display" id="ratioDecCsc">Undefined</td>
+                    </tr>
+                    <tr class="ratio-row">
+                        <td>\(\cot\theta = \frac{x}{y}\)</td>
+                        <td class="ratio-val-display" id="ratioExactCot">\(\varnothing\)</td>
+                        <td class="ratio-dec-display" id="ratioDecCot">Undefined</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </aside>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script>
+(function () {
+    /* ============================================================
+       STATE
+       ============================================================ */
+    let theta = Math.PI / 4; // Current angle in radians
+    const cx = 300, cy = 300, scale = 200;
+    
+    // Quiz state
+    let quizState = {
+        score: 0,
+        total: 0,
+        currentQuestion: null,
+        answered: false
+    };
+
+    /* Special Snapping Angles (in degrees) mapped to math details */
+    const specialAngles = [
+        { deg: 0, rad: 0, exactX: "1", exactY: "0", latRad: "0", exactTan: "0", exactSec: "1", exactCsc: "\\varnothing", exactCot: "\\varnothing" },
+        { deg: 30, rad: Math.PI/6, exactX: "\\frac{\\sqrt{3}}{2}", exactY: "\\frac{1}{2}", latRad: "\\frac{\\pi}{6}", exactTan: "\\frac{\\sqrt{3}}{3}", exactSec: "\\frac{2\\sqrt{3}}{3}", exactCsc: "2", exactCot: "\\sqrt{3}" },
+        { deg: 45, rad: Math.PI/4, exactX: "\\frac{\\sqrt{2}}{2}", exactY: "\\frac{\\sqrt{2}}{2}", latRad: "\\frac{\\pi}{4}", exactTan: "1", exactSec: "\\sqrt{2}", exactCsc: "\\sqrt{2}", exactCot: "1" },
+        { deg: 60, rad: Math.PI/3, exactX: "\\frac{1}{2}", exactY: "\\frac{\\sqrt{3}}{2}", latRad: "\\frac{\\pi}{3}", exactTan: "\\sqrt{3}", exactSec: "2", exactCsc: "\\frac{2\\sqrt{3}}{3}", exactCot: "\\frac{\\sqrt{3}}{3}" },
+        { deg: 90, rad: Math.PI/2, exactX: "0", exactY: "1", latRad: "\\frac{\\pi}{2}", exactTan: "\\varnothing", exactSec: "\\varnothing", exactCsc: "1", exactCot: "0" },
+        { deg: 120, rad: 2*Math.PI/3, exactX: "-\\frac{1}{2}", exactY: "\\frac{\\sqrt{3}}{2}", latRad: "\\frac{2\\pi}{3}", exactTan: "-\\sqrt{3}", exactSec: "-2", exactCsc: "\\frac{2\\sqrt{3}}{3}", exactCot: "-\\frac{\\sqrt{3}}{3}" },
+        { deg: 135, rad: 3*Math.PI/4, exactX: "-\\frac{\\sqrt{2}}{2}", exactY: "\\frac{\\sqrt{2}}{2}", latRad: "\\frac{3\\pi}{4}", exactTan: "-1", exactSec: "-\\sqrt{2}", exactCsc: "\\sqrt{2}", exactCot: "-1" },
+        { deg: 150, rad: 5*Math.PI/6, exactX: "-\\frac{\\sqrt{3}}{2}", exactY: "\\frac{1}{2}", latRad: "\\frac{5\\pi}{6}", exactTan: "-\\frac{\\sqrt{3}}{3}", exactSec: "-\\frac{2\\sqrt{3}}{3}", exactCsc: "2", exactCot: "-\\sqrt{3}" },
+        { deg: 180, rad: Math.PI, exactX: "-1", exactY: "0", latRad: "\\pi", exactTan: "0", exactSec: "-1", exactCsc: "\\varnothing", exactCot: "\\varnothing" },
+        { deg: 210, rad: 7*Math.PI/6, exactX: "-\\frac{\\sqrt{3}}{2}", exactY: "-\\frac{1}{2}", latRad: "\\frac{7\\pi}{6}", exactTan: "\\frac{\\sqrt{3}}{3}", exactSec: "-\\frac{2\\sqrt{3}}{3}", exactCsc: "-2", exactCot: "\\sqrt{3}" },
+        { deg: 225, rad: 5*Math.PI/4, exactX: "-\\frac{\\sqrt{2}}{2}", exactY: "-\\frac{\\sqrt{2}}{2}", latRad: "\\frac{5\\pi}{4}", exactTan: "1", exactSec: "-\\sqrt{2}", exactCsc: "-\\sqrt{2}", exactCot: "1" },
+        { deg: 240, rad: 4*Math.PI/3, exactX: "-\\frac{1}{2}", exactY: "-\\frac{\\sqrt{3}}{2}", latRad: "\\frac{4\\pi}{3}", exactTan: "\\sqrt{3}", exactSec: "-2", exactCsc: "-\\frac{2\\sqrt{3}}{3}", exactCot: "\\frac{\\sqrt{3}}{3}" },
+        { deg: 270, rad: 3*Math.PI/2, exactX: "0", exactY: "-1", latRad: "\\frac{3\\pi}{2}", exactTan: "\\varnothing", exactSec: "\\varnothing", exactCsc: "-1", exactCot: "0" },
+        { deg: 300, rad: 5*Math.PI/3, exactX: "\\frac{1}{2}", exactY: "-\\frac{\\sqrt{3}}{2}", latRad: "\\frac{5\\pi}{3}", exactTan: "-\\sqrt{3}", exactSec: "2", exactCsc: "-\\frac{2\\sqrt{3}}{3}", exactCot: "-\\frac{\\sqrt{3}}{3}" },
+        { deg: 315, rad: 7*Math.PI/4, exactX: "\\frac{\\sqrt{2}}{2}", exactY: "-\\frac{\\sqrt{2}}{2}", latRad: "\\frac{7\\pi}{4}", exactTan: "-1", exactSec: "\\sqrt{2}", exactCsc: "-\\sqrt{2}", exactCot: "-1" },
+        { deg: 330, rad: 11*Math.PI/6, exactX: "\\frac{\\sqrt{3}}{2}", exactY: "-\\frac{1}{2}", latRad: "\\frac{11\\pi}{6}", exactTan: "-\\frac{\\sqrt{3}}{3}", exactSec: "\\frac{2\\sqrt{3}}{3}", exactCsc: "-2", exactCot: "-\\sqrt{3}" }
+    ];
+
+    /* DOM REFS */
+    const svg = document.getElementById('unitCircleSvg');
+    const degreeSlider = document.getElementById('degreeSlider');
+    const degreeOutput = document.getElementById('degreeOutput');
+    const radianSlider = document.getElementById('radianSlider');
+    const radianOutput = document.getElementById('radianOutput');
+    const presetSelect = document.getElementById('presetSelect');
+    const toggleSnap = document.getElementById('toggleSnap');
+    const toggleTriangle = document.getElementById('toggleTriangle');
+    const toggleSpiral = document.getElementById('toggleSpiral');
+    const canvasWrap = document.getElementById('canvasWrap');
+    
+    // Canvas SVG nodes
+    const gridGroup = document.getElementById('gridGroup');
+    const quadrantBackdrops = document.getElementById('quadrantBackdrops');
+    const specialRaysGroup = document.getElementById('specialRaysGroup');
+    const angleArc = document.getElementById('angleArc');
+    const refArc = document.getElementById('refArc');
+    const adjLine = document.getElementById('adjLine');
+    const oppLine = document.getElementById('oppLine');
+    const hypLine = document.getElementById('hypLine');
+    const windingSpiral = document.getElementById('windingSpiral');
+    const terminalRay = document.getElementById('terminalRay');
+    const draggableHandle = document.getElementById('draggableHandle');
+    const coordinatesIndicator = document.getElementById('coordinatesIndicator');
+    const quadrantLabel = document.getElementById('quadrantLabel');
+    const refAngleLabel = document.getElementById('refAngleLabel');
+    const circleTooltip = document.getElementById('circleTooltip');
+
+    // Inspector nodes
+    const readoutDeg = document.getElementById('readoutDeg');
+    const readoutRad = document.getElementById('readoutRad');
+    const coterminalRow = document.getElementById('coterminalRow');
+    const readoutCoterm = document.getElementById('readoutCoterm');
+    const coordDisplay = document.getElementById('coordDisplay');
+    const quadrantSignText = document.getElementById('quadrantSignText');
+    const astcQ1 = document.getElementById('astcQ1');
+    const astcQ2 = document.getElementById('astcQ2');
+    const astcQ3 = document.getElementById('astcQ3');
+    const astcQ4 = document.getElementById('astcQ4');
+    
+    const ratioExactCos = document.getElementById('ratioExactCos');
+    const ratioDecCos = document.getElementById('ratioDecCos');
+    const ratioExactSin = document.getElementById('ratioExactSin');
+    const ratioDecSin = document.getElementById('ratioDecSin');
+    const ratioExactTan = document.getElementById('ratioExactTan');
+    const ratioDecTan = document.getElementById('ratioDecTan');
+    const ratioExactSec = document.getElementById('ratioExactSec');
+    const ratioDecSec = document.getElementById('ratioDecSec');
+    const ratioExactCsc = document.getElementById('ratioExactCsc');
+    const ratioDecCsc = document.getElementById('ratioDecCsc');
+    const ratioExactCot = document.getElementById('ratioExactCot');
+    const ratioDecCot = document.getElementById('ratioDecCot');
+
+    // Quiz nodes
+    const quizQuestion = document.getElementById('quizQuestion');
+    const quizOptions = document.getElementById('quizOptions');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScore = document.getElementById('quizScore');
+    const quizNextBtn = document.getElementById('quizNextBtn');
+    const quizSkipBtn = document.getElementById('quizSkipBtn');
+
+    /* ============================================================
+       COORDINATE PROJECTIONS
+       ============================================================ */
+    function toSvgX(x) { return cx + x * scale; }
+    function toSvgY(y) { return cy - y * scale; }
+    function toMathX(svgX) { return (svgX - cx) / scale; }
+    function toMathY(svgY) { return (cy - svgY) / scale; }
+
+    /* ============================================================
+       GRID & BACKDROP GENERATION
+       ============================================================ */
+    function buildGrid() {
+        // Draw sub-grid lines
+        let gridLines = '';
+        for (let val = -1.0; val <= 1.0; val += 0.5) {
+            if (Math.abs(val) < 0.01) continue;
+            // Vertical
+            gridLines += `<line class="grid-line" x1="${toSvgX(val)}" y1="50" x2="${toSvgX(val)}" y2="550" />`;
+            // Horizontal
+            gridLines += `<line class="grid-line" x1="50" y1="${toSvgY(val)}" x2="550" y2="${toSvgY(val)}" />`;
+            
+            // Text tick labels
+            gridLines += `<text class="axis-text" x="${toSvgX(val)}" y="320" text-anchor="middle">${val}</text>`;
+            gridLines += `<text class="axis-text" x="280" y="${toSvgY(val) + 4}" text-anchor="end">${val}</text>`;
+        }
+        gridGroup.innerHTML = gridLines;
+
+        // Quadrant backdrops
+        quadrantBackdrops.innerHTML = `
+            <!-- Quadrant I -->
+            <rect x="300" y="50" width="250" height="250" fill="var(--soft-blue)" opacity="0.0" id="fillQ1" />
+            <!-- Quadrant II -->
+            <rect x="50" y="50" width="250" height="250" fill="var(--soft-pink)" opacity="0.0" id="fillQ2" />
+            <!-- Quadrant III -->
+            <rect x="50" y="300" width="250" height="250" fill="var(--soft-teal)" opacity="0.0" id="fillQ3" />
+            <!-- Quadrant IV -->
+            <rect x="300" y="300" width="250" height="250" fill="var(--soft-orange)" opacity="0.0" id="fillQ4" />
+        `;
+
+        // Special angle dashed rays
+        let specialRays = '';
+        specialAngles.forEach(ang => {
+            let rad = ang.rad;
+            let sx = toSvgX(Math.cos(rad));
+            let sy = toSvgY(Math.sin(rad));
+            specialRays += `<line class="special-ray" x1="300" y1="300" x2="${sx}" y2="${sy}" />`;
+            
+            // Put outer degrees text
+            let tx = toSvgX(1.13 * Math.cos(rad));
+            let ty = toSvgY(1.13 * Math.sin(rad)) + 4;
+            let anchor = Math.cos(rad) > 0.1 ? 'start' : (Math.cos(rad) < -0.1 ? 'end' : 'middle');
+            specialRays += `<text class="special-angle-text" x="${tx}" y="${ty}" text-anchor="${anchor}">${ang.deg}°</text>`;
+        });
+        specialRaysGroup.innerHTML = specialRays;
+    }
+
+    /* ============================================================
+       TRIG CALCULATIONS & FORMATTING
+       ============================================================ */
+    // Helper to format fractions
+    function toLaTeXFraction(numStr) {
+        if (numStr === "0" || numStr === "1" || numStr === "-1") return numStr;
+        return numStr;
+    }
+
+    function getQuadrant(rad) {
+        // Normalize angle to [0, 2pi)
+        let normalized = rad % (2 * Math.PI);
+        if (normalized < 0) normalized += 2 * Math.PI;
+
+        if (normalized > 0 && normalized < Math.PI / 2) return 1;
+        if (normalized > Math.PI / 2 && normalized < Math.PI) return 2;
+        if (normalized > Math.PI && normalized < 3 * Math.PI / 2) return 3;
+        if (normalized > 3 * Math.PI / 2 && normalized < 2 * Math.PI) return 4;
+        
+        // Quadrantal boundaries
+        return 0; 
+    }
+
+    function getRefAngle(rad) {
+        let normalized = rad % (2 * Math.PI);
+        if (normalized < 0) normalized += 2 * Math.PI;
+
+        if (normalized <= Math.PI / 2) return normalized;
+        if (normalized <= Math.PI) return Math.PI - normalized;
+        if (normalized <= 3 * Math.PI / 2) return normalized - Math.PI;
+        return 2 * Math.PI - normalized;
+    }
+
+    // Snaps an angle (in radians) to special angles if close
+    function getSnappedAngle(rad) {
+        if (!toggleSnap.checked) return rad;
+        
+        let normalized = rad % (2 * Math.PI);
+        if (normalized < 0) normalized += 2 * Math.PI;
+
+        let snapAngle = rad;
+        for (let ang of specialAngles) {
+            if (Math.abs(normalized - ang.rad) < 0.08) {
+                // Return original angle shifted by the snapped difference
+                let diff = ang.rad - normalized;
+                snapAngle = rad + diff;
+                break;
+            }
+        }
+        return snapAngle;
+    }
+
+    function getLaTeXRadianRepresentation(rad) {
+        let normalized = rad % (2 * Math.PI);
+        if (normalized < 0) normalized += 2 * Math.PI;
+        
+        // Match with special angles
+        for (let ang of specialAngles) {
+            if (Math.abs(normalized - ang.rad) < 1e-4) {
+                // Match! If rad represents negative or multiple rotations, rewrite nicely
+                let coeff = Math.round(rad / (Math.PI / 6)) / 6;
+                if (coeff === 0) return "0";
+                if (coeff === 1) return "\\pi";
+                if (coeff === -1) return "-\\pi";
+                
+                // Represent as fractional coefficient
+                let numerator = Math.round(rad / (Math.PI / 12));
+                let denominator = 12;
+                
+                // Simplify fraction
+                let divisor = gcd(Math.abs(numerator), denominator);
+                numerator = numerator / divisor;
+                denominator = denominator / divisor;
+                
+                if (denominator === 1) {
+                    return `${numerator === 1 ? "" : (numerator === -1 ? "-" : numerator)}\\pi`;
+                }
+                
+                let sign = numerator < 0 ? "-" : "";
+                let absNum = Math.abs(numerator);
+                return `${sign}\\frac{${absNum === 1 ? "" : absNum}\\pi}{${denominator}}`;
+            }
+        }
+        
+        return `${(rad / Math.PI).toFixed(2)}\\pi`;
+    }
+
+    function gcd(a, b) {
+        return b === 0 ? a : gcd(b, a % b);
+    }
+
+    /* ============================================================
+       UI UPDATE CONTROLLER
+       ============================================================ */
+    function updateUI(triggerSource) {
+        // Snap if checkbox checked
+        theta = getSnappedAngle(theta);
+
+        // Normalize degree and radian display
+        let deg = Math.round(theta * 180 / Math.PI);
+        let rad = theta;
+
+        // Sliders updates
+        if (triggerSource !== 'degree') {
+            degreeSlider.value = deg;
+            degreeOutput.textContent = `${deg}°`;
+        } else {
+            degreeOutput.textContent = `${deg}°`;
+        }
+
+        if (triggerSource !== 'radian') {
+            radianSlider.value = rad.toFixed(3);
+            radianOutput.textContent = rad.toFixed(2);
+        } else {
+            radianOutput.textContent = rad.toFixed(2);
+        }
+
+        // Selected option matching
+        let matchedPreset = false;
+        let normalizedDeg = ((deg % 360) + 360) % 360;
+        let testVal = deg; // include negative/coterminal presets
+        
+        // Find if preset matches
+        for (let opt of presetSelect.options) {
+            if (opt.value !== "" && parseInt(opt.value) === testVal) {
+                presetSelect.value = opt.value;
+                matchedPreset = true;
+                break;
+            }
+        }
+        if (!matchedPreset) {
+            presetSelect.value = "";
+        }
+
+        // Math values
+        let x = Math.cos(theta);
+        let y = Math.sin(theta);
+
+        // Coordinates & angle readouts
+        readoutDeg.textContent = `${deg}°`;
+        
+        let radLaTeX = getLaTeXRadianRepresentation(theta);
+        readoutRad.innerHTML = `\\(${radLaTeX}\\)`;
+        
+        let hasCoterminal = (theta < 0 || theta >= 2 * Math.PI);
+        if (hasCoterminal) {
+            coterminalRow.style.display = 'flex';
+            let cotermDeg = ((deg % 360) + 360) % 360;
+            let cotermRad = ((theta % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+            let cotermRadLaTeX = getLaTeXRadianRepresentation(cotermRad);
+            readoutCoterm.innerHTML = `\\(${cotermDeg}^\\circ = ${cotermRadLaTeX}\\)`;
+        } else {
+            coterminalRow.style.display = 'none';
+        }
+
+        // Dynamic Exact vs Decimal matching
+        let isSnapped = false;
+        let snapObj = null;
+        for (let ang of specialAngles) {
+            if (Math.abs(normalizedDeg - ang.deg) < 0.1) {
+                isSnapped = true;
+                snapObj = ang;
+                break;
+            }
+        }
+
+        // Build exact Coordinate layout
+        let latX = x.toFixed(3);
+        let latY = y.toFixed(3);
+        if (isSnapped && snapObj) {
+            // Apply proper signs based on quad
+            let xSign = Math.cos(theta) < -1e-4 ? "-" : "";
+            let ySign = Math.sin(theta) < -1e-4 ? "-" : "";
+            
+            latX = snapObj.exactX;
+            latY = snapObj.exactY;
+            
+            coordDisplay.innerHTML = `\\( P(x, y) = \\left( ${latX}, ${latY} \\right) \\approx (${x.toFixed(2)}, ${y.toFixed(2)}) \\)`;
+        } else {
+            coordDisplay.innerHTML = `\\( P(x, y) = (${x.toFixed(3)}, ${y.toFixed(3)}) \\)`;
+        }
+
+        // ASTC Sign indicator cards
+        let quad = getQuadrant(theta);
+        astcQ1.classList.remove('active');
+        astcQ2.classList.remove('active');
+        astcQ3.classList.remove('active');
+        astcQ4.classList.remove('active');
+        
+        // Reset quadrant shading
+        document.getElementById('fillQ1').style.opacity = '0.0';
+        document.getElementById('fillQ2').style.opacity = '0.0';
+        document.getElementById('fillQ3').style.opacity = '0.0';
+        document.getElementById('fillQ4').style.opacity = '0.0';
+
+        if (quad === 1) {
+            astcQ1.classList.add('active');
+            quadrantLabel.textContent = "I (First)";
+            quadrantSignText.innerHTML = `<strong>Quadrant I (All positive)</strong>:<br>\\(\\sin, \\cos, \\tan, \\csc, \\sec, \\cot > 0\\)`;
+            document.getElementById('fillQ1').style.opacity = '0.04';
+        } else if (quad === 2) {
+            astcQ2.classList.add('active');
+            quadrantLabel.textContent = "II (Second)";
+            quadrantSignText.innerHTML = `<strong>Quadrant II (Sine positive)</strong>:<br>\\(\\sin, \\csc > 0 \\quad &bull; \\quad \\cos, \\sec, \\tan, \\cot < 0\\)`;
+            document.getElementById('fillQ2').style.opacity = '0.04';
+        } else if (quad === 3) {
+            astcQ3.classList.add('active');
+            quadrantLabel.textContent = "III (Third)";
+            quadrantSignText.innerHTML = `<strong>Quadrant III (Tangent positive)</strong>:<br>\\(\\tan, \\cot > 0 \\quad &bull; \\quad \\sin, \\csc, \\cos, \\sec < 0\\)`;
+            document.getElementById('fillQ3').style.opacity = '0.04';
+        } else if (quad === 4) {
+            astcQ4.classList.add('active');
+            quadrantLabel.textContent = "IV (Fourth)";
+            quadrantSignText.innerHTML = `<strong>Quadrant IV (Cosine positive)</strong>:<br>\\(\\cos, \\sec > 0 \\quad &bull; \\quad \\sin, \\csc, \\tan, \\cot < 0\\)`;
+            document.getElementById('fillQ4').style.opacity = '0.04';
+        } else {
+            quadrantLabel.textContent = "Axes Boundary";
+            quadrantSignText.innerHTML = `<strong>Quadrantal Boundary</strong>:<br>Terminal ray lands on a coordinate axis.`;
+        }
+
+        // Reference Angle
+        let refRad = getRefAngle(theta);
+        let refDeg = Math.round(refRad * 180 / Math.PI);
+        let refRadLaTeX = getLaTeXRadianRepresentation(refRad);
+        refAngleLabel.innerHTML = `${refDeg}° \\( (${refRadLaTeX}) \\)`;
+
+        // Ratios Table values
+        let exactCos = isSnapped ? snapObj.exactX : x.toFixed(3);
+        let exactSin = isSnapped ? snapObj.exactY : y.toFixed(3);
+        
+        let exactTan = isSnapped ? snapObj.exactTan : (Math.abs(x) < 1e-4 ? "\\varnothing" : (y/x).toFixed(3));
+        let exactSec = isSnapped ? snapObj.exactSec : (Math.abs(x) < 1e-4 ? "\\varnothing" : (1/x).toFixed(3));
+        let exactCsc = isSnapped ? snapObj.exactCsc : (Math.abs(y) < 1e-4 ? "\\varnothing" : (1/y).toFixed(3));
+        let exactCot = isSnapped ? snapObj.exactCot : (Math.abs(y) < 1e-4 ? "\\varnothing" : (x/y).toFixed(3));
+
+        ratioExactCos.innerHTML = `\\(${exactCos}\\)`;
+        ratioDecCos.textContent = x.toFixed(3);
+        ratioExactSin.innerHTML = `\\(${exactSin}\\)`;
+        ratioDecSin.textContent = y.toFixed(3);
+        
+        ratioExactTan.innerHTML = `\\(${exactTan}\\)`;
+        ratioDecTan.textContent = Math.abs(x) < 1e-4 ? "Undefined" : (y/x).toFixed(3);
+        ratioExactSec.innerHTML = `\\(${exactSec}\\)`;
+        ratioDecSec.textContent = Math.abs(x) < 1e-4 ? "Undefined" : (1/x).toFixed(3);
+        ratioExactCsc.innerHTML = `\\(${exactCsc}\\)`;
+        ratioDecCsc.textContent = Math.abs(y) < 1e-4 ? "Undefined" : (1/y).toFixed(3);
+        ratioExactCot.innerHTML = `\\(${exactCot}\\)`;
+        ratioDecCot.textContent = Math.abs(y) < 1e-4 ? "Undefined" : (x/y).toFixed(3);
+
+        // Render math in inspector
+        renderMathInElement(document.querySelector('.inspector'), {
+            delimiters: [
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+        });
+
+        // Update SVG Elements
+        let sx = toSvgX(x);
+        let sy = toSvgY(y);
+        
+        terminalRay.setAttribute('x2', sx);
+        terminalRay.setAttribute('y2', sy);
+        draggableHandle.setAttribute('cx', sx);
+        draggableHandle.setAttribute('cy', sy);
+
+        // Reference triangle legs drawing
+        if (toggleTriangle.checked) {
+            adjLine.setAttribute('x1', 300);
+            adjLine.setAttribute('y1', 300);
+            adjLine.setAttribute('x2', sx);
+            adjLine.setAttribute('y2', 300);
+            adjLine.setAttribute('display', 'block');
+
+            oppLine.setAttribute('x1', sx);
+            oppLine.setAttribute('y1', 300);
+            oppLine.setAttribute('x2', sx);
+            oppLine.setAttribute('y2', sy);
+            oppLine.setAttribute('display', 'block');
+
+            hypLine.setAttribute('x1', 300);
+            hypLine.setAttribute('y1', 300);
+            hypLine.setAttribute('x2', sx);
+            hypLine.setAttribute('y2', sy);
+            hypLine.setAttribute('display', 'block');
+        } else {
+            adjLine.setAttribute('display', 'none');
+            oppLine.setAttribute('display', 'none');
+            hypLine.setAttribute('display', 'none');
+        }
+
+        // Angle Arc & Reference Arc shading
+        let normTheta = ((theta % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+        let arcX = toSvgX(Math.cos(normTheta) * 0.18);
+        let arcY = toSvgY(Math.sin(normTheta) * 0.18);
+        
+        let largeArc = normTheta > Math.PI ? 1 : 0;
+        let sweep = 0; // standard angle sweep goes counter-clockwise (which is clockwise in SVG, but y is inverted)
+        
+        if (normTheta > 1e-4) {
+            angleArc.setAttribute('d', `M 300 300 L ${toSvgX(0.18)} 300 A ${0.18*scale} ${0.18*scale} 0 ${largeArc} 0 ${arcX} ${arcY} Z`);
+            angleArc.setAttribute('display', 'block');
+        } else {
+            angleArc.setAttribute('display', 'none');
+        }
+
+        // Reference angle arc shading inside the reference triangle
+        if (toggleTriangle.checked && refRad > 1e-4) {
+            // Draw ref angle arc
+            // Let's determine signs to draw it at origin towards ref leg
+            let rSignX = x < 0 ? -1 : 1;
+            let rSignY = y < 0 ? -1 : 1;
+            
+            let refArcX = toSvgX(rSignX * Math.cos(refRad) * 0.22);
+            let refArcY = toSvgY(rSignY * Math.sin(refRad) * 0.22);
+            
+            let refSweep = (rSignX * rSignY > 0) ? 0 : 1; // orientation flip based on quadrants
+            
+            refArc.setAttribute('d', `M 300 300 L ${toSvgX(rSignX * 0.22)} 300 A ${0.22*scale} ${0.22*scale} 0 0 ${refSweep} ${refArcX} ${refArcY} Z`);
+            refArc.setAttribute('display', 'block');
+        } else {
+            refArc.setAttribute('display', 'none');
+        }
+
+        // Winding Spiral for multiple rotations or negative angles
+        if (toggleSpiral.checked && (theta < 0 || theta > 2*Math.PI || theta < -0.05)) {
+            let pts = [];
+            let steps = Math.min(200, Math.ceil(Math.abs(theta) * 20));
+            let startRadius = 15;
+            let endRadius = 45;
+            
+            for (let i = 0; i <= steps; i++) {
+                let t = i / steps;
+                let phi = t * theta;
+                let rVal = startRadius + t * (endRadius - startRadius);
+                
+                let spiralX = cx + rVal * Math.cos(phi);
+                let spiralY = cy - rVal * Math.sin(phi); // invert Y
+                pts.push(`${i === 0 ? "M" : "L"} ${spiralX.toFixed(1)} ${spiralY.toFixed(1)}`);
+            }
+            
+            windingSpiral.setAttribute('d', pts.join(" "));
+            windingSpiral.setAttribute('display', 'block');
+        } else {
+            windingSpiral.setAttribute('display', 'none');
+        }
+
+        // Header coordinates readout
+        coordinatesIndicator.textContent = `Coordinates: (${x.toFixed(2)}, ${y.toFixed(2)})`;
+    }
+
+    /* ============================================================
+       DRAG-AND-DROP CONTROLLER
+       ============================================================ */
+    let isDragging = false;
+
+    function handlePointerDown(e) {
+        if (e.target === draggableHandle) {
+            isDragging = true;
+            draggableHandle.setPointerCapture(e.pointerId);
+            hideTooltip();
+        }
+    }
+
+    function handlePointerMove(e) {
+        if (!isDragging) return;
+        
+        let rect = svg.getBoundingClientRect();
+        let mouseX = e.clientX - rect.left;
+        let mouseY = e.clientY - rect.top;
+
+        // Convert client pixels to SVG pixels (0 to 600)
+        let svgX = (mouseX / rect.width) * 600;
+        let svgY = (mouseY / rect.height) * 600;
+
+        let mathX = toMathX(svgX);
+        let mathY = toMathY(svgY);
+
+        // Compute polar angle
+        let newAngle = Math.atan2(mathY, mathX);
+        if (newAngle < 0) newAngle += 2 * Math.PI;
+
+        // Keep the rotation continuous (preserve winding number relative to slider bounds if possible)
+        let currentWinding = Math.floor(theta / (2 * Math.PI));
+        
+        // Let's resolve closest angle preserving rotation
+        let oldNormalized = theta % (2 * Math.PI);
+        if (oldNormalized < 0) oldNormalized += 2 * Math.PI;
+
+        let diff = newAngle - oldNormalized;
+        if (diff > Math.PI) {
+            diff -= 2 * Math.PI;
+        } else if (diff < -Math.PI) {
+            diff += 2 * Math.PI;
+        }
+
+        let prospectiveTheta = theta + diff;
+        
+        // Cap within slider bounds [-360, 720] -> [-2pi, 4pi]
+        if (prospectiveTheta >= -2.01 * Math.PI && prospectiveTheta <= 4.01 * Math.PI) {
+            theta = prospectiveTheta;
+            updateUI('drag');
+        }
+    }
+
+    function handlePointerUp(e) {
+        if (isDragging) {
+            isDragging = false;
+            draggableHandle.releasePointerCapture(e.pointerId);
+            showTooltip();
+        }
+    }
+
+    function showTooltip() {
+        let x = Math.cos(theta);
+        let y = Math.sin(theta);
+        let deg = Math.round(theta * 180 / Math.PI);
+        
+        let rect = svg.getBoundingClientRect();
+        let wrapRect = canvasWrap.getBoundingClientRect();
+
+        let svgX = toSvgX(x);
+        let svgY = toSvgY(y);
+
+        let clientX = (rect.left - wrapRect.left) + (svgX / 600) * rect.width + 12;
+        let clientY = (rect.top - wrapRect.top) + (svgY / 600) * rect.height - 30;
+
+        circleTooltip.style.display = 'block';
+        let tooltipWidth = circleTooltip.offsetWidth || 110;
+        let tooltipHeight = circleTooltip.offsetHeight || 50;
+
+        let maxLeft = wrapRect.width - tooltipWidth - 10;
+        let finalLeft = Math.max(10, Math.min(clientX, maxLeft));
+
+        let maxTop = wrapRect.height - tooltipHeight - 10;
+        let finalTop = Math.max(10, Math.min(clientY, maxTop));
+
+        circleTooltip.style.left = `${finalLeft}px`;
+        circleTooltip.style.top = `${finalTop}px`;
+        circleTooltip.innerHTML = `θ: ${deg}°<br>(${x.toFixed(2)}, ${y.toFixed(2)})`;
+    }
+
+    function hideTooltip() {
+        circleTooltip.style.display = 'none';
+    }
+
+    /* ============================================================
+       SLIDERS & CONTROLS BINDINGS
+       ============================================================ */
+    degreeSlider.addEventListener('input', e => {
+        let valDeg = parseInt(e.target.value);
+        theta = valDeg * Math.PI / 180;
+        updateUI('degree');
+    });
+
+    radianSlider.addEventListener('input', e => {
+        let valRad = parseFloat(e.target.value);
+        theta = valRad;
+        updateUI('radian');
+    });
+
+    presetSelect.addEventListener('change', e => {
+        if (e.target.value === "") return;
+        let valDeg = parseInt(e.target.value);
+        theta = valDeg * Math.PI / 180;
+        updateUI('preset');
+    });
+
+    toggleSnap.addEventListener('change', () => { updateUI(); });
+    toggleTriangle.addEventListener('change', () => { updateUI(); });
+    toggleSpiral.addEventListener('change', () => { updateUI(); });
+
+    svg.addEventListener('pointerdown', handlePointerDown);
+    svg.addEventListener('pointermove', handlePointerMove);
+    svg.addEventListener('pointerup', handlePointerUp);
+    svg.addEventListener('pointercancel', handlePointerUp);
+
+    // Initial tooltips show
+    setTimeout(showTooltip, 500);
+
+    /* ============================================================
+       QUIZ SYSTEM IMPLEMENTATION
+       ============================================================ */
+    const quizQuestions = [
+        // Questions type 1: exact values
+        { q: "What is the exact value of \\(\\sin(150^\\circ)\\)?", opts: ["\\frac{1}{2}", "-\\frac{1}{2}", "\\frac{\\sqrt{3}}{2}", "-\\frac{\\sqrt{3}}{2}"], ans: "\\frac{1}{2}" },
+        { q: "What is the exact value of \\(\\cos(\\frac{3\\pi}{4})\\)?", opts: ["-\\frac{\\sqrt{2}}{2}", "\\frac{\\sqrt{2}}{2}", "-\\frac{1}{2}", "\\frac{1}{2}"], ans: "-\\frac{\\sqrt{2}}{2}" },
+        { q: "What is the exact value of \\(\\tan(240^\\circ)\\)?", opts: ["\\sqrt{3}", "-\\sqrt{3}", "\\frac{\\sqrt{3}}{3}", "-\\frac{\\sqrt{3}}{3}"], ans: "\\sqrt{3}" },
+        { q: "What is the exact value of \\(\\csc(90^\\circ)\\)?", opts: ["1", "0", "-1", "\\text{Undefined}"], ans: "1" },
+        { q: "What is the exact value of \\(\\sec(\\frac{7\\pi}{6})\\)?", opts: ["-\\frac{2\\sqrt{3}}{3}", "-\\sqrt{3}", "-2", "\\frac{2\\sqrt{3}}{3}"], ans: "-\\frac{2\\sqrt{3}}{3}" },
+        { q: "What is the exact value of \\(\\cot(300^\\circ)\\)?", opts: ["-\\frac{\\sqrt{3}}{3}", "-\\sqrt{3}", "\\frac{\\sqrt{3}}{3}", "\\sqrt{3}"], ans: "-\\frac{\\sqrt{3}}{3}" },
+        
+        // Coterminal angles
+        { q: "Which of the following is coterminal with \\(420^\\circ\\)?", opts: ["60^\\circ", "300^\\circ", "120^\\circ", "-60^\\circ"], ans: "60^\\circ" },
+        { q: "Which of the following is coterminal with \\(-\\frac{\\pi}{3}\\)?", opts: ["\\frac{5\\pi}{3}", "\\frac{2\\pi}{3}", "\\frac{\\pi}{3}", "-\\frac{5\\pi}{3}"], ans: "\\frac{5\\pi}{3}" },
+        
+        // Reference angles
+        { q: "What is the reference angle for \\(225^\\circ\\)?", opts: ["45^\\circ", "30^\\circ", "60^\\circ", "15^\\circ"], ans: "45^\\circ" },
+        { q: "What is the reference angle for \\(\\frac{5\\pi}{6}\\)?", opts: ["\\frac{\\pi}{6}", "\\frac{\\pi}{3}", "\\frac{\\pi}{4}", "\\frac{5\\pi}{6}"], ans: "\\frac{\\pi}{6}" }
+    ];
+
+    function loadQuestion() {
+        quizState.answered = false;
+        quizFeedback.innerHTML = '';
+        quizFeedback.className = 'quiz-feedback';
+        quizNextBtn.style.display = 'none';
+        quizSkipBtn.style.display = 'inline-block';
+
+        // Select a random question
+        let q = quizQuestions[Math.floor(Math.random() * quizQuestions.length)];
+        quizState.currentQuestion = q;
+        quizQuestion.innerHTML = q.q;
+
+        // Shuffle options
+        let options = [...q.opts];
+        options.sort(() => Math.random() - 0.5);
+
+        let optionsHTML = '';
+        options.forEach(opt => {
+            optionsHTML += `<button class="quiz-opt" data-val="${opt}">${opt}</button>`;
+        });
+        quizOptions.innerHTML = optionsHTML;
+
+        // Click listeners for options
+        Array.from(quizOptions.querySelectorAll('.quiz-opt')).forEach(btn => {
+            btn.addEventListener('click', () => handleAnswer(btn.getAttribute('data-val'), btn));
+        });
+
+        // Trigger math rendering
+        renderMathInElement(document.querySelector('.quiz-card'), {
+            delimiters: [
+                { left: '\\(', right: '\\)', display: false },
+                { left: '\\[', right: '\\]', display: true }
+            ],
+            throwOnError: false
+        });
+    }
+
+    function handleAnswer(selectedVal, btnElement) {
+        if (quizState.answered) return;
+        quizState.answered = true;
+        quizState.total++;
+
+        let isCorrect = (selectedVal === quizState.currentQuestion.ans);
+        if (isCorrect) {
+            quizState.score++;
+            btnElement.classList.add('correct');
+            quizFeedback.textContent = "Correct! Great job.";
+            quizFeedback.className = "quiz-feedback correct";
+        } else {
+            btnElement.classList.add('incorrect');
+            quizFeedback.innerHTML = `Incorrect. The correct answer is \\(${quizState.currentQuestion.ans}\\).`;
+            quizFeedback.className = "quiz-feedback incorrect";
+            
+            // Highlight the correct one
+            Array.from(quizOptions.querySelectorAll('.quiz-opt')).forEach(b => {
+                if (b.getAttribute('data-val') === quizState.currentQuestion.ans) {
+                    b.classList.add('correct');
+                }
+            });
+            renderMathInElement(quizFeedback, { throwOnError: false });
+        }
+
+        quizScore.textContent = `Score: ${quizState.score}/${quizState.total}`;
+        quizSkipBtn.style.display = 'none';
+        quizNextBtn.style.display = 'inline-block';
+    }
+
+    quizNextBtn.addEventListener('click', loadQuestion);
+    quizSkipBtn.addEventListener('click', loadQuestion);
+
+    /* ============================================================
+       INITIALIZATION
+       ============================================================ */
+    buildGrid();
+    updateUI();
+    loadQuestion();
+})();
+</script>
+</body>
+</html>

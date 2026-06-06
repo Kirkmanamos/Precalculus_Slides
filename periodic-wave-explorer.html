@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Wave Explorer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <style>
+        :root {
+            --navy: #1a365d;
+            --blue: #2563eb;
+            --teal: #0891b2;
+            --green: #16a34a;
+            --orange: #d97706;
+            --red: #dc2626;
+            --pink: #db2777;
+            --ink: #1e293b;
+            --muted: #64748b;
+            --line: #dbeafe;
+            --surface: #ffffff;
+            --soft: #f8fafc;
+            --soft-blue: #eff6ff;
+            --soft-teal: #f0fdfa;
+            --soft-green: #f0fdf4;
+            --soft-orange: #fffbeb;
+            --shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
+            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Wave colors */
+            --sin-color: #16a34a;
+            --cos-color: #2563eb;
+            --tan-color: #d97706;
+            --csc-color: #db2777;
+            --sec-color: #7c3aed;
+            --cot-color: #0d9488;
+            --ghost-color: rgba(148, 163, 184, 0.35);
+            --midline-color: #d97706;
+            --amp-color: #dc2626;
+            --period-color: #0891b2;
+            --asymptote-color: #dc2626;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            min-height: 100%; margin: 0;
+            font-family: "Source Sans 3", sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(var(--line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line) 1px, transparent 1px),
+                #f8fbff;
+            background-size: 30px 30px;
+        }
+
+        body { display: flex; justify-content: center; padding: 22px; }
+
+        button, select, input { font: inherit; }
+        button { border: 0; cursor: pointer; }
+
+        /* ============================================================
+           APP LAYOUT
+           ============================================================ */
+        .app {
+            width: min(1440px, 100%);
+            min-height: calc(100svh - 44px);
+            display: grid;
+            grid-template-columns: 300px minmax(500px, 1fr) 340px;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #dbeafe;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ============================================================
+           CONTROLS PANEL (left)
+           ============================================================ */
+        .controls { overflow-y: auto; }
+
+        .brand {
+            padding: 18px 18px 14px;
+            background: var(--navy);
+            color: white;
+        }
+
+        .section-label {
+            font-size: 0.78rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #93c5fd;
+        }
+
+        h1 { margin: 4px 0 0; font-size: 1.55rem; line-height: 1.1; }
+
+        .brand p {
+            margin-top: 6px; color: #93c5fd;
+            font-size: 0.82rem; line-height: 1.35;
+        }
+
+        .control-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+        }
+
+        .control-group { display: grid; gap: 10px; }
+
+        .group-title {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            font-size: 0.78rem; font-weight: 800;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--navy);
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 4px;
+        }
+
+        .slider-row {
+            display: grid; gap: 7px; padding: 10px;
+            border: 1px solid #e2e8f0; border-radius: 8px;
+            background: var(--soft);
+        }
+
+        .slider-head {
+            display: flex; align-items: baseline;
+            justify-content: space-between; gap: 10px;
+        }
+
+        .slider-head label {
+            font-size: 0.88rem; font-weight: 700; color: #334155;
+        }
+
+        output {
+            min-width: 3.8rem; text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800; color: var(--blue);
+        }
+
+        input[type="range"] { width: 100%; accent-color: var(--blue); }
+
+        .preset-select {
+            width: 100%; padding: 8px 12px; border-radius: 8px;
+            border: 1px solid #cbd5e1; background: white;
+            font-size: 0.9rem; font-weight: 600; color: var(--ink);
+            outline: 0; transition: border-color 0.2s;
+        }
+        .preset-select:focus { border-color: var(--blue); }
+
+        .checkbox-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.88rem; font-weight: 600; color: #334155;
+            cursor: pointer;
+        }
+        .checkbox-label input {
+            width: 16px; height: 16px; accent-color: var(--blue);
+        }
+
+        /* Toggle button group */
+        .toggle-group {
+            display: flex; gap: 0; border-radius: 8px;
+            overflow: hidden; border: 1px solid #cbd5e1;
+            flex-wrap: wrap;
+        }
+        .toggle-btn {
+            flex: 1 1 auto; padding: 8px 10px;
+            background: white; color: var(--muted);
+            font-size: 0.82rem; font-weight: 700;
+            border: none; cursor: pointer;
+            transition: var(--transition);
+            min-width: 0;
+        }
+        .toggle-btn + .toggle-btn { border-left: 1px solid #cbd5e1; }
+        .toggle-btn.active {
+            background: var(--navy); color: white;
+        }
+
+        .slider-row.disabled {
+            opacity: 0.4; pointer-events: none;
+        }
+
+        .note-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 8px; border-radius: 6px;
+            font-size: 0.72rem; font-weight: 700;
+            background: #fef2f2; color: var(--red);
+            border: 1px solid #fecaca;
+        }
+        .note-pill.teal {
+            background: var(--soft-teal); color: var(--teal);
+            border-color: #99f6e4;
+        }
+
+        .reset-btn {
+            width: 100%; padding: 10px;
+            background: var(--soft-blue); color: var(--blue);
+            border-radius: 8px; font-weight: 700;
+            font-size: 0.88rem; letter-spacing: 0.04em;
+            transition: var(--transition);
+        }
+        .reset-btn:hover { background: #dbeafe; }
+
+        /* ============================================================
+           STAGE PANEL (center)
+           ============================================================ */
+        .stage {
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr) auto;
+            overflow: hidden;
+        }
+
+        .stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .stage-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .equation-display {
+            font-size: 0.85rem; color: var(--muted);
+        }
+
+        .canvas-wrap {
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
+            background: var(--soft);
+            overflow: hidden;
+            flex: 1;
+            min-height: 0;
+        }
+
+        #waveCanvas {
+            width: 100%; height: 100%;
+            display: block;
+        }
+
+        .canvas-footer {
+            padding: 10px 16px;
+            background: white; border-top: 1px solid #dbeafe;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.82rem; color: var(--muted);
+        }
+
+        .legend {
+            display: flex; gap: 14px; align-items: center;
+        }
+
+        .legend-item {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 0.78rem; font-weight: 600;
+        }
+
+        .legend-swatch {
+            width: 18px; height: 4px; border-radius: 2px;
+        }
+
+        /* ============================================================
+           RIGHT PANEL: INSPECTOR
+           ============================================================ */
+        .inspector {
+            overflow-y: auto;
+            padding: 0;
+            display: flex; flex-direction: column;
+        }
+
+        .inspector-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #dbeafe;
+        }
+
+        .inspector-header h2 {
+            margin: 0; font-size: 1.05rem; color: var(--navy);
+        }
+
+        .inspector-scroll {
+            padding: 16px;
+            display: grid; gap: 16px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .inspector-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .inspector-card-header {
+            padding: 8px 14px;
+            background: var(--navy);
+            color: white;
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+        }
+
+        .inspector-card-body {
+            padding: 14px;
+        }
+
+        .equation-box {
+            text-align: center;
+            padding: 16px 12px;
+            background: var(--soft-blue);
+            border-radius: 8px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .props-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .props-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .props-table tr:last-child td { border-bottom: none; }
+
+        .props-table td:first-child {
+            font-weight: 700; color: var(--navy);
+            width: 45%;
+        }
+
+        .props-table td:last-child {
+            color: var(--ink);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .key-points-list {
+            display: grid; gap: 6px;
+        }
+
+        .key-point {
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.82rem;
+        }
+
+        .key-point:nth-child(odd) { background: var(--soft); }
+
+        .key-point-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .key-point-label {
+            font-weight: 700; color: var(--navy);
+            min-width: 5.5rem;
+        }
+
+        .key-point-coords {
+            color: var(--muted); font-variant-numeric: tabular-nums;
+        }
+
+        .reflection-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 6px;
+            font-size: 0.78rem; font-weight: 700;
+            background: #fef2f2; color: var(--red);
+            border: 1px solid #fecaca;
+        }
+
+        .no-reflection {
+            background: var(--soft-green); color: var(--green);
+            border-color: #bbf7d0;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1100px) {
+            .app {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr auto;
+            }
+            .controls { max-height: 300px; }
+            .canvas-wrap { min-height: 400px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- ======== LEFT: CONTROLS ======== -->
+    <div class="panel controls">
+        <div class="brand">
+            <div class="section-label">Unit 5 · Periodic Functions</div>
+            <h1>Wave Explorer</h1>
+            <p>Manipulate amplitude, period, phase shift, and vertical translation in real time.</p>
+        </div>
+
+        <div class="control-scroll">
+
+            <!-- Function Type -->
+            <div class="control-group">
+                <div class="group-title">Function Type</div>
+                <div class="toggle-group" id="fnToggleGroup">
+                    <button class="toggle-btn active" data-fn="sin">sin</button>
+                    <button class="toggle-btn" data-fn="cos">cos</button>
+                    <button class="toggle-btn" data-fn="tan">tan</button>
+                    <button class="toggle-btn" data-fn="csc">csc</button>
+                    <button class="toggle-btn" data-fn="sec">sec</button>
+                    <button class="toggle-btn" data-fn="cot">cot</button>
+                </div>
+            </div>
+
+            <!-- Presets -->
+            <div class="control-group">
+                <div class="group-title">Presets</div>
+                <select class="preset-select" id="presetSelect">
+                    <option value="">— Choose a preset —</option>
+                    <optgroup label="Sinusoidal">
+                        <option value="parent-sin">Parent Sine</option>
+                        <option value="parent-cos">Parent Cosine</option>
+                        <option value="tall-slow">Tall & Slow (A=3, B=½)</option>
+                        <option value="compressed-shifted">Compressed & Shifted (B=2, C=π/4)</option>
+                        <option value="reflected-translated">Reflected + Translated (A=−2, D=3)</option>
+                    </optgroup>
+                    <optgroup label="Other Trig Functions">
+                        <option value="parent-tan">Parent Tangent</option>
+                        <option value="parent-csc">Parent Cosecant</option>
+                        <option value="parent-sec">Parent Secant</option>
+                        <option value="parent-cot">Parent Cotangent</option>
+                        <option value="stretched-tan">Stretched Tangent (A=2, B=½)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- Sliders -->
+            <div class="control-group">
+                <div class="group-title">Parameters</div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label>A — Amplitude</label>
+                        <output id="outA">1</output>
+                    </div>
+                    <input type="range" id="sliderA" min="-5" max="5" step="0.1" value="1">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label>B — Frequency</label>
+                        <output id="outB">1</output>
+                    </div>
+                    <input type="range" id="sliderB" min="0.25" max="4" step="0.25" value="1">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label>C — Phase Shift</label>
+                        <output id="outC">0</output>
+                    </div>
+                    <input type="range" id="sliderC" min="-3.1416" max="3.1416" step="0.2618" value="0">
+                </div>
+
+                <div class="slider-row">
+                    <div class="slider-head">
+                        <label>D — Vertical Shift</label>
+                        <output id="outD">0</output>
+                    </div>
+                    <input type="range" id="sliderD" min="-5" max="5" step="0.5" value="0">
+                </div>
+            </div>
+
+            <!-- Toggles -->
+            <div class="control-group">
+                <div class="group-title">Display</div>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="chkGhost" checked> Show parent wave (ghost)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="chkMidline" checked> Show midline
+                </label>
+                <label class="checkbox-label" id="lblAmplitude">
+                    <input type="checkbox" id="chkAmplitude" checked> Show amplitude markers
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="chkPeriod" checked> Show period bracket
+                </label>
+                <label class="checkbox-label" id="lblKeyPoints">
+                    <input type="checkbox" id="chkKeyPoints" checked> Show five key points
+                </label>
+                <label class="checkbox-label" id="lblAsymptotes">
+                    <input type="checkbox" id="chkAsymptotes" checked> Show asymptotes
+                </label>
+            </div>
+
+            <button class="reset-btn" id="btnReset">Reset All</button>
+        </div>
+    </div>
+
+    <!-- ======== CENTER: CANVAS ======== -->
+    <div class="panel stage">
+        <div class="stage-header">
+            <h2>Graph</h2>
+            <div class="equation-display" id="headerEq"></div>
+        </div>
+        <div class="canvas-wrap">
+            <canvas id="waveCanvas"></canvas>
+        </div>
+        <div class="canvas-footer">
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-swatch" style="background: var(--ghost-color);"></div>
+                    <span>Parent</span>
+                </div>
+                <div class="legend-item" id="legendActive">
+                    <div class="legend-swatch" id="legendSwatch" style="background: var(--sin-color);"></div>
+                    <span id="legendLabel">Transformed</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-swatch" style="background: var(--midline-color); height: 2px; border-top: 1px dashed var(--midline-color);"></div>
+                    <span>Midline</span>
+                </div>
+            </div>
+            <span>Drag sliders to explore</span>
+        </div>
+    </div>
+
+    <!-- ======== RIGHT: INSPECTOR ======== -->
+    <div class="panel inspector">
+        <div class="inspector-header">
+            <h2>Inspector</h2>
+        </div>
+        <div class="inspector-scroll">
+
+            <!-- Equation -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Current Equation</div>
+                <div class="inspector-card-body">
+                    <div class="equation-box" id="eqDisplay"></div>
+                </div>
+            </div>
+
+            <!-- Properties -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Properties</div>
+                <div class="inspector-card-body">
+                    <table class="props-table" id="propsTable">
+                        <tr id="rowAmp"><td>Amplitude</td><td id="propAmp">1</td></tr>
+                        <tr><td>Period</td><td id="propPeriod">2π</td></tr>
+                        <tr><td>Phase Shift</td><td id="propPhase">None</td></tr>
+                        <tr><td>Vertical Shift</td><td id="propVShift">None</td></tr>
+                        <tr><td>Midline</td><td id="propMidline">y = 0</td></tr>
+                        <tr id="rowReflect"><td>Reflection</td><td id="propReflect"><span class="reflection-badge no-reflection">None</span></td></tr>
+                        <tr id="rowAsymptotes" style="display:none;"><td>Asymptotes</td><td id="propAsymptotes"></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Five Key Points -->
+            <div class="inspector-card">
+                <div class="inspector-card-header">Five Key Points (One Period)</div>
+                <div class="inspector-card-body">
+                    <div class="key-points-list" id="keyPointsList"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- KaTeX -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+
+<script>
+/* ================================================================
+   PERIODIC WAVE EXPLORER — Controller (all 6 trig functions)
+   ================================================================ */
+(() => {
+    'use strict';
+
+    // ── DOM refs ──────────────────────────────────────────────────
+    const canvas  = document.getElementById('waveCanvas');
+    const ctx     = canvas.getContext('2d');
+
+    const sliderA = document.getElementById('sliderA');
+    const sliderB = document.getElementById('sliderB');
+    const sliderC = document.getElementById('sliderC');
+    const sliderD = document.getElementById('sliderD');
+    const outA    = document.getElementById('outA');
+    const outB    = document.getElementById('outB');
+    const outC    = document.getElementById('outC');
+    const outD    = document.getElementById('outD');
+
+    const chkGhost     = document.getElementById('chkGhost');
+    const chkMidline   = document.getElementById('chkMidline');
+    const chkAmplitude = document.getElementById('chkAmplitude');
+    const chkPeriod    = document.getElementById('chkPeriod');
+    const chkKeyPoints = document.getElementById('chkKeyPoints');
+    const chkAsymptotes = document.getElementById('chkAsymptotes');
+
+    const fnToggleGroup = document.getElementById('fnToggleGroup');
+    const btnReset = document.getElementById('btnReset');
+    const presetSelect = document.getElementById('presetSelect');
+
+    const eqDisplay   = document.getElementById('eqDisplay');
+    const headerEq    = document.getElementById('headerEq');
+    const propAmp     = document.getElementById('propAmp');
+    const propPeriod  = document.getElementById('propPeriod');
+    const propPhase   = document.getElementById('propPhase');
+    const propVShift  = document.getElementById('propVShift');
+    const propMidline = document.getElementById('propMidline');
+    const propReflect = document.getElementById('propReflect');
+    const propAsymptotes = document.getElementById('propAsymptotes');
+    const rowAmp      = document.getElementById('rowAmp');
+    const rowReflect  = document.getElementById('rowReflect');
+    const rowAsymptotes = document.getElementById('rowAsymptotes');
+    const keyPointsList = document.getElementById('keyPointsList');
+    const legendSwatch  = document.getElementById('legendSwatch');
+
+    // Adaptive UI elements
+    const lblAmplitude  = document.getElementById('lblAmplitude');
+    const lblKeyPoints  = document.getElementById('lblKeyPoints');
+    const lblAsymptotes = document.getElementById('lblAsymptotes');
+    const sliderARow    = sliderA.closest('.slider-row');
+
+    // ── State ─────────────────────────────────────────────────────
+    let fnType = 'sin';
+    let A = 1, B = 1, C = 0, D = 0;
+
+    const PI = Math.PI;
+
+    // ── Function config ───────────────────────────────────────────
+    const FN_CONFIG = {
+        sin:  { color: '#16a34a', latex: '\\sin',  sinusoidal: true,  basePeriod: 2*PI },
+        cos:  { color: '#2563eb', latex: '\\cos',  sinusoidal: true,  basePeriod: 2*PI },
+        tan:  { color: '#d97706', latex: '\\tan',  sinusoidal: false, basePeriod: PI   },
+        csc:  { color: '#db2777', latex: '\\csc',  sinusoidal: false, basePeriod: 2*PI },
+        sec:  { color: '#7c3aed', latex: '\\sec',  sinusoidal: false, basePeriod: 2*PI },
+        cot:  { color: '#0d9488', latex: '\\cot',  sinusoidal: false, basePeriod: PI   },
+    };
+
+    function isSinusoidal() { return FN_CONFIG[fnType].sinusoidal; }
+    function basePeriod()   { return FN_CONFIG[fnType].basePeriod; }
+
+    // ── Math functions ────────────────────────────────────────────
+    function evalFn(type, x) {
+        switch (type) {
+            case 'sin': return Math.sin(x);
+            case 'cos': return Math.cos(x);
+            case 'tan': return Math.tan(x);
+            case 'csc': { const s = Math.sin(x); return Math.abs(s) < 1e-10 ? NaN : 1/s; }
+            case 'sec': { const c = Math.cos(x); return Math.abs(c) < 1e-10 ? NaN : 1/c; }
+            case 'cot': { const s = Math.sin(x); return Math.abs(s) < 1e-10 ? NaN : Math.cos(x)/s; }
+        }
+    }
+
+    // Get asymptote x-positions for the BASE function (a=1,b=1,c=0,d=0)
+    function getBaseAsymptotes() {
+        const asym = [];
+        switch (fnType) {
+            case 'tan': // at x = π/2 + nπ
+                for (let n = -5; n <= 8; n++) asym.push(PI/2 + n*PI);
+                break;
+            case 'cot': // at x = nπ
+                for (let n = -4; n <= 8; n++) asym.push(n*PI);
+                break;
+            case 'csc': // at x = nπ
+                for (let n = -4; n <= 8; n++) asym.push(n*PI);
+                break;
+            case 'sec': // at x = π/2 + nπ
+                for (let n = -5; n <= 8; n++) asym.push(PI/2 + n*PI);
+                break;
+        }
+        return asym;
+    }
+
+    // Get transformed asymptote x-positions
+    function getAsymptotes(b, c) {
+        if (isSinusoidal()) return [];
+        const baseAsym = getBaseAsymptotes();
+        // Transform: base asymptote at x₀ means B(x - C) = x₀, so x = x₀/B + C
+        const result = [];
+        // Generate enough asymptotes to cover [-2π, 4π]
+        const period = basePeriod() / Math.abs(b);
+        for (let n = -20; n <= 20; n++) {
+            let x0;
+            switch (fnType) {
+                case 'tan': x0 = PI/2 + n*PI; break;
+                case 'cot': x0 = n*PI; break;
+                case 'csc': x0 = n*PI; break;
+                case 'sec': x0 = PI/2 + n*PI; break;
+            }
+            const x = x0 / b + c;
+            if (x >= X_MIN - 1 && x <= X_MAX + 1) result.push(x);
+        }
+        return result.sort((a, b) => a - b);
+    }
+
+    // ── Adaptive UI ───────────────────────────────────────────────
+    function updateUI() {
+        const sinusoidal = isSinusoidal();
+
+        // Hide amplitude controls for non-sinusoidal
+        sliderARow.classList.toggle('disabled', !sinusoidal);
+        lblAmplitude.style.display = sinusoidal ? '' : 'none';
+        lblKeyPoints.style.display = sinusoidal ? '' : 'none';
+        lblAsymptotes.style.display = sinusoidal ? 'none' : '';
+
+        // Inspector rows
+        rowAmp.style.display = sinusoidal ? '' : 'none';
+        rowReflect.style.display = sinusoidal ? '' : 'none';
+        rowAsymptotes.style.display = sinusoidal ? 'none' : '';
+
+        // Key points card
+        const kpCard = keyPointsList.closest('.inspector-card');
+        kpCard.style.display = sinusoidal ? '' : 'none';
+
+        // For non-sinusoidal, force A=1 and reset slider
+        if (!sinusoidal) {
+            sliderA.value = 1;
+            A = 1;
+            outA.textContent = '1';
+        }
+    }
+
+    // ── Canvas sizing ─────────────────────────────────────────────
+    let W, H, dpr;
+    const PADDING = { top: 40, right: 40, bottom: 50, left: 60 };
+
+    function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        W = rect.width;
+        H = rect.height;
+        canvas.width  = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width  = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    // ── Coordinate transforms ─────────────────────────────────────
+    const X_MIN = -2 * PI;
+    const X_MAX =  4 * PI;
+
+    function getYRange() {
+        if (isSinusoidal()) {
+            const maxY = Math.abs(A) + Math.abs(D) + 1;
+            return { yMin: -maxY, yMax: maxY };
+        }
+        // For tan/csc/sec/cot, fix a reasonable y range
+        const cap = Math.max(6, Math.abs(D) + 4);
+        return { yMin: -cap, yMax: cap };
+    }
+
+    function plotX(x) {
+        const gw = W - PADDING.left - PADDING.right;
+        return PADDING.left + ((x - X_MIN) / (X_MAX - X_MIN)) * gw;
+    }
+
+    function plotY(y, yMin, yMax) {
+        const gh = H - PADDING.top - PADDING.bottom;
+        return PADDING.top + ((yMax - y) / (yMax - yMin)) * gh;
+    }
+
+    // ── Drawing ───────────────────────────────────────────────────
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        const { yMin, yMax } = getYRange();
+
+        // === Grid ===
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.lineWidth = 1;
+
+        for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+            const py = plotY(y, yMin, yMax);
+            ctx.beginPath();
+            ctx.moveTo(PADDING.left, py);
+            ctx.lineTo(W - PADDING.right, py);
+            ctx.stroke();
+        }
+
+        const xStep = PI / 2;
+        for (let x = Math.ceil(X_MIN / xStep) * xStep; x <= X_MAX; x += xStep) {
+            const px = plotX(x);
+            ctx.beginPath();
+            ctx.moveTo(px, PADDING.top);
+            ctx.lineTo(px, H - PADDING.bottom);
+            ctx.stroke();
+        }
+
+        // === Axes ===
+        ctx.strokeStyle = '#94a3b8';
+        ctx.lineWidth = 2;
+
+        const y0 = plotY(0, yMin, yMax);
+        if (y0 >= PADDING.top && y0 <= H - PADDING.bottom) {
+            ctx.beginPath();
+            ctx.moveTo(PADDING.left, y0);
+            ctx.lineTo(W - PADDING.right, y0);
+            ctx.stroke();
+        }
+
+        const x0 = plotX(0);
+        if (x0 >= PADDING.left && x0 <= W - PADDING.right) {
+            ctx.beginPath();
+            ctx.moveTo(x0, PADDING.top);
+            ctx.lineTo(x0, H - PADDING.bottom);
+            ctx.stroke();
+        }
+
+        // === Axis labels ===
+        ctx.font = '600 12px "Source Sans 3", sans-serif';
+        ctx.fillStyle = '#64748b';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+
+        const piLabels = {
+            [-2*PI]: '−2π', [-1.5*PI]: '−3π/2', [-PI]: '−π', [-0.5*PI]: '−π/2',
+            0: '0',
+            [0.5*PI]: 'π/2', [PI]: 'π', [1.5*PI]: '3π/2', [2*PI]: '2π',
+            [2.5*PI]: '5π/2', [3*PI]: '3π', [3.5*PI]: '7π/2', [4*PI]: '4π'
+        };
+
+        for (const [xVal, label] of Object.entries(piLabels)) {
+            const px = plotX(parseFloat(xVal));
+            if (px >= PADDING.left - 5 && px <= W - PADDING.right + 5) {
+                const tickY = (y0 >= PADDING.top && y0 <= H - PADDING.bottom)
+                    ? y0 : H - PADDING.bottom;
+                ctx.fillText(label, px, tickY + 8);
+            }
+        }
+
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+            if (y === 0) continue;
+            const py = plotY(y, yMin, yMax);
+            const tickX = (x0 >= PADDING.left && x0 <= W - PADDING.right)
+                ? x0 : PADDING.left;
+            ctx.fillText(y.toString(), tickX - 8, py);
+        }
+
+        // === Asymptotes (for non-sinusoidal, drawn BEFORE curves) ===
+        if (!isSinusoidal() && chkAsymptotes.checked) {
+            const asymptotes = getAsymptotes(B, C);
+            ctx.strokeStyle = '#dc2626';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([6, 4]);
+            asymptotes.forEach(ax => {
+                const px = plotX(ax);
+                if (px >= PADDING.left && px <= W - PADDING.right) {
+                    ctx.beginPath();
+                    ctx.moveTo(px, PADDING.top);
+                    ctx.lineTo(px, H - PADDING.bottom);
+                    ctx.stroke();
+                }
+            });
+            ctx.setLineDash([]);
+        }
+
+        // === Ghost wave (parent function) ===
+        if (chkGhost.checked) {
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.45)';
+            ctx.lineWidth = 2.5;
+            ctx.setLineDash([8, 6]);
+            drawWave(1, 1, 0, 0, yMin, yMax);
+            ctx.setLineDash([]);
+        }
+
+        // === Midline ===
+        if (chkMidline.checked && D !== 0) {
+            const midY = plotY(D, yMin, yMax);
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 5]);
+            ctx.beginPath();
+            ctx.moveTo(PADDING.left, midY);
+            ctx.lineTo(W - PADDING.right, midY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.font = '700 12px "Source Sans 3", sans-serif';
+            ctx.fillStyle = '#d97706';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(`y = ${D}`, PADDING.left + 6, midY - 4);
+        }
+
+        // === Active wave ===
+        const waveColor = FN_CONFIG[fnType].color;
+        ctx.strokeStyle = waveColor;
+        ctx.lineWidth = 3;
+        drawWave(A, B, C, D, yMin, yMax);
+
+        // === Amplitude markers (sinusoidal only) ===
+        if (isSinusoidal() && chkAmplitude.checked && A !== 0) {
+            const period = basePeriod() / Math.abs(B);
+            let maxX, minX;
+            if (fnType === 'sin') {
+                maxX = C + period / 4;
+                minX = C + 3 * period / 4;
+            } else {
+                maxX = C;
+                minX = C + period / 2;
+            }
+            if (A < 0) { [maxX, minX] = [minX, maxX]; }
+
+            const ampPx_max = plotX(maxX);
+            const ampPy_top = plotY(D + Math.abs(A), yMin, yMax);
+            const ampPy_mid = plotY(D, yMin, yMax);
+            const ampPy_bot = plotY(D - Math.abs(A), yMin, yMax);
+
+            if (ampPx_max >= PADDING.left && ampPx_max <= W - PADDING.right) {
+                ctx.strokeStyle = '#dc2626';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([4, 3]);
+
+                ctx.beginPath();
+                ctx.moveTo(ampPx_max, ampPy_mid);
+                ctx.lineTo(ampPx_max, ampPy_top);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.moveTo(ampPx_max, ampPy_mid);
+                ctx.lineTo(ampPx_max, ampPy_bot);
+                ctx.stroke();
+
+                ctx.setLineDash([]);
+
+                drawArrow(ampPx_max, ampPy_top, 'up');
+                drawArrow(ampPx_max, ampPy_bot, 'down');
+
+                ctx.font = '700 11px "Source Sans 3", sans-serif';
+                ctx.fillStyle = '#dc2626';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`|A| = ${Math.abs(A)}`, ampPx_max + 8, (ampPy_mid + ampPy_top) / 2);
+            }
+        }
+
+        // === Period bracket ===
+        if (chkPeriod.checked && B !== 0) {
+            const period = basePeriod() / Math.abs(B);
+            const startX = C;
+            const endX = C + period;
+            const bracketY = H - PADDING.bottom + 28;
+
+            const px1 = plotX(startX);
+            const px2 = plotX(endX);
+
+            if (px1 >= PADDING.left - 20 && px2 <= W - PADDING.right + 20) {
+                ctx.strokeStyle = '#0891b2';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(px1, bracketY - 6);
+                ctx.lineTo(px1, bracketY);
+                ctx.lineTo(px2, bracketY);
+                ctx.lineTo(px2, bracketY - 6);
+                ctx.stroke();
+
+                ctx.font = '700 12px "Source Sans 3", sans-serif';
+                ctx.fillStyle = '#0891b2';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                ctx.fillText(`Period = ${formatPeriod(period)}`, (px1 + px2) / 2, bracketY + 4);
+            }
+        }
+
+        // === Five key points (sinusoidal only) ===
+        if (isSinusoidal() && chkKeyPoints.checked && B !== 0) {
+            const points = computeKeyPoints();
+            const dotColors = ['#2563eb', '#0891b2', '#16a34a', '#d97706', '#dc2626'];
+            points.forEach((pt, i) => {
+                const px = plotX(pt.x);
+                const py = plotY(pt.y, yMin, yMax);
+                if (px >= PADDING.left && px <= W - PADDING.right &&
+                    py >= PADDING.top && py <= H - PADDING.bottom) {
+                    ctx.beginPath();
+                    ctx.arc(px, py, 6, 0, 2 * PI);
+                    ctx.fillStyle = dotColors[i];
+                    ctx.fill();
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            });
+        }
+    }
+
+    function drawWave(a, b, c, d, yMin, yMax) {
+        // For functions with asymptotes, break the path at discontinuities
+        const steps = Math.max(800, Math.round((W - PADDING.left - PADDING.right) * 2.5));
+        let drawing = false;
+        const CLIP_Y = 200; // clamp y values to avoid massive lines
+
+        for (let i = 0; i <= steps; i++) {
+            const t = i / steps;
+            const x = X_MIN + t * (X_MAX - X_MIN);
+            const inner = b * (x - c);
+            const raw = evalFn(fnType, inner);
+            const y = a * raw + d;
+
+            if (isNaN(y) || !isFinite(y) || Math.abs(y) > CLIP_Y) {
+                if (drawing) { ctx.stroke(); drawing = false; }
+                continue;
+            }
+
+            const px = plotX(x);
+            const py = plotY(y, yMin, yMax);
+
+            if (!drawing) {
+                ctx.beginPath();
+                ctx.moveTo(px, py);
+                drawing = true;
+            } else {
+                // Check for sudden jumps (asymptote crossings)
+                const prevX = X_MIN + ((i-1) / steps) * (X_MAX - X_MIN);
+                const prevInner = b * (prevX - c);
+                const prevRaw = evalFn(fnType, prevInner);
+                const prevY = a * prevRaw + d;
+                if (Math.abs(y - prevY) > 50) {
+                    ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(px, py);
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+        }
+        if (drawing) ctx.stroke();
+    }
+
+    function drawArrow(x, y, dir) {
+        const size = 5;
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        if (dir === 'up') {
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - size, y + size * 1.8);
+            ctx.lineTo(x + size, y + size * 1.8);
+        } else {
+            ctx.moveTo(x, y);
+            ctx.lineTo(x - size, y - size * 1.8);
+            ctx.lineTo(x + size, y - size * 1.8);
+        }
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    // ── Key Points (sinusoidal only) ──────────────────────────────
+    function computeKeyPoints() {
+        const period = basePeriod() / Math.abs(B);
+        const pts = [];
+        for (let i = 0; i < 5; i++) {
+            const x = C + (i / 4) * period;
+            const inner = B * (x - C);
+            const y = A * evalFn(fnType, inner) + D;
+            let label;
+            if (fnType === 'sin') {
+                if (i === 1) label = A >= 0 ? 'Maximum' : 'Minimum';
+                else if (i === 3) label = A >= 0 ? 'Minimum' : 'Maximum';
+                else label = 'Intercept';
+            } else {
+                if (i === 0 || i === 4) label = A >= 0 ? 'Maximum' : 'Minimum';
+                else if (i === 2) label = A >= 0 ? 'Minimum' : 'Maximum';
+                else label = 'Intercept';
+            }
+            pts.push({ x, y, label });
+        }
+        return pts;
+    }
+
+    // ── Formatting helpers ────────────────────────────────────────
+    function formatPi(val) {
+        if (Math.abs(val) < 0.001) return '0';
+        const ratio = val / PI;
+        if (Math.abs(ratio - Math.round(ratio)) < 0.01) {
+            const n = Math.round(ratio);
+            if (n === 1) return 'π';
+            if (n === -1) return '−π';
+            return `${n}π`;
+        }
+        const fracs = [
+            [1,12],[1,6],[1,4],[1,3],[5,12],[1,2],[7,12],[2,3],[3,4],[5,6],[11,12],
+            [1,1],[3,2],[2,1],[5,2],[3,1],[7,2],[4,1]
+        ];
+        for (const [num, den] of fracs) {
+            if (Math.abs(Math.abs(ratio) - num/den) < 0.01) {
+                const sign = ratio < 0 ? '−' : '';
+                if (den === 1) {
+                    if (num === 1) return `${sign}π`;
+                    return `${sign}${num}π`;
+                }
+                if (num === 1) return `${sign}π/${den}`;
+                return `${sign}${num}π/${den}`;
+            }
+        }
+        return val.toFixed(2);
+    }
+
+    function formatPiLatex(val) {
+        if (Math.abs(val) < 0.001) return '0';
+        const ratio = val / PI;
+        if (Math.abs(ratio - Math.round(ratio)) < 0.01) {
+            const n = Math.round(ratio);
+            if (n === 1) return '\\pi';
+            if (n === -1) return '-\\pi';
+            return `${n}\\pi`;
+        }
+        const fracs = [
+            [1,12],[1,6],[1,4],[1,3],[5,12],[1,2],[7,12],[2,3],[3,4],[5,6],[11,12],
+            [1,1],[3,2],[2,1],[5,2],[3,1],[7,2],[4,1]
+        ];
+        for (const [num, den] of fracs) {
+            if (Math.abs(Math.abs(ratio) - num/den) < 0.01) {
+                const sign = ratio < 0 ? '-' : '';
+                if (den === 1) {
+                    if (num === 1) return `${sign}\\pi`;
+                    return `${sign}${num}\\pi`;
+                }
+                if (num === 1) return `${sign}\\dfrac{\\pi}{${den}}`;
+                return `${sign}\\dfrac{${num}\\pi}{${den}}`;
+            }
+        }
+        return val.toFixed(2);
+    }
+
+    function formatPeriod(p) { return formatPi(p); }
+
+    function formatNum(v) {
+        if (Math.abs(v - Math.round(v)) < 0.001) return Math.round(v).toString();
+        return v.toFixed(2);
+    }
+
+    // ── Update inspector ──────────────────────────────────────────
+    function updateInspector() {
+        const cfg = FN_CONFIG[fnType];
+        const fnName = cfg.latex;
+        let eq = 'y = ';
+
+        // A coefficient (only for sinusoidal)
+        if (isSinusoidal()) {
+            if (A === 1) eq += '';
+            else if (A === -1) eq += '-';
+            else eq += formatNum(A);
+        }
+
+        eq += fnName;
+
+        // Inner part: B(x - C)
+        let inner = '';
+        if (B === 1) {
+            if (Math.abs(C) < 0.001) inner = 'x';
+            else if (C > 0) inner = `\\left(x - ${formatPiLatex(C)}\\right)`;
+            else inner = `\\left(x + ${formatPiLatex(-C)}\\right)`;
+        } else {
+            if (Math.abs(C) < 0.001) inner = `${formatNum(B)}x`;
+            else {
+                const bStr = formatNum(B);
+                if (C > 0) inner = `${bStr}\\left(x - ${formatPiLatex(C)}\\right)`;
+                else inner = `${bStr}\\left(x + ${formatPiLatex(-C)}\\right)`;
+            }
+        }
+        eq += `\\!\\left(${inner}\\right)`;
+
+        if (D > 0) eq += ` + ${formatNum(D)}`;
+        else if (D < 0) eq += ` - ${formatNum(Math.abs(D))}`;
+
+        try {
+            katex.render(eq, eqDisplay, { displayMode: true, throwOnError: false });
+            katex.render(eq, headerEq, { displayMode: false, throwOnError: false });
+        } catch(e) {
+            eqDisplay.textContent = eq;
+        }
+
+        // Properties
+        const period = basePeriod() / Math.abs(B);
+
+        if (isSinusoidal()) {
+            propAmp.textContent = `|A| = ${Math.abs(A)}`;
+        }
+
+        try {
+            katex.render(formatPiLatex(period), propPeriod, { displayMode: false, throwOnError: false });
+        } catch(e) {
+            propPeriod.textContent = formatPi(period);
+        }
+
+        if (Math.abs(C) < 0.001) {
+            propPhase.textContent = 'None';
+        } else {
+            const dir = C > 0 ? 'right' : 'left';
+            propPhase.textContent = `${formatPi(Math.abs(C))} to the ${dir}`;
+        }
+
+        propVShift.textContent = D === 0 ? 'None' : `${D > 0 ? 'Up' : 'Down'} ${Math.abs(D)}`;
+        propMidline.textContent = `y = ${D}`;
+
+        if (isSinusoidal()) {
+            if (A < 0) {
+                propReflect.innerHTML = '<span class="reflection-badge">Reflected across x-axis</span>';
+            } else {
+                propReflect.innerHTML = '<span class="reflection-badge no-reflection">None</span>';
+            }
+        }
+
+        // Asymptotes info
+        if (!isSinusoidal()) {
+            const asymptotes = getAsymptotes(B, C);
+            const visible = asymptotes.filter(a => a >= X_MIN && a <= X_MAX);
+            const firstFew = visible.slice(0, 4).map(a => formatPi(a)).join(', ');
+            propAsymptotes.innerHTML = `<span class="note-pill">${visible.length} in view</span><br><span style="font-size:0.82em;color:var(--muted);">${firstFew}${visible.length > 4 ? ', …' : ''}</span>`;
+        }
+
+        // Key points (sinusoidal only)
+        if (isSinusoidal()) {
+            const points = computeKeyPoints();
+            const dotColors = ['#2563eb', '#0891b2', '#16a34a', '#d97706', '#dc2626'];
+            keyPointsList.innerHTML = '';
+            points.forEach((pt, i) => {
+                const div = document.createElement('div');
+                div.className = 'key-point';
+                div.innerHTML = `
+                    <div class="key-point-dot" style="background: ${dotColors[i]}"></div>
+                    <span class="key-point-label">${pt.label}</span>
+                    <span class="key-point-coords">(${formatPi(pt.x)}, ${formatNum(pt.y)})</span>
+                `;
+                keyPointsList.appendChild(div);
+            });
+        }
+
+        // Legend color
+        legendSwatch.style.background = cfg.color;
+    }
+
+    // ── Slider output formatting ──────────────────────────────────
+    function updateOutputs() {
+        A = parseFloat(sliderA.value);
+        B = parseFloat(sliderB.value);
+        C = parseFloat(sliderC.value);
+        D = parseFloat(sliderD.value);
+
+        outA.textContent = formatNum(A);
+        outB.textContent = formatNum(B);
+        outC.textContent = formatPi(C);
+        outD.textContent = formatNum(D);
+    }
+
+    // ── Event binding ─────────────────────────────────────────────
+    function onInput() {
+        updateOutputs();
+        updateUI();
+        draw();
+        updateInspector();
+        presetSelect.value = '';
+    }
+
+    [sliderA, sliderB, sliderC, sliderD].forEach(s =>
+        s.addEventListener('input', onInput)
+    );
+
+    [chkGhost, chkMidline, chkAmplitude, chkPeriod, chkKeyPoints, chkAsymptotes].forEach(c =>
+        c.addEventListener('change', () => { draw(); })
+    );
+
+    // Function type toggle — event delegation
+    fnToggleGroup.addEventListener('click', (e) => {
+        const btn = e.target.closest('.toggle-btn');
+        if (!btn) return;
+        fnType = btn.dataset.fn;
+        fnToggleGroup.querySelectorAll('.toggle-btn').forEach(b =>
+            b.classList.toggle('active', b === btn)
+        );
+        onInput();
+    });
+
+    // Presets
+    const PRESETS = {
+        'parent-sin':          { fn: 'sin', A: 1,  B: 1,   C: 0,    D: 0 },
+        'parent-cos':          { fn: 'cos', A: 1,  B: 1,   C: 0,    D: 0 },
+        'tall-slow':           { fn: 'sin', A: 3,  B: 0.5, C: 0,    D: 0 },
+        'compressed-shifted':  { fn: 'sin', A: 1,  B: 2,   C: PI/4, D: 0 },
+        'reflected-translated':{ fn: 'sin', A: -2, B: 1,   C: 0,    D: 3 },
+        'parent-tan':          { fn: 'tan', A: 1,  B: 1,   C: 0,    D: 0 },
+        'parent-csc':          { fn: 'csc', A: 1,  B: 1,   C: 0,    D: 0 },
+        'parent-sec':          { fn: 'sec', A: 1,  B: 1,   C: 0,    D: 0 },
+        'parent-cot':          { fn: 'cot', A: 1,  B: 1,   C: 0,    D: 0 },
+        'stretched-tan':       { fn: 'tan', A: 1,  B: 0.5, C: 0,    D: 0 },
+    };
+
+    presetSelect.addEventListener('change', () => {
+        const p = PRESETS[presetSelect.value];
+        if (!p) return;
+
+        fnType = p.fn;
+        fnToggleGroup.querySelectorAll('.toggle-btn').forEach(b =>
+            b.classList.toggle('active', b.dataset.fn === fnType)
+        );
+
+        sliderA.value = p.A;
+        sliderB.value = p.B;
+        sliderC.value = p.C;
+        sliderD.value = p.D;
+
+        onInput();
+    });
+
+    // Reset
+    btnReset.addEventListener('click', () => {
+        fnType = 'sin';
+        fnToggleGroup.querySelectorAll('.toggle-btn').forEach(b =>
+            b.classList.toggle('active', b.dataset.fn === 'sin')
+        );
+        sliderA.value = 1;
+        sliderB.value = 1;
+        sliderC.value = 0;
+        sliderD.value = 0;
+        presetSelect.value = '';
+        chkGhost.checked = true;
+        chkMidline.checked = true;
+        chkAmplitude.checked = true;
+        chkPeriod.checked = true;
+        chkKeyPoints.checked = true;
+        chkAsymptotes.checked = true;
+        onInput();
+    });
+
+    // Resize
+    const ro = new ResizeObserver(() => {
+        resizeCanvas();
+        draw();
+    });
+    ro.observe(canvas.parentElement);
+
+    // ── Init ──────────────────────────────────────────────────────
+    resizeCanvas();
+    updateOutputs();
+    updateUI();
+    draw();
+    updateInspector();
+})();
+</script>
+</body>
+</html>
