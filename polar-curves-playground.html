@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Polar Curves Explorer</title>
+    <title>Polar Curves Playground</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;800;900&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <style>
@@ -1443,6 +1443,7 @@
             const steps = Math.min(300, Math.ceil(traceTheta * 60));
             const stepSize = traceTheta / steps;
             let hasPoint = false;
+            let lastPt = null;
 
             for (let i = 0; i <= steps; i++) {
                 const theta = i * stepSize;
@@ -1453,8 +1454,15 @@
                         ctx.lineTo(pt.x, pt.y);
                         hasPoint = true;
                     } else {
-                        ctx.lineTo(pt.x, pt.y);
+                        const dist = Math.hypot(pt.x - lastPt.x, pt.y - lastPt.y);
+                        if (dist > 120) {
+                            ctx.lineTo(cx, cy); // Close segment to origin
+                            ctx.lineTo(pt.x, pt.y); // Start new segment
+                        } else {
+                            ctx.lineTo(pt.x, pt.y);
+                        }
                     }
+                    lastPt = pt;
                 }
             }
             ctx.lineTo(cx, cy);
@@ -1476,6 +1484,7 @@
 
             ctx.beginPath();
             let started = false;
+            let lastPt = null;
 
             for (let i = 0; i <= ghostSteps; i++) {
                 const th = i * deltaTheta;
@@ -1486,10 +1495,17 @@
                         ctx.moveTo(pt.x, pt.y);
                         started = true;
                     } else {
-                        ctx.lineTo(pt.x, pt.y);
+                        const dist = Math.hypot(pt.x - lastPt.x, pt.y - lastPt.y);
+                        if (dist > 120) {
+                            ctx.moveTo(pt.x, pt.y); // Break path and move
+                        } else {
+                            ctx.lineTo(pt.x, pt.y);
+                        }
                     }
+                    lastPt = pt;
                 } else {
                     started = false; // Break line path for asymptote / imaginary
+                    lastPt = null;
                 }
             }
             ctx.stroke();
@@ -1507,6 +1523,7 @@
         const traceStepSize = traceTheta / traceSteps;
         ctx.beginPath();
         let activeStarted = false;
+        let lastPt = null;
 
         for (let i = 0; i <= traceSteps; i++) {
             const th = i * traceStepSize;
@@ -1517,10 +1534,17 @@
                     ctx.moveTo(pt.x, pt.y);
                     activeStarted = true;
                 } else {
-                    ctx.lineTo(pt.x, pt.y);
+                    const dist = Math.hypot(pt.x - lastPt.x, pt.y - lastPt.y);
+                    if (dist > 120) {
+                        ctx.moveTo(pt.x, pt.y); // Break path and move
+                    } else {
+                        ctx.lineTo(pt.x, pt.y);
+                    }
                 }
+                lastPt = pt;
             } else {
                 activeStarted = false; // Break path on asymptotes
+                lastPt = null;
             }
         }
         ctx.stroke();
