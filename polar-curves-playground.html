@@ -792,6 +792,22 @@
         return { r, theta, x, y };
     }
 
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+    }
+
     // ── Setup Dynamic Sliders and Config inputs ───────────────────────
     function setupSliders() {
         slidersContainer.innerHTML = '';
@@ -1316,12 +1332,12 @@
     }
 
     // ── Interactive Grid drawing functions ─────────────────────────
-    function drawGrid(cx, cy, maxGridRadius) {
+    function drawGrid(cx, cy, gridLimit, labelsRadius) {
         ctx.save();
-        ctx.strokeStyle = "rgba(203, 213, 225, 0.55)";
+        ctx.strokeStyle = "rgba(203, 213, 225, 0.45)";
         ctx.lineWidth = 1;
 
-        // 1. Concentric circular rings (only draw those inside the grid boundary)
+        // 1. Concentric circular rings (draw to fill the entire canvas)
         let labelInterval = 1;
         if (zoomLevel < 15) {
             labelInterval = 5;
@@ -1331,7 +1347,7 @@
 
         for (let i = 1; ; i++) {
             const ringRadius = i * zoomLevel;
-            if (ringRadius > maxGridRadius) break;
+            if (ringRadius > gridLimit) break;
 
             ctx.beginPath();
             ctx.arc(cx, cy, ringRadius, 0, 2 * Math.PI);
@@ -1339,8 +1355,8 @@
 
             // Label radius ticks along polar axis (positive x)
             if (i % labelInterval === 0) {
-                ctx.fillStyle = "rgba(100, 116, 139, 0.85)";
-                ctx.font = "bold 12px 'Source Sans 3'";
+                ctx.fillStyle = "rgba(100, 116, 139, 0.8)";
+                ctx.font = "bold 11px 'Source Sans 3'";
                 ctx.fillText(i, cx + ringRadius + 3, cy - 4);
             }
         }
@@ -1375,61 +1391,61 @@
 
         angles.forEach((spoke) => {
             const isMajor = spoke.label !== "";
-            ctx.strokeStyle = isMajor ? "rgba(203, 213, 225, 0.85)" : "rgba(203, 213, 225, 0.35)";
+            ctx.strokeStyle = isMajor ? "rgba(203, 213, 225, 0.75)" : "rgba(203, 213, 225, 0.25)";
             ctx.lineWidth = isMajor ? 1.2 : 0.8;
             ctx.setLineDash(isMajor ? [] : [4, 4]);
 
-            const targetX = cx + Math.cos(spoke.val) * maxGridRadius;
-            const targetY = cy - Math.sin(spoke.val) * maxGridRadius;
+            const targetX = cx + Math.cos(spoke.val) * gridLimit;
+            const targetY = cy - Math.sin(spoke.val) * gridLimit;
 
             ctx.beginPath();
             ctx.moveTo(cx, cy);
             ctx.lineTo(targetX, targetY);
             ctx.stroke();
+        });
 
-            // Spoke labels at grid boundaries
+        // 3. Spoke labels drawn as clean badges at labelsRadius
+        angles.forEach((spoke) => {
+            const isMajor = spoke.label !== "";
             if (isMajor) {
-                ctx.setLineDash([]);
-                ctx.fillStyle = "rgba(71, 85, 105, 0.9)";
+                const labelX = cx + Math.cos(spoke.val) * labelsRadius;
+                const labelY = cy - Math.sin(spoke.val) * labelsRadius;
+
+                ctx.save();
                 ctx.font = "600 13px 'Source Sans 3'";
+                
+                // Calculate badge dimensions
+                const textWidth = ctx.measureText(spoke.label).width;
+                const padX = 8;
+                const padY = 4;
+                const rectW = textWidth + padX * 2;
+                const rectH = 13 + padY * 2;
 
-                const textOffset = maxGridRadius + 14;
-                const labelX = cx + Math.cos(spoke.val) * textOffset;
-                const labelY = cy - Math.sin(spoke.val) * textOffset;
-
-                // Adjust text alignment for readability
-                const angleDeg = spoke.val * 180 / Math.PI;
-                if (angleDeg === 0) {
-                    ctx.textAlign = "left"; ctx.textBaseline = "middle";
-                } else if (angleDeg === 90) {
-                    ctx.textAlign = "center"; ctx.textBaseline = "bottom";
-                } else if (angleDeg === 180) {
-                    ctx.textAlign = "right"; ctx.textBaseline = "middle";
-                } else if (angleDeg === 270) {
-                    ctx.textAlign = "center"; ctx.textBaseline = "top";
-                } else {
-                    ctx.textAlign = Math.cos(spoke.val) > 0 ? "left" : "right";
-                    ctx.textBaseline = Math.sin(spoke.val) > 0 ? "bottom" : "top";
-                }
-
+                // Draw rounded rect badge background
+                ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+                ctx.strokeStyle = "rgba(203, 213, 225, 0.85)";
+                ctx.lineWidth = 1;
+                
+                drawRoundedRect(ctx, labelX - rectW / 2, labelY - rectH / 2, rectW, rectH, 5);
+                
+                // Draw text
+                ctx.fillStyle = "rgba(51, 65, 85, 0.95)";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
                 ctx.fillText(spoke.label, labelX, labelY);
+                ctx.restore();
             }
         });
 
-        // 3. Coordinate axes lines
+        // 4. Coordinate axes lines
         ctx.setLineDash([]);
-        ctx.strokeStyle = "rgba(100, 116, 139, 0.8)";
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = "rgba(100, 116, 139, 0.65)";
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(cx - maxGridRadius, cy);
-        ctx.lineTo(cx + maxGridRadius, cy);
-        ctx.moveTo(cx, cy - maxGridRadius);
-        ctx.lineTo(cx, cy + maxGridRadius);
-        ctx.stroke();
-
-        // 4. Outer border circle defining the grid boundary
-        ctx.beginPath();
-        ctx.arc(cx, cy, maxGridRadius, 0, 2 * Math.PI);
+        ctx.moveTo(cx - gridLimit, cy);
+        ctx.lineTo(cx + gridLimit, cy);
+        ctx.moveTo(cx, cy - gridLimit);
+        ctx.lineTo(cx, cy + gridLimit);
         ctx.stroke();
 
         ctx.restore();
@@ -1441,18 +1457,13 @@
 
         const cx = canvas.width / 2 + panOffset.x;
         const cy = canvas.height / 2 + panOffset.y;
-        const maxGridRadius = Math.min(canvas.width, canvas.height) * 0.44;
+        const gridLimit = Math.max(canvas.width, canvas.height) * 1.5;
+        const labelsRadius = Math.min(canvas.width, canvas.height) * 0.38;
 
         // Draw Polar Grid background
         if (chkShowGrid.checked) {
-            drawGrid(cx, cy, maxGridRadius);
+            drawGrid(cx, cy, gridLimit, labelsRadius);
         }
-
-        // Clip all curve elements to the polar grid boundary
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(cx, cy, maxGridRadius, 0, 2 * Math.PI);
-        ctx.clip();
 
         // Draw swept area background (shaded region from θ=0 to active θ)
         if (chkShowSwept.checked && traceTheta > 0) {
@@ -1611,8 +1622,6 @@
             ctx.stroke();
             ctx.restore();
         }
-
-        ctx.restore(); // End of clipped section
 
         // Update stage coordinates HUD display
         coordsOverlay.querySelector('div:nth-child(1)').textContent = `θ = ${traceTheta.toFixed(3)} rad (${Math.round(traceTheta * 180 / Math.PI)}°)`;
