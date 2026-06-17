@@ -8,9 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
-        .op-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem 1rem; align-items: center; }
-        .op-grid .oplabel { font-weight: 700; color: #0f172a; font-size: 0.95em; }
-        .op-grid .opform { font-size: 1.05em; color: #334155; }
+        .op-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.65rem 1.1rem; align-items: center; margin-top: 0.5rem; }
+        .op-grid .oplabel { font-weight: 700; color: #0f172a; font-size: 0.9em; }
+        .op-grid .opform { font-size: 0.98em; color: #334155; }
         
         .compose-table { width: 100%; border-collapse: collapse; margin-top: 0.3rem; }
         .compose-table th, .compose-table td { padding: 0.5rem 0.7rem; border: 1px solid #e2e8f0; text-align: center; font-size: 0.95em; }
@@ -79,12 +79,18 @@
     </div>
     <div class="slide-body top-layout">
         <div class="cards-grid">
-            <div class="info-card teal" style="line-height: 1.6;">
+            <div class="info-card teal">
                 <div class="card-title">Definitions</div>
-                • <strong>Sum:</strong> \((f + g)(x) = f(x) + g(x)\)<br>
-                • <strong>Difference:</strong> \((f - g)(x) = f(x) - g(x)\)<br>
-                • <strong>Product:</strong> \((f \cdot g)(x) = f(x) \cdot g(x)\)<br>
-                • <strong>Quotient:</strong> \(\left(\dfrac{f}{g}\right)(x) = \dfrac{f(x)}{g(x)}\)
+                <div class="op-grid">
+                    <div class="oplabel">Sum</div>
+                    <div class="opform">\((f + g)(x) = f(x) + g(x)\)</div>
+                    <div class="oplabel">Difference</div>
+                    <div class="opform">\((f - g)(x) = f(x) - g(x)\)</div>
+                    <div class="oplabel">Product</div>
+                    <div class="opform">\((f \cdot g)(x) = f(x) \cdot g(x)\)</div>
+                    <div class="oplabel">Quotient</div>
+                    <div class="opform">\(\left(\tfrac{f}{g}\right)(x) = \tfrac{f(x)}{g(x)}\)</div>
+                </div>
             </div>
             <div class="info-card orange">
                 <div class="card-title">Combined Domain Rules</div>
