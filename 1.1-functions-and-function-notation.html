@@ -6,7 +6,7 @@
     <title>1.1 — Functions and Function Notation</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
         /* Mapping diagram styling */
         .mapping-diagram { display: flex; justify-content: center; align-items: center; margin: 0.4rem 0; }
@@ -191,6 +191,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK A — Which relation is NOT a function
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-relation">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Spot the non-function</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="b">
+            <div class="qc-prompt">Which relation is <strong>not</strong> a function?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(\{(1,5),\,(2,6),\,(3,7)\}\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\(\{(1,5),\,(1,6),\,(3,7)\}\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\(\{(1,5),\,(2,5),\,(3,5)\}\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\(\{(0,1),\,(2,3),\,(4,5)\}\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. In B the input \(1\) maps to both \(5\) and \(6\) — one input can&rsquo;t have two outputs.</div>
+                <div class="qc-feedback-wrong">Look for a repeated <strong>input</strong> with different outputs. In B, \(1\) maps to both \(5\) and \(6\). (C is fine — different inputs <em>sharing</em> one output is allowed.)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 4 — CONCEPT: Function Notation
      ============================================================ -->
 <section class="slide grid-bg" id="slide-4" data-steps="3">
@@ -265,6 +290,30 @@
                         <div class="annotation">This form is essential for the difference quotient later in the course.</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK B — Evaluate with negative input (sign trap)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-evaluate">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Mind the signs</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">For \(f(x) = x^2 - 3x + 5\), what is \(f(-2)\)?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(15\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\(3\) &nbsp;(treated \(-3(-2)\) as \(-6\))</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\(7\) &nbsp;(treated \((-2)^2\) as \(-4\))</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(f(-2) = (-2)^2 - 3(-2) + 5 = 4 + 6 + 5 = 15\).</div>
+                <div class="qc-feedback-wrong">Two sign traps: \((-2)^2 = 4\) (not \(-4\)) and \(-3(-2) = +6\). So \(f(-2) = 4 + 6 + 5 = 15\).</div>
             </div>
         </div>
     </div>
@@ -484,6 +533,30 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — Function vs. one-to-one
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-onetoone">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Function vs. one-to-one</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">Is \(f(x) = x^2\) a <strong>one-to-one</strong> function?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>No — \(f(2) = f(-2) = 4\), so two inputs share an output</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>Yes — it passes the vertical line test</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>Yes — every input has exactly one output</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(x^2\) <em>is</em> a function, but one-to-one is stricter: \(f(2)=f(-2)=4\) means two inputs share an output.</div>
+                <div class="qc-feedback-wrong">It is a function (passes the VLT), but one-to-one is stronger: \(f(2)=f(-2)=4\), so two different inputs share an output — <strong>not</strong> one-to-one.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 11 — EXAMPLE 6: Determine if equations are functions
      ============================================================ -->
 <section class="slide grid-bg" id="slide-11" data-steps="4">
@@ -569,12 +642,13 @@
 
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="assets/slides-core.js"></script>
+<script src="assets/slides-core.js?v=2"></script>
 <script>
     SlidesCore.init({
         sectionTargets: [
             { label: 'Overview',        slideId: 'slide-0' },
             { label: 'Definition',      slideId: 'slide-1' },
+            { label: 'Quick Check',     slideId: 'slide-qc-relation' },
             { label: 'Notation',        slideId: 'slide-4' },
             { label: 'Vertical Line',   slideId: 'slide-6' },
             { label: 'Tables',          slideId: 'slide-8' },
