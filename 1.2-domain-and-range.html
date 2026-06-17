@@ -6,7 +6,7 @@
     <title>1.2 — Domain and Range</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
         /* Custom piecewise layout */
         .piecewise-container {
@@ -152,6 +152,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK A — Interval notation for x <= 7
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-interval">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Bracket or parenthesis?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">Which interval notation represents \(x \le 7\)?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\((-\infty,\, 7]\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\((-\infty,\, 7)\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\([7,\, \infty)\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\((7,\, \infty)\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(x \le 7\) includes everything up to and <strong>including</strong> 7 — bracket on 7, and \(\infty\) always gets a parenthesis.</div>
+                <div class="qc-feedback-wrong">\(x \le 7\) means all values up to 7. It goes <em>down</em> to \(-\infty\), and the \(\le\) <strong>includes</strong> 7 — so a bracket: \((-\infty,\, 7]\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 3 — CONCEPT: Domain Restrictions
      ============================================================ -->
 <section class="slide grid-bg" id="slide-3" data-steps="2">
@@ -233,6 +258,30 @@
                         Denominator \(\neq 0 \;\Longrightarrow\; \text{exclude endpoints. } \sqrt{u} \text{ in denominator } \Longrightarrow\; u > 0.\)
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK B — Combined restriction: root in a denominator
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-restrict">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Two restrictions at once</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">What is the domain of \(h(x) = \dfrac{5}{\sqrt{x - 3}}\)?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\((3,\, \infty)\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\([3,\, \infty)\) &nbsp;(forgot the denominator can&rsquo;t be 0)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\((-\infty,\, 3)\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. The root needs \(x - 3 \ge 0\), but it&rsquo;s in the denominator too, so \(x - 3 \ne 0\). Together: \(x - 3 > 0\), i.e. \((3,\infty)\).</div>
+                <div class="qc-feedback-wrong">Two rules stack here: \(\sqrt{x-3}\) needs \(x-3 \ge 0\), and as a denominator it can&rsquo;t be 0. So \(x - 3 > 0\) — strictly, giving \((3,\infty)\).</div>
             </div>
         </div>
     </div>
@@ -335,10 +384,15 @@
                     -->
                     <path d="M 80 60 Q 130 180 160 180 T 240 80" stroke="#0891b2" stroke-width="3.5" fill="none"/>
                     
-                    <!-- Endpoints -->
+                    <!-- Endpoints + key points -->
                     <circle cx="80" cy="60" r="4.5" fill="#fff" stroke="#0891b2" stroke-width="2.5"/>
                     <circle cx="240" cy="80" r="4.5" fill="#0891b2"/>
-                    <circle cx="160" cy="180" r="4.5" fill="#dc2626"/> <!-- highlight lowest point -->
+                    <circle cx="160" cy="180" r="4.5" fill="#0891b2"/>
+                    <g font-size="9.5" font-weight="bold" fill="#0e7490">
+                        <text x="38" y="56">(-3, 4)</text>
+                        <text x="214" y="74">(5, 3)</text>
+                        <text x="150" y="198">(1, -2) min</text>
+                    </g>
                 </svg>
             </div>
             <div class="col steps-area">
@@ -376,6 +430,30 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — Reading range from a graph (extrema, not endpoints)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-range">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Where&rsquo;s the range?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="b">
+            <div class="qc-prompt">To find the <strong>range</strong> of a function from its graph, you should&hellip;</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>only read the \(y\)-values of the two endpoints</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>scan the lowest-to-highest \(y\)-values, including peaks and valleys</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>scan left-to-right along the \(x\)-axis</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. The range is the full vertical span. A valley or peak <em>between</em> the endpoints can set the true minimum or maximum.</div>
+                <div class="qc-feedback-wrong">Endpoints aren&rsquo;t enough — a valley or peak between them can be the real min/max. Scan the whole vertical span. (Scanning left-to-right gives the <em>domain</em>.)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 7 — CONCEPT: Piecewise Functions
      ============================================================ -->
 <section class="slide grid-bg" id="slide-7" data-steps="2">
@@ -401,7 +479,7 @@
                 <div class="step-box teal">
                     <div class="step-label">1. How to Evaluate</div>
                     <div class="step-math">
-                        Check the input value against the domain conditions. Plug it into **only** the equation that corresponds to that interval.
+                        Check the input value against the domain conditions. Plug it into <strong>only</strong> the equation that corresponds to that interval.
                     </div>
                 </div>
             </div>
@@ -458,21 +536,19 @@
                     <text x="146" y="60" font-size="10" fill="#64748b">2</text>
                     <text x="146" y="140" font-size="10" fill="#64748b">-2</text>
                     
-                    <!-- Graph Piece 1: y = x + 1 for x < -2
-                         Boundary open circle at (-2, -1) -> (100, 120)
-                         Left end arrow -> (20, 160) at x=-6
-                    -->
+                    <!-- Graph Piece 1: y = x + 1 for x < -2 (slope 1)
+                         Open boundary (-2,-1)->(100,120); extends down-left to (-5,-4)->(40,180) -->
                     <g class="step" id="slide-8-step-1">
-                        <line x1="20" y1="160" x2="100" y2="120" stroke="#0891b2" stroke-width="2.5"/>
+                        <line x1="40" y1="180" x2="100" y2="120" stroke="#0891b2" stroke-width="2.6"/>
                         <circle cx="100" cy="120" r="4" fill="#fff" stroke="#0891b2" stroke-width="2"/>
+                        <text x="102" y="135" font-size="9" fill="#0891b2">(-2, -1)</text>
                     </g>
-                    <!-- Graph Piece 2: y = -2x - 3 for x >= -2
-                         Boundary closed circle at (-2, 1) -> (100, 80)
-                         Right end arrow -> (180, 160) at x=2
-                    -->
+                    <!-- Graph Piece 2: y = -2x - 3 for x >= -2 (slope -2)
+                         Closed boundary (-2,1)->(100,80); extends down-right to (0.5,-4)->(150,180) -->
                     <g class="step" id="slide-8-step-2">
-                        <line x1="100" y1="80" x2="180" y2="160" stroke="#16a34a" stroke-width="2.5"/>
+                        <line x1="100" y1="80" x2="150" y2="180" stroke="#16a34a" stroke-width="2.6"/>
                         <circle cx="100" cy="80" r="4" fill="#16a34a"/>
+                        <text x="104" y="75" font-size="9" fill="#15803d">(-2, 1)</text>
                     </g>
                 </svg>
             </div>
@@ -593,7 +669,7 @@
 <!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="assets/slides-core.js"></script>
+<script src="assets/slides-core.js?v=2"></script>
 <script>
     /* Render all LaTeX in the document */
     renderMathInElement(document.body, {
@@ -610,6 +686,7 @@
             { label: 'Overview',   slideId: 'slide-0' },
             { label: 'Definition', slideId: 'slide-1' },
             { label: 'Notation',   slideId: 'slide-2' },
+            { label: 'Quick Check', slideId: 'slide-qc-interval' },
             { label: 'Algebraic',  slideId: 'slide-4' },
             { label: 'Graphs',     slideId: 'slide-6' },
             { label: 'Piecewise',  slideId: 'slide-8' },
