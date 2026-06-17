@@ -86,6 +86,51 @@
         .even-odd-card { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.8rem 1rem; }
         .even-odd-card.even { border-color: #16a34a; background: #ecfdf5; }
         .even-odd-card.odd  { border-color: #0891b2; background: #ecfeff; }
+
+        /* ============================================================
+           QUICK CHECK — clickable multiple-choice formative check.
+           Reusable: any slide can drop a <div class="quickcheck"
+           data-answer="X"> with .qc-option buttons. Option clicks are
+           shielded from the slide-advance handler via ignoreClickSelectors.
+           ============================================================ */
+        .quickcheck { width: 100%; max-width: 880px; margin: 0 auto; }
+        .qc-prompt {
+            font-size: 0.95em; font-weight: 600; color: var(--navy);
+            background: var(--navy-light); border-left: 5px solid var(--navy);
+            border-radius: 10px; padding: 0.7em 1.1em; margin-bottom: 0.9rem;
+        }
+        .qc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+        .qc-options.one-col { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+        .qc-option {
+            display: flex; align-items: center; gap: 0.7rem; text-align: left;
+            font-family: inherit; font-size: 0.8em; color: var(--text);
+            background: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px;
+            padding: 0.7em 1em; cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, transform 0.1s;
+        }
+        .qc-option:hover { border-color: var(--blue-accent); background: var(--blue-light); }
+        .qc-option:active { transform: translateY(1px); }
+        .qc-key {
+            flex: 0 0 auto; width: 1.7em; height: 1.7em; display: grid;
+            place-items: center; border-radius: 50%;
+            background: var(--navy-light); color: var(--navy);
+            font-weight: 700; font-size: 0.9em;
+        }
+        .qc-option.correct, .qc-option.is-answer { border-color: var(--green-accent); background: var(--green-light); }
+        .qc-option.correct .qc-key, .qc-option.is-answer .qc-key { background: var(--green-accent); color: #ffffff; }
+        .qc-option.incorrect { border-color: var(--red-accent); background: #fef2f2; }
+        .qc-option.incorrect .qc-key { background: var(--red-accent); color: #ffffff; }
+        .quickcheck.answered .qc-option { cursor: default; }
+        .quickcheck.answered .qc-option:hover { border-color: #e2e8f0; background: #ffffff; }
+        .quickcheck.answered .qc-option.correct:hover,
+        .quickcheck.answered .qc-option.is-answer:hover { border-color: var(--green-accent); background: var(--green-light); }
+        .quickcheck.answered .qc-option.incorrect:hover { border-color: var(--red-accent); background: #fef2f2; }
+        .qc-feedback { margin-top: 0.9rem; }
+        .qc-feedback > div { display: none; border-radius: 10px; padding: 0.6em 1em; font-size: 0.78em; font-weight: 600; }
+        .qc-feedback-correct { background: var(--green-light); border-left: 4px solid var(--green-accent); color: #166534; }
+        .qc-feedback-wrong   { background: var(--orange-light); border-left: 4px solid var(--orange-accent); color: #9a3412; }
+        .quickcheck.answered-correct .qc-feedback-correct { display: block; animation: stepReveal 0.4s ease both; }
+        .quickcheck.answered-wrong   .qc-feedback-wrong   { display: block; animation: stepReveal 0.4s ease both; }
     </style>
 </head>
 <body>
@@ -245,6 +290,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK A — Inside vs. outside (sign of a horizontal shift)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-translate">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Which way does it shift?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="b">
+            <div class="qc-prompt">The graph of \(g(x) = f(x + 4)\) is the graph of \(y = f(x)\) shifted&hellip;</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>right 4 units</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>left 4 units</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>up 4 units</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>down 4 units</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. The \(+4\) is <strong>inside</strong> the function, so it acts on \(x\) and behaves <strong>opposite</strong> to its sign — a shift <strong>left 4</strong>.</div>
+                <div class="qc-feedback-wrong">Look <strong>inside</strong> the parentheses. Inside changes act on \(x\) and behave opposite to the sign, so \(+4\) shifts the graph <em>left</em>.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 4 — REFERENCE: Reflection & Dilation
      ============================================================ -->
 <section class="slide grid-bg" id="slide-4" data-steps="4">
@@ -272,6 +342,31 @@
             <div class="step-box" style="background:#fff7ed; border-color:#ea580c;">
                 <div class="step-label">\(f(k x)\) · horizontal dilation</div>
                 <div class="step-math">\(|k|>1\): compress toward \(y\)-axis by \(\tfrac{1}{k}\). \(0<|k|<1\): stretch away from \(y\)-axis.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK B — Reflection: which axis (negative outside)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-reflect">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Negate the outside</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">The transformation \(y = -f(x)\) reflects the parent graph over which axis?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>the \(x\)-axis</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>the \(y\)-axis</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>the line \(y = x\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>no reflection — it stretches</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. The negative sign is <strong>outside</strong>, so it negates every \(y\)-value — a reflection over the <strong>\(x\)-axis</strong>.</div>
+                <div class="qc-feedback-wrong">The negative is <strong>outside</strong> the function, so it acts on the \(y\)-values. Negating outputs flips the graph over the \(x\)-axis.</div>
             </div>
         </div>
     </div>
@@ -375,6 +470,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — Order of transformations (D.R.S.)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-order">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Which one happens last?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="c">
+            <div class="qc-prompt">A graph has a stretch, a reflection, and a shift. Using <strong>D.R.S.</strong>, which is applied <strong>last</strong>?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>the dilation (stretch)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>the reflection</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>the shift (translation)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>order never matters</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(\textbf{D} \rightarrow \textbf{R} \rightarrow \textbf{S}\): dilate, reflect, then <strong>shift last</strong>, so the translation lands on the already-stretched, reflected graph.</div>
+                <div class="qc-feedback-wrong">Recall the order \(\textbf{D} \rightarrow \textbf{R} \rightarrow \textbf{S}\). The <strong>S</strong>hift comes last so it acts on the dilated, reflected graph.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 7 — CONCEPT: Even and Odd Functions
      ============================================================ -->
 <section class="slide grid-bg" id="slide-7" data-steps="2">
@@ -463,6 +583,30 @@
                         If all exponents are even, the function is even. If all exponents are odd (and no constant term), it is odd. Mixed exponents (like \(x^3-1 = x^3 - x^0\)) make it neither.
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK D — Classify even / odd / neither
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-evenodd">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Even, odd, or neither?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">Classify \(p(x) = x^4 - 3x^2\).</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>Even — symmetric over the \(y\)-axis</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>Odd — symmetric over the origin</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>Neither</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(p(-x) = (-x)^4 - 3(-x)^2 = x^4 - 3x^2 = p(x)\). Every exponent is <strong>even</strong>, so the graph is symmetric over the \(y\)-axis.</div>
+                <div class="qc-feedback-wrong">Substitute \(-x\): \(p(-x) = x^4 - 3x^2 = p(x)\). Both exponents are even powers, so \(p\) is <strong>even</strong>.</div>
             </div>
         </div>
     </div>
@@ -741,17 +885,49 @@
         throwOnError: false
     });
 
-    /* Initialize Presentation Core Controller */
+    /* Initialize Presentation Core Controller.
+       ignoreClickSelectors keeps Quick Check option clicks from advancing the
+       slide; ignoreKeySelectors keeps space/arrows from firing while a Quick
+       Check button holds focus. */
     SlidesCore.init({
+        ignoreClickSelectors: ['.nav-dot', '.slide-section-nav', '.quickcheck'],
+        ignoreKeySelectors: ['.quickcheck'],
         sectionTargets: [
             { label: 'Overview',     slideId: 'slide-0' },
             { label: 'Parents',      slideId: 'slide-1' },
             { label: 'Translations', slideId: 'slide-3' },
+            { label: 'Quick Check',  slideId: 'slide-qc-translate' },
             { label: 'Even & Odd',   slideId: 'slide-7' },
             { label: 'Playground',   slideId: 'slide-playground' },
             { label: 'Graph Ex',     slideId: 'slide-10' },
             { label: 'Review',       slideId: 'slide-13' }
         ]
+    });
+
+    /* ===== QUICK CHECK interaction =====
+       Click an option → mark correct/incorrect, reveal feedback, and highlight
+       the right answer. Locks once answered correctly; wrong answers can retry. */
+    document.querySelectorAll('.quickcheck').forEach(qc => {
+        const answer = qc.dataset.answer;
+        const options = Array.from(qc.querySelectorAll('.qc-option'));
+        options.forEach(option => {
+            option.addEventListener('click', event => {
+                event.stopPropagation();
+                if (qc.classList.contains('answered-correct')) return;
+                const correct = option.dataset.key === answer;
+                options.forEach(o => o.classList.remove('incorrect'));
+                option.classList.toggle('correct', correct);
+                option.classList.toggle('incorrect', !correct);
+                qc.classList.add('answered');
+                qc.classList.toggle('answered-correct', correct);
+                qc.classList.toggle('answered-wrong', !correct);
+                if (correct) {
+                    const ansEl = options.find(o => o.dataset.key === answer);
+                    if (ansEl) ansEl.classList.add('is-answer');
+                }
+                option.blur(); // restore keyboard slide-nav
+            });
+        });
     });
 
     // Link paired step reveals (Example table rows, graph points)
