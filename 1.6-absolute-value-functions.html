@@ -6,7 +6,7 @@
     <title>1.6 — Absolute Value Functions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
         .graph-container {
             display: flex;
@@ -95,9 +95,9 @@
                     <div class="note-box navy">
                         <div class="note-title">Properties</div>
                         <div class="note-copy" style="font-size:0.9em;">
-                            • **Domain:** \((-\infty,\, \infty)\)<br>
-                            • **Range:** \([0,\, \infty)\)<br>
-                            • **Vertex:** The corner point where the direction changes is the <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">vertex</span></span>, which is at \((0,\,0)\) for the parent function.
+                            • <strong>Domain:</strong> \((-\infty,\, \infty)\)<br>
+                            • <strong>Range:</strong> \([0,\, \infty)\)<br>
+                            • <strong>Vertex:</strong> The corner point where the direction changes is the <span class="fb" id="slide-1-step-1"><span class="fb-blank">________</span><span class="fb-answer">vertex</span></span>, which is at \((0,\,0)\) for the parent function.
                         </div>
                     </div>
                 </div>
@@ -144,9 +144,9 @@
             <div class="card-title">General Form: \(f(x) = a|x - h| + k\)</div>
             <div class="card-copy" style="line-height: 1.8;">
                 Rather than plotting arbitrary coordinates, we can graph by identifying the transformations:<br>
-                • **Vertex:** Shifted from \((0,\,0)\) to <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">\((h,\, k)\)</span></span>.<br>
-                • **Orientation:** If \(a > 0\), the V opens up. If \(a < 0\), the V opens down.<br>
-                • **Slopes of Branches:** The right side has slope \(a\) and the left side has slope \(-a\).
+                • <strong>Vertex:</strong> Shifted from \((0,\,0)\) to <span class="fb" id="slide-2-step-0"><span class="fb-blank">________</span><span class="fb-answer">\((h,\, k)\)</span></span>.<br>
+                • <strong>Orientation:</strong> If \(a > 0\), the V opens up. If \(a < 0\), the V opens down.<br>
+                • <strong>Slopes of Branches:</strong> The right side has slope \(a\) and the left side has slope \(-a\).
             </div>
         </div>
         <div class="step" id="slide-2-step-1">
@@ -242,6 +242,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK A — Vertex of a|x-h|+k (sign of h)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-vertex">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Find the vertex</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">What is the vertex of \(f(x) = 2|x + 1| - 3\)?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\((-1,\, -3)\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\((1,\, -3)\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\((1,\, 3)\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\((-1,\, 3)\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(|x + 1| = |x - (-1)|\), so \(h = -1\) and \(k = -3\): vertex \((-1,\, -3)\).</div>
+                <div class="qc-feedback-wrong">Match the form \(a|x - h| + k\): \(x + 1 = x - (-1)\), so \(h = -1\) (not \(+1\)) and \(k = -3\). Vertex \((-1,\, -3)\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 4 — CONCEPT: Solving Equations
      ============================================================ -->
 <section class="slide grid-bg" id="slide-4" data-steps="3">
@@ -254,7 +279,7 @@
         <div class="info-card teal">
             <div class="card-title">General Strategy</div>
             <div class="card-copy" style="line-height: 1.8;">
-                To solve an equation containing an absolute value, first **isolate** the absolute value term on one side:
+                To solve an equation containing an absolute value, first <strong>isolate</strong> the absolute value term on one side:
                 \[|u| = c\]
             </div>
         </div>
@@ -332,6 +357,30 @@
                         \[\left\{2,\, -\dfrac{4}{3}\right\}\]
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK B — No-solution case (isolate first)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-nosol">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">How many solutions?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">How many solutions does \(|2x - 1| + 7 = 3\) have?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>None</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>One</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>Two</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. Isolate first: \(|2x - 1| = -4\). An absolute value can never be negative, so there&rsquo;s no solution.</div>
+                <div class="qc-feedback-wrong">Always isolate the bars first: \(|2x - 1| = 3 - 7 = -4\). Distance can&rsquo;t be negative, so no solution — don&rsquo;t split into cases.</div>
             </div>
         </div>
     </div>
@@ -527,6 +576,30 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — Greater-than splits into OR (two rays)
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-orand">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">&ldquo;Great-OR&rdquo; or &ldquo;Less-AND&rdquo;?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">The solution to \(|x| > 3\) is&hellip;</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(x < -3\) &nbsp;or&nbsp; \(x > 3\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\(-3 < x < 3\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\(x > 3\) only</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. &ldquo;Greater-than&rdquo; means <em>far</em> from 0 — two rays: \(x < -3\) <strong>or</strong> \(x > 3\).</div>
+                <div class="qc-feedback-wrong">&ldquo;Great-OR&rdquo;: \(|x| > 3\) means far from 0, giving two rays \(x<-3\) or \(x>3\). (B is the answer to \(|x| < 3\).)</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 9 — SUMMARY
      ============================================================ -->
 <section class="slide grid-bg" id="slide-9">
@@ -569,7 +642,7 @@
 <!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="assets/slides-core.js"></script>
+<script src="assets/slides-core.js?v=2"></script>
 <script>
     /* Render all LaTeX in the document */
     renderMathInElement(document.body, {
@@ -586,6 +659,7 @@
             { label: 'Overview',     slideId: 'slide-0' },
             { label: 'Definition',   slideId: 'slide-1' },
             { label: 'Graph Ex',     slideId: 'slide-3' },
+            { label: 'Quick Check',  slideId: 'slide-qc-vertex' },
             { label: 'Equations',    slideId: 'slide-4' },
             { label: 'Inequalities', slideId: 'slide-6' },
             { label: 'Review',       slideId: 'slide-9' }
