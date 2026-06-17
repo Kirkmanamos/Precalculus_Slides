@@ -17,6 +17,7 @@
 | Slidev/Vue skill (PPT conversion, interactive decks) | `SKILL.md` |
 | Style preset reference | `STYLE_PRESETS.md` |
 | Structural deck verifier (run before finishing HTML edits) | `verify_decks.py` |
+| Shared-asset cache-buster (run after editing `assets/slides-core.*`) | `stamp_assets.py` |
 
 ---
 
@@ -83,6 +84,7 @@ Presentations built before the 5.5 standard use a legacy architecture (scroll-sn
 - Follow the HoffMath Classroom architecture in `AGENTS.md` exactly.
 - Reference implementation: `6.7-conditional-probability.html` (canonical for the new shared-assets pattern).
 - **Before finishing any HTML edit, run `python3 verify_decks.py`** (repo root). It checks `<section>` balance, KaTeX `\(\)`/`\[\]` balance, shared-asset wiring, and `data-steps` on every shared-engine deck. Must exit 0.
+- **After editing `assets/slides-core.css` or `assets/slides-core.js`, run `python3 stamp_assets.py`** (repo root), then commit the restamped decks. It rewrites every deck's `slides-core.{css,js}` URL to `?v=<content-hash>` so browsers refetch the changed shared asset instead of serving a stale cached copy (the classic symptom: a new shared component renders unstyled). It is content-based and idempotent — running it with unchanged assets is a no-op. The deploy workflow re-runs it on the assembled site as a safety net. **Per-deck content edits don't need this** — only changes to the shared `slides-core.*` files do.
 
 ### LaTeX Guided Notes (companion repo)
 - The guided notes live in a **separate repo**: `/Users/kirkmanamos/Desktop/precalculus`, organized as `Unit N - .../notes/`.

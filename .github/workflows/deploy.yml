@@ -60,6 +60,13 @@ jobs:
           # the _astro/ folder is never stripped.
           touch _site/.nojekyll
 
+      - name: Stamp shared-asset versions (cache-busting safety net)
+        # Re-stamp the assembled decks' slides-core.{css,js} URLs with a content
+        # hash so browsers refetch when the shared assets change. Source decks are
+        # normally stamped by `python3 stamp_assets.py` before commit; this makes
+        # the deployed site correct even if that local run was skipped.
+        run: python3 stamp_assets.py _site
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
