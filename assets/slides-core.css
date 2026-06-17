@@ -858,4 +858,49 @@ g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
     padding-bottom: 0.5rem;
 }
 
+/* ============================================================
+   QUICK CHECK — clickable multiple-choice formative check.
+   Drop a <div class="quickcheck" data-answer="X"> with .qc-option
+   buttons on any slide. slides-core.js auto-wires the interaction and
+   shields option clicks/keys from the slide-advance handler.
+   ============================================================ */
+.quickcheck { width: 100%; max-width: 880px; margin: 0 auto; }
+.qc-prompt {
+    font-size: 0.95em; font-weight: 600; color: var(--navy);
+    background: var(--navy-light); border-left: 5px solid var(--navy);
+    border-radius: 10px; padding: 0.7em 1.1em; margin-bottom: 0.9rem;
+}
+.qc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+.qc-options.one-col { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+.qc-option {
+    display: flex; align-items: center; gap: 0.7rem; text-align: left;
+    font-family: inherit; font-size: 0.8em; color: var(--text);
+    background: #ffffff; border: 2px solid #e2e8f0; border-radius: 12px;
+    padding: 0.7em 1em; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, transform 0.1s;
+}
+.qc-option:hover { border-color: var(--blue-accent); background: var(--blue-light); }
+.qc-option:active { transform: translateY(1px); }
+.qc-key {
+    flex: 0 0 auto; width: 1.7em; height: 1.7em; display: grid;
+    place-items: center; border-radius: 50%;
+    background: var(--navy-light); color: var(--navy);
+    font-weight: 700; font-size: 0.9em;
+}
+.qc-option.correct, .qc-option.is-answer { border-color: var(--green-accent); background: var(--green-light); }
+.qc-option.correct .qc-key, .qc-option.is-answer .qc-key { background: var(--green-accent); color: #ffffff; }
+.qc-option.incorrect { border-color: var(--red-accent); background: #fef2f2; }
+.qc-option.incorrect .qc-key { background: var(--red-accent); color: #ffffff; }
+.quickcheck.answered .qc-option { cursor: default; }
+.quickcheck.answered .qc-option:hover { border-color: #e2e8f0; background: #ffffff; }
+.quickcheck.answered .qc-option.correct:hover,
+.quickcheck.answered .qc-option.is-answer:hover { border-color: var(--green-accent); background: var(--green-light); }
+.quickcheck.answered .qc-option.incorrect:hover { border-color: var(--red-accent); background: #fef2f2; }
+.qc-feedback { margin-top: 0.9rem; }
+.qc-feedback > div { display: none; border-radius: 10px; padding: 0.6em 1em; font-size: 0.78em; font-weight: 600; }
+.qc-feedback-correct { background: var(--green-light); border-left: 4px solid var(--green-accent); color: #166534; }
+.qc-feedback-wrong   { background: var(--orange-light); border-left: 4px solid var(--orange-accent); color: #9a3412; }
+.quickcheck.answered-correct .qc-feedback-correct { display: block; animation: stepReveal 0.4s ease both; }
+.quickcheck.answered-wrong   .qc-feedback-wrong   { display: block; animation: stepReveal 0.4s ease both; }
+
 

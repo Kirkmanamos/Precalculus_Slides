@@ -629,6 +629,34 @@ For steps that need a text explanation beside the math:
 
 JS in the controller automatically wraps the math in `.step-eq` and applies `.has-annotation` layout.
 
+### Quick Check (clickable multiple choice)
+
+A formative check students answer by clicking. The CSS lives in
+`assets/slides-core.css` and the wiring is auto-initialised by
+`SlidesCore.init()` — no per-deck JS. Drop it on any slide (typically a
+standalone "Quick Check" slide with a `.practice-label` tag):
+
+```html
+<div class="quickcheck" data-answer="b">
+    <div class="qc-prompt">Prompt with \(\text{inline math}\) here.</div>
+    <div class="qc-options">  <!-- add .one-col for a single column -->
+        <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>Choice A</span></button>
+        <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>Choice B</span></button>
+    </div>
+    <div class="qc-feedback">
+        <div class="qc-feedback-correct">Shown when the right option is clicked.</div>
+        <div class="qc-feedback-wrong">Shown after a wrong click (student can retry).</div>
+    </div>
+</div>
+```
+
+- `data-answer` on `.quickcheck` matches the correct option's `data-key`.
+- Clicking marks correct/incorrect, reveals the matching feedback, and
+  highlights the right answer. Locks once answered correctly.
+- Option clicks/keys are shielded from slide-advance automatically — the
+  engine always ignores `.quickcheck` (and the general-purpose `.no-advance`
+  hook, e.g. for new-tab launch links). No `ignoreClickSelectors` needed.
+
 ---
 
 ## Math Rendering

@@ -50,6 +50,36 @@
         });
     }
 
+    /* Wire every .quickcheck block: click an option -> mark correct/incorrect,
+       reveal feedback, highlight the right answer. Locks once answered
+       correctly; wrong answers can retry. Idempotent (safe to call once). */
+    function initQuickChecks() {
+        document.querySelectorAll('.quickcheck').forEach(qc => {
+            if (qc.dataset.qcReady) return;
+            qc.dataset.qcReady = '1';
+            const answer = qc.dataset.answer;
+            const options = Array.from(qc.querySelectorAll('.qc-option'));
+            options.forEach(option => {
+                option.addEventListener('click', event => {
+                    event.stopPropagation();
+                    if (qc.classList.contains('answered-correct')) return;
+                    const correct = option.dataset.key === answer;
+                    options.forEach(o => o.classList.remove('incorrect'));
+                    option.classList.toggle('correct', correct);
+                    option.classList.toggle('incorrect', !correct);
+                    qc.classList.add('answered');
+                    qc.classList.toggle('answered-correct', correct);
+                    qc.classList.toggle('answered-wrong', !correct);
+                    if (correct) {
+                        const ansEl = options.find(o => o.dataset.key === answer);
+                        if (ansEl) ansEl.classList.add('is-answer');
+                    }
+                    option.blur(); // restore keyboard slide-nav
+                });
+            });
+        });
+    }
+
     class SlidePresentation {
         constructor(options = {}) {
             this.slides = Array.from(document.querySelectorAll('.slide'));
@@ -59,8 +89,12 @@
             this.navDotsEl = document.getElementById('navDots');
             this.clickHint = document.getElementById('clickHint');
             this.sectionTargets = options.sectionTargets || [];
-            this.ignoreClickSelectors = options.ignoreClickSelectors || ['.nav-dot', '.slide-section-nav'];
-            this.ignoreKeySelectors = options.ignoreKeySelectors || [];
+            // Always shield interactive widgets (Quick Checks, anything marked
+            // .no-advance) from the click/key slide-advance handler, even when a
+            // deck supplies its own ignore lists.
+            const SHIELD = ['.quickcheck', '.no-advance'];
+            this.ignoreClickSelectors = (options.ignoreClickSelectors || ['.nav-dot', '.slide-section-nav']).concat(SHIELD);
+            this.ignoreKeySelectors = (options.ignoreKeySelectors || []).concat(SHIELD);
             this.onSync = typeof options.onSync === 'function' ? options.onSync : null;
             this.beforeGoTo = typeof options.beforeGoTo === 'function' ? options.beforeGoTo : null;
             this.scrollStepIntoView = typeof options.scrollStepIntoView === 'function'
@@ -229,6 +263,7 @@
     function init(options = {}) {
         renderMath();
         splitAnnotations();
+        initQuickChecks();
         return new SlidePresentation(options);
     }
 
@@ -236,6 +271,7 @@
         SlidePresentation,
         init,
         renderMath,
-        splitAnnotations
+        splitAnnotations,
+        initQuickChecks
     };
 })(window);
