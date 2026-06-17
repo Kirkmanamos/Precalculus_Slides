@@ -6,7 +6,7 @@
     <title>1.7 — Inverse Functions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
         .map-svg { display: block; margin: 0.5rem auto; width: 100%; max-width: 340px; height: auto; }
         .ll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
@@ -78,11 +78,36 @@
         </svg>
         <div class="step step-box teal" id="slide-1-step-0">
             <div class="step-label">Notation</div>
-            <div class="step-math">The inverse of \(f(x)\) is written \(f^{-1}(x)\). Note: this is **not** an exponent, i.e., \(f^{-1}(x) \neq \tfrac{1}{f(x)}\).</div>
+            <div class="step-math">The inverse of \(f(x)\) is written \(f^{-1}(x)\). Note: this is <strong>not</strong> an exponent, i.e., \(f^{-1}(x) \neq \tfrac{1}{f(x)}\).</div>
         </div>
         <div class="step step-box blue" id="slide-1-step-1">
             <div class="step-label">Swapping coordinates</div>
             <div class="step-math">If the point \((a,\, b)\) lies on the graph of \(f\), then the point <span class="fb" id="slide-1-step-2"><span class="fb-blank">________</span><span class="fb-answer">\((b,\, a)\)</span></span> lies on the graph of \(f^{-1}\).</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK A — Inverses swap coordinates
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-swap">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Swap the point</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">If the point \((3,\, 7)\) is on the graph of \(f\), which point must be on \(f^{-1}\)?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\((7,\, 3)\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\((3,\, 7)\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\((-3,\, -7)\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\(\left(\tfrac{1}{3},\, \tfrac{1}{7}\right)\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. Inverses swap inputs and outputs: \((a,\, b)\) on \(f\) becomes \((b,\, a)\) on \(f^{-1}\).</div>
+                <div class="qc-feedback-wrong">An inverse swaps the coordinates, so \((3,7)\) becomes \((7,3)\). And \(f^{-1}\) is <strong>not</strong> \(\tfrac{1}{f}\), so D is a trap.</div>
+            </div>
         </div>
     </div>
 </section>
@@ -303,6 +328,31 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK B — Reflection across y = x
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-reflect">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Reflect across what?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">The graph of \(f^{-1}\) is the reflection of \(f\) across which line?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(y = x\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>the \(x\)-axis</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>the \(y\)-axis</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\(y = -x\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. Reflecting across \(y = x\) swaps each \((a,\, b) \to (b,\, a)\) — exactly what an inverse does.</div>
+                <div class="qc-feedback-wrong">An inverse swaps \(x\) and \(y\), which geometrically is a reflection across the line \(y = x\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 7 — CONCEPT: One-to-One and HLT
      ============================================================ -->
 <section class="slide grid-bg" id="slide-7" data-steps="3">
@@ -316,7 +366,7 @@
             <div class="info-card teal">
                 <div class="card-title">One-to-One Definition</div>
                 <div class="card-copy">
-                    A function is **one-to-one** if each output in the range corresponds to <span class="fb" id="slide-7-step-0"><span class="fb-blank">________________</span><span class="fb-answer">exactly one input</span></span> in the domain. No two distinct inputs share the same output.
+                    A function is <strong>one-to-one</strong> if each output in the range corresponds to <span class="fb" id="slide-7-step-0"><span class="fb-blank">________________</span><span class="fb-answer">exactly one input</span></span> in the domain. No two distinct inputs share the same output.
                 </div>
             </div>
             <div class="info-card orange">
@@ -330,7 +380,7 @@
             <div class="note-box navy">
                 <div class="note-title">Core Connection</div>
                 <div class="note-copy">
-                    A function \(f\) has an inverse function \(f^{-1}\) **if and only if** \(f\) is one-to-one. If it fails the horizontal line test, its inverse is a relation, not a function!
+                    A function \(f\) has an inverse function \(f^{-1}\) <strong>if and only if</strong> \(f\) is one-to-one. If it fails the horizontal line test, its inverse is a relation, not a function!
                 </div>
             </div>
         </div>
@@ -384,6 +434,30 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — Why x^2 needs a restricted domain
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-hlt">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Why no inverse?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">Why doesn&rsquo;t \(f(x) = x^2\) have an inverse <em>function</em> on \((-\infty,\, \infty)\)?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>It fails the horizontal line test — e.g. \(f(2) = f(-2) = 4\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>It fails the vertical line test</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>It isn&rsquo;t continuous</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. \(f(2)=f(-2)=4\): two inputs share an output, so it&rsquo;s not one-to-one — restrict to \([0,\infty)\) to get an inverse.</div>
+                <div class="qc-feedback-wrong">It&rsquo;s a function (passes the VLT) but not <em>one-to-one</em>: \(f(2)=f(-2)=4\) fails the horizontal line test. Restrict the domain to fix it.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 9 — CONCEPT: Restricting Domains
      ============================================================ -->
 <section class="slide grid-bg" id="slide-9" data-steps="2">
@@ -396,7 +470,7 @@
         <div class="info-card teal">
             <div class="card-title">Restricted Domains</div>
             <div class="card-copy" style="line-height: 1.8;">
-                Functions that are not one-to-one (like quadratic parabolas) do not have function inverses. However, we can **restrict the domain** of the original function to an interval where it is strictly increasing or decreasing (and thus one-to-one) so that we can find an inverse.
+                Functions that are not one-to-one (like quadratic parabolas) do not have function inverses. However, we can <strong>restrict the domain</strong> of the original function to an interval where it is strictly increasing or decreasing (and thus one-to-one) so that we can find an inverse.
             </div>
         </div>
         <div class="steps-area">
@@ -516,7 +590,7 @@
 <!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="assets/slides-core.js"></script>
+<script src="assets/slides-core.js?v=2"></script>
 <script>
     /* Render all LaTeX in the document */
     renderMathInElement(document.body, {
@@ -532,6 +606,7 @@
         sectionTargets: [
             { label: 'Overview',    slideId: 'slide-0' },
             { label: 'Definition',  slideId: 'slide-1' },
+            { label: 'Quick Check', slideId: 'slide-qc-swap' },
             { label: 'Finding',     slideId: 'slide-2' },
             { label: 'Verify',      slideId: 'slide-5' },
             { label: 'Symmetry',    slideId: 'slide-7' },
