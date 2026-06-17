@@ -903,4 +903,27 @@ g.svg-step.visible { opacity: 1; transition: opacity 0.35s ease; }
 .quickcheck.answered-correct .qc-feedback-correct { display: block; animation: stepReveal 0.4s ease both; }
 .quickcheck.answered-wrong   .qc-feedback-wrong   { display: block; animation: stepReveal 0.4s ease both; }
 
+/* ============================================================
+   LAUNCH CARD — call-to-action that opens an interactive
+   playground (or any tool) in a new tab. Pair the link with
+   class="no-advance" so the click does not advance the slide.
+   ============================================================ */
+.launch-card {
+    max-width: 760px; margin: 0 auto; width: 100%;
+    background: #ffffff; border: 2px solid #dbeafe; border-radius: 16px;
+    padding: 1.6rem 1.8rem; box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
+    display: flex; flex-direction: column; align-items: flex-start; gap: 1rem;
+}
+.launch-card .lc-lead { font-size: 0.92em; color: var(--text); line-height: 1.5; }
+.launch-card ul { margin: 0 0 0 1.1rem; padding: 0; font-size: 0.82em; color: var(--text-muted); }
+.launch-card ul li { margin: 0.2rem 0; }
+.launch-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    background: var(--blue-accent); color: #ffffff; text-decoration: none;
+    font-weight: 700; font-size: 0.88em; padding: 0.7em 1.4em;
+    border-radius: 12px; transition: background 0.2s, transform 0.1s;
+}
+.launch-btn:hover { background: #1d4ed8; }
+.launch-btn:active { transform: translateY(1px); }
+
 

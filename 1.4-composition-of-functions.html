@@ -6,7 +6,7 @@
     <title>1.4 — Composition of Functions</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&amp;display=swap">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <link rel="stylesheet" href="assets/slides-core.css">
+    <link rel="stylesheet" href="assets/slides-core.css?v=2">
     <style>
         .op-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.45rem 1rem; align-items: center; }
         .op-grid .oplabel { font-weight: 700; color: #0f172a; font-size: 0.95em; }
@@ -231,7 +231,7 @@
                 <div class="step-box orange">
                     <div class="step-label">Crucial Rule: Not Multiplication!</div>
                     <div class="step-math">
-                        \((f \circ g)(x)\) is **not** \(f(x) \cdot g(x)\). The open circle \(\circ\) represents nesting one function inside another.
+                        \((f \circ g)(x)\) is <strong>not</strong> \(f(x) \cdot g(x)\). The open circle \(\circ\) represents nesting one function inside another.
                     </div>
                 </div>
             </div>
@@ -239,7 +239,7 @@
                 <div class="step-box teal">
                     <div class="step-label">Inside Out Strategy</div>
                     <div class="step-math">
-                        Always evaluate composition from the **inside out**. Find the output of the inner function first, then use that output as the input for the outer function.
+                        Always evaluate composition from the <strong>inside out</strong>. Find the output of the inner function first, then use that output as the input for the outer function.
                     </div>
                 </div>
             </div>
@@ -250,6 +250,31 @@
                         Composition is not commutative. In almost all cases, \((f \circ g)(x) \neq (g \circ f)(x)\).
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK A — What does the composition symbol mean?
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-meaning">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">What does the circle mean?</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="b">
+            <div class="qc-prompt">What does \((f \circ g)(x)\) mean?</div>
+            <div class="qc-options">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(f(x) \cdot g(x)\) — multiply the outputs</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\(f(g(x))\) — feed \(g\)&rsquo;s output into \(f\)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\(g(f(x))\) — feed \(f\)&rsquo;s output into \(g\)</span></button>
+                <button class="qc-option" data-key="d"><span class="qc-key">D</span><span>\(f(x) + g(x)\) — add the outputs</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. The \(\circ\) means <strong>nesting</strong>: evaluate \(g\) first, then use its output as the input to \(f\). It is not multiplication.</div>
+                <div class="qc-feedback-wrong">The \(\circ\) is <strong>not</strong> multiplication — it nests \(g\) inside \(f\): \((f \circ g)(x) = f(g(x))\).</div>
             </div>
         </div>
     </div>
@@ -305,6 +330,30 @@
                     <div class="step-label">Answer b)</div>
                     <div class="step-math">\(g(f(2)) = 48\)</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
+     QUICK CHECK B — Numerical composition, inside out
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-numeric">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">Inside out</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">With \(f(x) = 2x + 3\) and \(g(x) = x^2 - 1\), find \(f(g(2))\).</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>\(9\)</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>\(48\) &nbsp;(that&rsquo;s \(g(f(2))\) — wrong order)</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>\(21\) &nbsp;(that&rsquo;s \(f(2)\cdot g(2)\) — not composition)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. Inside out: \(g(2) = 2^2 - 1 = 3\), then \(f(3) = 2(3) + 3 = 9\).</div>
+                <div class="qc-feedback-wrong">Work <strong>inside out</strong>: first \(g(2) = 3\), then feed it to \(f\): \(f(3) = 9\). Order matters — \(g(f(2))\) gives something different.</div>
             </div>
         </div>
     </div>
@@ -452,6 +501,30 @@
 </section>
 
 <!-- ============================================================
+     QUICK CHECK C — The easily-missed composite-domain restriction
+     ============================================================ -->
+<section class="slide grid-bg" id="slide-qc-domain">
+    <div class="slide-header">
+        <div class="practice-label">Quick Check</div>
+        <div class="slide-title">The restriction people forget</div>
+    </div>
+    <div class="slide-body top-layout">
+        <div class="quickcheck" data-answer="a">
+            <div class="qc-prompt">When finding the domain of \(f(g(x))\), which restriction is easiest to forget?</div>
+            <div class="qc-options one-col">
+                <button class="qc-option" data-key="a"><span class="qc-key">A</span><span>Values where the <strong>inner</strong> \(g(x)\) is undefined — even if they vanish after simplifying</span></button>
+                <button class="qc-option" data-key="b"><span class="qc-key">B</span><span>Values where the final simplified expression is undefined</span></button>
+                <button class="qc-option" data-key="c"><span class="qc-key">C</span><span>Negative values of \(x\)</span></button>
+            </div>
+            <div class="qc-feedback">
+                <div class="qc-feedback-correct">Correct. An \(x\) that makes \(g(x)\) undefined has no output to feed \(f\) — so it&rsquo;s excluded even if the simplified formula hides it.</div>
+                <div class="qc-feedback-wrong">The trap is the <strong>inner</strong> function: any \(x\) that makes \(g(x)\) undefined is excluded, even if it disappears when you simplify \(f(g(x))\).</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================
      SLIDE 9 — INTERACTIVE PLAYGROUND
      ============================================================ -->
 <section class="slide grid-bg playground-slide" id="slide-playground">
@@ -459,11 +532,15 @@
         <div class="concept-label">Interactive</div>
         <div class="slide-title">Function Operations Playground</div>
     </div>
-    <div class="slide-body top-layout">
-        <div class="playground-embed">
-            <div class="playground-frame-wrap">
-                <iframe class="playground-frame" src="1.6-operations-playground.html" title="1.6 Function Operations Playground" loading="eager"></iframe>
-            </div>
+    <div class="slide-body">
+        <div class="launch-card">
+            <div class="note-title" style="color: var(--navy); font-size: 1.05em;">Explore function operations live</div>
+            <div class="lc-lead">Pick two functions and watch \(f+g\), \(f-g\), \(f\cdot g\), and \(\tfrac{f}{g}\) build from the pieces — and see where the quotient&rsquo;s domain loses a point.</div>
+            <ul>
+                <li>Find an \(x\) where \(\tfrac{f}{g}\) is undefined but \(f\) and \(g\) are both fine.</li>
+                <li>Compare \(f+g\) with \(f\cdot g\) — which grows faster?</li>
+            </ul>
+            <a class="launch-btn no-advance" href="1.6-operations-playground.html" target="_blank" rel="noopener">Open the Function Operations Playground &#8599;</a>
         </div>
     </div>
 </section>
@@ -554,7 +631,7 @@
 <!-- KaTeX (loaded AFTER all HTML, BEFORE the controller) -->
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="assets/slides-core.js"></script>
+<script src="assets/slides-core.js?v=2"></script>
 <script>
     /* Render all LaTeX in the document */
     renderMathInElement(document.body, {
@@ -572,6 +649,7 @@
             { label: 'Operations',  slideId: 'slide-1' },
             { label: 'Arithmetic',  slideId: 'slide-2' },
             { label: 'Composition', slideId: 'slide-4' },
+            { label: 'Quick Check', slideId: 'slide-qc-meaning' },
             { label: 'Comp Domain', slideId: 'slide-7' },
             { label: 'Playground',  slideId: 'slide-playground' },
             { label: 'Decompose',   slideId: 'slide-10' },
