@@ -409,6 +409,11 @@
             "type": "slides",
             "title": "Slides 4.1",
             "href": "4.1-angles-radian-degree-measure.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Angles & Radian Measure Circuit",
+            "href": "hw/4.1-angles-circuit.pdf"
           }
         ]
       },
@@ -420,6 +425,11 @@
             "type": "slides",
             "title": "Slides 4.2",
             "href": "4.2-linear-and-angular-speed.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Linear & Angular Speed Circuit",
+            "href": "hw/4.2-linear-angular-speed-circuit.pdf"
           }
         ]
       },
@@ -436,6 +446,11 @@
             "type": "playground",
             "title": "Unit Circle Playground",
             "href": "unit-circle-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Unit Circle Circuit",
+            "href": "hw/4.3-unit-circle-circuit.pdf"
           }
         ]
       },
@@ -447,6 +462,11 @@
             "type": "slides",
             "title": "Slides 4.4",
             "href": "4.4-trig-functions-of-any-angle.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Trig of Any Angle Circuit",
+            "href": "hw/4.4-any-angle-circuit.pdf"
           }
         ]
       },
@@ -468,6 +488,11 @@
             "type": "reference",
             "title": "Review 4.1–4.5 (legacy)",
             "href": "trig-review.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Right Triangle Trig Circuit",
+            "href": "hw/4.5-right-triangle-circuit.pdf"
           }
         ]
       }
@@ -485,6 +510,11 @@
             "type": "slides",
             "title": "Slides 5.1",
             "href": "5.1-graphs-sine-cosine.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Graphs of Sine & Cosine Circuit",
+            "href": "hw/5.1-graphs-sine-cosine-circuit.pdf"
           }
         ]
       },
@@ -496,6 +526,11 @@
             "type": "slides",
             "title": "Slides 5.2",
             "href": "5.2-graphs-sine-cosine-part2.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Sine & Cosine (Part 2) Circuit",
+            "href": "hw/5.2-graphs-sine-cosine-part2-circuit.pdf"
           }
         ]
       },
@@ -507,6 +542,11 @@
             "type": "slides",
             "title": "Slides 5.3",
             "href": "5.3-modeling-sine-cosine.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Modeling Circuit",
+            "href": "hw/5.3-modeling-circuit.pdf"
           }
         ]
       },
@@ -523,6 +563,11 @@
             "type": "playground",
             "title": "Periodic Wave Playground",
             "href": "periodic-wave-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Other Trig Graphs Circuit",
+            "href": "hw/5.4-other-trig-circuit.pdf"
           }
         ]
       },
@@ -534,6 +579,11 @@
             "type": "slides",
             "title": "Slides 5.5",
             "href": "5.5-inverse-trig-functions.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Inverse Trig Circuit",
+            "href": "hw/5.5-inverse-trig-circuit.pdf"
           }
         ]
       }
@@ -551,6 +601,11 @@
             "type": "slides",
             "title": "Slides 6.1",
             "href": "6.1-fundamental-identities.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Fundamental Identities Circuit",
+            "href": "hw/6.1-fundamental-identities-circuit.pdf"
           }
         ]
       },
@@ -567,6 +622,11 @@
             "type": "playground",
             "title": "Trig Identity Playground",
             "href": "trig-identity-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Verifying Identities Circuit",
+            "href": "hw/6.2-verifying-circuit.pdf"
           }
         ]
       },
@@ -593,6 +653,11 @@
             "type": "slides",
             "title": "Amplitude-Phase Form (supplement)",
             "href": "6.3-amplitude-phase-form.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Sum & Difference Circuit",
+            "href": "hw/6.3-sum-difference-circuit.pdf"
           }
         ]
       },
@@ -604,6 +669,11 @@
             "type": "slides",
             "title": "Slides 6.4",
             "href": "6.4-double-half-angle.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Double & Half Angle Circuit",
+            "href": "hw/6.4-double-half-angle-circuit.pdf"
           }
         ]
       },
@@ -615,6 +685,11 @@
             "type": "slides",
             "title": "Slides 6.5",
             "href": "6.5-solving-trig-equations.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Solving Equations Circuit",
+            "href": "hw/6.5-solving-circuit.pdf"
           }
         ]
       }
@@ -632,6 +707,11 @@
             "type": "slides",
             "title": "Slides 7.1",
             "href": "7.1-sequences.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Sequences Circuit",
+            "href": "hw/7.1-sequences-circuit.pdf"
           }
         ]
       },
@@ -643,6 +723,11 @@
             "type": "slides",
             "title": "Slides 7.2",
             "href": "7.2-arithmetic-sequences.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Arithmetic Sequences Circuit",
+            "href": "hw/7.2-arithmetic-circuit.pdf"
           }
         ]
       },
@@ -654,6 +739,11 @@
             "type": "slides",
             "title": "Slides 7.3",
             "href": "7.3-geometric-sequences.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Geometric Sequences Circuit",
+            "href": "hw/7.3-geometric-circuit.pdf"
           }
         ]
       },
@@ -665,6 +755,11 @@
             "type": "slides",
             "title": "Slides 7.4",
             "href": "7.4-binomial-theorem.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Binomial Theorem Circuit",
+            "href": "hw/7.4-binomial-circuit.pdf"
           }
         ]
       },
@@ -676,6 +771,11 @@
             "type": "slides",
             "title": "Slides 7.5",
             "href": "7.5-counting-principles.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Counting Principles Circuit",
+            "href": "hw/7.5-counting-circuit.pdf"
           }
         ]
       },
@@ -687,6 +787,11 @@
             "type": "slides",
             "title": "Slides 7.6",
             "href": "7.6-probability.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Probability Circuit",
+            "href": "hw/7.6-probability-circuit.pdf"
           }
         ]
       },
@@ -698,6 +803,11 @@
             "type": "slides",
             "title": "Slides 7.7",
             "href": "7.7-conditional-probability.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Conditional Probability Circuit",
+            "href": "hw/7.7-conditional-probability-circuit.pdf"
           }
         ]
       }
