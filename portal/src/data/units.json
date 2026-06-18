@@ -3,6 +3,20 @@
     "number": 1,
     "title": "Function Analysis",
     "blurb": "Functions, transformations, and inverses.",
+    "review": [
+      {
+        "type": "freeresponse",
+        "title": "Free Response",
+        "href": "assessments/unit-1-free-response-regular.pdf",
+        "variant": "regular"
+      },
+      {
+        "type": "freeresponse",
+        "title": "Free Response",
+        "href": "assessments/unit-1-free-response-honors.pdf",
+        "variant": "honors"
+      }
+    ],
     "topics": [
       {
         "number": "1.1",
@@ -12,6 +26,11 @@
             "type": "slides",
             "title": "Slides 1.1",
             "href": "1.1-functions-and-function-notation.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Functions Circuit",
+            "href": "hw/1.1-functions-circuit.pdf"
           }
         ]
       },
@@ -23,6 +42,11 @@
             "type": "slides",
             "title": "Slides 1.2",
             "href": "1.2-domain-and-range.html"
+          },
+          {
+            "type": "activity",
+            "title": "Piecewise Card Sort",
+            "href": "hw/1.2-piecewise-card-sort.pdf"
           }
         ]
       },
@@ -39,6 +63,11 @@
             "type": "playground",
             "title": "Graph Behavior Playground",
             "href": "graph-behavior-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Graphs of Functions",
+            "href": "hw/1.3-graphs-of-functions.pdf"
           }
         ]
       },
@@ -50,6 +79,11 @@
             "type": "slides",
             "title": "Slides 1.4",
             "href": "1.4-composition-of-functions.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Operations of Functions",
+            "href": "hw/1.4-operations-with-functions.pdf"
           }
         ]
       },
@@ -66,6 +100,16 @@
             "type": "playground",
             "title": "Transformations Playground",
             "href": "1.5-transformations-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Transformations",
+            "href": "hw/1.5-transformations.pdf"
+          },
+          {
+            "type": "activity",
+            "title": "Transformations Card Sort",
+            "href": "hw/1.5-transformations-card-sort.pdf"
           }
         ]
       },
@@ -82,6 +126,11 @@
             "type": "playground",
             "title": "Operations Playground",
             "href": "1.6-operations-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Absolute Value Functions",
+            "href": "hw/1.6-absolute-value.pdf"
           }
         ]
       },
@@ -93,6 +142,11 @@
             "type": "slides",
             "title": "Slides 1.7",
             "href": "1.7-inverse-functions.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Inverse Functions",
+            "href": "hw/1.7-inverse-functions.pdf"
           }
         ]
       }

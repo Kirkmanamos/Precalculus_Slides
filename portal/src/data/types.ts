@@ -9,7 +9,10 @@ export type ResourceType =
   | 'worksheet' // homework / practice
   | 'activity' // in-class activity / station
   | 'playground' // interactive sandbox
-  | 'reference'; // supplemental reference
+  | 'reference' // supplemental reference
+  | 'freeresponse' // free-response / AP-style prompts
+  | 'studyguide' // unit study guide
+  | 'test'; // practice / old test
 
 export interface Resource {
   type: ResourceType;
@@ -22,6 +25,12 @@ export interface Resource {
   href?: string;
   /** Optional, e.g. "32:18" for a video. */
   duration?: string;
+  /**
+   * Optional track restriction. When set, the resource only appears for the
+   * matching course (regular vs honors). Omit to show in both — same idea as
+   * the per-variant notes PDF.
+   */
+  variant?: 'regular' | 'honors';
 }
 
 export interface Topic {
@@ -41,4 +50,10 @@ export interface Unit {
    */
   resources?: Resource[];
   topics: Topic[];
+  /**
+   * Optional end-of-unit "Review & Assessment" resources (free response,
+   * study guide, old/practice tests), shown in a strip below the topics.
+   * Use a resource's `variant` to scope an item to one track.
+   */
+  review?: Resource[];
 }

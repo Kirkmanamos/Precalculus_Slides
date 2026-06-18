@@ -18,6 +18,11 @@ const notes: ResourceT = {
   title: `Unit ${n} Notes — ${variantLabel} (PDF)`,
   href: `notes/unit-${n}-notes-${course.notesVariant}.pdf`,
 };
+
+// End-of-unit review/assessment resources, scoped to this course's track.
+const reviewItems: ResourceT[] = (unit.review ?? []).filter(
+  (r) => !r.variant || r.variant === course.notesVariant,
+);
 ---
 
 <details
@@ -92,4 +97,17 @@ const notes: ResourceT = {
       ))
     }
   </div>
+
+  {
+    reviewItems.length > 0 && (
+      <section class="border-t-4 border-violet-100 bg-violet-50/40">
+        <header class="px-6 pt-3 pb-1">
+          <h3 class="text-sm font-bold tracking-wide text-violet-600 uppercase">Review &amp; Assessment</h3>
+        </header>
+        {reviewItems.map((resource, i) => (
+          <Resource resource={resource} rid={`${n}|review|${i}`} progress />
+        ))}
+      </section>
+    )
+  }
 </details>
