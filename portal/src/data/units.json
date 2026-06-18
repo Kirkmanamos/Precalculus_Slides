@@ -44,6 +44,11 @@
             "href": "1.2-domain-and-range.html"
           },
           {
+            "type": "worksheet",
+            "title": "Domain & Range Circuit",
+            "href": "hw/1.2-domain-range-circuit.pdf"
+          },
+          {
             "type": "activity",
             "title": "Piecewise Card Sort",
             "href": "hw/1.2-piecewise-card-sort.pdf"
@@ -66,8 +71,8 @@
           },
           {
             "type": "worksheet",
-            "title": "Graphs of Functions",
-            "href": "hw/1.3-graphs-of-functions.pdf"
+            "title": "Rates of Change Circuit",
+            "href": "hw/1.3-rates-of-change-circuit.pdf"
           }
         ]
       },
@@ -82,8 +87,8 @@
           },
           {
             "type": "worksheet",
-            "title": "Operations of Functions",
-            "href": "hw/1.4-operations-with-functions.pdf"
+            "title": "Composition Circuit",
+            "href": "hw/1.4-composition-circuit.pdf"
           }
         ]
       },
@@ -103,8 +108,8 @@
           },
           {
             "type": "worksheet",
-            "title": "Transformations",
-            "href": "hw/1.5-transformations.pdf"
+            "title": "Transformations Circuit",
+            "href": "hw/1.5-transformations-circuit.pdf"
           },
           {
             "type": "activity",
@@ -129,8 +134,8 @@
           },
           {
             "type": "worksheet",
-            "title": "Absolute Value Functions",
-            "href": "hw/1.6-absolute-value.pdf"
+            "title": "Absolute Value Circuit",
+            "href": "hw/1.6-absolute-value-circuit.pdf"
           }
         ]
       },
@@ -145,8 +150,8 @@
           },
           {
             "type": "worksheet",
-            "title": "Inverse Functions",
-            "href": "hw/1.7-inverse-functions.pdf"
+            "title": "Inverse Functions Circuit",
+            "href": "hw/1.7-inverse-circuit.pdf"
           }
         ]
       }
