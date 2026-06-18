@@ -169,6 +169,11 @@
             "type": "playground",
             "title": "Completing the Square Playground",
             "href": "completing-the-square-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Quadratic Functions Circuit",
+            "href": "hw/2.1-quadratic-functions.pdf"
           }
         ]
       },
@@ -180,6 +185,11 @@
             "type": "slides",
             "title": "Slides 2.2",
             "href": "2.2-graphs-of-polynomial-functions.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Polynomial Graphs Circuit",
+            "href": "hw/2.2-graphs-of-polynomial-functions.pdf"
           }
         ]
       },
@@ -191,6 +201,11 @@
             "type": "slides",
             "title": "Slides 2.3",
             "href": "2.3-zeros-of-polynomial-functions.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Polynomial Zeros Circuit",
+            "href": "hw/2.3-zeros-of-polynomial-functions.pdf"
           }
         ]
       },
@@ -202,6 +217,11 @@
             "type": "slides",
             "title": "Slides 2.4",
             "href": "2.4-dividing-polynomials.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Dividing Polynomials Circuit",
+            "href": "hw/2.4-dividing-polynomials.pdf"
           }
         ]
       },
@@ -213,6 +233,11 @@
             "type": "slides",
             "title": "Slides 2.5",
             "href": "2.5-complex-numbers.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Complex Numbers Circuit",
+            "href": "hw/2.5-complex-numbers.pdf"
           }
         ]
       },
@@ -224,6 +249,11 @@
             "type": "slides",
             "title": "Slides 2.6",
             "href": "2.6-fundamental-theorem-of-algebra.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Fundamental Theorem Circuit",
+            "href": "hw/2.6-fundamental-theorem.pdf"
           }
         ]
       },
@@ -245,6 +275,11 @@
             "type": "reference",
             "title": "Rational Features (reference)",
             "href": "RationalFeatures.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Rational Functions Circuit",
+            "href": "hw/2.7-rational-functions.pdf"
           }
         ]
       },
@@ -261,6 +296,11 @@
             "type": "reference",
             "title": "Rational Graphing (reference)",
             "href": "RationalGraphing.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Rational Graphs Circuit",
+            "href": "hw/2.8-graphs-of-rational-functions.pdf"
           }
         ]
       }
