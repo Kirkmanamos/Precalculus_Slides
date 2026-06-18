@@ -323,6 +323,11 @@
             "type": "slides",
             "title": "Slides 3.1",
             "href": "3.1-exponential-functions-and-their-graphs.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Exponential Functions Circuit",
+            "href": "hw/3.1-exponential-functions-circuit.pdf"
           }
         ]
       },
@@ -334,6 +339,11 @@
             "type": "slides",
             "title": "Slides 3.2",
             "href": "3.2-logarithmic-functions-and-their-graphs.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Logarithmic Functions Circuit",
+            "href": "hw/3.2-logarithmic-functions-circuit.pdf"
           }
         ]
       },
@@ -345,6 +355,11 @@
             "type": "slides",
             "title": "Slides 3.3",
             "href": "3.3-properties-of-logarithms.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Properties of Logarithms Circuit",
+            "href": "hw/3.3-properties-of-logs-circuit.pdf"
           }
         ]
       },
@@ -356,6 +371,11 @@
             "type": "slides",
             "title": "Slides 3.4",
             "href": "3.4-solving-exponential-and-log-equations.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Solving Equations Circuit",
+            "href": "hw/3.4-solving-equations-circuit.pdf"
           }
         ]
       },
@@ -367,6 +387,11 @@
             "type": "slides",
             "title": "Slides 3.5",
             "href": "3.5-exponential-applications.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Applications Circuit",
+            "href": "hw/3.5-applications-circuit.pdf"
           }
         ]
       }
