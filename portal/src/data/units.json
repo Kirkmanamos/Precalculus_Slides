@@ -825,6 +825,11 @@
             "type": "slides",
             "title": "Slides 8.1",
             "href": "8.1-polar-coordinates.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Polar Coordinates Circuit",
+            "href": "hw/8.1-polar-coordinates-circuit.pdf"
           }
         ]
       },
@@ -841,6 +846,11 @@
             "type": "playground",
             "title": "Polar Curves Playground",
             "href": "polar-curves-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Polar Graphs Circuit",
+            "href": "hw/8.2-polar-graphs-circuit.pdf"
           }
         ]
       },
@@ -852,6 +862,11 @@
             "type": "slides",
             "title": "Slides 8.3",
             "href": "8.3-polar-complex-numbers.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Polar Complex Numbers Circuit",
+            "href": "hw/8.3-polar-complex-circuit.pdf"
           }
         ]
       },
@@ -863,6 +878,11 @@
             "type": "slides",
             "title": "Slides 8.4",
             "href": "8.4-parametric-equations.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Parametric Equations Circuit",
+            "href": "hw/8.4-parametric-equations-circuit.pdf"
           }
         ]
       },
@@ -874,6 +894,11 @@
             "type": "slides",
             "title": "Slides 8.5",
             "href": "8.5-parametric-graphs.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Parametric Graphs Circuit",
+            "href": "hw/8.5-parametric-graphs-circuit.pdf"
           }
         ]
       },
@@ -885,6 +910,11 @@
             "type": "slides",
             "title": "Slides 8.6",
             "href": "8.6-vectors.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Vectors Circuit",
+            "href": "hw/8.6-vectors-circuit.pdf"
           }
         ]
       }
@@ -902,6 +932,11 @@
             "type": "slides",
             "title": "Slides 9.1",
             "href": "9.1-limits-numerical-graphical.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Limits (Numerical) Circuit",
+            "href": "hw/9.1-limits-numerical-circuit.pdf"
           }
         ]
       },
@@ -913,6 +948,11 @@
             "type": "slides",
             "title": "Slides 9.2",
             "href": "9.2-limits-properties.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Limits (Properties) Circuit",
+            "href": "hw/9.2-limits-properties-circuit.pdf"
           }
         ]
       },
@@ -924,6 +964,11 @@
             "type": "slides",
             "title": "Slides 9.3",
             "href": "9.3-continuity.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Continuity Circuit",
+            "href": "hw/9.3-continuity-circuit.pdf"
           }
         ]
       },
@@ -945,6 +990,11 @@
             "type": "activity",
             "title": "Function Feature Identifier Playground",
             "href": "feature-identifier-playground.html"
+          },
+          {
+            "type": "worksheet",
+            "title": "Derivatives Circuit",
+            "href": "hw/9.4-derivatives-circuit.pdf"
           }
         ]
       }
